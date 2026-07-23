@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "softpaws"
+version = "0.1.0"
+description = "Soft-volume forward model for UHE neutrino telescopes, benchmarked against IceCube IRFs and data."
+authors = [
+    { name = "Stephan Meighen-Berger", email = "stephan.meighenberger@gmail.com" },
+]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.12",
+    "matplotlib>=3.8",
+    "astropy>=6.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4",
+    "pytest>=8",
+    "pre-commit>=3",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/__init__.py" = ["F401"]
+"tests/*.py" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "network: tests that require network access (deselect with '-m not network')",
+]

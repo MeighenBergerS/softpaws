@@ -1,0 +1,17 @@
+text.usetex: True
+font.family: serif
+font.size: 8.0
+axes.prop_cycle:   cycler('color', ["#e7298a", "#1b9e77", "#d95f02", "#7570b3", "#66a61e", "#e6ab02"])
+axes.grid: False
+legend.frameon: False
+axes.titlesize: 8.0
+axes.labelsize: 8.0
+xtick.direction: in
+ytick.direction: in
+xtick.top: True
+ytick.right: True
+xtick.labelsize: 8
+ytick.labelsize: 8
+figure.dpi: 100
+figure.figsize: 3.0, 3.0
+lines.linewidth: 1.

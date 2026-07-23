@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+
+# Distribution / packaging
+MANIFEST
+pip-wheel-metadata/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Ruff
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data files — never commit raw or processed data
+*.pdf
+dataverse_files/
+*.fits
+*.fits.gz
+*.fz
+*.h5
+*.hdf5
+*.hdf
+*.npy
+*.npz
+*.csv
+*.parquet
+# Ignore a top-level data directory only, so the src/softpaws/data source
+# package stays versioned (raw data is caught by the extension rules above).
+/data/
+
+# Generated output from examples (keep the directory via .gitkeep)
+examples/output/*
+!examples/output/.gitkeep
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Pre-commit
+.pre-commit-config.yaml
+
+# MkDocs
+site/
