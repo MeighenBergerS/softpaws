@@ -6,3 +6,7 @@ Provides two interchangeable paths for comparison:
 - the published IceCube IRF model (effective area convolved with the energy and
   angular smearing matrices).
 """
+
+from .irfs import EffectiveArea, PointSpreadFunction, SmearingMatrix
+
+__all__ = ["EffectiveArea", "PointSpreadFunction", "SmearingMatrix"]
