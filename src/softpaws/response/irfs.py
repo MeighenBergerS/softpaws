@@ -53,6 +53,8 @@ class EffectiveArea:
         sin_dec_edges: np.ndarray,
         values: np.ndarray,
     ) -> None:
+        self._log10_e_edges = np.asarray(log10_energy_edges, dtype=float)
+        self._sin_dec_edges = np.asarray(sin_dec_edges, dtype=float)
         self._log10_e_centers = 0.5 * (log10_energy_edges[:-1] + log10_energy_edges[1:])
         self._sin_dec_centers = 0.5 * (sin_dec_edges[:-1] + sin_dec_edges[1:])
         self._values = np.asarray(values, dtype=float)
@@ -92,6 +94,11 @@ class EffectiveArea:
     def sin_dec_centers(self) -> np.ndarray:
         """Tabulated bin centres in sin(declination), shape ``(M,)``."""
         return self._sin_dec_centers
+
+    @property
+    def sin_dec_edges(self) -> np.ndarray:
+        """Tabulated bin edges in sin(declination), shape ``(M+1,)``."""
+        return self._sin_dec_edges
 
     @property
     def values(self) -> np.ndarray:
