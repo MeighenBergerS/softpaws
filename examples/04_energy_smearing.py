@@ -28,7 +28,7 @@ _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
 _DEFAULT_OUT_DIR = _HERE / "output"
 
-COMMON_LOG10_RECO_EDGES = np.linspace(1.0, 9.0, 81)
+COMMON_LOG10_RECO_EDGES = np.linspace(1.0, 9.0, 33)
 COMMON_LOG10_RECO_CENTERS = 0.5 * (COMMON_LOG10_RECO_EDGES[:-1] + COMMON_LOG10_RECO_EDGES[1:])
 
 INJECTED_LOG10_E = (3.0, 4.0, 5.0, 6.0)
