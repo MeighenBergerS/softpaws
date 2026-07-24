@@ -1,5 +1,13 @@
 # Soft-volume forward model — physics notes
 
+> **See also [`exact_soft_volume_notes.md`](exact_soft_volume_notes.md).** This
+> file distills the **paper's Fokker–Planck (drift–diffusion) expansion**. The
+> companion file derives the **exact eigenvalue** solution, which *contains* this
+> one as its first two terms (`Φ(1)=b_μ`, `Φ(2)=2b_μ−d_μ`) and drops the `y_min`/
+> `y_cut` cutoffs, the log-normal Green's-function convolution, and the `1/A`
+> pole. **The exact version is the intended implementation basis;** keep this file
+> for the paper's context, the transport coefficients, and cross-checks.
+
 Distilled reference for implementing the `transport/` → `response/` soft-volume
 path in `softpaws`. Source: Palmisano, Redigolo, Tammaro, Tesi,
 *The soft volume of ultra-high energy neutrinos experiments*

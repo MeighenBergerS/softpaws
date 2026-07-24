@@ -1,0 +1,119 @@
+"""Tests for the drift-limit soft-volume model.
+
+These lock in the reproduction of the reference numbers in arXiv:2607.13143:
+Table 1 transport coefficients in water, and the soft-volume figures of merit
+for IceCube (~4x) and KM3NeT (~7.5x) from Section 2.3.
+"""
+
+import numpy as np
+import pytest
+
+from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
+from softpaws.transport.soft_volume import (
+    soft_volume_drift,
+    spectral_penalty,
+    sphere_radius_from_volume,
+    volume_ratio_drift,
+)
+from softpaws.utils.constants import RHO_ICE_G_CM3, RHO_WATER_G_CM3
+
+E_1PEV = 1.0e6  # GeV
+E_100PEV = 1.0e8  # GeV
+GAMMA_IC = 2.38  # IceCube 9.5 yr diffuse-flux best fit (Eq. 1.3)
+
+
+# ---------------------------------------------------------------------------
+# Transport coefficients (Table 1, water)
+# ---------------------------------------------------------------------------
+
+
+def test_drift_coefficient_matches_table1():
+    assert drift_coefficient(E_1PEV)[0] == pytest.approx(0.35, abs=1e-6)
+    assert drift_coefficient(E_100PEV)[0] == pytest.approx(0.40, abs=1e-6)
+
+
+def test_diffusion_coefficient_matches_table1():
+    assert diffusion_coefficient(E_1PEV)[0] == pytest.approx(0.0766, abs=1e-6)
+    assert diffusion_coefficient(E_100PEV)[0] == pytest.approx(0.0982, abs=1e-6)
+
+
+def test_drift_coefficient_interpolates_in_log_energy():
+    # 10 PeV = log10 16, the midpoint between the two reference decades.
+    mid = drift_coefficient(1.0e7)[0]
+    assert mid == pytest.approx(0.5 * (0.35 + 0.40), abs=1e-6)
+
+
+def test_drift_coefficient_clips_outside_reference_range():
+    assert drift_coefficient(1.0e3)[0] == pytest.approx(0.35, abs=1e-6)
+    assert drift_coefficient(1.0e12)[0] == pytest.approx(0.40, abs=1e-6)
+
+
+def test_drift_coefficient_scales_with_density():
+    b_water = drift_coefficient(E_1PEV, RHO_WATER_G_CM3)[0]
+    b_ice = drift_coefficient(E_1PEV, RHO_ICE_G_CM3)[0]
+    assert b_ice == pytest.approx(b_water * RHO_ICE_G_CM3 / RHO_WATER_G_CM3, rel=1e-12)
+
+
+def test_coefficients_accept_arrays():
+    b = drift_coefficient(np.array([E_1PEV, E_100PEV]))
+    assert b.shape == (2,)
+    np.testing.assert_allclose(b, [0.35, 0.40], atol=1e-6)
+
+
+# ---------------------------------------------------------------------------
+# Spectral penalty
+# ---------------------------------------------------------------------------
+
+
+def test_spectral_penalty_value():
+    # gamma = 2.38, lambda = 0.4 -> A = 0.98 ~ 1 for the IceCube flux.
+    assert spectral_penalty(GAMMA_IC) == pytest.approx(0.98, abs=1e-9)
+
+
+def test_spectral_penalty_rejects_nonpositive():
+    with pytest.raises(ValueError):
+        spectral_penalty(1.2)  # A = 1.2 - 0.4 - 1 = -0.2
+
+
+# ---------------------------------------------------------------------------
+# Geometry
+# ---------------------------------------------------------------------------
+
+
+def test_sphere_radius_from_volume():
+    # IceCube instrumented volume ~1 km^3 -> R ~ 0.62 km.
+    assert sphere_radius_from_volume(1.0) == pytest.approx(0.6204, abs=1e-3)
+
+
+# ---------------------------------------------------------------------------
+# Soft volume figures of merit (Section 2.3)
+# ---------------------------------------------------------------------------
+
+
+def test_volume_ratio_icecube_about_four():
+    r_ic = sphere_radius_from_volume(1.0)
+    ratio = volume_ratio_drift(r_ic, E_1PEV, GAMMA_IC)[0]
+    assert ratio == pytest.approx(4.5, abs=0.2)
+
+
+def test_volume_ratio_km3net_about_seven_and_half():
+    # KM3NeT is smaller; the paper quotes ~7.5 for R ~ 0.33 km.
+    ratio = volume_ratio_drift(0.33, E_1PEV, GAMMA_IC)[0]
+    assert ratio == pytest.approx(7.5, abs=0.3)
+
+
+def test_soft_volume_matches_ratio_definition():
+    # V_tot / V_det = 1 + V_soft / V_det, with V_det the sphere volume.
+    r = sphere_radius_from_volume(1.0)
+    v_det = 4.0 / 3.0 * np.pi * r**3
+    v_soft = soft_volume_drift(r, E_1PEV, GAMMA_IC)[0]
+    ratio = volume_ratio_drift(r, E_1PEV, GAMMA_IC)[0]
+    assert (1.0 + v_soft / v_det) == pytest.approx(ratio, rel=1e-12)
+
+
+def test_soft_volume_grows_with_shallower_spectrum():
+    # Smaller A (shallower flux) -> larger spectral enhancement -> larger V_soft.
+    r = sphere_radius_from_volume(1.0)
+    steep = soft_volume_drift(r, E_1PEV, 2.6)[0]
+    shallow = soft_volume_drift(r, E_1PEV, 2.2)[0]
+    assert shallow > steep

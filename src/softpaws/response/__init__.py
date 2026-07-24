@@ -8,5 +8,12 @@ Provides two interchangeable paths for comparison:
 """
 
 from .irfs import EffectiveArea, PointSpreadFunction, SmearingMatrix
+from .soft_volume import SoftVolumeResponse, power_law_flux
 
-__all__ = ["EffectiveArea", "PointSpreadFunction", "SmearingMatrix"]
+__all__ = [
+    "EffectiveArea",
+    "PointSpreadFunction",
+    "SmearingMatrix",
+    "SoftVolumeResponse",
+    "power_law_flux",
+]

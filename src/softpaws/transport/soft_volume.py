@@ -25,10 +25,7 @@ import numpy as np
 
 from ..utils.constants import RHO_WATER_G_CM3
 from .coefficients import drift_coefficient
-
-# Default UHE CC cross-section slope, sigma_CC ~ E^lambda (arXiv:2607.13143,
-# Eq. 2.5; lambda ~ 0.4 from the small-x behaviour of the nucleon PDFs).
-DEFAULT_LAMBDA = 0.4
+from .source import DEFAULT_LAMBDA
 
 
 def spectral_penalty(gamma: float, lam: float = DEFAULT_LAMBDA) -> float:

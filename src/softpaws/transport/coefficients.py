@@ -22,7 +22,7 @@ from ..utils.constants import RHO_WATER_G_CM3
 # (rho = 1.02 g/cm^3), at two reference energies.
 # ---------------------------------------------------------------------------
 
-_REF_LOG10_E = np.array([15.0, 17.0])  # log10(E / GeV) for 1 PeV and 100 PeV
+_REF_LOG10_E = np.array([6.0, 8.0])  # log10(E / GeV) for 1 PeV and 100 PeV
 _REF_B_MU = np.array([0.35, 0.40])  # drift [km^-1]
 _REF_D_MU = np.array([0.0766, 0.0982])  # diffusion [km^-1]
 
