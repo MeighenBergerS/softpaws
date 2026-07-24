@@ -15,14 +15,27 @@ muon energy ``E`` is the target volume times the local weak-rate density,
 where the soft volume ``V_soft`` carries the muon-transport enhancement (Eq. 2.23)
 and ``V_det`` is the instrumented sphere. The drift closed form assumes a
 power-law neutrino flux, so this model is parametrized directly by ``(phi0, gamma)``.
+
+Two transport methods are available (``method`` argument of
+:class:`SoftVolumeResponse`): ``"drift"`` is the paper's leading form above, and
+``"exact"`` uses the exact eigenvalue ``Phi(A)`` with the ``I(A)`` normalization and
+a finite upstream column depth (``docs/exact_soft_volume_notes.md``). In the exact
+master formula ``I(A)`` multiplies both populations, so both the inside and soft
+target volumes carry it.
 """
 
 from __future__ import annotations
 
 import numpy as np
 
-from ..transport.soft_volume import soft_volume_drift
-from ..transport.source import DEFAULT_LAMBDA, cc_cross_section, nucleon_number_density
+from ..transport.eigenvalue import spectral_index
+from ..transport.soft_volume import soft_volume_drift, soft_volume_exact
+from ..transport.source import (
+    DEFAULT_LAMBDA,
+    cc_cross_section,
+    inelasticity_factor,
+    nucleon_number_density,
+)
 from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 # Flux pivot energy for the power-law parametrization (Eq. 4.1): 100 TeV.
@@ -56,7 +69,7 @@ def power_law_flux(
 
 
 class SoftVolumeResponse:
-    """Drift-limit soft-volume forward model for a spherical detector.
+    """Soft-volume forward model for a spherical detector.
 
     Parameters
     ----------
@@ -64,6 +77,16 @@ class SoftVolumeResponse:
         Radius of the spherical instrumented volume [km].
     density_g_cm3 : float, optional
         Target-medium density [g cm^-3]. Defaults to water.
+    method : {"drift", "exact"}, optional
+        Transport treatment for the soft volume. ``"drift"`` (default) uses the
+        paper's leading form ``V_soft = A_proj / (b_mu A)`` (Eq. 2.23).
+        ``"exact"`` uses the exact eigenvalue ``Phi(A)`` with the ``I(A)``
+        normalization and the finite-column saturation factor
+        (``docs/exact_soft_volume_notes.md``).
+    column_depth_km : float or None, optional
+        Available upstream column depth ``x`` [km] for the exact method. ``None``
+        (the default) uses the infinite-column limit, which requires
+        ``Phi(A) > 0``. Ignored by the drift method.
 
     Attributes
     ----------
@@ -71,6 +94,10 @@ class SoftVolumeResponse:
         Detector radius [km].
     density_g_cm3 : float
         Medium density [g cm^-3].
+    method : str
+        Selected transport method.
+    column_depth_km : float or None
+        Upstream column depth for the exact method.
     n_nucleon_cm3 : float
         Target nucleon number density [cm^-3].
     v_det_cm3 : float
@@ -82,15 +109,24 @@ class SoftVolumeResponse:
     >>> rate = resp.differential_rate(1.0e6, phi0=0.63, gamma=2.38)
     >>> float(rate[0]) > 0
     True
+    >>> exact = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    >>> float(exact.differential_rate(1.0e6, phi0=0.63, gamma=2.38)[0]) > 0
+    True
     """
 
     def __init__(
         self,
         radius_km: float,
         density_g_cm3: float = RHO_WATER_G_CM3,
+        method: str = "drift",
+        column_depth_km: float | None = None,
     ) -> None:
+        if method not in ("drift", "exact"):
+            raise ValueError(f"method must be 'drift' or 'exact', got {method!r}.")
         self.radius_km = radius_km
         self.density_g_cm3 = density_g_cm3
+        self.method = method
+        self.column_depth_km = column_depth_km
         self.n_nucleon_cm3 = nucleon_number_density(density_g_cm3)
         radius_cm = radius_km * CM_PER_KM
         self.v_det_cm3 = 4.0 / 3.0 * np.pi * radius_cm**3
@@ -121,15 +157,38 @@ class SoftVolumeResponse:
         -------
         volume : np.ndarray
             Target volume [cm^3], broadcast to the shape of ``energy_gev``.
+
+        Notes
+        -----
+        For ``method="exact"`` the inelasticity factor ``I(A)`` multiplies both
+        populations, so the reported ``"inside"`` volume is the effective
+        ``I(A) V_det`` rather than the bare geometric sphere.
         """
-        v_soft = soft_volume_drift(self.radius_km, energy_gev, gamma, lam, self.density_g_cm3)
+        if self.method == "exact":
+            v_soft = soft_volume_exact(
+                self.radius_km,
+                energy_gev,
+                gamma,
+                lam,
+                self.column_depth_km,
+                self.density_g_cm3,
+            )
+            a = spectral_index(gamma, lam)
+            v_det_cm3 = inelasticity_factor(a) * self.v_det_cm3
+        else:
+            v_soft = soft_volume_drift(
+                self.radius_km, energy_gev, gamma, lam, self.density_g_cm3
+            )
+            v_det_cm3 = self.v_det_cm3
+
         v_soft_cm3 = v_soft * CM_PER_KM**3
+        v_det_cm3 = np.full_like(v_soft_cm3, v_det_cm3)
         if part == "soft":
             return v_soft_cm3
         if part == "inside":
-            return np.full_like(v_soft_cm3, self.v_det_cm3)
+            return v_det_cm3
         if part == "total":
-            return self.v_det_cm3 + v_soft_cm3
+            return v_det_cm3 + v_soft_cm3
         raise ValueError(f"part must be 'total', 'soft', or 'inside', got {part!r}.")
 
     def weak_rate_density(

@@ -53,6 +53,42 @@ def cc_cross_section(
     return SIGMA0_CM2 * (energy / E0_CROSS_GEV) ** lam
 
 
+def inelasticity_factor(
+    spectral_index_value: float | np.ndarray,
+    mean_inelasticity: float = MEAN_INELASTICITY,
+) -> np.ndarray:
+    """Weak-vertex inelasticity factor ``I(A) = <(1 - y_w)^A>``.
+
+    The muon is born with only a fraction ``1 - y_w`` of the neutrino energy, so
+    the source picks up the spectrum-weighted average
+    ``I(A) = <(1 - y_w)^A>_P`` (arXiv:2607.13143 companion derivation,
+    ``docs/exact_soft_volume_notes.md`` Part 5). This factor multiplies both the
+    inside and the soft contributions in the exact master formula.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A = gamma - lambda - 1``.
+    mean_inelasticity : float, optional
+        Mean CC inelasticity ``<y_w>``. Defaults to :data:`MEAN_INELASTICITY`.
+
+    Returns
+    -------
+    factor : np.ndarray
+        ``I(A)``, of order ``0.8``.
+
+    Notes
+    -----
+    With only the mean ``<y_w>`` available, the inelasticity distribution
+    ``P(y_w)`` is modelled as a delta at its mean, giving
+    ``I(A) = (1 - <y_w>)^A``. This is exact at ``A = 1`` (``I(1) = 1 - <y_w>``,
+    the only value the paper actually uses) and a mild approximation elsewhere;
+    supply a full ``P(y_w)`` average to improve it away from ``A = 1``.
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    return (1.0 - mean_inelasticity) ** a
+
+
 def nucleon_number_density(density_g_cm3: float = RHO_WATER_G_CM3) -> float:
     """Target nucleon number density of the medium.
 

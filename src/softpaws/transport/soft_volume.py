@@ -15,8 +15,14 @@ soft volume has the closed form (Eq. 2.23)
 
 The muon range ``1/b_mu`` is further weighted by the spectral penalty ``1/A``
 for producing a higher-energy parent neutrino. This module implements that
-formula and the associated figure of merit (Eq. 2.24). The full Green's-function
-convolution and the diffusion correction are deferred to later modules.
+formula and the associated figure of merit (Eq. 2.24).
+
+It also provides the *exact* soft volume (:func:`soft_volume_exact`,
+``docs/exact_soft_volume_notes.md``), which replaces the drift range ``1/(b_mu A)``
+by ``I(A) (1 - e^{-Phi(A) x}) / Phi(A)`` with the exact eigenvalue ``Phi(A)`` and a
+finite upstream column depth ``x``. The saturation factor keeps the result finite
+where the drift form diverges (``A -> 0``) or goes negative (``A < 0``, the
+cross-section pole).
 """
 
 from __future__ import annotations
@@ -24,8 +30,9 @@ from __future__ import annotations
 import numpy as np
 
 from ..utils.constants import RHO_WATER_G_CM3
-from .coefficients import drift_coefficient
-from .source import DEFAULT_LAMBDA
+from .coefficients import diffusion_coefficient, drift_coefficient
+from .eigenvalue import phi_eigenvalue, spectral_index
+from .source import DEFAULT_LAMBDA, inelasticity_factor
 
 
 def spectral_penalty(gamma: float, lam: float = DEFAULT_LAMBDA) -> float:
@@ -143,3 +150,111 @@ def volume_ratio_drift(
     a = spectral_penalty(gamma, lam)
     b_mu = drift_coefficient(energy_gev, density_g_cm3)
     return 1.0 + 3.0 / (4.0 * radius_km * b_mu * a)
+
+
+def saturation_factor(
+    phi_per_km: float | np.ndarray,
+    column_depth_km: float,
+) -> np.ndarray:
+    """Effective attenuated range ``(1 - e^{-Phi x}) / Phi`` over a finite column.
+
+    This is the geometric factor that turns the infinite-column range ``1/Phi``
+    into the value delivered by an upstream column of depth ``x``
+    (``docs/exact_soft_volume_notes.md`` Part 7). It is finite for every sign of
+    ``Phi``: as ``Phi -> 0`` it tends to ``x`` (no losses, the whole column
+    accumulates), and for ``Phi < 0`` it continues to
+    ``(e^{|Phi| x} - 1) / |Phi|``, curing the drift-form divergence at and beyond
+    the cross-section pole.
+
+    Parameters
+    ----------
+    phi_per_km : float or np.ndarray
+        Collision eigenvalue ``Phi(A)`` [km^-1] (see
+        :func:`softpaws.transport.eigenvalue.phi_eigenvalue`).
+    column_depth_km : float
+        Available upstream column depth ``x`` [km].
+
+    Returns
+    -------
+    eff_range : np.ndarray
+        ``(1 - e^{-Phi x}) / Phi`` [km].
+    """
+    phi = np.asarray(phi_per_km, dtype=float)
+    x = float(column_depth_km)
+    small = np.abs(phi) < 1e-12
+    safe_phi = np.where(small, 1.0, phi)
+    # -expm1(-Phi x) = 1 - e^{-Phi x}, evaluated stably for both signs of Phi.
+    eff_range = -np.expm1(-safe_phi * x) / safe_phi
+    return np.where(small, x, eff_range)
+
+
+def soft_volume_exact(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    column_depth_km: float | None = None,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    include_inelasticity: bool = True,
+) -> np.ndarray:
+    """Exact soft volume with the eigenvalue ``Phi(A)`` and a finite column.
+
+    Implements ``docs/exact_soft_volume_notes.md`` Part 7:
+
+    .. math:: V_\\mathrm{soft}(E) = \\pi R_\\mathrm{det}^2\\,
+        \\mathcal{I}(A)\\,\\frac{1 - e^{-\\Phi(A) x}}{\\Phi(A)},
+
+    with ``Phi(A)`` the exact eigenvalue (:func:`phi_eigenvalue`) and
+    ``I(A) ~ 0.8`` the inelasticity factor. Compared with
+    :func:`soft_volume_drift`, this replaces the leading eigenvalue ``b_mu A`` by
+    the full ``Phi(A)``, keeps the ``I(A)`` normalization, and applies the
+    finite-column saturation factor.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    column_depth_km : float or None, optional
+        Available upstream column depth ``x`` [km]. If ``None`` (the default) the
+        infinite-column limit ``1/Phi(A)`` is used, which requires ``Phi(A) > 0``.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    include_inelasticity : bool, optional
+        Whether to fold in ``I(A)``. Set ``False`` for a geometry-only volume that
+        is directly comparable with :func:`soft_volume_drift`.
+
+    Returns
+    -------
+    v_soft : np.ndarray
+        Soft volume [km^3].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``column_depth_km is None`` while ``Phi(A) <= 0``, where the
+        infinite-column limit diverges; pass a finite ``column_depth_km`` instead.
+    """
+    a = spectral_index(gamma, lam)
+    b_mu = drift_coefficient(energy_gev, density_g_cm3)
+    d_mu = diffusion_coefficient(energy_gev, density_g_cm3)
+    phi = phi_eigenvalue(a, b_mu, d_mu)
+    proj_area = np.pi * radius_km**2
+
+    if column_depth_km is None:
+        if np.any(phi <= 0.0):
+            raise ValueError(
+                f"Phi(A) <= 0 for A = {a:.3f}: the infinite-column soft volume "
+                "diverges. Pass a finite column_depth_km to use the saturation factor."
+            )
+        eff_range = 1.0 / phi
+    else:
+        eff_range = saturation_factor(phi, column_depth_km)
+
+    factor = inelasticity_factor(a) if include_inelasticity else 1.0
+    return proj_area * factor * eff_range

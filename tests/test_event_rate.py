@@ -130,3 +130,48 @@ def test_expected_counts_scale_linearly_with_normalization(response):
     base = response.expected_counts(edges, 1.0, GAMMA_IC, 1.0, 1.0)
     scaled = response.expected_counts(edges, 3.0, GAMMA_IC, 1.0, 1.0)
     np.testing.assert_allclose(scaled, 3.0 * base, rtol=1e-12)
+
+
+# ---------------------------------------------------------------------------
+# Exact-method SoftVolumeResponse
+# ---------------------------------------------------------------------------
+
+
+def test_invalid_method_raises():
+    with pytest.raises(ValueError):
+        SoftVolumeResponse(radius_km=0.62, method="bogus")
+
+
+def test_exact_response_still_factorizes():
+    resp = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    e = E_1PEV
+    rate = resp.differential_rate(e, PHI0_IC, GAMMA_IC, part="total")
+    vol = resp.target_volume_cm3(e, GAMMA_IC, part="total")
+    weak = resp.weak_rate_density(e, PHI0_IC, GAMMA_IC)
+    np.testing.assert_allclose(rate, vol * weak, rtol=1e-12)
+
+
+def test_exact_total_is_inside_plus_soft():
+    resp = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    e = np.array([E_1PEV, E_100PEV])
+    total = resp.differential_rate(e, PHI0_IC, GAMMA_IC, part="total")
+    inside = resp.differential_rate(e, PHI0_IC, GAMMA_IC, part="inside")
+    soft = resp.differential_rate(e, PHI0_IC, GAMMA_IC, part="soft")
+    np.testing.assert_allclose(total, inside + soft, rtol=1e-12)
+
+
+def test_exact_inside_carries_inelasticity():
+    # In the exact master formula I(A) multiplies both populations, so the
+    # effective inside volume is I(A) V_det < V_det.
+    resp = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    v_inside = resp.target_volume_cm3(E_1PEV, GAMMA_IC, part="inside")[0]
+    assert v_inside < resp.v_det_cm3
+
+
+def test_finite_column_gives_fewer_counts_than_infinite():
+    edges = np.array([5.0, 6.0])
+    finite = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    infinite = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=None)
+    c_finite = finite.expected_counts(edges, PHI0_IC, GAMMA_IC, 1.0, 1.0, part="soft")
+    c_infinite = infinite.expected_counts(edges, PHI0_IC, GAMMA_IC, 1.0, 1.0, part="soft")
+    assert c_finite[0] < c_infinite[0]
