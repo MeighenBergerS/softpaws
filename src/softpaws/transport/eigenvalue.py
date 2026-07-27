@@ -98,6 +98,45 @@ def two_moment_loss_spectrum(
     return kappa, p
 
 
+def phi_symbol(
+    s: complex | np.ndarray,
+    kappa: float | np.ndarray,
+    p: float | np.ndarray,
+) -> np.ndarray:
+    """Mellin symbol ``Phi(s)`` of the two-moment loss family, for any ``s``.
+
+    Closed form of the family ``dGamma/dy = kappa (1-y)^p / y`` (Part 10.4),
+
+    .. math:: \\Phi(s) = \\kappa\\,\\bigl[\\psi(s + p + 1) - \\psi(p + 1)\\bigr],
+
+    with ``psi`` the digamma function. Unlike :func:`phi_eigenvalue`, this keeps
+    the argument's dtype, so it accepts **complex** ``s``. That is what the
+    characteristic function of the log-loss subordinator needs
+    (:func:`softpaws.transport.loss_distribution.loss_density`, evaluated at
+    ``s = -i k``); for the real spectral index ``A`` use :func:`phi_eigenvalue`.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable. Real or complex; the dtype is preserved.
+    kappa : float or np.ndarray
+        Loss-spectrum normalization ``kappa`` [km^-1] (see
+        :func:`two_moment_loss_spectrum`).
+    p : float or np.ndarray
+        Shape exponent ``p`` of the ``(1 - y)^p`` softening.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Symbol ``Phi(s)`` [km^-1], matching the (broadcast) shape and dtype of
+        ``s``.
+    """
+    s = np.asarray(s)
+    kappa = np.asarray(kappa, dtype=float)
+    p = np.asarray(p, dtype=float)
+    return kappa * (digamma(s + p + 1.0) - digamma(p + 1.0))
+
+
 def phi_eigenvalue(
     spectral_index_value: float | np.ndarray,
     b_mu: float | np.ndarray,
@@ -139,7 +178,7 @@ def phi_eigenvalue(
     d = np.asarray(d_mu, dtype=float)
     with np.errstate(divide="ignore", invalid="ignore"):
         kappa, p = two_moment_loss_spectrum(b, d)
-        phi = kappa * (digamma(p + a + 1.0) - digamma(p + 1.0))
+        phi = phi_symbol(a, kappa, p)
     return np.where(d > 0.0, phi, a * b)
 
 

@@ -10,6 +10,7 @@ import pytest
 
 from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.soft_volume import (
+    soft_volume_diffusion,
     soft_volume_drift,
     spectral_penalty,
     sphere_radius_from_volume,
@@ -117,3 +118,27 @@ def test_soft_volume_grows_with_shallower_spectrum():
     steep = soft_volume_drift(r, E_1PEV, 2.6)[0]
     shallow = soft_volume_drift(r, E_1PEV, 2.2)[0]
     assert shallow > steep
+
+
+# ---------------------------------------------------------------------------
+# Diffusion correction (Eq. 2.25) and coefficient nuisance scales
+# ---------------------------------------------------------------------------
+
+
+def test_diffusion_is_drift_times_correction():
+    # V_soft|diff = V_soft|drift (1 - d_mu / 2 b_mu).
+    r = sphere_radius_from_volume(1.0)
+    b = drift_coefficient(E_1PEV)[0]
+    d = diffusion_coefficient(E_1PEV)[0]
+    v_drift = soft_volume_drift(r, E_1PEV, GAMMA_IC)[0]
+    v_diff = soft_volume_diffusion(r, E_1PEV, GAMMA_IC)[0]
+    assert v_diff == pytest.approx(v_drift * (1.0 - d / (2.0 * b)), rel=1e-12)
+    assert v_diff < v_drift  # the diffusion correction is a reduction
+
+
+def test_b_scale_rescales_drift_volume():
+    # V_soft|drift ~ 1 / b_mu, so doubling b_scale halves the volume.
+    r = sphere_radius_from_volume(1.0)
+    base = soft_volume_drift(r, E_1PEV, GAMMA_IC)[0]
+    scaled = soft_volume_drift(r, E_1PEV, GAMMA_IC, b_scale=2.0)[0]
+    assert scaled == pytest.approx(base / 2.0, rel=1e-12)

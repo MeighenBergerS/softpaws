@@ -18,6 +18,8 @@ dependencies = [
     "matplotlib>=3.8",
     "astropy>=6.0",
     "requests>=2.31",
+    "emcee>=3.1",
+    "corner>=2.2",
 ]
 
 [project.optional-dependencies]
@@ -45,4 +47,5 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 markers = [
     "network: tests that require network access (deselect with '-m not network')",
+    "slow: slow tests, e.g. Monte-Carlo cross-checks (deselect with '-m not slow')",
 ]

@@ -133,6 +133,73 @@ def irf_expected_counts(
     return counts
 
 
+def soft_volume_smeared_counts(
+    true_counts_fn: Callable[[np.ndarray], np.ndarray],
+    smearing: SmearingMatrix,
+    log10_e_reco_edges: np.ndarray,
+    dec_min: float,
+    dec_max: float,
+) -> np.ndarray:
+    """Migrate a soft-volume true-count spectrum through the IceCube smearing table.
+
+    The soft-volume path predicts *muon energy at the detector* directly and, by
+    default, is compared to data by using that energy as the reconstructed-energy
+    proxy (see the module docstring) -- unlike the IRF path, it is never actually
+    smeared. This applies the published :meth:`~softpaws.response.irfs.
+    SmearingMatrix.energy_response_matrix` to the soft-volume prediction too, so
+    the two paths are compared on the same reconstructed-energy footing.
+
+    ``smearing``'s response matrix is defined on injected *neutrino* energy;
+    treating the soft-volume model's muon-energy bins as if they were neutrino-
+    energy bins is an approximation (E_mu ~ E_nu for a through-going track, but
+    not exact), not a re-derivation of the smearing table for muon energy.
+
+    Parameters
+    ----------
+    true_counts_fn : callable
+        Given the smearing table's own true-energy bin edges
+        (``smearing.log10_enu_edges``), returns the soft-volume expected counts
+        in each of those bins over the declination band ``[dec_min, dec_max]``.
+        Build this from :meth:`~softpaws.response.soft_volume.SoftVolumeResponse.
+        expected_counts` (or ``expected_counts_attenuated``), optionally adding
+        :func:`~softpaws.response.soft_volume.tau_induced_expected_counts`.
+    smearing : softpaws.response.irfs.SmearingMatrix
+        Smearing matrix for one season; its true-energy/declination bin grid
+        sets the migration.
+    log10_e_reco_edges : np.ndarray, shape (n_reco + 1,)
+        Reconstructed-energy bin edges in ``log10(E/GeV)``, matching the
+        binning used for :func:`observed_counts`.
+    dec_min : float
+        Minimum declination [deg].
+    dec_max : float
+        Maximum declination [deg].
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_reco,)
+        Smeared reconstructed-energy track counts per bin.
+    """
+    response = smearing.energy_response_matrix(log10_e_reco_edges)  # (n_enu, n_dec, n_reco)
+
+    dec_centers = smearing.dec_centers
+    dec_mask = (dec_centers >= dec_min) & (dec_centers <= dec_max)
+    if not np.any(dec_mask):
+        return np.zeros(response.shape[2])
+
+    sin_dec_edges = np.sin(np.deg2rad(smearing.dec_edges))
+    solid_angle_per_dec = 2.0 * np.pi * np.diff(sin_dec_edges)
+
+    # The soft-volume rate does not depend on direction, so the band-averaged
+    # response is a plain solid-angle average over the declination bins in band
+    # (as in example 04's whole_sky_response), not an aeff-weighted one.
+    mean_response = np.average(
+        response[:, dec_mask, :], axis=1, weights=solid_angle_per_dec[dec_mask],
+    )  # (n_enu, n_reco)
+
+    true_counts = true_counts_fn(smearing.log10_enu_edges)  # (n_enu,)
+    return true_counts @ mean_response
+
+
 def fit_scale_factor(
     observed: np.ndarray,
     template: np.ndarray,

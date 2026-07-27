@@ -88,6 +88,7 @@ def soft_volume_drift(
     gamma: float,
     lam: float = DEFAULT_LAMBDA,
     density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
 ) -> np.ndarray:
     """Drift-limit soft volume as a function of muon energy (Eq. 2.23).
 
@@ -103,6 +104,10 @@ def soft_volume_drift(
         CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
     density_g_cm3 : float, optional
         Target-medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the Table 1 drift coefficient ``b_mu``, used
+        as a transport nuisance parameter in the data fits (Section 3). Defaults
+        to 1 (the theoretical value).
 
     Returns
     -------
@@ -110,9 +115,56 @@ def soft_volume_drift(
         Soft volume [km^3].
     """
     a = spectral_penalty(gamma, lam)
-    b_mu = drift_coefficient(energy_gev, density_g_cm3)
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3)
     proj_area = np.pi * radius_km**2
     return proj_area / (b_mu * a)
+
+
+def soft_volume_diffusion(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    d_scale: float = 1.0,
+) -> np.ndarray:
+    """Diffusion-corrected soft volume (Eq. 2.25).
+
+    The paper's drift-diffusion model multiplies the drift soft volume by the
+    leading diffusion correction ``1 - d_mu / (2 b_mu)``,
+
+    .. math:: V_\\mathrm{soft}^\\mathrm{diff}(E) = V_\\mathrm{soft}^\\mathrm{drift}(E)
+        \\left(1 - \\frac{d_\\mu}{2 b_\\mu}\\right),
+
+    an ``O(d_mu/2 b_mu) ~ 10%`` reduction. This is the ``method="diffusion"``
+    forward model used to reproduce the diffusion contours of the paper's Fig. 6.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale, d_scale : float, optional
+        Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+        used as transport nuisance parameters (Section 3). Default to 1.
+
+    Returns
+    -------
+    v_soft : np.ndarray
+        Soft volume [km^3].
+    """
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3)
+    d_mu = d_scale * diffusion_coefficient(energy_gev, density_g_cm3)
+    v_drift = soft_volume_drift(radius_km, energy_gev, gamma, lam, density_g_cm3, b_scale)
+    return v_drift * (1.0 - d_mu / (2.0 * b_mu))
 
 
 def volume_ratio_drift(
@@ -196,6 +248,8 @@ def soft_volume_exact(
     column_depth_km: float | None = None,
     density_g_cm3: float = RHO_WATER_G_CM3,
     include_inelasticity: bool = True,
+    b_scale: float = 1.0,
+    d_scale: float = 1.0,
 ) -> np.ndarray:
     """Exact soft volume with the eigenvalue ``Phi(A)`` and a finite column.
 
@@ -228,6 +282,9 @@ def soft_volume_exact(
     include_inelasticity : bool, optional
         Whether to fold in ``I(A)``. Set ``False`` for a geometry-only volume that
         is directly comparable with :func:`soft_volume_drift`.
+    b_scale, d_scale : float, optional
+        Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+        used as transport nuisance parameters (Section 3). Default to 1.
 
     Returns
     -------
@@ -241,8 +298,8 @@ def soft_volume_exact(
         infinite-column limit diverges; pass a finite ``column_depth_km`` instead.
     """
     a = spectral_index(gamma, lam)
-    b_mu = drift_coefficient(energy_gev, density_g_cm3)
-    d_mu = diffusion_coefficient(energy_gev, density_g_cm3)
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3)
+    d_mu = d_scale * diffusion_coefficient(energy_gev, density_g_cm3)
     phi = phi_eigenvalue(a, b_mu, d_mu)
     proj_area = np.pi * radius_km**2
 

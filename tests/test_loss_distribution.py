@@ -1,0 +1,139 @@
+"""Tests for the muon log-loss distribution.
+
+Lock in the exactness identities of the Mellin symbol (``Phi(1) = b_mu``,
+``Phi(2) = 2 b_mu - d_mu``), the normalization and heavy tail of the
+characteristic-function-inverted density, and -- as a slow Monte-Carlo
+cross-check -- that the inversion reproduces the physical jump process it stands
+in for.
+"""
+
+import numpy as np
+import pytest
+
+from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
+from softpaws.transport.eigenvalue import (
+    phi_eigenvalue,
+    phi_symbol,
+    two_moment_loss_spectrum,
+)
+from softpaws.transport.loss_distribution import (
+    gaussian_survival,
+    loss_density,
+    survival_from_density,
+)
+
+E_100PEV = 1.0e8  # GeV
+B_MU = float(drift_coefficient(E_100PEV)[0])
+D_MU = float(diffusion_coefficient(E_100PEV)[0])
+
+
+# ---------------------------------------------------------------------------
+# Mellin symbol Phi(s)
+# ---------------------------------------------------------------------------
+
+
+def test_phi_symbol_exactness_identities():
+    # Phi(1) = b_mu and Phi(2) = 2 b_mu - d_mu, exactly, for any (b, d).
+    kappa, p = two_moment_loss_spectrum(B_MU, D_MU)
+    assert phi_symbol(1.0, kappa, p) == pytest.approx(B_MU)
+    assert phi_symbol(2.0, kappa, p) == pytest.approx(2.0 * B_MU - D_MU)
+
+
+def test_phi_symbol_matches_real_eigenvalue():
+    kappa, p = two_moment_loss_spectrum(B_MU, D_MU)
+    a = np.array([0.5, 0.98, 1.5, 3.0])
+    np.testing.assert_allclose(
+        phi_symbol(a, kappa, p),
+        phi_eigenvalue(a, B_MU, D_MU),
+    )
+
+
+def test_phi_symbol_preserves_complex_dtype():
+    # The CF inversion needs Phi at s = -i k; the real eigenvalue would drop Im.
+    kappa, p = two_moment_loss_spectrum(B_MU, D_MU)
+    value = phi_symbol(-1j * np.array([0.0, 1.0, 2.0]), kappa, p)
+    assert np.iscomplexobj(value)
+    # At k = 0 the symbol is real and vanishes: Phi(0) = 0.
+    assert value[0] == pytest.approx(0.0)
+
+
+# ---------------------------------------------------------------------------
+# Exact density by CF inversion
+# ---------------------------------------------------------------------------
+
+
+def _w_grid(ell_km, n=4000):
+    mean = (B_MU + D_MU / 2.0) * ell_km
+    return np.linspace(1e-3, mean + 9.0 * np.sqrt(D_MU * ell_km), n)
+
+
+def test_loss_density_normalized():
+    ell = 3.0
+    w = _w_grid(ell)
+    density = loss_density(w, ell, B_MU, D_MU)
+    assert np.all(density >= 0.0)
+    assert np.trapezoid(density, w) == pytest.approx(1.0, rel=1e-6)
+
+
+def test_loss_density_tail_is_heavier_than_gaussian():
+    # The whole point: the exact tail dominates the Fokker-Planck Gaussian well
+    # beyond the peak, where a single event's parent energy is inferred.
+    ell = 3.0
+    w = _w_grid(ell)
+    density = loss_density(w, ell, B_MU, D_MU)
+    threshold = (B_MU + D_MU / 2.0) * ell + 4.0 * np.sqrt(D_MU * ell)
+    exact = survival_from_density(threshold, w, density)
+    gauss = gaussian_survival(threshold, ell, B_MU, D_MU)
+    assert exact > 10.0 * gauss
+
+
+def test_gaussian_survival_half_at_mean():
+    ell = 3.0
+    mean = (B_MU + D_MU / 2.0) * ell
+    assert gaussian_survival(mean, ell, B_MU, D_MU) == pytest.approx(0.5)
+
+
+# ---------------------------------------------------------------------------
+# Slow Monte-Carlo cross-check of the physical jump process
+# ---------------------------------------------------------------------------
+
+
+def _sample_loss_mc(ell_km, b_mu, d_mu, n_samples, ymin=1e-7, seed=0):
+    """Draw ``w`` from the compound-Poisson jump process (no expansion).
+
+    Same two-moment family as :func:`loss_density`, sampled directly: in a column
+    ``ell`` the process fires ``Poisson(Gamma ell)`` times, each drawing ``y`` from
+    the normalized loss spectrum and adding ``-ln(1 - y)`` to ``w``.
+    """
+    rng = np.random.default_rng(seed)
+    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
+    yy = np.logspace(np.log10(ymin), 0.0, 4000)
+    pdf = kappa * (1.0 - yy) ** p / yy
+    cdf = np.concatenate([[0.0], np.cumsum(0.5 * (pdf[1:] + pdf[:-1]) * np.diff(yy))])
+    total_rate = cdf[-1]  # per km, with the ymin cutoff
+    cdf_norm = cdf / total_rate
+
+    n_fire = rng.poisson(total_rate * ell_km, n_samples)
+    total = int(n_fire.sum())
+    w = np.zeros(n_samples)
+    if total:
+        ys = np.interp(rng.random(total), cdf_norm, yy)
+        np.add.at(w, np.repeat(np.arange(n_samples), n_fire), -np.log1p(-ys))
+    return w
+
+
+@pytest.mark.slow
+def test_cf_inversion_matches_monte_carlo_tail():
+    ell = 5.0
+    samples = _sample_loss_mc(ell, B_MU, D_MU, n_samples=400_000, seed=1)
+    w = _w_grid(ell)
+    density = loss_density(w, ell, B_MU, D_MU)
+    mean = (B_MU + D_MU / 2.0) * ell
+    for z in (1.0, 2.0, 3.0):
+        threshold = mean + z * np.sqrt(D_MU * ell)
+        mc = np.mean(samples > threshold)
+        cf = survival_from_density(threshold, w, density)
+        # Statistical tolerance loosens as the tail thins; require agreement to
+        # 20% (relative) or 3 sigma of the MC estimate, whichever is looser.
+        mc_sigma = np.sqrt(max(mc, 1.0 / samples.size) / samples.size)
+        assert cf == pytest.approx(mc, rel=0.2, abs=3.0 * mc_sigma)

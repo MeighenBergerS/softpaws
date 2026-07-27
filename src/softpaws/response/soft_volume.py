@@ -22,20 +22,32 @@ Two transport methods are available (``method`` argument of
 a finite upstream column depth (``docs/exact_soft_volume_notes.md``). In the exact
 master formula ``I(A)`` multiplies both populations, so both the inside and soft
 target volumes carry it.
+
+Earth attenuation of the parent neutrino (``D_nu``, Eq. 2.4;
+:mod:`softpaws.transport.attenuation`) is off by default (``D_nu = 1``, valid
+downgoing). It can be applied in two ways: a closed-form representative column
+via ``attenuation_column_g_cm2`` (Form A), or the per-event PREM treatment of
+:meth:`SoftVolumeResponse.expected_counts_attenuated` (Form B).
 """
 
 from __future__ import annotations
 
 import numpy as np
 
+from ..transport.attenuation import effective_solid_angle, survival_probability
 from ..transport.eigenvalue import spectral_index
-from ..transport.soft_volume import soft_volume_drift, soft_volume_exact
+from ..transport.soft_volume import (
+    soft_volume_diffusion,
+    soft_volume_drift,
+    soft_volume_exact,
+)
 from ..transport.source import (
     DEFAULT_LAMBDA,
     cc_cross_section,
     inelasticity_factor,
     nucleon_number_density,
 )
+from ..transport.tau import tau_to_muon_ratio
 from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 # Flux pivot energy for the power-law parametrization (Eq. 4.1): 100 TeV.
@@ -77,16 +89,29 @@ class SoftVolumeResponse:
         Radius of the spherical instrumented volume [km].
     density_g_cm3 : float, optional
         Target-medium density [g cm^-3]. Defaults to water.
-    method : {"drift", "exact"}, optional
+    method : {"drift", "diffusion", "exact"}, optional
         Transport treatment for the soft volume. ``"drift"`` (default) uses the
         paper's leading form ``V_soft = A_proj / (b_mu A)`` (Eq. 2.23).
-        ``"exact"`` uses the exact eigenvalue ``Phi(A)`` with the ``I(A)``
-        normalization and the finite-column saturation factor
-        (``docs/exact_soft_volume_notes.md``).
+        ``"diffusion"`` applies the paper's diffusion correction
+        ``1 - d_mu/(2 b_mu)`` (Eq. 2.25). ``"exact"`` uses the exact eigenvalue
+        ``Phi(A)`` with the ``I(A)`` normalization and the finite-column
+        saturation factor (``docs/exact_soft_volume_notes.md``).
     column_depth_km : float or None, optional
         Available upstream column depth ``x`` [km] for the exact method. ``None``
         (the default) uses the infinite-column limit, which requires
-        ``Phi(A) > 0``. Ignored by the drift method.
+        ``Phi(A) > 0``. Ignored by the drift and diffusion methods.
+    attenuation_column_g_cm2 : float or None, optional
+        Representative Earth column depth [g cm^-2] for the closed-form neutrino
+        attenuation (Form A). When set, the flux is multiplied by the survival
+        probability ``D_nu(E) = exp(-N_A sigma_tot(E) X)`` at every energy (see
+        :func:`softpaws.transport.attenuation.representative_column`). ``None``
+        (the default) leaves the flux unattenuated (``D_nu = 1``). For the
+        per-event PREM attenuation (Form B) leave this ``None`` and use
+        :meth:`expected_counts_attenuated` instead.
+    b_scale, d_scale : float, optional
+        Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+        used as transport nuisance parameters in the data fits (Section 3).
+        Default to 1 (the theoretical values).
 
     Attributes
     ----------
@@ -98,6 +123,8 @@ class SoftVolumeResponse:
         Selected transport method.
     column_depth_km : float or None
         Upstream column depth for the exact method.
+    b_scale, d_scale : float
+        Transport-coefficient nuisance rescalings.
     n_nucleon_cm3 : float
         Target nucleon number density [cm^-3].
     v_det_cm3 : float
@@ -120,13 +147,21 @@ class SoftVolumeResponse:
         density_g_cm3: float = RHO_WATER_G_CM3,
         method: str = "drift",
         column_depth_km: float | None = None,
+        attenuation_column_g_cm2: float | None = None,
+        b_scale: float = 1.0,
+        d_scale: float = 1.0,
     ) -> None:
-        if method not in ("drift", "exact"):
-            raise ValueError(f"method must be 'drift' or 'exact', got {method!r}.")
+        if method not in ("drift", "diffusion", "exact"):
+            raise ValueError(
+                f"method must be 'drift', 'diffusion', or 'exact', got {method!r}."
+            )
         self.radius_km = radius_km
         self.density_g_cm3 = density_g_cm3
         self.method = method
         self.column_depth_km = column_depth_km
+        self.attenuation_column_g_cm2 = attenuation_column_g_cm2
+        self.b_scale = b_scale
+        self.d_scale = d_scale
         self.n_nucleon_cm3 = nucleon_number_density(density_g_cm3)
         radius_cm = radius_km * CM_PER_KM
         self.v_det_cm3 = 4.0 / 3.0 * np.pi * radius_cm**3
@@ -172,12 +207,21 @@ class SoftVolumeResponse:
                 lam,
                 self.column_depth_km,
                 self.density_g_cm3,
+                b_scale=self.b_scale,
+                d_scale=self.d_scale,
             )
             a = spectral_index(gamma, lam)
             v_det_cm3 = inelasticity_factor(a) * self.v_det_cm3
+        elif self.method == "diffusion":
+            v_soft = soft_volume_diffusion(
+                self.radius_km, energy_gev, gamma, lam, self.density_g_cm3,
+                b_scale=self.b_scale, d_scale=self.d_scale,
+            )
+            v_det_cm3 = self.v_det_cm3
         else:
             v_soft = soft_volume_drift(
-                self.radius_km, energy_gev, gamma, lam, self.density_g_cm3
+                self.radius_km, energy_gev, gamma, lam, self.density_g_cm3,
+                b_scale=self.b_scale,
             )
             v_det_cm3 = self.v_det_cm3
 
@@ -190,6 +234,44 @@ class SoftVolumeResponse:
         if part == "total":
             return v_det_cm3 + v_soft_cm3
         raise ValueError(f"part must be 'total', 'soft', or 'inside', got {part!r}.")
+
+    def effective_area_cm2(
+        self,
+        energy_gev: float | np.ndarray,
+        gamma: float,
+        lam: float = DEFAULT_LAMBDA,
+        part: str = "total",
+    ) -> np.ndarray:
+        """Implied effective area ``A_eff(E) = V_target(E) n_N sigma_CC(E)``.
+
+        Recasts the target-volume factorization (Eq. 2.20) in the same units and
+        convention as the published :class:`~softpaws.response.irfs.EffectiveArea`
+        (``dN/dE = A_eff(E) dphi/dE``), so the two can be overlaid directly. Unlike
+        the published table, this is fit-free but not flux-independent: the soft
+        volume itself depends on the assumed spectral index ``gamma`` (Eq. 2.23),
+        so ``A_eff`` here is only exact at the ``gamma`` it is evaluated with.
+
+        Parameters
+        ----------
+        energy_gev : float or np.ndarray
+            Observed muon energy [GeV].
+        gamma : float
+            Neutrino flux spectral index, entering only through the soft
+            volume's spectral dependence.
+        lam : float, optional
+            CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+        part : {"total", "soft", "inside"}, optional
+            Which target-volume contribution to use.
+
+        Returns
+        -------
+        aeff : np.ndarray
+            Implied effective area [cm^2], broadcast to the shape of
+            ``energy_gev``.
+        """
+        volume_cm3 = self.target_volume_cm3(energy_gev, gamma, lam, part)
+        sigma = cc_cross_section(energy_gev, lam)
+        return volume_cm3 * self.n_nucleon_cm3 * sigma
 
     def weak_rate_density(
         self,
@@ -213,9 +295,20 @@ class SoftVolumeResponse:
         -------
         rate_density : np.ndarray
             Weak-rate density [cm^-3 GeV^-1 s^-1 sr^-1].
+
+        Notes
+        -----
+        If the response was built with ``attenuation_column_g_cm2``, the flux is
+        multiplied by the closed-form Earth survival probability ``D_nu(E)``
+        (Form A). This is a single representative column for the band; the
+        per-event treatment is :meth:`expected_counts_attenuated`.
         """
         sigma = cc_cross_section(energy_gev, lam)
         flux = power_law_flux(energy_gev, phi0, gamma)
+        if self.attenuation_column_g_cm2 is not None:
+            flux = flux * survival_probability(
+                energy_gev, self.attenuation_column_g_cm2, lam
+            )
         return self.n_nucleon_cm3 * sigma * flux
 
     def differential_rate(
@@ -294,3 +387,242 @@ class SoftVolumeResponse:
             rate = self.differential_rate(energy, phi0, gamma, lam, part)
             counts[i] = np.trapezoid(rate, energy)
         return counts * livetime_s * solid_angle_sr
+
+    def expected_counts_attenuated(
+        self,
+        log10_energy_edges: np.ndarray,
+        phi0: float,
+        gamma: float,
+        livetime_s: float,
+        dec_min_deg: float,
+        dec_max_deg: float,
+        lam: float = DEFAULT_LAMBDA,
+        part: str = "total",
+        n_subdivisions: int = 64,
+        n_dec: int = 64,
+    ) -> np.ndarray:
+        """Expected track counts with per-event PREM Earth attenuation (Form B).
+
+        Folds the neutrino survival probability into the solid-angle integral
+        rather than applying a single representative column. Because the target
+        volume, cross section, and (isotropic) flux do not depend on direction,
+        the band integral collapses to an energy-dependent effective solid angle
+        :func:`softpaws.transport.attenuation.effective_solid_angle`, evaluated
+        with the layered PREM column along each declination's Earth chord.
+
+        Unlike :meth:`expected_counts`, the geometric ``solid_angle_sr`` is
+        supplied implicitly by the declination band. This method must be called
+        on a response *without* the closed-form column
+        (``attenuation_column_g_cm2 is None``) so attenuation is not applied
+        twice.
+
+        Parameters
+        ----------
+        log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+            Muon-energy bin edges in ``log10(E / GeV)``.
+        phi0, gamma : float
+            Power-law flux parameters (see :func:`power_law_flux`).
+        livetime_s : float
+            Exposure time [s].
+        dec_min_deg, dec_max_deg : float
+            Declination band edges [deg] defining the integrated solid angle.
+        lam : float, optional
+            CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+        part : {"total", "soft", "inside"}, optional
+            Which target-volume contribution to use.
+        n_subdivisions : int, optional
+            Number of log-spaced sample points per bin for the energy integral.
+        n_dec : int, optional
+            Number of declination samples for the effective-solid-angle integral.
+
+        Returns
+        -------
+        counts : np.ndarray, shape (n_bins,)
+            Expected number of tracks in each energy bin.
+
+        Raises
+        ------
+        ValueError
+            Raised if the response also carries a closed-form attenuation column,
+            which would double-count the Earth absorption.
+        """
+        if self.attenuation_column_g_cm2 is not None:
+            raise ValueError(
+                "expected_counts_attenuated applies per-event attenuation; build the "
+                "response with attenuation_column_g_cm2=None to avoid double-counting."
+            )
+        edges = np.asarray(log10_energy_edges, dtype=float)
+        counts = np.empty(len(edges) - 1)
+        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+            energy = np.logspace(lo, hi, n_subdivisions)
+            # Differential rate is per steradian; weight by the attenuation-folded
+            # effective solid angle at each energy before integrating over energy.
+            rate = self.differential_rate(energy, phi0, gamma, lam, part)
+            omega_eff = effective_solid_angle(energy, dec_min_deg, dec_max_deg, lam, n_dec)
+            counts[i] = np.trapezoid(rate * omega_eff, energy)
+        return counts * livetime_s
+
+
+def tau_induced_differential_rate(
+    response: SoftVolumeResponse,
+    energy_gev: float | np.ndarray,
+    phi0: float,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+) -> np.ndarray:
+    """Muon-track rate from a same-normalization ``nu_tau`` flux.
+
+    Scales the direct ``nu_mu`` differential rate (``response.differential_rate``,
+    ``part="total"``) by :func:`softpaws.transport.tau.tau_to_muon_ratio`, giving
+    the additional muon-track rate a ``nu_tau`` flux with the *same* ``(phi0,
+    gamma)`` would produce via CC tau production and leptonic decay
+    (:mod:`softpaws.transport.tau`). This is additive to, not a replacement for,
+    the ``nu_mu`` prediction.
+
+    Parameters
+    ----------
+    response : SoftVolumeResponse
+        A response built with ``method="exact"``; the tau ratio needs the exact
+        eigenvalue ``Phi(A)``.
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`), shared by the
+        ``nu_tau`` flux.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+
+    Returns
+    -------
+    rate : np.ndarray
+        Tau-induced differential track rate [GeV^-1 s^-1 sr^-1].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``response.method != "exact"``.
+    """
+    if response.method != "exact":
+        raise ValueError(
+            f"tau_induced_differential_rate requires method='exact', got "
+            f"{response.method!r}."
+        )
+    numu_rate = response.differential_rate(energy_gev, phi0, gamma, lam, part="total")
+    a = spectral_index(gamma, lam)
+    ratio = tau_to_muon_ratio(a, energy_gev, response.density_g_cm3)
+    return ratio * numu_rate
+
+
+def tau_induced_expected_counts(
+    response: SoftVolumeResponse,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    livetime_s: float,
+    solid_angle_sr: float,
+    lam: float = DEFAULT_LAMBDA,
+    n_subdivisions: int = 64,
+) -> np.ndarray:
+    """Expected tau-induced track counts per muon-energy bin.
+
+    Bin-integrated counterpart of :func:`tau_induced_differential_rate`, matching
+    the bin-integration convention of :meth:`SoftVolumeResponse.expected_counts`.
+
+    Parameters
+    ----------
+    response : SoftVolumeResponse
+        A response built with ``method="exact"``.
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters shared by the ``nu_tau`` flux.
+    livetime_s : float
+        Exposure time [s].
+    solid_angle_sr : float
+        Solid angle over which the (isotropic) flux is integrated [sr].
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tau-induced tracks in each energy bin.
+    """
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        rate = tau_induced_differential_rate(response, energy, phi0, gamma, lam)
+        counts[i] = np.trapezoid(rate, energy)
+    return counts * livetime_s * solid_angle_sr
+
+
+def tau_induced_expected_counts_attenuated(
+    response: SoftVolumeResponse,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    livetime_s: float,
+    dec_min_deg: float,
+    dec_max_deg: float,
+    lam: float = DEFAULT_LAMBDA,
+    n_subdivisions: int = 64,
+    n_dec: int = 64,
+) -> np.ndarray:
+    """Expected tau-induced track counts with per-event PREM attenuation (Form B).
+
+    Tau counterpart of :meth:`SoftVolumeResponse.expected_counts_attenuated`,
+    reusing the same effective-solid-angle weighting
+    (:func:`softpaws.transport.attenuation.effective_solid_angle`). The tau
+    module neglects regeneration and uses the plain ``nu_mu`` survival
+    probability (:mod:`softpaws.transport.attenuation`), so the same ``D_nu(E)``
+    is applied to the ``nu_tau`` flux here.
+
+    Parameters
+    ----------
+    response : SoftVolumeResponse
+        A response built with ``method="exact"`` and
+        ``attenuation_column_g_cm2=None`` (per-event attenuation is applied
+        here, not via the closed-form column).
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters shared by the ``nu_tau`` flux.
+    livetime_s : float
+        Exposure time [s].
+    dec_min_deg, dec_max_deg : float
+        Declination band edges [deg] defining the integrated solid angle.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+    n_dec : int, optional
+        Number of declination samples for the effective-solid-angle integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tau-induced tracks in each energy bin.
+
+    Raises
+    ------
+    ValueError
+        Raised if the response also carries a closed-form attenuation column,
+        which would double-count the Earth absorption.
+    """
+    if response.attenuation_column_g_cm2 is not None:
+        raise ValueError(
+            "tau_induced_expected_counts_attenuated applies per-event attenuation; "
+            "build the response with attenuation_column_g_cm2=None to avoid "
+            "double-counting."
+        )
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        rate = tau_induced_differential_rate(response, energy, phi0, gamma, lam)
+        omega_eff = effective_solid_angle(energy, dec_min_deg, dec_max_deg, lam, n_dec)
+        counts[i] = np.trapezoid(rate * omega_eff, energy)
+    return counts * livetime_s

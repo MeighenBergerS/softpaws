@@ -13,6 +13,7 @@ from softpaws.comparison.rates import (
     implied_efficiency,
     irf_expected_counts,
     observed_counts,
+    soft_volume_smeared_counts,
 )
 from softpaws.data.container import EventSet
 from softpaws.data.schema import EVENTS_DTYPE
@@ -87,6 +88,50 @@ def test_irf_expected_counts_scales_linearly_with_livetime(synthetic_aeff, synth
     scaled = irf_expected_counts(
         synthetic_aeff, synthetic_smearing, log10_e_reco_edges,
         dec_min=-90.0, dec_max=0.0, flux_fn=flat_flux, livetime_s=5.0,
+    )
+    np.testing.assert_allclose(scaled, 5.0 * base, rtol=1e-12)
+
+
+# ---------------------------------------------------------------------------
+# soft_volume_smeared_counts
+# ---------------------------------------------------------------------------
+
+
+def test_soft_volume_smeared_counts_matches_hand_computed(synthetic_smearing):
+    log10_e_reco_edges = np.array([5.0, 6.0, 7.0])
+
+    def true_counts_fn(enu_edges: np.ndarray) -> np.ndarray:
+        np.testing.assert_allclose(enu_edges, [6.0, 7.0])
+        return np.array([123.0])
+
+    counts = soft_volume_smeared_counts(
+        true_counts_fn, synthetic_smearing, log10_e_reco_edges, dec_min=-90.0, dec_max=0.0,
+    )
+
+    # All Fractional_Counts (=1) migrate to the reco bin containing E=6.005,
+    # i.e. the second bin, [6, 7) -- same migration as the IRF-path test above.
+    assert counts[0] == pytest.approx(0.0)
+    assert counts[1] == pytest.approx(123.0, rel=1e-9)
+
+
+def test_soft_volume_smeared_counts_zero_outside_dec_band(synthetic_smearing):
+    log10_e_reco_edges = np.array([5.0, 6.0, 7.0])
+    counts = soft_volume_smeared_counts(
+        lambda edges: np.array([100.0]), synthetic_smearing, log10_e_reco_edges,
+        dec_min=0.0, dec_max=90.0,
+    )
+    np.testing.assert_array_equal(counts, 0.0)
+
+
+def test_soft_volume_smeared_counts_scales_linearly_with_true_counts(synthetic_smearing):
+    log10_e_reco_edges = np.array([5.0, 6.0, 7.0])
+    base = soft_volume_smeared_counts(
+        lambda edges: np.array([10.0]), synthetic_smearing, log10_e_reco_edges,
+        dec_min=-90.0, dec_max=0.0,
+    )
+    scaled = soft_volume_smeared_counts(
+        lambda edges: np.array([50.0]), synthetic_smearing, log10_e_reco_edges,
+        dec_min=-90.0, dec_max=0.0,
     )
     np.testing.assert_allclose(scaled, 5.0 * base, rtol=1e-12)
 

@@ -175,3 +175,29 @@ def test_finite_column_gives_fewer_counts_than_infinite():
     c_finite = finite.expected_counts(edges, PHI0_IC, GAMMA_IC, 1.0, 1.0, part="soft")
     c_infinite = infinite.expected_counts(edges, PHI0_IC, GAMMA_IC, 1.0, 1.0, part="soft")
     assert c_finite[0] < c_infinite[0]
+
+
+# ---------------------------------------------------------------------------
+# Implied effective area
+# ---------------------------------------------------------------------------
+
+
+def test_effective_area_matches_volume_times_cross_section(response):
+    e = np.array([E_1PEV, E_100PEV])
+    aeff = response.effective_area_cm2(e, GAMMA_IC)
+    vol = response.target_volume_cm3(e, GAMMA_IC)
+    sigma = cc_cross_section(e)
+    np.testing.assert_allclose(aeff, vol * response.n_nucleon_cm3 * sigma, rtol=1e-12)
+
+
+def test_effective_area_positive(response):
+    aeff = response.effective_area_cm2(np.array([E_1PEV, E_100PEV]), GAMMA_IC)
+    assert np.all(aeff > 0.0)
+
+
+def test_effective_area_part_matches_target_volume_part(response):
+    e = E_1PEV
+    aeff_soft = response.effective_area_cm2(e, GAMMA_IC, part="soft")
+    aeff_inside = response.effective_area_cm2(e, GAMMA_IC, part="inside")
+    aeff_total = response.effective_area_cm2(e, GAMMA_IC, part="total")
+    assert aeff_total[0] == pytest.approx(aeff_soft[0] + aeff_inside[0], rel=1e-12)

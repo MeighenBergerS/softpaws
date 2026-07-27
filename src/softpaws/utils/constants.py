@@ -14,6 +14,9 @@ from __future__ import annotations
 
 AVOGADRO_PER_MOL = 6.02214076e23
 
+# Speed of light, for lab-frame decay lengths (gamma * c * tau0).
+C_KM_PER_S = 2.99792458e5
+
 # ---------------------------------------------------------------------------
 # Particle masses [GeV]
 # ---------------------------------------------------------------------------
@@ -21,6 +24,13 @@ AVOGADRO_PER_MOL = 6.02214076e23
 M_ELECTRON_GEV = 0.51099895e-3
 M_MUON_GEV = 0.1056583755
 M_PION_GEV = 0.13957039
+M_TAU_GEV = 1.77686
+
+# ---------------------------------------------------------------------------
+# Particle lifetimes [s], rest frame
+# ---------------------------------------------------------------------------
+
+TAU_LIFETIME_S = 2.903e-13
 
 # ---------------------------------------------------------------------------
 # Medium densities [g cm^-3]
@@ -30,6 +40,16 @@ M_PION_GEV = 0.13957039
 
 RHO_WATER_G_CM3 = 1.02
 RHO_ICE_G_CM3 = 0.92
+
+# ---------------------------------------------------------------------------
+# Earth
+# ---------------------------------------------------------------------------
+# Used by the neutrino Earth-attenuation model (``softpaws.transport.attenuation``).
+# The mean density feeds the constant-density closed-form column; the layered
+# PREM profile (Dziewonski & Anderson 1981) feeds the per-event column.
+
+EARTH_RADIUS_KM = 6371.0
+RHO_EARTH_MEAN_G_CM3 = 5.513
 
 # ---------------------------------------------------------------------------
 # Length conversions
