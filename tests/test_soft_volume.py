@@ -8,15 +8,29 @@ for IceCube (~4x) and KM3NeT (~7.5x) from Section 2.3.
 import numpy as np
 import pytest
 
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
+from softpaws.response.soft_volume import SoftVolumeResponse
+from softpaws.transport.coefficients import (
+    critical_energy_gev,
+    diffusion_coefficient,
+    drift_coefficient,
+    ionization_coefficient,
+)
 from softpaws.transport.soft_volume import (
+    DEFAULT_MUON_THRESHOLD_GEV,
+    muon_range_km,
+    range_target_volume_km3,
     soft_volume_diffusion,
     soft_volume_drift,
     spectral_penalty,
     sphere_radius_from_volume,
     volume_ratio_drift,
 )
-from softpaws.utils.constants import RHO_ICE_G_CM3, RHO_WATER_G_CM3
+from softpaws.transport.source import (
+    MEAN_INELASTICITY,
+    cc_cross_section,
+    nucleon_number_density,
+)
+from softpaws.utils.constants import CM_PER_KM, RHO_ICE_G_CM3, RHO_WATER_G_CM3
 
 E_1PEV = 1.0e6  # GeV
 E_100PEV = 1.0e8  # GeV
@@ -142,3 +156,97 @@ def test_b_scale_rescales_drift_volume():
     base = soft_volume_drift(r, E_1PEV, GAMMA_IC)[0]
     scaled = soft_volume_drift(r, E_1PEV, GAMMA_IC, b_scale=2.0)[0]
     assert scaled == pytest.approx(base / 2.0, rel=1e-12)
+
+
+# ---------------------------------------------------------------------------
+# Muon range and the range target volume (the published-A_eff convention)
+# ---------------------------------------------------------------------------
+
+
+def test_critical_energy_in_water_is_a_few_hundred_gev():
+    # E_c = a_mu / b_mu with a_mu ~ 2 MeV cm^2/g and b_mu ~ 0.35 km^-1.
+    e_crit = critical_energy_gev(E_1PEV)[0]
+    assert 400.0 < e_crit < 700.0
+
+
+def test_critical_energy_is_density_independent():
+    # a_mu and b_mu both scale linearly with density, so the ratio does not.
+    water = critical_energy_gev(E_1PEV, RHO_WATER_G_CM3)[0]
+    ice = critical_energy_gev(E_1PEV, RHO_ICE_G_CM3)[0]
+    assert ice == pytest.approx(water, rel=1e-12)
+
+
+def test_ionization_coefficient_scales_with_density():
+    dense = ionization_coefficient(2.0 * RHO_WATER_G_CM3)
+    assert dense == pytest.approx(2.0 * ionization_coefficient(RHO_WATER_G_CM3), rel=1e-12)
+
+
+def test_muon_range_matches_closed_form():
+    # R = ln[(E + E_c) / (E_thr + E_c)] / b_mu.
+    b = drift_coefficient(E_1PEV)[0]
+    e_crit = critical_energy_gev(E_1PEV)[0]
+    expected = np.log((E_1PEV + e_crit) / (DEFAULT_MUON_THRESHOLD_GEV + e_crit)) / b
+    assert muon_range_km(E_1PEV)[0] == pytest.approx(expected, rel=1e-12)
+
+
+def test_muon_range_is_tens_of_km_at_uhe():
+    # A PeV muon travels ~20 km w.e. before dropping below a TeV.
+    assert 15.0 < muon_range_km(E_1PEV)[0] < 25.0
+    assert 20.0 < muon_range_km(E_100PEV)[0] < 35.0
+
+
+def test_muon_range_grows_logarithmically():
+    # Two decades in energy lengthen the range by well under a factor of two --
+    # the qualitative difference from a spectral length, which is flat.
+    ratio = muon_range_km(E_100PEV)[0] / muon_range_km(E_1PEV)[0]
+    assert 1.1 < ratio < 1.6
+
+
+def test_muon_range_vanishes_below_threshold():
+    assert muon_range_km(0.5 * DEFAULT_MUON_THRESHOLD_GEV)[0] == 0.0
+
+
+def test_range_volume_is_column_plus_detector():
+    # pi R^2 (4R/3) = V_det exactly, so the column and the sphere add cleanly.
+    r = sphere_radius_from_volume(1.0)
+    volume = range_target_volume_km3(r, E_1PEV)[0]
+    column = np.pi * r**2 * muon_range_km(E_1PEV)[0]
+    assert volume == pytest.approx(column + 1.0, rel=1e-12)
+
+
+def test_range_volume_vanishes_below_threshold():
+    # A muon born below threshold is never selected, so not even V_det counts.
+    r = sphere_radius_from_volume(1.0)
+    assert range_target_volume_km3(r, 0.5 * DEFAULT_MUON_THRESHOLD_GEV)[0] == 0.0
+
+
+def test_range_volume_exceeds_soft_volume_at_uhe():
+    # The two conventions diverge: the soft volume is a flat few km^3 while the
+    # range volume keeps growing, which is the whole point of example 20.
+    r = sphere_radius_from_volume(1.0)
+    soft = soft_volume_drift(r, E_100PEV, GAMMA_IC)[0] + 1.0
+    assert range_target_volume_km3(r, E_100PEV)[0] > 5.0 * soft
+
+
+def test_threshold_effective_area_matches_range_volume():
+    # SoftVolumeResponse.threshold_effective_area_cm2 = V_range n_N sigma_CC,
+    # with the muon born at (1 - <y_w>) E_nu.
+    r = sphere_radius_from_volume(1.0)
+    resp = SoftVolumeResponse(radius_km=r)
+    e_nu = E_1PEV
+    volume_cm3 = (
+        range_target_volume_km3(r, (1.0 - MEAN_INELASTICITY) * e_nu) * CM_PER_KM**3
+    )
+    expected = volume_cm3 * nucleon_number_density() * cc_cross_section(e_nu)
+    assert resp.threshold_effective_area_cm2(e_nu)[0] == pytest.approx(expected[0], rel=1e-12)
+
+
+def test_threshold_effective_area_is_flux_independent():
+    # Unlike effective_area_cm2, it takes no gamma at all -- a tabulated
+    # effective area should not depend on the flux used to derive it.
+    r = sphere_radius_from_volume(1.0)
+    resp = SoftVolumeResponse(radius_km=r)
+    energies = np.array([1.0e5, 1.0e6, 1.0e7])
+    area = resp.threshold_effective_area_cm2(energies)
+    assert np.all(np.diff(area) > 0.0)
+    assert area.shape == energies.shape

@@ -23,12 +23,16 @@ transport path grows an explicit attenuation model; see
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 
 import numpy as np
 
 from ..data.container import EventSet
 from ..response.irfs import EffectiveArea, SmearingMatrix
+
+# Bisection steps used by fit_scale_factor_with_background. Each step halves the
+# bracket, so this reaches the floating-point resolution of the upper bound.
+_BISECTION_STEPS = 80
 
 
 def observed_counts(
@@ -107,6 +111,68 @@ def irf_expected_counts(
     counts : np.ndarray, shape (n_reco,)
         Expected reconstructed-energy track counts per bin.
     """
+    return irf_expected_counts_directional(
+        aeff,
+        smearing,
+        log10_e_reco_edges,
+        dec_min,
+        dec_max,
+        lambda energy, _dec: flux_fn(energy),
+        livetime_s,
+        n_subdivisions,
+    )
+
+
+def irf_expected_counts_directional(
+    aeff: EffectiveArea,
+    smearing: SmearingMatrix,
+    log10_e_reco_edges: np.ndarray,
+    dec_min: float,
+    dec_max: float,
+    flux_fn: Callable[[np.ndarray, float], np.ndarray],
+    livetime_s: float,
+    n_subdivisions: int = 16,
+) -> np.ndarray:
+    """IRF-path counts for a flux that also depends on direction.
+
+    Same calculation as :func:`irf_expected_counts` -- which is a thin wrapper
+    around this one -- except that the flux is evaluated separately in every
+    declination bin of the smearing table. That matters for an atmospheric flux,
+    which is strongly zenith dependent (steeply falling overhead, harder near the
+    horizon where the parent mesons decay before interacting); an isotropic flux
+    such as the astrophysical power law does not need it.
+
+    No Earth attenuation is applied here: the published effective area already
+    includes it for every direction.
+
+    Parameters
+    ----------
+    aeff : softpaws.response.irfs.EffectiveArea
+        Effective area for the same season as ``smearing``.
+    smearing : softpaws.response.irfs.SmearingMatrix
+        Smearing matrix for one season; its own (true-energy, declination)
+        bin grid sets the integration grid.
+    log10_e_reco_edges : np.ndarray, shape (n_reco + 1,)
+        Reconstructed-energy bin edges in ``log10(E/GeV)``.
+    dec_min : float
+        Minimum declination [deg].
+    dec_max : float
+        Maximum declination [deg].
+    flux_fn : callable
+        Differential neutrino flux, ``flux_fn(E_nu_gev, dec_deg) -> dphi/dE`` in
+        ``GeV^-1 cm^-2 s^-1 sr^-1``, called with an array of energies and one
+        scalar declination at a time.
+    livetime_s : float
+        Exposure time [s].
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per true-energy bin for the flux
+        integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_reco,)
+        Expected reconstructed-energy track counts per bin.
+    """
     response = smearing.energy_response_matrix(log10_e_reco_edges)  # (n_enu, n_dec, n_reco)
 
     dec_centers = smearing.dec_centers
@@ -123,9 +189,9 @@ def irf_expected_counts(
 
     for i, (lo, hi) in enumerate(zip(enu_edges[:-1], enu_edges[1:])):
         energy = np.logspace(lo, hi, n_subdivisions)
-        flux_integral = np.trapezoid(flux_fn(energy), energy)
 
         for j in np.nonzero(dec_mask)[0]:
+            flux_integral = np.trapezoid(flux_fn(energy, float(dec_centers[j])), energy)
             aeff_val = float(aeff(enu_centers[i], dec_centers[j])[0])
             n_true = aeff_val * flux_integral * solid_angle_per_dec[j] * livetime_s
             counts += n_true * response[i, j, :]
@@ -244,6 +310,161 @@ def fit_scale_factor(
         raise ValueError("Template sums to zero or less in the fit range; cannot fit a scale.")
 
     return float(observed[mask].sum() / template_sum)
+
+
+def fit_scale_factor_with_background(
+    observed: np.ndarray,
+    template: np.ndarray,
+    background: np.ndarray,
+    log10_e_edges: np.ndarray,
+    log10_e_min_fit: float = 4.0,
+) -> float:
+    """Signal normalization on top of a fixed background prediction.
+
+    The background-free :func:`fit_scale_factor` has a closed-form solution; with
+    an additive background held at its predicted normalization the Poisson
+    maximum likelihood for the signal scale ``k`` is instead the root of
+
+    .. math:: \\sum_i s_i\\left(\\frac{o_i}{k\\,s_i + b_i} - 1\\right) = 0,
+
+    which is monotonically decreasing in ``k`` and is solved here by bisection.
+    Use this when the fit range reaches down into the background-dominated part
+    of the spectrum, where :func:`fit_scale_factor` would absorb the background
+    into the signal normalization.
+
+    Parameters
+    ----------
+    observed : np.ndarray, shape (n_bins,)
+        Observed counts per bin (see :func:`observed_counts`).
+    template : np.ndarray, shape (n_bins,)
+        Predicted signal counts per bin at some reference flux normalization.
+    background : np.ndarray, shape (n_bins,)
+        Predicted background counts per bin, held fixed.
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Bin edges in ``log10(E/GeV)``, used only to select the fit range.
+    log10_e_min_fit : float, optional
+        Lower edge of the fit range in ``log10(E/GeV)``.
+
+    Returns
+    -------
+    scale : float
+        Best-fit multiplicative scale factor on ``template``. Zero if the
+        background alone already over-predicts the data everywhere in the fit
+        range.
+
+    Raises
+    ------
+    ValueError
+        Raised if the template sums to zero or less in the fit range.
+    """
+    centers = 0.5 * (log10_e_edges[:-1] + log10_e_edges[1:])
+    mask = centers >= log10_e_min_fit
+
+    signal = np.asarray(template, dtype=float)[mask]
+    bkg = np.asarray(background, dtype=float)[mask]
+    data = np.asarray(observed, dtype=float)[mask]
+
+    if signal.sum() <= 0:
+        raise ValueError("Template sums to zero or less in the fit range; cannot fit a scale.")
+
+    def score(scale: float) -> float:
+        predicted = scale * signal + bkg
+        # A bin predicting nothing where something was seen pulls the scale up
+        # without bound; one predicting nothing where nothing was seen is inert.
+        if np.any((predicted <= 0.0) & (data > 0.0)):
+            return np.inf
+        safe = np.where(predicted > 0.0, predicted, 1.0)
+        return float(np.sum(signal * (np.where(predicted > 0.0, data / safe, 0.0) - 1.0)))
+
+    if score(0.0) <= 0.0:
+        return 0.0
+
+    # Dropping the background can only raise the fitted scale, so the
+    # background-free solution of fit_scale_factor brackets the root from above.
+    upper = float(data.sum() / signal.sum())
+    lower = 0.0
+    for _ in range(_BISECTION_STEPS):
+        middle = 0.5 * (lower + upper)
+        if score(middle) > 0.0:
+            lower = middle
+        else:
+            upper = middle
+    return 0.5 * (lower + upper)
+
+
+def fit_component_scales(
+    observed: np.ndarray,
+    templates: Sequence[np.ndarray],
+    log10_e_edges: np.ndarray,
+    log10_e_min_fit: float = 4.0,
+    n_iterations: int = 500,
+    tol: float = 1e-12,
+) -> np.ndarray:
+    """Joint Poisson maximum-likelihood normalizations of several templates.
+
+    Generalizes :func:`fit_scale_factor` to a prediction that is a sum of
+    independently normalized components, ``N_i = sum_c k_c t_{ci}`` -- an
+    astrophysical signal plus an atmospheric background whose normalization is
+    left free, say, as an analysis does when the background model carries its own
+    (large) flux uncertainty. Unlike :func:`fit_scale_factor_with_background`,
+    which holds the background at its predicted normalization, every component
+    here floats.
+
+    Solved by the expectation-maximization iteration for Poisson mixtures,
+
+    .. math:: k_c \\leftarrow k_c\\,\\frac{\\sum_i o_i t_{ci} / N_i}
+        {\\sum_i t_{ci}},
+
+    whose fixed point satisfies the likelihood equations for all components at
+    once and which never leaves the physical region ``k_c >= 0``.
+
+    Parameters
+    ----------
+    observed : np.ndarray, shape (n_bins,)
+        Observed counts per bin (see :func:`observed_counts`).
+    templates : sequence of np.ndarray
+        Predicted counts per bin for each component, at some reference
+        normalization. All of shape ``(n_bins,)``.
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Bin edges in ``log10(E/GeV)``, used only to select the fit range.
+    log10_e_min_fit : float, optional
+        Lower edge of the fit range in ``log10(E/GeV)``.
+    n_iterations : int, optional
+        Maximum number of iterations.
+    tol : float, optional
+        Relative change in every scale below which the iteration stops.
+
+    Returns
+    -------
+    scales : np.ndarray, shape (n_components,)
+        Best-fit multiplicative scale factor for each template.
+
+    Raises
+    ------
+    ValueError
+        Raised if any template sums to zero or less in the fit range.
+    """
+    centers = 0.5 * (log10_e_edges[:-1] + log10_e_edges[1:])
+    mask = centers >= log10_e_min_fit
+
+    stack = np.array([np.asarray(t, dtype=float)[mask] for t in templates])  # (n_comp, n_fit)
+    data = np.asarray(observed, dtype=float)[mask]
+
+    totals = stack.sum(axis=1)
+    if np.any(totals <= 0.0):
+        raise ValueError("Every template must sum to more than zero in the fit range.")
+
+    scales = np.full(stack.shape[0], data.sum() / (stack.shape[0] * totals))
+    for _ in range(n_iterations):
+        predicted = scales @ stack
+        safe = np.where(predicted > 0.0, predicted, 1.0)
+        weights = np.where(predicted > 0.0, data / safe, 0.0)
+        updated = scales * (stack @ weights) / totals
+        if np.all(np.abs(updated - scales) <= tol * np.maximum(scales, 1.0)):
+            scales = updated
+            break
+        scales = updated
+    return scales
 
 
 def implied_efficiency(

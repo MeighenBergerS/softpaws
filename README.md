@@ -52,6 +52,13 @@ python3 -m venv .venv
 
 Requires Python ≥ 3.11.
 
+The atmospheric-neutrino background of `examples/22_atmospheric_background_mceq.py`
+is computed with [MCEq](https://github.com/mceq-project/MCEq), an optional extra:
+
+```sh
+.venv/bin/pip install -e ".[atm]"
+```
+
 ## Project layout
 
 ```

@@ -28,6 +28,11 @@ dev = [
     "pytest>=8",
     "pre-commit>=3",
 ]
+# Atmospheric-neutrino background, used by examples/22 to tabulate the flux.
+atm = [
+    "MCEq>=1.4",
+    "crflux>=2.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

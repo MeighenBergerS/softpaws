@@ -23,6 +23,17 @@ by ``I(A) (1 - e^{-Phi(A) x}) / Phi(A)`` with the exact eigenvalue ``Phi(A)`` an
 finite upstream column depth ``x``. The saturation factor keeps the result finite
 where the drift form diverges (``A -> 0``) or goes negative (``A < 0``, the
 cross-section pole).
+
+Finally it provides the *range* target volume (:func:`range_target_volume_km3`),
+which is a different quantity from all of the above and exists to match the
+convention of the published IceCube effective area. The soft volume is
+differential in the observed muon energy and already spectrally weighted: its
+finite length ``1/(b_mu A)`` is a spectral attenuation length, set by how much
+rarer the higher-energy parent neutrino is. The published ``A_eff(E_nu)`` instead
+fixes the neutrino energy and integrates over every muon energy that survives the
+event selection, so its length is the full muon range down to the analysis
+threshold, which grows logarithmically with energy. Comparing the two directly
+is an apples-to-oranges comparison; see ``examples/20_effective_area_soft_vs_irf.py``.
 """
 
 from __future__ import annotations
@@ -30,9 +41,15 @@ from __future__ import annotations
 import numpy as np
 
 from ..utils.constants import RHO_WATER_G_CM3
-from .coefficients import diffusion_coefficient, drift_coefficient
+from .coefficients import critical_energy_gev, diffusion_coefficient, drift_coefficient
 from .eigenvalue import phi_eigenvalue, spectral_index
 from .source import DEFAULT_LAMBDA, inelasticity_factor
+
+# Muon energy below which a track no longer passes an IceCube-like through-going
+# selection. Used as the lower limit of the muon range in
+# :func:`range_target_volume_km3`; the resulting volume depends on it only
+# logarithmically.
+DEFAULT_MUON_THRESHOLD_GEV = 1.0e3
 
 
 def spectral_penalty(gamma: float, lam: float = DEFAULT_LAMBDA) -> float:
@@ -165,6 +182,113 @@ def soft_volume_diffusion(
     d_mu = d_scale * diffusion_coefficient(energy_gev, density_g_cm3)
     v_drift = soft_volume_drift(radius_km, energy_gev, gamma, lam, density_g_cm3, b_scale)
     return v_drift * (1.0 - d_mu / (2.0 * b_mu))
+
+
+def muon_range_km(
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+) -> np.ndarray:
+    """Muon range from a starting energy down to a detection threshold.
+
+    Integrating the continuous-slowing-down loss law ``-dE/dx = a_mu + b_mu E``
+    from ``E`` down to ``E_thr`` gives
+
+    .. math:: R(E \\to E_\\mathrm{thr}) = \\frac{1}{b_\\mu}
+        \\ln\\frac{E + E_c}{E_\\mathrm{thr} + E_c},
+        \\qquad E_c = a_\\mu / b_\\mu.
+
+    Unlike the soft volume's spectral length ``1/(b_mu A)``, this carries no
+    spectral weighting: it is the distance a muon of energy ``E`` can travel and
+    still arrive above threshold, and it grows logarithmically with ``E``.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the Table 1 drift coefficient. Defaults to 1.
+
+    Returns
+    -------
+    range_km : np.ndarray
+        Muon range [km], clipped at zero for muons born below threshold.
+
+    Notes
+    -----
+    ``b_mu`` is evaluated at the starting energy ``E`` rather than integrated
+    along the track. Because ``b_mu`` moves by only 14% between 1 PeV and 100 PeV
+    (Table 1), this is a percent-level approximation over the range of interest.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    b_mu = b_scale * drift_coefficient(energy, density_g_cm3)
+    e_crit = critical_energy_gev(energy, density_g_cm3, b_scale)
+    ratio = (energy + e_crit) / (threshold_gev + e_crit)
+    return np.clip(np.log(ratio) / b_mu, 0.0, None)
+
+
+def range_target_volume_km3(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+) -> np.ndarray:
+    """Target volume for through-going tracks, in the muon-range convention.
+
+    A muon of energy ``E`` produced anywhere in the upstream column
+    ``pi R_det^2 R(E -> E_thr)`` reaches the detector above threshold, and the
+    instrumented sphere itself contributes its own mean chord. Since
+    ``pi R_det^2 (4 R_det / 3) = V_det`` exactly, the two add to
+
+    .. math:: V_\\mathrm{range}(E) = \\pi R_\\mathrm{det}^2\\,
+        R(E \\to E_\\mathrm{thr}) + V_\\mathrm{det},
+
+    the same ``V_det + V_soft`` decomposition as the drift form, with the
+    spectral length ``1/(b_mu A)`` replaced by the threshold range. This is the
+    quantity that matches the convention of the published IceCube effective area,
+    which is tabulated at fixed neutrino energy and integrated over all selected
+    muon energies.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon selection threshold [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the Table 1 drift coefficient. Defaults to 1.
+
+    Returns
+    -------
+    volume : np.ndarray
+        Target volume [km^3], broadcast to the shape of ``energy_gev``.
+
+    Notes
+    -----
+    Detection efficiency is not included: this is the geometric ceiling that a
+    perfect through-going selection with threshold ``E_thr`` would reach. The
+    ratio of the published ``A_eff`` to this volume is therefore an estimate of
+    the selection efficiency (see ``examples/20_effective_area_soft_vs_irf.py``).
+
+    A muon born below threshold is never selected, so the volume drops to zero
+    rather than to ``V_det`` for ``E <= E_thr``.
+    """
+    proj_area = np.pi * radius_km**2
+    v_det = 4.0 / 3.0 * np.pi * radius_km**3
+    range_km = muon_range_km(energy_gev, threshold_gev, density_g_cm3, b_scale)
+    return np.where(range_km > 0.0, proj_area * range_km + v_det, 0.0)
 
 
 def volume_ratio_drift(
