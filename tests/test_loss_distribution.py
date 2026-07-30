@@ -10,7 +10,11 @@ in for.
 import numpy as np
 import pytest
 
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
+from softpaws.transport.coefficients import (
+    diffusion_coefficient,
+    drift_coefficient,
+    third_moment_coefficient,
+)
 from softpaws.transport.eigenvalue import (
     phi_eigenvalue,
     phi_symbol,
@@ -18,7 +22,9 @@ from softpaws.transport.eigenvalue import (
 )
 from softpaws.transport.loss_distribution import (
     gaussian_survival,
+    invert_log_loss_symbol,
     loss_density,
+    loss_density_three_moment,
     survival_from_density,
 )
 
@@ -137,3 +143,65 @@ def test_cf_inversion_matches_monte_carlo_tail():
         # 20% (relative) or 3 sigma of the MC estimate, whichever is looser.
         mc_sigma = np.sqrt(max(mc, 1.0 / samples.size) / samples.size)
         assert cf == pytest.approx(mc, rel=0.2, abs=3.0 * mc_sigma)
+
+
+# ---------------------------------------------------------------------------
+# Three-moment family
+# ---------------------------------------------------------------------------
+
+T_MU = float(third_moment_coefficient(E_100PEV)[0])
+
+
+def test_three_moment_density_normalized():
+    ell = 3.0
+    w = _w_grid(ell)
+    density = loss_density_three_moment(w, ell, B_MU, D_MU, T_MU)
+    assert np.trapezoid(density, w) == pytest.approx(1.0)
+    assert np.all(density >= 0.0)
+
+
+def test_three_moment_tail_heavier_than_two_moment():
+    # The whole point of the third moment: it restores the hard end of
+    # dGamma/dy, and with it the catastrophic-loss tail that the two-moment
+    # family truncates. Checked well out in the tail, where the gap is orders
+    # of magnitude (see examples/27).
+    ell = 1.0
+    # Its own grid, not _w_grid: that one is sized to the Gaussian scale and
+    # would truncate the very tail under test.
+    w = np.linspace(1e-3, 12.0, 3_000)
+    three = loss_density_three_moment(w, ell, B_MU, D_MU, T_MU)
+    two = loss_density(w, ell, B_MU, D_MU)
+    threshold = 4.0
+    assert survival_from_density(threshold, w, three) > 5.0 * survival_from_density(
+        threshold, w, two
+    )
+
+
+def test_three_moment_density_matches_its_own_symbol():
+    # The inverted density must carry the moments of the symbol that generated
+    # it: <e^-w> = exp(-ell Phi(1)) = exp(-ell b_mu).
+    ell = 2.0
+    # n_w < n_k, or the inversion aliases; see invert_log_loss_symbol.
+    w = np.linspace(1e-4, 40.0, 3_000)
+    density = loss_density_three_moment(w, ell, B_MU, D_MU, T_MU)
+    laplace = np.trapezoid(np.exp(-w) * density, w)
+    assert laplace == pytest.approx(np.exp(-ell * B_MU), rel=2e-3)
+
+
+def test_invert_symbol_reproduces_two_moment_density():
+    # loss_density is a thin wrapper over invert_log_loss_symbol; going through
+    # the general entry point by hand must give the identical answer.
+    ell = 3.0
+    w = _w_grid(ell)
+    kappa, p = two_moment_loss_spectrum(B_MU, D_MU)
+    direct = invert_log_loss_symbol(w, ell, lambda s: phi_symbol(s, kappa, p))
+    np.testing.assert_allclose(direct, loss_density(w, ell, B_MU, D_MU), rtol=1e-12)
+
+
+def test_inversion_rejects_aliasing_grid():
+    # A w grid finer than the k grid silently returns the wrong density, so it
+    # must be refused rather than quietly inverted.
+    kappa, p = two_moment_loss_spectrum(B_MU, D_MU)
+    w = np.linspace(1e-4, 40.0, 20_000)
+    with pytest.raises(ValueError, match="aliases the inversion"):
+        invert_log_loss_symbol(w, 2.0, lambda s: phi_symbol(s, kappa, p), n_k=2**14)

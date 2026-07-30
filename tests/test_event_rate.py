@@ -16,13 +16,15 @@ from softpaws.response.soft_volume import (
     _local_spectral_index,
     power_law_flux,
 )
+from softpaws.transport.attenuation import neutrino_interaction_length_km, prem_column
+from softpaws.transport.soft_volume import soft_volume_attenuated_exact
 from softpaws.transport.source import (
     E0_CROSS_GEV,
     SIGMA0_CM2,
     cc_cross_section,
     nucleon_number_density,
 )
-from softpaws.utils.constants import AVOGADRO_PER_MOL, RHO_WATER_G_CM3
+from softpaws.utils.constants import AVOGADRO_PER_MOL, CM_PER_KM, RHO_WATER_G_CM3
 
 GAMMA_IC = 2.38
 PHI0_IC = 0.63
@@ -274,6 +276,89 @@ def test_finite_column_gives_fewer_counts_than_infinite():
 
 
 # ---------------------------------------------------------------------------
+# Coupled attenuation (Form C, Eq. 11)
+# ---------------------------------------------------------------------------
+
+
+def test_coupled_attenuation_requires_exact_method():
+    resp = SoftVolumeResponse(radius_km=0.62, method="drift")
+    with pytest.raises(ValueError):
+        resp.expected_counts_coupled_attenuation(
+            np.array([5.0, 6.0]), PHI0_IC, GAMMA_IC, 1.0e7, 0.0, 90.0,
+        )
+
+
+def test_coupled_attenuation_rejects_closed_form_column():
+    resp = SoftVolumeResponse(
+        radius_km=0.62, method="exact", attenuation_column_g_cm2=1.0e10,
+    )
+    with pytest.raises(ValueError):
+        resp.expected_counts_coupled_attenuation(
+            np.array([5.0, 6.0]), PHI0_IC, GAMMA_IC, 1.0e7, 0.0, 90.0,
+        )
+
+
+def test_coupled_attenuation_positive_and_total_is_inside_plus_soft():
+    resp = SoftVolumeResponse(radius_km=0.62, method="exact")
+    edges = np.array([5.0, 6.0])
+    kwargs = dict(dec_min_deg=0.0, dec_max_deg=30.0, n_subdivisions=16, n_dec=16)
+    total = resp.expected_counts_coupled_attenuation(edges, PHI0_IC, GAMMA_IC, 1.0e7, **kwargs)
+    inside = resp.expected_counts_coupled_attenuation(
+        edges, PHI0_IC, GAMMA_IC, 1.0e7, part="inside", **kwargs
+    )
+    soft = resp.expected_counts_coupled_attenuation(
+        edges, PHI0_IC, GAMMA_IC, 1.0e7, part="soft", **kwargs
+    )
+    assert total[0] > 0.0
+    np.testing.assert_allclose(total, inside + soft, rtol=1e-9)
+
+
+def test_coupled_attenuation_below_unattenuated_counts():
+    # Any absorption along a genuinely upgoing band must reduce the count
+    # relative to the same band with D_nu = 1 (unattenuated exact response).
+    edges = np.array([6.0, 7.0])
+    kwargs = dict(dec_min_deg=30.0, dec_max_deg=90.0, n_subdivisions=16, n_dec=16)
+    coupled_resp = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    coupled = coupled_resp.expected_counts_coupled_attenuation(
+        edges, PHI0_IC, GAMMA_IC, 1.0e7, **kwargs
+    )
+    unattenuated_resp = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    unattenuated = unattenuated_resp.expected_counts(
+        edges, PHI0_IC, GAMMA_IC, 1.0e7,
+        solid_angle_sr=2.0 * np.pi * (np.sin(np.deg2rad(90.0)) - np.sin(np.deg2rad(30.0))),
+    )
+    assert 0.0 < coupled[0] < unattenuated[0]
+
+
+def test_coupled_attenuation_matches_narrow_band_hand_calculation():
+    # Over a narrow declination band the PREM column is nearly constant, so the
+    # energy-declination integral should collapse to a single-column
+    # calculation built directly from soft_volume_attenuated_exact -- an
+    # end-to-end check of the integration, not just the underlying formula.
+    dec_lo, dec_hi = 44.5, 45.5
+    resp = SoftVolumeResponse(radius_km=0.62, method="exact")
+    edges = np.array([6.0, 6.1])
+    counts = resp.expected_counts_coupled_attenuation(
+        edges, PHI0_IC, GAMMA_IC, 1.0e7, dec_lo, dec_hi, n_subdivisions=32, n_dec=8,
+    )
+
+    dec_mid = 0.5 * (dec_lo + dec_hi)
+    x_km = prem_column(dec_mid) / RHO_WATER_G_CM3 / CM_PER_KM
+    energy = np.logspace(6.0, 6.1, 32)
+    inv_lambda_nu = 1.0 / neutrino_interaction_length_km(energy)
+    v_det_eff, v_soft = soft_volume_attenuated_exact(
+        0.62, energy, GAMMA_IC, x_km, inv_lambda_nu,
+    )
+    volume_cm3 = (v_det_eff + v_soft) * CM_PER_KM**3
+    rate = volume_cm3 * nucleon_number_density() * cc_cross_section(energy) * power_law_flux(
+        energy, PHI0_IC, GAMMA_IC
+    )
+    solid_angle = 2.0 * np.pi * (np.sin(np.deg2rad(dec_hi)) - np.sin(np.deg2rad(dec_lo)))
+    expected = np.trapezoid(rate, energy) * solid_angle * 1.0e7
+    assert counts[0] == pytest.approx(expected, rel=0.05)
+
+
+# ---------------------------------------------------------------------------
 # Implied effective area
 # ---------------------------------------------------------------------------
 
@@ -297,3 +382,23 @@ def test_effective_area_part_matches_target_volume_part(response):
     aeff_inside = response.effective_area_cm2(e, GAMMA_IC, part="inside")
     aeff_total = response.effective_area_cm2(e, GAMMA_IC, part="total")
     assert aeff_total[0] == pytest.approx(aeff_soft[0] + aeff_inside[0], rel=1e-12)
+
+
+# ---------------------------------------------------------------------------
+# Scale-breaking beta (App. F)
+# ---------------------------------------------------------------------------
+
+
+def test_beta_defaults_to_off():
+    resp = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    assert resp.beta == 0.0
+
+
+def test_nonzero_beta_shrinks_target_volume():
+    plain = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+    with_beta = SoftVolumeResponse(
+        radius_km=0.62, method="exact", column_depth_km=1.95, beta=0.05,
+    )
+    v_plain = plain.target_volume_cm3(E_1PEV, GAMMA_IC, part="soft")
+    v_beta = with_beta.target_volume_cm3(E_1PEV, GAMMA_IC, part="soft")
+    assert v_beta[0] < v_plain[0]

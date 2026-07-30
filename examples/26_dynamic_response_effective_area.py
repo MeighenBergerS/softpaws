@@ -1,49 +1,43 @@
-"""Example 20 — soft-volume target volume vs. the published IceCube A_eff.
+"""Example 26 — adding an energy-growing projected area to example 20.
 
-Extends ``03_effective_area.py``'s livetime-combined IceCube effective area with
-the target volume implied by the soft-volume forward model
-(:mod:`softpaws.response.soft_volume`). The target-volume factorization
-(arXiv:2607.13143, Eq. 2.20) gives ``dN/dE = V_target(E) n_N sigma_CC(E)
-phi_nu(E)``, so ``A_eff = V_target n_N sigma_CC`` is nominally comparable to the
-published ``A_eff(E_nu, dec)`` -- and needs no flux normalization fit.
+Same comparison as ``20_effective_area_soft_vs_irf.py``, extended with the
+energy-dependent projected area
+:func:`~softpaws.transport.soft_volume.dynamic_projected_area_km2` (not part
+of arXiv:2607.13143 -- see that function's docstring for the physical
+motivation and the discussion this example follows up on).
 
-Making that comparison honest takes three corrections, all applied here.
+Example 20's own numbers motivate the addition: the implied selection
+efficiency ``eps = A_eff^IC / A_eff^range`` dips to ~0.5 around 5-15 TeV (a
+genuine selection-cut effect), then rises smoothly through ``eps = 1`` around
+20 PeV and reaches ``eps ~ 1.2`` at 100 PeV, still climbing. Above ~20 PeV the
+published IceCube effective area exceeds even the geometric muon-range
+ceiling, which assumes a fixed detector radius ``R_det``. The physical
+picture: above the critical energy ``E_c`` (~570 GeV in water/ice) radiative
+losses dominate, and the resulting stochastic light output lets a track
+trigger strings from beyond ``R_det`` -- growing with energy.
 
-**Earth attenuation.** The published table is tabulated in *true* neutrino
-declination and has absorption folded in: at 80 PeV it falls by a factor ~470
-from the horizon to the nadir. The soft-volume model assumes ``D_nu = 1``. Both
-sides are therefore put on the same footing with the per-declination PREM
-survival probability (:mod:`softpaws.transport.attenuation`): the model curves
-are attenuated bin by bin before the hemisphere average, and the horizon-band
-IceCube curve is divided by ``D_nu`` to recover a detector-only effective area.
-The horizon band keeps that deconvolution below a factor ~2 at all energies.
+The one new phenomenological parameter is the growth length ``L`` (km per
+e-fold of energy above ``E_c``). Rather than asserting a value, it is fit
+here to the horizon-band residual **above** ``log10(E_nu / GeV) = 7`` --
+comfortably past where the static-radius efficiency has already turned on and
+crossed 1 (example 20), isolating the pure geometric-growth regime from the
+low-energy selection cuts. The fitted ``L`` is reported next to the ~100 m
+photon-absorption-length ballpark quoted in the ice-optical-properties
+literature, as a sanity check, not a derivation.
 
-**Convention.** ``V_soft(E)`` is differential in the *observed muon* energy and
-is already spectrally weighted -- its length ``1/(b_mu A)`` is a spectral
-attenuation length, finite only because the parent flux falls, and so nearly
-energy independent. The published ``A_eff(E_nu)`` fixes the *neutrino* energy and
-integrates over every muon energy that survives the selection, so its length is
-the muon range down to threshold, which grows logarithmically. The range curve
-(:meth:`~softpaws.response.soft_volume.SoftVolumeResponse.threshold_effective_area_cm2`)
-is the like-for-like quantity; the soft-volume curves are shown alongside it to
-make the size of the convention difference visible.
-
-**Efficiency.** What is left after both corrections is the event selection. The
-third panel reports it as ``epsilon(E) = A_eff^IceCube / A_eff^range``, a
-turn-on curve rather than a discrepancy.
-
-Volumes, not effective areas, carry the physics content: ``sigma_CC`` is common
-to both sides and only steepens every curve by the same ``E^lambda``, so panel
-(b) divides it out.
-
-The energy axis stops at 100 PeV, the upper limit of the simulation behind the
-published response (``DR2_readme.txt``); the tabulated bins above it are
-extrapolation.
+**What this does and doesn't fix.** The growth term clips to zero at and
+below ``E_c``, so it is inactive for TeV-scale muons and does not touch the
+~0.5 efficiency floor around 5-15 TeV -- that is a genuine event-selection
+effect (quality cuts, background rejection), not a geometry effect, and
+fixing it is explicitly not the goal here (see the parent discussion). The
+goal is the high-energy excess; a flatter low-energy efficiency, if any, is a
+bonus of using the same single fitted parameter, not something separately
+tuned for.
 
 Usage
 -----
-    python examples/20_effective_area_soft_vs_irf.py
-    python examples/20_effective_area_soft_vs_irf.py --data-dir /path/to/dataverse_files
+    python examples/26_dynamic_response_effective_area.py
+    python examples/26_dynamic_response_effective_area.py --data-dir /path/to/dataverse_files
 """
 
 import argparse
@@ -51,6 +45,7 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import minimize_scalar
 
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 from softpaws.data.schema import SEASONS
@@ -66,7 +61,7 @@ from softpaws.transport.source import (
     MEAN_INELASTICITY,
     nucleon_number_density,
 )
-from softpaws.utils.constants import CM_PER_KM
+from softpaws.utils.constants import CM_PER_KM, M_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -80,18 +75,28 @@ GAMMA = 2.38  # IceCube 9.5 yr diffuse-flux best fit (Eq. 1.3); see module docst
 DOWNGOING_COLUMN_KM = 1.95  # IceCube-like downgoing ice overburden (example 16's default)
 HORIZON_SIN_DEC = 0.11  # half-width of the horizon band, |sin(dec)| < this
 
-# Tabulated cross section rather than the paper's power law. Extrapolated down
-# from its 10 PeV anchor the power law overshoots BGR18 by ~2.7x at 10 TeV and
-# ~9x at 1 TeV, and since A_eff is linear in sigma that error lands directly in
-# the implied selection efficiency below.
+# Where the static-radius efficiency has already turned on and crossed 1
+# (example 20), so the residual above this energy isolates the geometric
+# light-yield growth from the low-energy selection-efficiency turn-on.
+FIT_LOG10_E_MIN = 7.0
+
+# Literature ballpark for the photon absorption length in South Pole ice
+# (bulk-averaged, order of magnitude only -- e.g. the SPICE ice models put it
+# at ~100-200 m depending on depth and wavelength). Used only as a sanity
+# check on the fitted growth length, not as an input.
+ICE_ABSORPTION_LENGTH_M = 100.0
+
+# Tabulated cross section rather than the paper's power law; see example 20.
 CROSS_SECTION = bgr18_cross_section()
 
 _RANGE_LABEL = r"range, $E_{\rm thr} = 1$ TeV"
+_DYNAMIC_LABEL = r"range, dynamic $A_{\rm proj}$"
 _SOFT_STYLES = {
     "drift": ("--", "C0"),
     "exact, infinite column": (":", "C1"),
     f"exact, finite column ({DOWNGOING_COLUMN_KM:g} km)": ("-.", "C2"),
     _RANGE_LABEL: ("-", "C3"),
+    _DYNAMIC_LABEL: ("-", "C4"),
 }
 
 
@@ -106,7 +111,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--out",
         type=pathlib.Path,
-        default=_DEFAULT_OUT_DIR / "20_effective_area_soft_vs_irf.pdf",
+        default=_DEFAULT_OUT_DIR / "26_dynamic_response_effective_area.pdf",
         help="Output file for the figure.",
     )
     return parser.parse_args()
@@ -119,9 +124,8 @@ def _canonical_irf_season(season: str) -> str:
 def combine_seasons_icecube(data_dir: pathlib.Path) -> tuple[np.ndarray, np.ndarray]:
     """Livetime-weighted IceCube effective area, resolved in declination.
 
-    Unlike ``03_effective_area.py``'s hemisphere-averaged version, the
-    declination structure is kept, because the per-declination Earth attenuation
-    has to be applied before any average over solid angle.
+    Identical to example 20's function of the same name; duplicated rather
+    than imported, since examples in this repo are self-contained scripts.
 
     Parameters
     ----------
@@ -154,7 +158,6 @@ def combine_seasons_icecube(data_dir: pathlib.Path) -> tuple[np.ndarray, np.ndar
         uptime = load_uptime(uptime_dir / f"{season}_exp.csv")
         livetime_s = compute_livetime_s(uptime)
 
-        # Interpolate each declination column onto the common energy grid.
         interp = np.column_stack([
             np.interp(COMMON_LOG10_E, aeff.log10_energy_centers, aeff.values[:, j])
             for j in range(aeff.values.shape[1])
@@ -171,15 +174,7 @@ def combine_seasons_icecube(data_dir: pathlib.Path) -> tuple[np.ndarray, np.ndar
 def survival_grid(sin_dec_centers: np.ndarray) -> np.ndarray:
     """Neutrino survival probability on the (energy, declination) grid.
 
-    Parameters
-    ----------
-    sin_dec_centers : np.ndarray, shape (n_dec,)
-        Bin centres in ``sin(dec)``.
-
-    Returns
-    -------
-    d_nu : np.ndarray, shape (n_energy, n_dec)
-        PREM survival probability, in ``[0, 1]``.
+    Identical to example 20's function of the same name.
     """
     dec_deg = np.rad2deg(np.arcsin(sin_dec_centers))
     columns = np.array([prem_column(d) for d in dec_deg])
@@ -191,19 +186,7 @@ def survival_grid(sin_dec_centers: np.ndarray) -> np.ndarray:
 def band_average(values: np.ndarray, sin_dec_edges: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """Solid-angle-weighted average of an (energy, declination) grid over a band.
 
-    Parameters
-    ----------
-    values : np.ndarray, shape (n_energy, n_dec)
-        Grid to average.
-    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
-        Bin edges in ``sin(dec)``; the widths are the solid-angle weights.
-    mask : np.ndarray, shape (n_dec,)
-        Boolean selection of declination bins.
-
-    Returns
-    -------
-    average : np.ndarray, shape (n_energy,)
-        Weighted average over the selected bins.
+    Identical to example 20's function of the same name.
     """
     weights = np.diff(sin_dec_edges)[mask]
     return np.average(values[:, mask], axis=1, weights=weights)
@@ -216,47 +199,18 @@ def horizon_detector_area(
 ) -> np.ndarray:
     """Detector-only IceCube effective area in the horizon band.
 
-    Divides the per-declination Earth absorption back out of the published
-    values, then averages over solid angle. Restricting to the horizon keeps the
-    deconvolution factor below ~2 at every energy; over the full hemisphere it
-    would reach ``1e3`` and amplify the tabulation systematics with it.
-
-    Parameters
-    ----------
-    icecube : np.ndarray, shape (n_energy, n_dec)
-        Published effective area [cm^2].
-    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
-        Bin edges in ``sin(dec)``.
-    d_nu : np.ndarray, shape (n_energy, n_dec)
-        Neutrino survival probability.
-
-    Returns
-    -------
-    aeff : np.ndarray, shape (n_energy,)
-        Absorption-corrected effective area [cm^2].
+    Identical to example 20's function of the same name.
     """
     centers = 0.5 * (sin_dec_edges[:-1] + sin_dec_edges[1:])
     horizon = np.abs(centers) < HORIZON_SIN_DEC
-    # Mask first, so the opaque bins (where D_nu underflows to zero) are never
-    # divided by.
     corrected = icecube[:, horizon] / d_nu[:, horizon]
     return np.average(corrected, axis=1, weights=np.diff(sin_dec_edges)[horizon])
 
 
 def selection_efficiency(icecube_horizon: np.ndarray, range_area: np.ndarray) -> np.ndarray:
-    """Ratio of the corrected IceCube area to the range model's geometric ceiling.
+    """Ratio of the corrected IceCube area to a range model's geometric ceiling.
 
-    Parameters
-    ----------
-    icecube_horizon : np.ndarray, shape (n_energy,)
-        Absorption-corrected IceCube effective area [cm^2].
-    range_area : np.ndarray, shape (n_energy,)
-        Range-model effective area [cm^2], zero below the muon threshold.
-
-    Returns
-    -------
-    efficiency : np.ndarray, shape (n_energy,)
-        Implied efficiency; NaN where the range model vanishes.
+    Identical to example 20's function of the same name.
     """
     return np.divide(
         icecube_horizon,
@@ -266,16 +220,77 @@ def selection_efficiency(icecube_horizon: np.ndarray, range_area: np.ndarray) ->
     )
 
 
-def soft_volume_curves() -> dict[str, np.ndarray]:
-    """Soft-volume implied target volume [km^3] on ``COMMON_LOG10_E``.
+def range_area_cm2(light_yield_length_km: float | None) -> np.ndarray:
+    """Range-convention effective area [cm^2] on ``COMMON_LOG10_E``.
+
+    Parameters
+    ----------
+    light_yield_length_km : float or None
+        Forwarded to :func:`~softpaws.transport.soft_volume.
+        range_target_volume_km3`; ``None`` is the static-radius geometric
+        ceiling (example 20's curve).
+
+    Returns
+    -------
+    area : np.ndarray, shape (COMMON_LOG10_E.size,)
+        Effective area [cm^2].
+    """
+    energy_nu = 10.0**COMMON_LOG10_E
+    volume_km3 = range_target_volume_km3(
+        RADIUS_KM,
+        (1.0 - MEAN_INELASTICITY) * energy_nu,
+        DEFAULT_MUON_THRESHOLD_GEV,
+        light_yield_length_km=light_yield_length_km,
+    )
+    sigma = CROSS_SECTION.cc(energy_nu)
+    return volume_km3 * CM_PER_KM**3 * nucleon_number_density() * sigma
+
+
+def fit_light_yield_length_km(ic_horizon: np.ndarray) -> float:
+    """Best-fit growth length ``L``, from the horizon-band residual above ``E_c``.
+
+    Minimizes the sum of squared ``log(eps_dynamic)`` over
+    ``log10(E_nu / GeV) >= FIT_LOG10_E_MIN``, i.e. drives the dynamic-model
+    efficiency toward 1 in the regime where the static-radius ceiling is
+    already known (example 20) to undershoot the published effective area.
+
+    Parameters
+    ----------
+    ic_horizon : np.ndarray, shape (COMMON_LOG10_E.size,)
+        Absorption-corrected IceCube effective area [cm^2] in the horizon band
+        (:func:`horizon_detector_area`).
+
+    Returns
+    -------
+    l_fit_km : float
+        Best-fit growth length [km].
+    """
+    fit_mask = COMMON_LOG10_E >= FIT_LOG10_E_MIN
+
+    def objective(l_km: float) -> float:
+        eps = ic_horizon[fit_mask] / range_area_cm2(l_km)[fit_mask]
+        return float(np.sum(np.log(eps) ** 2))
+
+    result = minimize_scalar(objective, bounds=(0.0, 1.0), method="bounded")
+    return float(result.x)
+
+
+def soft_volume_curves(l_fit_km: float) -> dict[str, np.ndarray]:
+    """Target volume [km^3] on ``COMMON_LOG10_E``, static curves plus the dynamic one.
+
+    Parameters
+    ----------
+    l_fit_km : float
+        Fitted growth length [km] for the dynamic-``A_proj`` curve
+        (:func:`fit_light_yield_length_km`).
 
     Returns
     -------
     curves : dict of str to np.ndarray
-        Target volume [km^3] for each model variant. The three soft-volume
-        variants are evaluated at ``gamma = GAMMA`` and are differential in the
-        observed muon energy; the range variant is flux independent and takes the
-        neutrino energy.
+        Target volume [km^3] for each model variant; see example 20's
+        function of the same name for the first four. The fifth,
+        :data:`_DYNAMIC_LABEL`, is the range convention with the fitted
+        energy-growing projected area.
     """
     energy_gev = 10.0**COMMON_LOG10_E
 
@@ -294,13 +309,16 @@ def soft_volume_curves() -> dict[str, np.ndarray]:
         f"exact, finite column ({DOWNGOING_COLUMN_KM:g} km)": (
             exact_fin.target_volume_cm3(energy_gev, GAMMA) * to_km3
         ),
-        # The range variant is a function of the neutrino energy, so the muon is
-        # born at (1 - <y_w>) E_nu. Multiplying this by n_N sigma_CC(E_nu)
-        # reproduces SoftVolumeResponse.threshold_effective_area_cm2 exactly.
         _RANGE_LABEL: range_target_volume_km3(
             RADIUS_KM,
             (1.0 - MEAN_INELASTICITY) * energy_gev,
             DEFAULT_MUON_THRESHOLD_GEV,
+        ),
+        _DYNAMIC_LABEL: range_target_volume_km3(
+            RADIUS_KM,
+            (1.0 - MEAN_INELASTICITY) * energy_gev,
+            DEFAULT_MUON_THRESHOLD_GEV,
+            light_yield_length_km=l_fit_km,
         ),
     }
 
@@ -311,6 +329,7 @@ def make_figure(
     d_nu: np.ndarray,
     volumes: dict[str, np.ndarray],
     areas: dict[str, np.ndarray],
+    l_fit_km: float,
     out_path: pathlib.Path,
 ) -> None:
     """Draw the three-panel comparison and write it to disk."""
@@ -342,7 +361,6 @@ def make_figure(
         ax.set_ylim(1e2, 1e9)
         ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]")
         ax.set_title("(a) hemisphere average", fontsize=7)
-        # Two legends: the data curves, and what the model's two line weights mean.
         data_legend = ax.legend(fontsize=5.5, loc="upper left")
         proxies = [
             plt.Line2D([], [], color="0.3", lw=1.0),
@@ -361,21 +379,29 @@ def make_figure(
         ax.plot(COMMON_LOG10_E, v_icecube, color="k", lw=1.6, label="IceCube, horizon")
         for name, volume in volumes.items():
             ls, color = _SOFT_STYLES[name]
-            ax.plot(COMMON_LOG10_E, volume, ls=ls, color=color, lw=1.0, label=name)
+            lw = 1.4 if name == _DYNAMIC_LABEL else 1.0
+            ax.plot(COMMON_LOG10_E, volume, ls=ls, color=color, lw=lw, label=name)
         ax.set_yscale("log")
         ax.set_ylim(0.3, 2e2)
         ax.set_ylabel(r"$V_{\rm target}$ [km$^3$]")
         ax.set_title("(b) implied target volume", fontsize=7)
-        ax.legend(fontsize=5.5, loc="upper left")
+        ax.legend(fontsize=5, loc="upper left")
 
-        # (c) What is left over: the selection turn-on.
+        # (c) What is left over: the selection turn-on, static vs. dynamic A_proj.
         ax = axes[2]
-        efficiency = selection_efficiency(ic_horizon, areas[_RANGE_LABEL])
-        ax.plot(COMMON_LOG10_E, efficiency, color="k", lw=1.6)
+        eps_static = selection_efficiency(ic_horizon, areas[_RANGE_LABEL])
+        eps_dynamic = selection_efficiency(ic_horizon, areas[_DYNAMIC_LABEL])
+        ax.plot(COMMON_LOG10_E, eps_static, color="C3", lw=1.2, label="static " + r"$R_{\rm det}$")
+        ax.plot(
+            COMMON_LOG10_E, eps_dynamic, color="C4", lw=1.6,
+            label=rf"dynamic, $L={l_fit_km * M_PER_KM:.0f}$ m",
+        )
         ax.axhline(1.0, color="0.6", lw=0.8, ls=":")
+        ax.axvline(FIT_LOG10_E_MIN, color="0.6", lw=0.6, ls="--")
         ax.set_ylim(0.0, 1.3)
         ax.set_ylabel(r"$\varepsilon = A_{\rm eff}^{\rm IC} / A_{\rm eff}^{\rm range}$")
         ax.set_title("(c) implied selection efficiency", fontsize=7)
+        ax.legend(fontsize=5.5, loc="upper left")
 
         for ax in axes:
             ax.set_xlim(COMMON_LOG10_E[0], COMMON_LOG10_E[-1])
@@ -396,20 +422,32 @@ def report(
     d_nu: np.ndarray,
     volumes: dict[str, np.ndarray],
     areas: dict[str, np.ndarray],
+    l_fit_km: float,
 ) -> None:
     """Print the horizon-band numbers behind panels (b) and (c)."""
     ic_horizon = horizon_detector_area(icecube, sin_dec_edges, d_nu)
     sigma = CROSS_SECTION.cc(10.0**COMMON_LOG10_E)
     v_icecube = ic_horizon / (nucleon_number_density() * sigma) / CM_PER_KM**3
-    efficiency = selection_efficiency(ic_horizon, areas[_RANGE_LABEL])
+    eps_static = selection_efficiency(ic_horizon, areas[_RANGE_LABEL])
+    eps_dynamic = selection_efficiency(ic_horizon, areas[_DYNAMIC_LABEL])
 
-    header = f"{'log10(E/GeV)':>13} {'A_eff^IC':>11} {'V_IC':>8} {'V_drift':>8} {'V_range':>8}"
-    print(f"{header} {'eff':>6}")
+    print(
+        f"\nFitted light-yield growth length: L = {l_fit_km * M_PER_KM:.1f} m "
+        f"(fit region log10(E/GeV) >= {FIT_LOG10_E_MIN:g}; "
+        f"literature ice-absorption-length ballpark ~ {ICE_ABSORPTION_LENGTH_M:.0f} m)\n"
+    )
+
+    header = (
+        f"{'log10(E/GeV)':>13} {'A_eff^IC':>11} {'V_IC':>8} {'V_range':>8} "
+        f"{'V_dynamic':>9} {'eps_stat':>8} {'eps_dyn':>8}"
+    )
+    print(header)
     for log10_e in (4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0):
         i = int(np.argmin(np.abs(COMMON_LOG10_E - log10_e)))
         print(
             f"{COMMON_LOG10_E[i]:13.1f} {ic_horizon[i]:11.3g} {v_icecube[i]:8.2f} "
-            f"{volumes['drift'][i]:8.2f} {volumes[_RANGE_LABEL][i]:8.2f} {efficiency[i]:6.2f}"
+            f"{volumes[_RANGE_LABEL][i]:8.2f} {volumes[_DYNAMIC_LABEL][i]:9.2f} "
+            f"{eps_static[i]:8.2f} {eps_dynamic[i]:8.2f}"
         )
 
 
@@ -423,14 +461,18 @@ def main() -> None:
     print("Computing PREM survival probability per declination bin ...")
     d_nu = survival_grid(sin_dec_centers)
 
+    ic_horizon = horizon_detector_area(icecube, sin_dec_edges, d_nu)
+    print(f"Fitting light-yield growth length above log10(E/GeV) = {FIT_LOG10_E_MIN:g} ...")
+    l_fit_km = fit_light_yield_length_km(ic_horizon)
+
     print(f"Computing soft-volume target volumes (gamma = {GAMMA}) ...")
-    volumes = soft_volume_curves()
+    volumes = soft_volume_curves(l_fit_km)
     sigma = CROSS_SECTION.cc(10.0**COMMON_LOG10_E)
     n_nucleon = nucleon_number_density()
     areas = {k: v * CM_PER_KM**3 * n_nucleon * sigma for k, v in volumes.items()}
 
-    report(icecube, sin_dec_edges, d_nu, volumes, areas)
-    make_figure(icecube, sin_dec_edges, d_nu, volumes, areas, args.out)
+    report(icecube, sin_dec_edges, d_nu, volumes, areas, l_fit_km)
+    make_figure(icecube, sin_dec_edges, d_nu, volumes, areas, l_fit_km, args.out)
 
 
 if __name__ == "__main__":

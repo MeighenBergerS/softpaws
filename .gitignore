@@ -44,6 +44,11 @@ dataverse_files/
 # package stays versioned (raw data is caught by the extension rules above).
 /data/
 
+# Tabulated cross sections and transport coefficients are small, versioned
+# inputs, not bulk release data.
+!src/softpaws/data/xsec/**/*.csv
+!src/softpaws/data/coefficients/*.csv
+
 # Generated output from examples (keep the directory via .gitkeep)
 examples/output/*
 !examples/output/.gitkeep

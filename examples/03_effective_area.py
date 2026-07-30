@@ -124,6 +124,8 @@ def make_figure(combined: dict[str, np.ndarray], out_path: pathlib.Path) -> None
         fig, ax = plt.subplots(figsize=(3, 3))
 
         ax.plot(COMMON_LOG10_E, combined["upgoing"], label="upgoing")
+        np.savetxt("upgoing.txt", combined["upgoing"])
+        np.savetxt("energy_grid.txt", COMMON_LOG10_E)
         ax.plot(COMMON_LOG10_E, combined["downgoing"], label="downgoing")
 
         ax.set_yscale("log")

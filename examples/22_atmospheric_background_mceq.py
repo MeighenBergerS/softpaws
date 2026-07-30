@@ -26,20 +26,48 @@ The calculation has two stages:
 
 Fitting
 -------
-Both normalizations then float together
-(:func:`~softpaws.comparison.rates.fit_component_scales`): the astrophysical
-one, as in example 21, and the atmospheric one, because the MCEq prediction
-carries its own flux and hadronic-model uncertainty and because the soft-volume
-path models no detection efficiency. For reference the fit is also run with the
-background frozen at its predicted normalization
-(:func:`~softpaws.comparison.rates.fit_scale_factor_with_background`), which
-leaves no room for a signal at all -- the raw MCEq prediction already exceeds
-the observed upgoing counts between 10 and 100 TeV, by about 50% on the IRF
-path and by an order of magnitude on the soft-volume one. The soft-volume path
-then needs nearly the same suppression (~0.15) for its atmospheric component as
-for its astrophysical one, which is the cleanest statement yet that what
-separates the soft-volume ceiling from the data is detection efficiency rather
-than spectral shape.
+The fit is in two stages, which keeps every free parameter in the region that
+actually constrains it.
+
+First the **atmospheric flux normalization** ``k_atm`` is measured on the IRF
+path over 10-100 TeV (:func:`calibrate_atmospheric_normalization`), where the
+sample is background dominated and holds ~2000 events. It has to be the IRF
+path: the published response is the one containing IceCube's selection
+efficiency, so a mismatch there is attributable to the flux model rather than to
+the detector. Because ``k_atm`` then corrects the *flux*, it carries over to the
+soft-volume path unchanged.
+
+Second the **astrophysical normalization** is fitted above 100 TeV with the
+background frozen at ``k_atm`` times its prediction
+(:func:`~softpaws.comparison.rates.fit_scale_factor_with_background`). Floating
+the background there instead would leave two normalizations against three
+populated bins holding seventeen events, and it duly returns nonsense.
+
+Why the fit does not reach further down
+---------------------------------------
+An earlier version of this example fitted both normalizations jointly from
+10 TeV. That is not defensible, and the reason is worth recording. The
+efficiency of the IceCube selection is strongly energy dependent -- example 20
+measures it climbing from ~0 near 100 GeV to ~1 by 1 PeV -- so a *single*
+efficiency factor, whether fitted or implied, is a constant chasing a turn-on
+curve. It returns the event-weighted mean of that curve over the fit window,
+which is why moving the threshold from 10 TeV to 300 TeV walked the fitted
+``phi0`` between 0.72 and 1.14 with the atmospheric normalization trading
+against it.
+
+Nor can the turn-on simply be fitted as a nuisance. It is not physics: it is
+IceCube's trigger, filter, quality cuts, and atmospheric-muon rejection for this
+particular selection, and example 20's range convention has already divided out
+the part that *is* physics (muon range and geometric target volume). Fitting it
+would measure their cuts through our model, with every transport and flux error
+free to hide in it; importing it from example 20 is circular, since it is
+defined there as the ratio that makes the two effective areas agree. The
+soft-volume model is therefore only predictive where the selection is fully
+efficient, and 100 TeV is chosen as a compromise: high enough that the turn-on
+is nearly complete, low enough to retain more than the two events above 1 PeV.
+Whatever residual inefficiency remains at 100-300 TeV shows up here as the
+soft-volume background over-predicting the data, and is reported as a ceiling on
+the efficiency in that window rather than fitted away.
 
 Geometry
 --------
@@ -58,8 +86,13 @@ Caveats
 -------
 * The soft-volume path models no detection efficiency, so its background, like
   its signal, is a geometric ceiling; the IRF path's background is the realistic
-  one. The ratio of the two fitted signal normalizations is still the efficiency
-  estimate of example 21, now measured over the wider fit range.
+  one.
+* The DR2 release provides one instrument response per detector configuration,
+  not per season, and ``load_irfs`` maps every ``IC86_*`` label onto the single
+  IC86 response. That is the correct response for the summed IC86 livetime used
+  here; the earlier configurations (IC40, IC59, IC79) are excluded along with
+  their events, since the soft-volume model has one fixed detector radius and
+  cannot represent a partial detector.
 * Both paths evaluate the atmospheric flux in the energy variable their own
   model uses -- observed muon energy for the soft-volume path (Eq. 2.23),
   true neutrino energy plus smearing for the IRF path -- exactly as they treat
@@ -98,6 +131,7 @@ from softpaws.response.soft_volume import (
     power_law_flux,
     tau_induced_expected_counts_attenuated,
 )
+from softpaws.transport.cross_section import bgr18_cross_section
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -113,7 +147,8 @@ IC86_SEASONS = (
 RADIUS_KM = 0.62  # IceCube-like instrumented sphere
 PHI0 = 0.63  # reference flux normalization [1e-18 GeV^-1 cm^-2 s^-1 sr^-1]
 GAMMA = 2.38  # reference spectral index
-LOG10_E_MIN_FIT = 4.0  # 10 TeV; reachable now that the background is modelled
+LOG10_E_MIN_FIT = 5.0  # 100 TeV; the signal window
+LOG10_E_MIN_BKG_CAL = 4.0  # 10 TeV; lower edge of the background calibration window
 LOG10_E_EDGES = np.arange(3.0, 8.01, 0.5)
 DEC_MIN, DEC_MAX = 0.0, 90.0  # upgoing hemisphere
 
@@ -348,6 +383,53 @@ def load_ic86_observed_and_livetime(data_dir: pathlib.Path) -> tuple[np.ndarray,
     return counts, livetime_s
 
 
+def calibrate_atmospheric_normalization(
+    observed: np.ndarray,
+    astro: np.ndarray,
+    atmospheric: np.ndarray,
+) -> float:
+    """Atmospheric flux normalization measured below the signal window.
+
+    The MCEq prediction is scaled to the data over
+    ``[LOG10_E_MIN_BKG_CAL, LOG10_E_MIN_FIT)``, where the sample is
+    background dominated and carries ~2000 events, rather than being left to
+    float in the signal window, where only a handful of events constrain it.
+    Both components are floated here so the ~10% astrophysical contamination of
+    the calibration window does not bias the result.
+
+    This must be run on the **IRF** templates: it is the published response that
+    contains IceCube's selection efficiency, so a discrepancy there is
+    attributable to the atmospheric flux model rather than to the detector. The
+    resulting factor is then a property of the flux, and can be carried over to
+    the soft-volume path.
+
+    Parameters
+    ----------
+    observed : np.ndarray, shape (n_bins,)
+        Observed counts per bin.
+    astro, atmospheric : np.ndarray, shape (n_bins,)
+        IRF-path astrophysical and atmospheric templates at their reference
+        normalizations.
+
+    Returns
+    -------
+    k_atm : float
+        Multiplicative correction to the MCEq atmospheric prediction.
+    """
+    centers = 0.5 * (LOG10_E_EDGES[:-1] + LOG10_E_EDGES[1:])
+    in_window = (centers >= LOG10_E_MIN_BKG_CAL) & (centers < LOG10_E_MIN_FIT)
+    index = np.nonzero(in_window)[0]
+    edges = LOG10_E_EDGES[index[0] : index[-1] + 2]
+
+    _, k_atm = fit_component_scales(
+        observed[in_window],
+        [astro[in_window], atmospheric[in_window]],
+        edges,
+        edges[0],
+    )
+    return float(k_atm)
+
+
 def soft_volume_signal(response: SoftVolumeResponse, livetime_s: float) -> np.ndarray:
     """Astrophysical ``numu + nu_tau`` soft-volume template of example 21."""
     numu = response.expected_counts_attenuated(
@@ -360,20 +442,18 @@ def soft_volume_signal(response: SoftVolumeResponse, livetime_s: float) -> np.nd
 
 
 def make_figure(
-    table: dict[str, np.ndarray],
-    atm_flux: AtmosphericFlux,
     observed: np.ndarray,
     predictions: dict[str, tuple[np.ndarray, np.ndarray]],
     out_path: pathlib.Path,
 ) -> None:
-    """Two panels: the tabulated flux, and observed counts vs signal + background.
+    """Observed counts against the fitted signal plus atmospheric background.
+
+    The observed counts carry Poisson statistical errors ``sqrt(N)``. Empty bins
+    are left out, having neither a value nor an error a logarithmic axis can
+    show.
 
     Parameters
     ----------
-    table : dict of np.ndarray
-        MCEq table, for the declinations it was sampled at.
-    atm_flux : AtmosphericFlux
-        Interpolated flux, drawn at a few representative declinations.
     observed : np.ndarray, shape (n_bins,)
         Observed counts per bin.
     predictions : dict
@@ -381,49 +461,41 @@ def make_figure(
     out_path : pathlib.Path
         Output file; written with both ``.pdf`` and ``.png`` suffixes.
     """
-    energy = table["energy_gev"]
-    in_range = (energy >= 1.0e2) & (energy <= 1.0e8)
-    # The zenith dependence is all near the horizon, so sample it there.
-    dec_samples = (0.0, 7.5, 30.0, 90.0)
+    centers = 0.5 * (LOG10_E_EDGES[:-1] + LOG10_E_EDGES[1:])
+    filled = observed > 0
     styles = {"soft": ("-", "C3"), "IRF": ("--", "C1")}
 
     with plt.style.context(str(_STYLE)):
-        fig, (ax_flux, ax_counts) = plt.subplots(1, 2, figsize=(6.8, 3.0))
+        fig, ax = plt.subplots(figsize=(3.4, 3.2))
 
-        for dec in dec_samples:
-            e = energy[in_range]
-            ax_flux.plot(
-                np.log10(e),
-                e**2 * atm_flux(e, dec),
-                label=rf"$\delta = {dec:g}^\circ$",
-            )
-        ax_flux.set_yscale("log")
-        ax_flux.set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$")
-        ax_flux.set_ylabel(
-            r"$E^2 \phi_{\nu_\mu + \bar{\nu}_\mu}$"
-            r"$\,[\mathrm{GeV\,cm^{-2}\,s^{-1}\,sr^{-1}}]$"
+        ax.errorbar(
+            centers[filled],
+            observed[filled],
+            yerr=np.sqrt(observed[filled]),
+            fmt="o",
+            ms=2.5,
+            lw=0.8,
+            capsize=1.5,
+            color="k",
+            label="observed (IC86)",
+            zorder=5,
         )
-        ax_flux.set_title("MCEq atmospheric flux (at production)", fontsize=7)
-        ax_flux.legend(fontsize=6)
-
-        ax_counts.stairs(observed, LOG10_E_EDGES, label="observed (IC86)", lw=1.8, color="k")
         for name, (signal, background) in predictions.items():
             ls, color = styles[name]
-            ax_counts.stairs(
+            ax.stairs(
                 signal + background, LOG10_E_EDGES,
                 label=f"{name}: astro + atm", ls=ls, color=color,
             )
-            ax_counts.stairs(
+            ax.stairs(
                 background, LOG10_E_EDGES,
                 label=f"{name}: atm alone", ls=":", color=color, alpha=0.7,
             )
-        ax_counts.axvline(LOG10_E_MIN_FIT, color="0.7", lw=0.6, zorder=0)
-        ax_counts.set_yscale("log")
-        ax_counts.set_ylim(1.0e-3, 5.0 * max(observed.max(), 1.0))
-        ax_counts.set_xlabel(r"$\log_{10}(E\,/\,\mathrm{GeV})$")
-        ax_counts.set_ylabel("tracks / bin")
-        ax_counts.set_title("Upgoing IC86 tracks", fontsize=7)
-        ax_counts.legend(fontsize=6)
+        ax.axvline(LOG10_E_MIN_FIT, color="0.7", lw=0.6, zorder=0)
+        ax.set_yscale("log")
+        ax.set_ylim(1.0e-3, 5.0 * max(observed.max(), 1.0))
+        ax.set_xlabel(r"$\log_{10}(E\,/\,\mathrm{GeV})$")
+        ax.set_ylabel("tracks / bin")
+        ax.legend(fontsize=6)
 
         fig.tight_layout()
         out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -460,7 +532,12 @@ def main() -> None:
     )
 
     print("Computing soft-volume signal and atmospheric background ...")
-    response = SoftVolumeResponse(radius_km=RADIUS_KM, method="exact")
+    # BGR18 rather than the paper's power law: the atmospheric background lives
+    # at 1-100 TeV, where extrapolating the power law down from its 10 PeV anchor
+    # overshoots by factors of 2.7 to 9.
+    response = SoftVolumeResponse(
+        radius_km=RADIUS_KM, method="exact", cross_section=bgr18_cross_section(),
+    )
     soft_signal = soft_volume_signal(response, livetime_s)
     soft_background = response.expected_counts_from_flux(
         LOG10_E_EDGES, atm_flux, livetime_s, DEC_MIN, DEC_MAX,
@@ -473,40 +550,41 @@ def main() -> None:
             f"IRF atm {irf_background[i]:11,.1f}   soft atm {soft_background[i]:11,.1f}"
         )
 
-    print(f"Fitting above 10^{LOG10_E_MIN_FIT:.1f} GeV ...")
+    k_atm = calibrate_atmospheric_normalization(observed, irf_signal, irf_background)
+    print(
+        f"Atmospheric flux normalization from 10^{LOG10_E_MIN_BKG_CAL:.1f}-"
+        f"10^{LOG10_E_MIN_FIT:.1f} GeV on the IRF path: k_atm = {k_atm:.2f}"
+    )
+
+    print(f"Fitting the astrophysical normalization above 10^{LOG10_E_MIN_FIT:.1f} GeV ...")
+    in_fit = 0.5 * (LOG10_E_EDGES[:-1] + LOG10_E_EDGES[1:]) >= LOG10_E_MIN_FIT
     predictions: dict[str, tuple[np.ndarray, np.ndarray]] = {}
-    scales: dict[str, float] = {}
-    bkg_scales: dict[str, float] = {}
-    for name, signal, background in (
+    for name, signal, raw_background in (
         ("soft", soft_signal, soft_background),
         ("IRF", irf_signal, irf_background),
     ):
-        # The MCEq normalization carries its own sizeable flux and hadronic
-        # uncertainty, and the soft-volume path has no detection efficiency at
-        # all, so the background normalization floats alongside the signal.
-        signal_scale, bkg_scale = fit_component_scales(
-            observed, [signal, background], LOG10_E_EDGES, LOG10_E_MIN_FIT,
-        )
-        fixed_bkg_scale = fit_scale_factor_with_background(
+        # k_atm corrects the flux, not the response, so it carries over to the
+        # soft-volume path unchanged. Nothing else about the background floats:
+        # in the signal window it would be unconstrained.
+        background = raw_background * k_atm
+        scale = fit_scale_factor_with_background(
             observed, signal, background, LOG10_E_EDGES, LOG10_E_MIN_FIT,
         )
-        scales[name] = signal_scale
-        bkg_scales[name] = bkg_scale
-        predictions[name] = (signal * signal_scale, background * bkg_scale)
+        predictions[name] = (signal * scale, background)
         print(
-            f"  {name:4s}: best-fit phi0 = {PHI0 * signal_scale:6.3f}, "
-            f"atmospheric normalization = {bkg_scale:5.2f}  "
-            f"(phi0 = {PHI0 * fixed_bkg_scale:6.3f} with the background held fixed)"
+            f"  {name:4s}: best-fit phi0 = {PHI0 * scale:6.3f}   "
+            f"(in window: observed {observed[in_fit].sum():.0f}, "
+            f"atmospheric {background[in_fit].sum():5.1f}, "
+            f"astrophysical at reference {signal[in_fit].sum():5.1f})"
         )
-    if scales["IRF"] > 0.0:
-        # Two independent handles on the same missing detection efficiency: the
-        # astrophysical normalization the soft-volume path needs relative to the
-        # IRF path, and the atmospheric one. They should agree.
-        print(f"  implied efficiency eps = {scales['soft'] / scales['IRF']:.3f} (astrophysical), "
-              f"{bkg_scales['soft'] / bkg_scales['IRF']:.3f} (atmospheric)")
-        print("  (paper efficiency eps_IC-TG ~ 0.45)")
+        if background[in_fit].sum() > observed[in_fit].sum():
+            ceiling = observed[in_fit].sum() / background[in_fit].sum()
+            print(
+                f"        background alone over-predicts the data, so the selection "
+                f"efficiency in this window is at most {ceiling:.2f}"
+            )
 
-    make_figure(table, atm_flux, observed, predictions, args.out)
+    make_figure(observed, predictions, args.out)
 
 
 if __name__ == "__main__":

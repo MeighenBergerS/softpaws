@@ -33,6 +33,11 @@ atm = [
     "MCEq>=1.4",
     "crflux>=2.0",
 ]
+# Muon transport coefficients. Only needed to regenerate the shipped table with
+# softpaws.transport.coefficients.build_proposal_table.
+transport = [
+    "proposal>=7.6",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

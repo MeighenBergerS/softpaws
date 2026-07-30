@@ -13,6 +13,7 @@ from softpaws.transport.attenuation import (
     earth_chord_length_km,
     effective_solid_angle,
     mean_density_column,
+    neutrino_interaction_length_km,
     prem_column,
     prem_density,
     representative_column,
@@ -20,7 +21,13 @@ from softpaws.transport.attenuation import (
     total_cross_section,
 )
 from softpaws.transport.source import cc_cross_section
-from softpaws.utils.constants import EARTH_RADIUS_KM, RHO_EARTH_MEAN_G_CM3
+from softpaws.utils.constants import (
+    AVOGADRO_PER_MOL,
+    CM_PER_KM,
+    EARTH_RADIUS_KM,
+    RHO_EARTH_MEAN_G_CM3,
+    RHO_WATER_G_CM3,
+)
 
 E_1PEV = 1.0e6  # GeV
 
@@ -123,3 +130,32 @@ def test_effective_solid_angle_below_geometric_at_high_energy():
     geometric = 2.0 * np.pi
     omega = effective_solid_angle(np.array([1e7]), 0.0, 90.0)
     assert 0.0 < omega[0] < geometric
+
+
+# ---------------------------------------------------------------------------
+# Neutrino interaction length (Eq. 11 coupling)
+# ---------------------------------------------------------------------------
+
+
+def test_interaction_length_matches_total_cross_section():
+    # Lambda_nu = 1 / (N_A sigma_tot rho), in km at the reference density.
+    sigma = total_cross_section(E_1PEV)[0]
+    expected_km = 1.0 / (AVOGADRO_PER_MOL * sigma * RHO_WATER_G_CM3 * CM_PER_KM)
+    assert neutrino_interaction_length_km(E_1PEV)[0] == pytest.approx(expected_km, rel=1e-12)
+
+
+def test_interaction_length_is_thousands_of_km_we_at_pev():
+    # arXiv:2607.13143 / docs/2026_softvolume.pdf quote Lambda_nu ~ O(10^3) km.w.e.
+    assert 1.0e2 < neutrino_interaction_length_km(E_1PEV)[0] < 1.0e5
+
+
+def test_interaction_length_decreases_with_energy():
+    # Larger cross section at higher energy -> shorter interaction length.
+    lengths = neutrino_interaction_length_km(np.array([1e5, 1e6, 1e7, 1e8]))
+    assert np.all(np.diff(lengths) < 0.0)
+
+
+def test_interaction_length_scales_inversely_with_density():
+    water = neutrino_interaction_length_km(E_1PEV, RHO_WATER_G_CM3)[0]
+    dense = neutrino_interaction_length_km(E_1PEV, 2.0 * RHO_WATER_G_CM3)[0]
+    assert dense == pytest.approx(water / 2.0, rel=1e-12)

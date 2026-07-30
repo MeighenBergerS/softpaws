@@ -32,10 +32,10 @@ from __future__ import annotations
 from collections.abc import Callable
 
 import numpy as np
-from scipy.special import digamma
+from scipy.special import digamma, gamma, loggamma, polygamma
 
 from ..utils.constants import RHO_WATER_G_CM3
-from .coefficients import diffusion_coefficient, drift_coefficient
+from .coefficients import DEFAULT_SOURCE, diffusion_coefficient, drift_coefficient
 from .source import DEFAULT_LAMBDA
 
 
@@ -98,6 +98,89 @@ def two_moment_loss_spectrum(
     return kappa, p
 
 
+def three_moment_loss_spectrum(
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+    t_mu: float | np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Calibrate the loss spectrum ``dGamma/dy = kappa y^(q-1) (1-y)^p`` to three moments.
+
+    One-parameter generalization of :func:`two_moment_loss_spectrum`, which is the
+    ``q = 0`` member of this family. Freeing the soft exponent ``q`` lets the third
+    ``y``-moment be matched as well, and the extra freedom lands almost entirely on
+    the hard end: calibrated to PROPOSAL, ``p`` moves from about ``+2.1`` to about
+    ``-0.17``, so ``dGamma/dy`` no longer vanishes as ``y -> 1`` and the rare
+    catastrophic losses that dominate the fluctuations survive. See
+    ``examples/27_proposal_cross_section_and_loss.py``.
+
+    The moments of the family are Beta functions, ``<y^n> = kappa B(n + q, p + 1)``,
+    so the two ratios
+
+    .. math:: r_1 = \\frac{d_\\mu}{b_\\mu} = \\frac{1 + q}{2 + q + p}, \\qquad
+        r_2 = \\frac{t_\\mu}{d_\\mu} = \\frac{2 + q}{3 + q + p}
+
+    invert in closed form.
+
+    Parameters
+    ----------
+    b_mu : float or np.ndarray
+        First moment ``<y>``, the drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Second moment ``<y^2>``, the diffusion coefficient [km^-1].
+    t_mu : float or np.ndarray
+        Third moment ``<y^3>`` [km^-1] (see
+        :func:`softpaws.transport.coefficients.third_moment_coefficient`).
+
+    Returns
+    -------
+    kappa : np.ndarray
+        Overall normalization [km^-1].
+    q : np.ndarray
+        Soft exponent, so that ``dGamma/dy ~ y^(q-1)`` as ``y -> 0``. Negative for
+        real loss spectra, whose soft pile-up is steeper than ``1/y``.
+    p : np.ndarray
+        Shape exponent of the ``(1 - y)^p`` hard-end softening.
+
+    Raises
+    ------
+    ValueError
+        Raised if the moments are not those of a positive spectrum on ``(0, 1)``,
+        i.e. if the solution leaves ``q > -1``, ``p > -1``.
+
+    Notes
+    -----
+    Moment log-convexity guarantees ``r_2 >= r_1`` for any positive spectrum, so
+    the denominator ``r_2 - r_1`` is non-negative; it vanishes only in the
+    degenerate single-jump-size limit.
+    """
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    t = np.asarray(t_mu, dtype=float)
+    r_1 = d / b
+    r_2 = t / d
+    q = (2.0 * r_1 - r_2 - r_1 * r_2) / (r_2 - r_1)
+    p = (1.0 + q) / r_1 - 2.0 - q
+    if np.any(q <= -1.0) or np.any(p <= -1.0):
+        raise ValueError(
+            "three-moment calibration left the convergent domain (need q > -1 and "
+            f"p > -1, got q = {q}, p = {p}); check that t_mu is the third moment "
+            "of the same spectrum as b_mu and d_mu."
+        )
+    kappa = b / _beta(1.0 + q, p + 1.0)
+    return kappa, q, p
+
+
+def _beta(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """``B(a, b)`` by its Gamma-function definition, valid for non-integer ``a < 0``.
+
+    ``scipy.special.beta`` returns ``inf`` for negative arguments; the analytic
+    continuation is what the three-moment family needs, since the individual Beta
+    functions of :func:`phi_symbol_three_moment` are evaluated at ``q < 0`` even
+    though their difference is finite.
+    """
+    return np.asarray(gamma(a) * gamma(b) / gamma(a + b))
+
+
 def phi_symbol(
     s: complex | np.ndarray,
     kappa: float | np.ndarray,
@@ -135,6 +218,101 @@ def phi_symbol(
     kappa = np.asarray(kappa, dtype=float)
     p = np.asarray(p, dtype=float)
     return kappa * (digamma(s + p + 1.0) - digamma(p + 1.0))
+
+
+# Below this |q| the two Beta functions of the three-moment symbol cancel to
+# working precision and the q -> 0 digamma limit is used instead. The limit is
+# accurate to O(q), so the switch costs at most ~1e-6 relative.
+_Q_DIGAMMA_LIMIT = 1.0e-6
+
+
+def phi_symbol_three_moment(
+    s: complex | np.ndarray,
+    kappa: float,
+    q: float,
+    p: float,
+) -> np.ndarray:
+    """Mellin symbol ``Phi(s)`` of the three-moment loss family, for any ``s``.
+
+    Closed form of ``dGamma/dy = kappa y^(q-1) (1-y)^p``,
+
+    .. math:: \\Phi(s) = \\kappa\\,\\Gamma(q)\\,\\left[
+        \\frac{\\Gamma(p+1)}{\\Gamma(q+p+1)}
+        - \\frac{\\Gamma(p+s+1)}{\\Gamma(q+p+s+1)}\\right],
+
+    which reduces to :func:`phi_symbol` as ``q -> 0``. Both Beta functions
+    diverge at ``q = 0`` while their difference stays finite, so the ``q -> 0``
+    digamma limit is substituted below :data:`_Q_DIGAMMA_LIMIT`.
+
+    Like :func:`phi_symbol` this accepts **complex** ``s``, which is what the
+    characteristic function of
+    :func:`softpaws.transport.loss_distribution.loss_density_three_moment` needs.
+    The Gamma ratios are formed through ``loggamma``: ``Gamma(p + s + 1)``
+    overflows for large ``|Im s|``, whereas the ratio grows only like ``s^-q``.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable. Real or complex; the dtype is preserved.
+    kappa : float
+        Loss-spectrum normalization [km^-1] (see
+        :func:`three_moment_loss_spectrum`).
+    q : float
+        Soft exponent, ``> -1``.
+    p : float
+        Hard-end exponent, ``> -1``.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Symbol ``Phi(s)`` [km^-1], matching the shape and dtype of ``s``.
+    """
+    s = np.asarray(s)
+    if abs(float(q)) < _Q_DIGAMMA_LIMIT:
+        return phi_symbol(s, kappa, p)
+    # exp(loggamma(a) - loggamma(b)) rather than gamma(a) / gamma(b): the latter
+    # is inf / inf for the large imaginary arguments of the inversion. The
+    # arguments are cast to complex because q + p + 1 may be negative, where the
+    # real branch of loggamma is undefined but the complex one carries the sign.
+    complex_s = s.astype(complex)
+    reference = np.exp(loggamma(complex(p + 1.0)) - loggamma(complex(q + p + 1.0)))
+    shifted = np.exp(
+        loggamma(complex_s + (p + 1.0)) - loggamma(complex_s + (q + p + 1.0))
+    )
+    phi = kappa * gamma(q) * (reference - shifted)
+    return phi if np.iscomplexobj(s) else np.real(phi)
+
+
+def phi_eigenvalue_three_moment(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+    t_mu: float | np.ndarray,
+) -> np.ndarray:
+    """Collision eigenvalue ``Phi(A)`` from three calibrated moments.
+
+    Three-moment counterpart of :func:`phi_eigenvalue`. Exact at ``A = 1, 2, 3``
+    by construction -- the binomial expansion of ``1 - (1-y)^A`` terminates there,
+    giving ``Phi(1) = b_mu``, ``Phi(2) = 2 b_mu - d_mu`` and
+    ``Phi(3) = 3 b_mu - 3 d_mu + t_mu`` -- and benchmarked against PROPOSAL it
+    stays within 0.5% out to ``A = 8``, where the two-moment form is 16% low
+    (``examples/27_proposal_cross_section_and_loss.py``).
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A`` (see :func:`spectral_index`).
+    b_mu, d_mu, t_mu : float or np.ndarray
+        First three ``y``-moments of the loss spectrum [km^-1].
+
+    Returns
+    -------
+    phi : np.ndarray
+        Eigenvalue ``Phi(A)`` [km^-1].
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    kappa, q, p = three_moment_loss_spectrum(b_mu, d_mu, t_mu)
+    return phi_symbol_three_moment(a, float(kappa), float(q), float(p))
 
 
 def phi_eigenvalue(
@@ -180,6 +358,47 @@ def phi_eigenvalue(
         kappa, p = two_moment_loss_spectrum(b, d)
         phi = phi_symbol(a, kappa, p)
     return np.where(d > 0.0, phi, a * b)
+
+
+def phi_eigenvalue_derivative(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+) -> np.ndarray:
+    """Derivative ``d Phi / dA`` of the exact eigenvalue, from the trigamma function.
+
+    Differentiating the closed form of :func:`phi_eigenvalue`,
+
+    .. math:: \\frac{d\\Phi}{dA}(A) = \\kappa\\,\\psi_1(p + A + 1),
+
+    with ``psi_1`` the trigamma function. This is the ingredient App. B's own
+    Bernstein-function property (``Phi' > 0``, ``Phi'' < 0``) refers to, and
+    what :func:`softpaws.transport.soft_volume.
+    scale_breaking_saturation_factor` needs for the App. F running-index
+    correction (Eq. F4 of ``docs/2026_softvolume.pdf``).
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A``.
+    b_mu : float or np.ndarray
+        Drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Diffusion coefficient [km^-1]. If non-positive, the drift limit
+        ``d Phi/dA = b_mu`` is returned (the derivative of ``Phi = A b_mu``).
+
+    Returns
+    -------
+    phi_prime : np.ndarray
+        ``d Phi / dA`` [km^-1], always positive (Bernstein-function property).
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        kappa, p = two_moment_loss_spectrum(b, d)
+        deriv = kappa * polygamma(1, a + p + 1.0)
+    return np.where(d > 0.0, deriv, b)
 
 
 def phi_drift(
@@ -283,8 +502,9 @@ def phi_eigenvalue_at_energy(
     spectral_index_value: float | np.ndarray,
     energy_gev: float | np.ndarray,
     density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
 ) -> np.ndarray:
-    """Exact eigenvalue at a muon energy, using the Table 1 coefficients.
+    """Exact eigenvalue at a muon energy, from the tabulated coefficients.
 
     Convenience wrapper that reads ``b_mu(E)``, ``d_mu(E)`` from
     :mod:`softpaws.transport.coefficients` and feeds them to
@@ -298,12 +518,15 @@ def phi_eigenvalue_at_energy(
         Muon energy [GeV].
     density_g_cm3 : float, optional
         Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
 
     Returns
     -------
     phi : np.ndarray
         Eigenvalue ``Phi(A)`` [km^-1].
     """
-    b_mu = drift_coefficient(energy_gev, density_g_cm3)
-    d_mu = diffusion_coefficient(energy_gev, density_g_cm3)
+    b_mu = drift_coefficient(energy_gev, density_g_cm3, source)
+    d_mu = diffusion_coefficient(energy_gev, density_g_cm3, source)
     return phi_eigenvalue(spectral_index_value, b_mu, d_mu)

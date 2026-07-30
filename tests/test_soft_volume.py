@@ -17,10 +17,14 @@ from softpaws.transport.coefficients import (
 )
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
+    dm_line_target_volume_km3,
+    dynamic_projected_area_km2,
+    dynamic_projected_radius_km,
     muon_range_km,
     range_target_volume_km3,
     soft_volume_diffusion,
     soft_volume_drift,
+    soft_volume_exact,
     spectral_penalty,
     sphere_radius_from_volume,
     volume_ratio_drift,
@@ -38,29 +42,44 @@ GAMMA_IC = 2.38  # IceCube 9.5 yr diffuse-flux best fit (Eq. 1.3)
 
 
 # ---------------------------------------------------------------------------
-# Transport coefficients (Table 1, water)
+# Transport coefficients (water). The Table 1 values are the paper's, so those
+# tests pin source="table1" explicitly; the default is the PROPOSAL tabulation.
 # ---------------------------------------------------------------------------
+
+TABLE1 = "table1"
 
 
 def test_drift_coefficient_matches_table1():
-    assert drift_coefficient(E_1PEV)[0] == pytest.approx(0.35, abs=1e-6)
-    assert drift_coefficient(E_100PEV)[0] == pytest.approx(0.40, abs=1e-6)
+    assert drift_coefficient(E_1PEV, source=TABLE1)[0] == pytest.approx(0.35, abs=1e-6)
+    assert drift_coefficient(E_100PEV, source=TABLE1)[0] == pytest.approx(0.40, abs=1e-6)
 
 
 def test_diffusion_coefficient_matches_table1():
-    assert diffusion_coefficient(E_1PEV)[0] == pytest.approx(0.0766, abs=1e-6)
-    assert diffusion_coefficient(E_100PEV)[0] == pytest.approx(0.0982, abs=1e-6)
+    assert diffusion_coefficient(E_1PEV, source=TABLE1)[0] == pytest.approx(0.0766, abs=1e-6)
+    assert diffusion_coefficient(E_100PEV, source=TABLE1)[0] == pytest.approx(0.0982, abs=1e-6)
 
 
 def test_drift_coefficient_interpolates_in_log_energy():
     # 10 PeV = log10 16, the midpoint between the two reference decades.
-    mid = drift_coefficient(1.0e7)[0]
+    mid = drift_coefficient(1.0e7, source=TABLE1)[0]
     assert mid == pytest.approx(0.5 * (0.35 + 0.40), abs=1e-6)
 
 
 def test_drift_coefficient_clips_outside_reference_range():
-    assert drift_coefficient(1.0e3)[0] == pytest.approx(0.35, abs=1e-6)
-    assert drift_coefficient(1.0e12)[0] == pytest.approx(0.40, abs=1e-6)
+    assert drift_coefficient(1.0e3, source=TABLE1)[0] == pytest.approx(0.35, abs=1e-6)
+    assert drift_coefficient(1.0e12, source=TABLE1)[0] == pytest.approx(0.40, abs=1e-6)
+
+
+def test_proposal_is_the_default_source():
+    # PROPOSAL sits above Table 1 at both anchors, and unlike Table 1 it keeps
+    # rising below 1 PeV instead of being held flat.
+    assert drift_coefficient(E_1PEV)[0] > drift_coefficient(E_1PEV, source=TABLE1)[0]
+    assert drift_coefficient(1.0e3)[0] < drift_coefficient(1.0e4)[0] < drift_coefficient(E_1PEV)[0]
+
+
+def test_unknown_coefficient_source_raises():
+    with pytest.raises(ValueError):
+        drift_coefficient(E_1PEV, source="bogus")
 
 
 def test_drift_coefficient_scales_with_density():
@@ -70,9 +89,10 @@ def test_drift_coefficient_scales_with_density():
 
 
 def test_coefficients_accept_arrays():
-    b = drift_coefficient(np.array([E_1PEV, E_100PEV]))
+    b = drift_coefficient(np.array([E_1PEV, E_100PEV]), source=TABLE1)
     assert b.shape == (2,)
     np.testing.assert_allclose(b, [0.35, 0.40], atol=1e-6)
+    assert drift_coefficient(np.array([E_1PEV, E_100PEV])).shape == (2,)
 
 
 # ---------------------------------------------------------------------------
@@ -106,15 +126,25 @@ def test_sphere_radius_from_volume():
 
 
 def test_volume_ratio_icecube_about_four():
+    # The paper's figure of merit, so on the paper's coefficients.
     r_ic = sphere_radius_from_volume(1.0)
-    ratio = volume_ratio_drift(r_ic, E_1PEV, GAMMA_IC)[0]
+    ratio = volume_ratio_drift(r_ic, E_1PEV, GAMMA_IC, source=TABLE1)[0]
     assert ratio == pytest.approx(4.5, abs=0.2)
 
 
 def test_volume_ratio_km3net_about_seven_and_half():
     # KM3NeT is smaller; the paper quotes ~7.5 for R ~ 0.33 km.
-    ratio = volume_ratio_drift(0.33, E_1PEV, GAMMA_IC)[0]
+    ratio = volume_ratio_drift(0.33, E_1PEV, GAMMA_IC, source=TABLE1)[0]
     assert ratio == pytest.approx(7.5, abs=0.3)
+
+
+def test_proposal_coefficients_shrink_the_volume_ratio():
+    # PROPOSAL's larger b_mu means a shorter spectral length, so less soft volume.
+    r_ic = sphere_radius_from_volume(1.0)
+    assert (
+        volume_ratio_drift(r_ic, E_1PEV, GAMMA_IC)[0]
+        < volume_ratio_drift(r_ic, E_1PEV, GAMMA_IC, source=TABLE1)[0]
+    )
 
 
 def test_soft_volume_matches_ratio_definition():
@@ -250,3 +280,122 @@ def test_threshold_effective_area_is_flux_independent():
     area = resp.threshold_effective_area_cm2(energies)
     assert np.all(np.diff(area) > 0.0)
     assert area.shape == energies.shape
+
+
+# ---------------------------------------------------------------------------
+# Dark matter line target volume, the s=0 instance of the exact formalism (App. I)
+# ---------------------------------------------------------------------------
+
+
+def test_dm_line_target_volume_is_linear_in_column_depth():
+    r = sphere_radius_from_volume(8.0)
+    v_det = 4.0 / 3.0 * np.pi * r**3
+    proj_area = np.pi * r**2
+    for x in (1.0, 1.95, 5.0):
+        expected = proj_area * x + v_det
+        assert dm_line_target_volume_km3(r, x) == pytest.approx(expected, rel=1e-12)
+
+
+def test_dm_line_target_volume_grows_with_column_depth():
+    r = sphere_radius_from_volume(8.0)
+    shallow = dm_line_target_volume_km3(r, 1.0)
+    deep = dm_line_target_volume_km3(r, 5.0)
+    assert deep > shallow
+
+
+def test_dm_line_target_volume_reduces_to_v_det_at_zero_column():
+    r = sphere_radius_from_volume(8.0)
+    v_det = 4.0 / 3.0 * np.pi * r**3
+    assert dm_line_target_volume_km3(r, 0.0) == pytest.approx(v_det, rel=1e-12)
+
+
+def test_dm_line_target_volume_diverges_from_range_volume_at_large_depth():
+    # The point of offering both conventions: linear vs logarithmic growth
+    # means they must diverge for a large enough column / energy.
+    r = sphere_radius_from_volume(8.0)
+    soft = dm_line_target_volume_km3(r, 1.0e4)
+    ranged = range_target_volume_km3(r, 1.0e10)  # an extreme muon energy
+    assert soft > 10.0 * ranged
+
+
+# ---------------------------------------------------------------------------
+# Dynamic (energy-growing) projected area -- not part of the paper, a
+# phenomenological detector-response term (examples/26).
+# ---------------------------------------------------------------------------
+
+
+def test_dynamic_radius_reduces_to_static_at_critical_energy():
+    r = sphere_radius_from_volume(1.0)
+    e_crit = critical_energy_gev(E_1PEV)[0]
+    r_eff = dynamic_projected_radius_km(r, e_crit, light_yield_length_km=0.1)
+    assert r_eff[0] == pytest.approx(r, rel=1e-9)
+
+
+def test_dynamic_radius_clips_below_critical_energy():
+    # No growth for ionization-dominated (sub-E_c) muons.
+    r = sphere_radius_from_volume(1.0)
+    e_crit = critical_energy_gev(E_1PEV)[0]
+    below = dynamic_projected_radius_km(r, 0.1 * e_crit, light_yield_length_km=0.1)
+    assert below[0] == pytest.approx(r, rel=1e-9)
+
+
+def test_dynamic_radius_grows_logarithmically_above_critical_energy():
+    # E_c is evaluated at the muon's own energy (like muon_range_km), so
+    # compare against e_crit evaluated at that same energy, not a fixed anchor.
+    r = sphere_radius_from_volume(1.0)
+    energy = 10.0 * E_1PEV
+    e_crit = critical_energy_gev(energy)[0]
+    l_growth = 0.1
+    r_eff = dynamic_projected_radius_km(r, energy, light_yield_length_km=l_growth)
+    expected = r + l_growth * np.log(energy / e_crit)
+    assert r_eff[0] == pytest.approx(expected, rel=1e-9)
+
+
+def test_dynamic_area_is_pi_r_eff_squared():
+    r = sphere_radius_from_volume(1.0)
+    e_crit = critical_energy_gev(E_1PEV)[0]
+    l_growth = 0.1
+    area = dynamic_projected_area_km2(r, 5.0 * e_crit, light_yield_length_km=l_growth)
+    r_eff = dynamic_projected_radius_km(r, 5.0 * e_crit, light_yield_length_km=l_growth)
+    assert area[0] == pytest.approx(np.pi * r_eff[0] ** 2, rel=1e-12)
+
+
+def test_light_yield_length_none_preserves_static_behaviour():
+    # None must reproduce the existing static-radius result exactly, for every
+    # function it was threaded through.
+    r = sphere_radius_from_volume(1.0)
+    energy = np.array([E_1PEV, E_100PEV])
+
+    assert np.array_equal(
+        soft_volume_drift(r, energy, GAMMA_IC),
+        soft_volume_drift(r, energy, GAMMA_IC, light_yield_length_km=None),
+    )
+    assert np.array_equal(
+        soft_volume_exact(r, energy, GAMMA_IC, column_depth_km=1.95),
+        soft_volume_exact(r, energy, GAMMA_IC, column_depth_km=1.95, light_yield_length_km=None),
+    )
+    assert np.array_equal(
+        range_target_volume_km3(r, energy),
+        range_target_volume_km3(r, energy, light_yield_length_km=None),
+    )
+
+
+def test_light_yield_length_grows_range_volume_above_critical_energy():
+    r = sphere_radius_from_volume(1.0)
+    static = range_target_volume_km3(r, E_100PEV)[0]
+    dynamic = range_target_volume_km3(r, E_100PEV, light_yield_length_km=0.1)[0]
+    assert dynamic > static
+
+
+def test_response_light_yield_length_matches_transport_function():
+    # SoftVolumeResponse's wiring should reproduce a direct call to
+    # range_target_volume_km3 with the same light_yield_length_km.
+    r = sphere_radius_from_volume(1.0)
+    resp = SoftVolumeResponse(radius_km=r, light_yield_length_km=0.1)
+    e_nu = E_100PEV
+    e_mu = (1.0 - MEAN_INELASTICITY) * e_nu
+    expected_volume_cm3 = (
+        range_target_volume_km3(r, e_mu, light_yield_length_km=0.1) * CM_PER_KM**3
+    )
+    expected = expected_volume_cm3 * nucleon_number_density() * cc_cross_section(e_nu)
+    assert resp.threshold_effective_area_cm2(e_nu)[0] == pytest.approx(expected[0], rel=1e-12)

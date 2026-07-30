@@ -24,6 +24,16 @@ from .schema import CSV_TO_FIELD, EVENTS_DTYPE
 
 _SEASON_FILE_PATTERN = re.compile(r"^(IC\d+(?:_[IVX]+)?)_exp\.csv$")
 
+# Tabulated cross sections shipped with the package, unlike the DR2 release
+# files: they are small enough to version and are needed to run anything.
+XSEC_DIR = pathlib.Path(__file__).parent / "xsec"
+
+_XSEC_FILES = {"cc": "numu_xsec.csv", "nc": "numu_xsec_nc.csv"}
+
+# Published limit and sensitivity curves digitized from the literature, shipped
+# with the package for the same reason as the cross-section tables.
+BOUNDS_DIR = pathlib.Path(__file__).parent / "bounds"
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
@@ -266,6 +276,113 @@ def compute_livetime_s(uptime: np.ndarray) -> float:
     """
     durations_mjd = uptime[:, 1] - uptime[:, 0]
     return float(durations_mjd.sum()) * 86400.0
+
+
+# ---------------------------------------------------------------------------
+# Cross-section tables
+# ---------------------------------------------------------------------------
+
+
+def load_cross_section_table(
+    model: str,
+    channel: str,
+    xsec_dir: str | pathlib.Path | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Load a tabulated neutrino-nucleon cross section shipped with the package.
+
+    Unlike the DR2 release files, these tables are small and are versioned in
+    the repository, under ``src/softpaws/data/xsec/<model>/``. Each is a plain
+    two-column CSV of energy and cross section with no header.
+
+    Parameters
+    ----------
+    model : str
+        Table directory name, e.g. ``"BGR18"`` (Bertone, Gauld and Rojo 2018,
+        arXiv:1808.02034), tabulated for ``nu_mu`` on a **proton** target.
+    channel : {"cc", "nc"}
+        Interaction channel: charged or neutral current.
+    xsec_dir : str or pathlib.Path, optional
+        Root of the table directory. Defaults to :data:`XSEC_DIR`.
+
+    Returns
+    -------
+    energy_gev : np.ndarray, shape (n,)
+        Neutrino energies [GeV], strictly increasing.
+    sigma_cm2 : np.ndarray, shape (n,)
+        Cross section per target [cm^2].
+
+    Raises
+    ------
+    ValueError
+        Raised for an unknown ``channel``, or if the table is not sorted in
+        energy.
+    FileNotFoundError
+        Raised if the table file is missing.
+    """
+    if channel not in _XSEC_FILES:
+        raise ValueError(f"channel must be one of {sorted(_XSEC_FILES)}, got {channel!r}.")
+
+    root = XSEC_DIR if xsec_dir is None else pathlib.Path(xsec_dir)
+    path = root / model / _XSEC_FILES[channel]
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    table = np.loadtxt(path, delimiter=",")
+    energy_gev, sigma_cm2 = table[:, 0], table[:, 1]
+    if np.any(np.diff(energy_gev) <= 0.0):
+        raise ValueError(f"Cross-section table {path} is not strictly increasing in energy.")
+    return energy_gev, sigma_cm2
+
+
+# ---------------------------------------------------------------------------
+# Published bounds
+# ---------------------------------------------------------------------------
+
+
+def load_dm_line_bounds(
+    experiment: str = "icecubegen2",
+    bounds_dir: str | pathlib.Path | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Load a published dark-matter neutrino-line sensitivity curve.
+
+    The curves are digitized from published figures, so the points are neither
+    evenly spaced nor guaranteed to arrive in order; this function sorts them
+    into increasing mass so they can be interpolated directly.
+
+    Parameters
+    ----------
+    experiment : str, optional
+        Curve file stem, e.g. ``"icecubegen2"`` (the default) for the
+        IceCube-Gen2 projected sensitivity to ``chi chi -> nu nubar``.
+    bounds_dir : str or pathlib.Path, optional
+        Root of the bounds directory. Defaults to :data:`BOUNDS_DIR`.
+
+    Returns
+    -------
+    mass_gev : np.ndarray, shape (n,)
+        Dark-matter mass ``m_chi`` [GeV], strictly increasing.
+    sigma_v_cm3_s : np.ndarray, shape (n,)
+        Upper limit on the velocity-averaged annihilation cross section
+        ``<sigma v>`` [cm^3 s^-1].
+
+    Raises
+    ------
+    FileNotFoundError
+        Raised if the curve file is missing.
+    ValueError
+        Raised if the curve contains duplicate masses.
+    """
+    root = BOUNDS_DIR if bounds_dir is None else pathlib.Path(bounds_dir)
+    path = root / f"{experiment}_dm_lines.csv"
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    table = np.loadtxt(path, delimiter=",")
+    order = np.argsort(table[:, 0])
+    mass_gev, sigma_v_cm3_s = table[order, 0], table[order, 1]
+    if np.any(np.diff(mass_gev) <= 0.0):
+        raise ValueError(f"Bounds curve {path} contains duplicate masses.")
+    return mass_gev, sigma_v_cm3_s
 
 
 # ---------------------------------------------------------------------------
