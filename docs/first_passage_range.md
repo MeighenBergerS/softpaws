@@ -198,10 +198,20 @@ approaching the asymptotic `b_μ/Φ′(0) = 0.837`.
 A_eff(E_ν) = n_N σ_CC(E_ν) [ A_proj L(E_ν) + V_det ] T(E_ν) ,
 ```
 
-with `T` the Earth transmission. Nothing in this expression is fitted. Against the
-IceCube DR2 upgoing effective area it lands within ~12% between 1 and 10 PeV once
-neutral-current regeneration is kept in `T` (`attenuation.regenerated_transmission`);
-see `examples/28_neutrino_energy_effective_area.py` for the residuals.
+with `T` the Earth transmission. Nothing in this expression is fitted.
+
+Against the IceCube DR2 upgoing effective area, with neutral-current regeneration
+kept in `T` (`attenuation.regenerated_transmission`) and the `ν_τ → τ → μ` channel
+added (`attenuation.flavour_transmission`, `flavour="tau"`), the residual over
+10⁵–10⁷·⁸ GeV is 0.044 dex rms with a +0.15 dex trend across the band. The implied
+selection efficiency `A_eff^IC / A_eff^model` then runs 0.56 → 0.82 and stays below
+one everywhere, as an efficiency must — which it does not without those two terms.
+See `examples/28_neutrino_energy_effective_area.py`. The top decade is excluded
+from the statistics: the simulation behind the DR2 tables stops at 100 PeV.
+
+Note that the DR2 tables are *muon-neutrino* effective areas, so the `ν_τ` channel
+is a model-side addition rather than a like-for-like term, and it assumes
+`φ_ντ = φ_νμ` at Earth. Example 28 keeps it as a separate curve for that reason.
 
 ## 10. Scope and caveats
 

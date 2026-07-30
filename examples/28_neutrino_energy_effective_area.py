@@ -66,6 +66,7 @@ import numpy as np
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 from softpaws.data.schema import SEASONS
 from softpaws.transport.attenuation import (
+    flavour_transmission,
     prem_column,
     regenerated_transmission,
     survival_probability,
@@ -78,6 +79,7 @@ from softpaws.transport.soft_volume import (
     stochastic_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
+from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
 from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
@@ -93,6 +95,11 @@ RADIUS_KM = sphere_radius_from_volume(1.0)  # ~0.62 km, IceCube-like
 # Declination samples for the upgoing-hemisphere average. The published table is
 # binned in sin(dec), so the average is taken with sin(dec) weighting.
 N_DEC = 60
+
+# The simulation behind the DR2 tables runs to 100 PeV (DR2_readme.txt), which is
+# the top of COMMON_LOG10_E, so the last point sits on the boundary of the
+# tabulation. It is plotted but excluded from the residual statistics.
+STATS_LOG10_E = (5.0, 7.8)
 
 CROSS_SECTION = bgr18_cross_section()
 
@@ -272,6 +279,75 @@ def effective_area_regenerated(
     return out
 
 
+def effective_area_tau_channel(
+    length_km: np.ndarray,
+    threshold_gev: float,
+) -> np.ndarray:
+    """Muon-track effective area from an equal-normalization ``nu_tau`` flux.
+
+    A through-going track cannot tell a direct ``nu_mu`` CC muon from one made
+    by ``nu_tau -> tau -> mu``, so the second channel adds to the observed rate.
+    It matters more and more with energy for one reason: charged current
+    regenerates a ``nu_tau`` but terminates a ``nu_mu``, so the Earth stays
+    transparent to ``nu_tau`` long after it has gone opaque to ``nu_mu``
+    (:func:`~softpaws.transport.attenuation.flavour_transmission`).
+
+    The muon is born about four times lower in energy than in the direct
+    channel -- ``<z> (1 - <y_w>) E_nu`` with ``<z> = 0.3`` against
+    ``(1 - <y_w>) E_nu`` -- which shortens its range, and the branching ratio
+    costs a further factor ``B_{tau->mu} = 0.174``. Neither offsets the
+    transmission gain at UHE.
+
+    **This is a model-side addition, not a like-for-like term.** The DR2 tables
+    are muon-neutrino effective areas, generated from ``nu_mu`` simulation
+    (``DR2_readme.txt``), so this channel is not inside the published number it
+    is being compared against. It is reported as a separate curve for that
+    reason, and it assumes ``phi_nu_tau = phi_nu_mu`` at Earth, which is what
+    the effective-area convention forces once the flux is divided out.
+
+    Parameters
+    ----------
+    length_km : np.ndarray
+        Effective muon length [km] on ``COMMON_LOG10_E``, reused for the
+        down-scattered rungs by log-interpolation.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+
+    Returns
+    -------
+    aeff : np.ndarray
+        Effective area [cm^2], averaged over the upgoing hemisphere.
+    """
+    energy = 10.0**COMMON_LOG10_E
+    columns, weights = upgoing_columns()
+    n_nucleon = nucleon_number_density()
+    # Muon energy from the two-step decay chain, as a fraction of the parent.
+    muon_fraction = MEAN_Z * (1.0 - MEAN_INELASTICITY)
+
+    out = np.empty(energy.size)
+    for i, e_nu in enumerate(energy):
+        rung_energy, rung_weight = flavour_transmission(
+            float(e_nu), columns, CROSS_SECTION, flavour="tau"
+        )
+        rung_length = np.interp(
+            np.log10(rung_energy * muon_fraction / (1.0 - MEAN_INELASTICITY)),
+            COMMON_LOG10_E,
+            length_km,
+            left=0.0,
+            right=length_km[-1],
+        )
+        rung_length[muon_fraction * rung_energy <= threshold_gev] = 0.0
+        rung_rate = (
+            n_nucleon
+            * CROSS_SECTION.cc(rung_energy)
+            * target_volume_cm3(rung_length)
+            * BR_TAU_TO_MU
+        )
+        per_dec = (rung_weight * rung_rate[:, None]).sum(axis=0)
+        out[i] = np.average(per_dec, weights=weights)
+    return out
+
+
 def make_figure(
     icecube: np.ndarray,
     curves: dict[str, np.ndarray],
@@ -281,9 +357,11 @@ def make_figure(
     with plt.style.context(str(_STYLE)):
         fig, axes = plt.subplots(1, 2, figsize=(6.0, 2.6))
 
+        colors = ("C0", "C1", "C3", "C2")
+
         ax = axes[0]
         ax.plot(COMMON_LOG10_E, icecube, color="k", lw=1.8, label="IceCube, upgoing")
-        for (name, curve), color in zip(curves.items(), ("C0", "C1", "C3")):
+        for (name, curve), color in zip(curves.items(), colors):
             ax.plot(COMMON_LOG10_E, curve, lw=1.1, color=color, label=name)
         ax.set_yscale("log")
         ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]")
@@ -291,7 +369,7 @@ def make_figure(
         ax.legend(fontsize=5.5, loc="upper left")
 
         ax = axes[1]
-        for (name, curve), color in zip(curves.items(), ("C0", "C1", "C3")):
+        for (name, curve), color in zip(curves.items(), colors):
             ax.plot(COMMON_LOG10_E, icecube / curve, lw=1.1, color=color, label=name)
         ax.axhline(1.0, color="0.6", lw=0.8, ls=":")
         ax.set_yscale("log")
@@ -303,6 +381,8 @@ def make_figure(
         for ax in axes:
             ax.set_xlim(COMMON_LOG10_E[0], COMMON_LOG10_E[-1])
             ax.set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$")
+            # Beyond the top of the DR2 simulation; shown, but not scored.
+            ax.axvspan(STATS_LOG10_E[1], COMMON_LOG10_E[-1], color="0.85", alpha=0.5, lw=0)
 
         fig.tight_layout()
         out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -328,18 +408,25 @@ def report(
             f"{lengths['stochastic'][i] / lengths['deterministic'][i]:6.3f}"
         )
 
-    print(f"\n{'log10(E/GeV)':>13} {'A_eff^IC':>11} " + " ".join(f"{n:>26}" for n in curves))
+    print(f"\n{'log10(E/GeV)':>13} {'A_eff^IC':>11} " + " ".join(f"{n:>28}" for n in curves))
     for log10_e in (4.0, 5.0, 6.0, 7.0, 8.0):
         i = int(np.argmin(np.abs(COMMON_LOG10_E - log10_e)))
-        ratios = " ".join(f"{icecube[i] / c[i]:26.2f}" for c in curves.values())
-        print(f"{COMMON_LOG10_E[i]:13.1f} {icecube[i]:11.3g} {ratios}")
+        ratios = " ".join(f"{icecube[i] / c[i]:28.2f}" for c in curves.values())
+        flag = "  *" if COMMON_LOG10_E[i] > STATS_LOG10_E[1] else ""
+        print(f"{COMMON_LOG10_E[i]:13.1f} {icecube[i]:11.3g} {ratios}{flag}")
     print("  (columns are IceCube / model; 1.0 is perfect, no parameters were fitted)")
+    print("  * beyond the top of the DR2 simulation (100 PeV); excluded from the statistics")
 
-    band = (COMMON_LOG10_E >= 5.0) & (COMMON_LOG10_E <= 8.0)
+    lo, hi = STATS_LOG10_E
+    band = (COMMON_LOG10_E >= lo) & (COMMON_LOG10_E <= hi)
     print()
     for name, curve in curves.items():
         residual = np.log10(icecube[band] / curve[band])
-        print(f"  {name:>26}: rms residual 1e5-1e8 = {np.std(residual):.3f} dex")
+        trend = residual[-1] - residual[0]
+        print(
+            f"  {name:>28}: rms {np.std(residual):.3f} dex, "
+            f"trend {trend:+.2f} dex over 1e{lo:g}-1e{hi:g}"
+        )
 
 
 def main() -> None:
@@ -367,6 +454,10 @@ def main() -> None:
             lengths["stochastic"], args.threshold
         ),
     }
+    print("Adding the nu_tau -> tau -> mu channel ...")
+    curves["+ nu_tau -> tau -> mu"] = curves["stochastic + NC regeneration"] + (
+        effective_area_tau_channel(lengths["stochastic"], args.threshold)
+    )
 
     report(icecube, curves, lengths)
     make_figure(icecube, curves, args.out)

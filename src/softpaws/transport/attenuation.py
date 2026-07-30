@@ -10,9 +10,15 @@ The survival probability along a chord of column depth ``X`` [g cm^-2] is
 
 .. math:: D_\\nu(E) = \\exp\\!\\bigl[-N_A\\,\\sigma_\\mathrm{tot}(E)\\,X\\bigr],
 
-with ``sigma_tot`` the total (CC + NC) neutrino-nucleon cross section. Only
-absorption is modelled: neutral-current down-scattering and tau regeneration
-are neglected (a ``nu_mu`` disappearance picture).
+with ``sigma_tot`` the total (CC + NC) neutrino-nucleon cross section. That is
+pure absorption -- a ``nu_mu`` disappearance picture -- which is right for the
+flux at a fixed energy but not for a tabulated effective area, where a neutrino
+that scattered down on the way in still counts towards its original energy.
+:func:`regenerated_transmission` and :func:`flavour_transmission` keep the
+down-scattered population instead: the former on a geometric ladder for
+``nu_mu``, the latter on a log-energy grid that also covers ``nu_tau``, whose
+charged-current interaction regenerates the neutrino rather than terminating it
+and so leaves the Earth far more transparent at UHE.
 
 This module provides two columns:
 
@@ -496,6 +502,138 @@ def regenerated_transmission(
     # the diagonal itself and one decomposition serves every column depth.
     eigenvalues, vectors = np.linalg.eig(generator)
     start = np.zeros(int(n_levels))
+    start[0] = 1.0
+    coefficients = np.linalg.solve(vectors, start)
+    weights = vectors @ (np.exp(np.outer(eigenvalues, columns)) * coefficients[:, None])
+    return energies, np.clip(np.real(weights), 0.0, None)
+
+
+# Mean fraction of the tau energy carried away by the regenerated tau neutrino
+# in tau -> nu_tau X. Distinct from softpaws.transport.tau.MEAN_Z, which is the
+# fraction carried by the *muon* in the leptonic channel.
+TAU_TO_NUTAU_ENERGY_FRACTION = 0.4
+
+
+def flavour_transmission(
+    energy_gev: float,
+    column_g_cm2: float | np.ndarray,
+    cross_section: "CrossSection | None" = None,
+    lam: float = DEFAULT_LAMBDA,
+    flavour: str = "mu",
+    decades: float = 5.0,
+    n_grid: int = 100,
+    mean_inelasticity_nc: float = NC_MEAN_INELASTICITY,
+    mean_inelasticity_cc: float = 0.2,
+    nu_tau_fraction: float = TAU_TO_NUTAU_ENERGY_FRACTION,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Arriving-neutrino spectrum after a column, per flavour, on a log-energy grid.
+
+    Generalizes :func:`regenerated_transmission`, which handles ``nu_mu`` on a
+    geometric ladder of a single step size. The ``nu_tau`` cascade needs two
+    step sizes at once -- neutral current moves the neutrino by
+    ``1 - <y>_NC``, whereas charged current makes a tau that promptly decays
+    back to a ``nu_tau`` at roughly ``<z_nu> (1 - <y>_CC)`` of the original
+    energy -- so a single-ratio ladder cannot represent it and a log-energy
+    grid with interpolated feed is used instead.
+
+    The distinction between the flavours is what charged current does:
+
+    ``"mu"``
+        Charged current is terminal. A ``nu_mu`` that interacts charged-current
+        makes a muon, which at these energies loses energy rather than decaying,
+        so the neutrino is gone. Only neutral current regenerates.
+    ``"tau"``
+        Charged current is *not* terminal. The tau it makes decays back to a
+        ``nu_tau`` before losing much energy, so the Earth stays far more
+        transparent to ``nu_tau`` than to ``nu_mu`` at UHE. Both channels
+        regenerate.
+
+    Parameters
+    ----------
+    energy_gev : float
+        Injected neutrino energy [GeV] at the surface.
+    column_g_cm2 : float or np.ndarray
+        Traversed column depth(s) ``X`` [g cm^-2].
+    cross_section : softpaws.transport.cross_section.CrossSection, optional
+        Cross-section model providing separate ``cc`` and ``nc`` channels.
+        ``None`` (the default) uses the analytic power law with the fixed
+        :data:`TOTAL_TO_CC_RATIO` split.
+    lam : float, optional
+        Cross-section slope of the power-law fallback.
+    flavour : {"mu", "tau"}, optional
+        Which cascade to solve; see above. Defaults to ``"mu"``.
+    decades : float, optional
+        Span of the log-energy grid below the injected energy.
+    n_grid : int, optional
+        Number of grid points over that span.
+    mean_inelasticity_nc, mean_inelasticity_cc : float, optional
+        Mean neutral- and charged-current inelasticities.
+    nu_tau_fraction : float, optional
+        Mean ``E_nu / E_tau`` in the tau decay, used only for ``flavour="tau"``.
+        Defaults to :data:`TAU_TO_NUTAU_ENERGY_FRACTION`.
+
+    Returns
+    -------
+    energies_gev : np.ndarray, shape (n_grid,)
+        Grid energies [GeV], descending from ``energy_gev``.
+    weights : np.ndarray, shape (n_grid, n_column)
+        Probability of arriving at each grid energy without having been
+        removed, one column per entry of ``column_g_cm2``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``flavour`` is not ``"mu"`` or ``"tau"``.
+
+    Notes
+    -----
+    The tau is treated as decaying where it was produced. Its decay length
+    reaches ~5 km w.e. at 100 PeV against a ~2700 km w.e. interaction length,
+    so the displacement is negligible for the transmission, though not for the
+    muon that the decay produces.
+
+    Feed that lands between grid points is split linearly in ``log E`` between
+    the two neighbours, which conserves the total rate exactly and the mean
+    log-energy to the grid resolution.
+    """
+    if flavour not in ("mu", "tau"):
+        raise ValueError(f"flavour must be 'mu' or 'tau', got {flavour!r}.")
+
+    columns = np.atleast_1d(np.asarray(column_g_cm2, dtype=float))
+    log_energies = np.log(float(energy_gev)) - np.linspace(
+        0.0, float(decades) * np.log(10.0), int(n_grid)
+    )
+    energies = np.exp(log_energies)
+    step = log_energies[0] - log_energies[1]
+
+    if cross_section is not None:
+        sigma_cc = np.atleast_1d(cross_section.cc(energies))
+        sigma_nc = np.atleast_1d(cross_section.nc(energies))
+    else:
+        sigma_cc = np.atleast_1d(cc_cross_section(energies, lam))
+        sigma_nc = (TOTAL_TO_CC_RATIO - 1.0) * sigma_cc
+
+    generator = np.diag(-AVOGADRO_PER_MOL * (sigma_cc + sigma_nc))
+
+    def _feed(rate: np.ndarray, fraction: float) -> None:
+        """Scatter ``rate`` from each node down to ``fraction`` of its energy."""
+        offset = -np.log(fraction) / step
+        low = np.floor(offset).astype(int)
+        frac = offset - low
+        for i in range(int(n_grid)):
+            for target, share in ((low + i, 1.0 - frac), (low + i + 1, frac)):
+                if 0 <= target < n_grid and share > 0.0:
+                    generator[target, i] += rate[i] * share
+
+    _feed(AVOGADRO_PER_MOL * sigma_nc, 1.0 - mean_inelasticity_nc)
+    if flavour == "tau":
+        _feed(
+            AVOGADRO_PER_MOL * sigma_cc,
+            nu_tau_fraction * (1.0 - mean_inelasticity_cc),
+        )
+
+    eigenvalues, vectors = np.linalg.eig(generator)
+    start = np.zeros(int(n_grid))
     start[0] = 1.0
     coefficients = np.linalg.solve(vectors, start)
     weights = vectors @ (np.exp(np.outer(eigenvalues, columns)) * coefficients[:, None])
