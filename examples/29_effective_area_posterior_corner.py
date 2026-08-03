@@ -12,7 +12,7 @@ Structurally this is example 09's corner plot moved from the event-rate fit to
 the effective-area fit, with the best-fit point marked in every panel alongside
 the first-principles expectation.
 
-Four parameters float, each with an independent expectation:
+Five parameters float, each with an independent expectation:
 
 ``eps_0``
     Constant selection efficiency, capped at 1: the model is a geometric
@@ -36,6 +36,15 @@ Four parameters float, each with an independent expectation:
     implemented as a tilt of the BGR18 table about a 1 PeV pivot so that
     ``lambda = 0.454`` reproduces it exactly. Together with ``b_scale`` this is
     the other handle on how fast the model grows with energy.
+``Lambda``
+    Growth of the light reach per e-fold of muon energy, the shape parameter of
+    :func:`~softpaws.transport.soft_volume.light_reach_radius_km`, with its
+    pivot held at 1 PeV so that ``eps_0`` keeps the normalization. ``Lambda = 0``
+    is the static-footprint model. This is the parameter the earlier
+    four-parameter version of this fit did not have, and its absence is why
+    that version had to push the residual trend into ``lambda``: example 28's
+    ratio inversion gives ``Lambda = 14.3`` m per e-fold independently, so the
+    question here is whether the posterior finds it and releases ``lambda``.
 
 The ``nu_tau`` flux ratio is *not* floated: it is fixed by oscillations over
 astrophysical baselines, so ``f_tau = 1`` throughout.
@@ -85,6 +94,7 @@ from softpaws.transport.attenuation import flavour_transmission, prem_column
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
+    light_reach_radius_km,
     sphere_radius_from_volume,
     stochastic_muon_range_km,
 )
@@ -104,13 +114,26 @@ N_DEC = 40
 N_RUNG = 80
 CROSS_SECTION = bgr18_cross_section()
 
-PARAM_NAMES = ("eps_0", "log10_e_thr", "b_scale", "lam")
+PARAM_NAMES = ("eps_0", "log10_e_thr", "b_scale", "lam", "reach_km")
 CORNER_LABELS = [
     r"$\varepsilon_0$",
     r"$\log_{10}(E_{\rm thr}/{\rm GeV})$",
     r"$b_\mu$ scale",
     r"$\lambda$",
+    r"$\Lambda$ [km]",
 ]
+
+# The reach law's pivot is held at the same 1 PeV as the cross-section tilt, so
+# that eps_0 carries the normalization and Lambda carries only the shape. Left
+# free, the two would be degenerate: the fit constrains sqrt(eps_0) R_eff, not
+# R_eff. Lambda = 0 recovers the static-footprint model of example 28 exactly.
+REACH_PIVOT_GEV = 1.0e6
+
+# Example 28 inverts the published-to-model ratio for the radius each energy
+# demands and fits a straight line through it in ln E, giving 14.3 m per e-fold
+# with no reference to this posterior. That is the independent expectation for
+# Lambda, in the same sense that 0.454 is the independent expectation for lam.
+REACH_EXAMPLE28_KM = 0.0143
 
 # Effective log-log slope of the BGR18 CC cross section over the fitted band,
 # and the pivot the tilt rotates about. lam = LAMBDA_BGR18 recovers the table.
@@ -125,6 +148,7 @@ EXPECTED = np.array([
     np.log10(DEFAULT_MUON_THRESHOLD_GEV),    # 1 TeV, the package default
     1.0,                                     # theory transport coefficients
     LAMBDA_BGR18,                            # the tabulated cross-section slope
+    REACH_EXAMPLE28_KM,                      # slope of example 28's ratio inversion
 ])
 # The smearing matrix's own handle on the threshold, shown for comparison.
 SMEARING_LOG10_E_THR = 2.85
@@ -136,6 +160,9 @@ PRIORS = {
     "log10_e_thr": (2.0, 5.0),
     "b_scale": (0.0, 3.0),
     "lam": (0.0, 1.2),
+    # Zero sits inside the range, so the data can say no reach is needed; the
+    # negative side is kept open as a null check rather than as physics.
+    "reach_km": (-0.02, 0.10),
 }
 
 
@@ -228,8 +255,8 @@ def model_aeff(
 
     Parameters
     ----------
-    theta : np.ndarray, shape (4,)
-        ``(eps_0, log10_e_thr, b_scale, lam)``.
+    theta : np.ndarray, shape (5,)
+        ``(eps_0, log10_e_thr, b_scale, lam, reach_km)``.
     ladders : dict
         Output of :func:`precompute_ladders`.
 
@@ -238,10 +265,8 @@ def model_aeff(
     aeff : np.ndarray, shape (COMMON_LOG10_E.size,)
         Effective area [cm^2].
     """
-    eps_0, log10_e_thr, b_scale, lam = theta
+    eps_0, log10_e_thr, b_scale, lam, reach_km = theta
     threshold = 10.0**log10_e_thr
-    proj_area = np.pi * RADIUS_KM**2
-    v_det = 4.0 / 3.0 * np.pi * RADIUS_KM**3
     n_nucleon = nucleon_number_density()
 
     total = np.zeros(COMMON_LOG10_E.size)
@@ -255,7 +280,12 @@ def model_aeff(
         length = stochastic_muon_range_km(
             muon_energy.ravel(), threshold, b_scale=b_scale
         ).reshape(muon_energy.shape)
-        volume_cm3 = (proj_area * length + v_det) * CM_PER_KM**3
+        radius = light_reach_radius_km(
+            RADIUS_KM, muon_energy, reach_km, REACH_PIVOT_GEV
+        )
+        volume_cm3 = (
+            np.pi * radius**2 * length + 4.0 / 3.0 * np.pi * radius**3
+        ) * CM_PER_KM**3
         # BGR18 tilted about the pivot; lam = LAMBDA_BGR18 recovers the table.
         sigma = CROSS_SECTION.cc(energies) * (energies / LAMBDA_PIVOT_GEV) ** (
             lam - LAMBDA_BGR18
@@ -382,9 +412,15 @@ def main() -> None:
     print("Precomputing Earth transmission ladders (parameter independent) ...")
     ladders = precompute_ladders()
 
-    start = np.array([0.7, np.log10(DEFAULT_MUON_THRESHOLD_GEV), B_SCALE_MEAN, LAMBDA_BGR18])
+    start = np.array([
+        0.7, np.log10(DEFAULT_MUON_THRESHOLD_GEV), B_SCALE_MEAN, LAMBDA_BGR18,
+        REACH_EXAMPLE28_KM,
+    ])
+    # Per-parameter scatter: reach_km lives on a scale two orders of magnitude
+    # below the others, so a common 0.02 would throw walkers out of its prior.
+    scatter = np.array([0.02, 0.02, 0.02, 0.02, 0.002])
     rng = np.random.default_rng(11)
-    initial = start + 0.02 * rng.standard_normal((args.walkers, start.size))
+    initial = start + scatter * rng.standard_normal((args.walkers, start.size))
 
     print(f"Sampling ({args.walkers} walkers x {args.steps} steps) ...")
     sampler = emcee.EnsembleSampler(

@@ -216,6 +216,66 @@ def dynamic_projected_area_km2(
     return np.pi * r_eff**2
 
 
+def light_reach_radius_km(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    reach_km: float,
+    pivot_gev: float,
+) -> np.ndarray:
+    """Instrumented radius plus a signed, logarithmically growing light reach.
+
+    :func:`dynamic_projected_radius_km` clips its growth at ``R_det``, so it can
+    only ever describe a detector responding to *more* than its footprint. That
+    forbids the opposite regime, which is just as real: while the trigger is
+    still turning on, a dim track lights too few modules to use the whole array
+    and the detector responds to *less* than its footprint. Dropping the clip
+    and letting the reach change sign covers both with one mechanism,
+
+    .. math:: R_\\mathrm{eff}(E) = \\max\\!\\left[0,\\;
+        R_\\mathrm{det} + \\Lambda \\ln(E / E_\\mathrm{piv})\\right],
+
+    with ``Lambda`` the growth per e-fold and ``E_piv`` the energy at which the
+    detector responds to exactly its own footprint. Above ``E_piv`` the reach is
+    a physical halo. Below it the negative branch is a stand-in for partial
+    occupancy rather than a literal distance, and should be read as a
+    phenomenological turn-on.
+
+    Both parameters describe the medium and the muon rather than the array, so
+    one pair applies to every configuration at a site with only ``R_det``
+    changing. That is what makes the law transferable between a full detector
+    and a partially built one, and therefore testable.
+
+    Parameters
+    ----------
+    radius_km : float
+        Instrumented footprint radius ``R_det`` [km].
+    energy_gev : float or np.ndarray
+        Muon energy [GeV] setting the light output.
+    reach_km : float
+        Growth of the reach per e-fold of energy ``Lambda`` [km].
+    pivot_gev : float
+        Energy ``E_piv`` at which the effective radius equals ``R_det`` [GeV].
+
+    Returns
+    -------
+    radius : np.ndarray
+        Effective radius [km], clipped at zero.
+
+    Notes
+    -----
+    The reach is a statement about the muon's light output *where it is seen*,
+    so the energy passed should be the muon energy at the detector. Callers
+    working at fixed neutrino energy, where the arrival energy varies along the
+    depth integral, necessarily approximate this by the production energy;
+    that overestimates the reach for muons born far upstream. In the
+    muon-energy-differential convention the observed energy is the natural
+    argument and no approximation is involved.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    radius = np.clip(radius_km + reach_km * np.log(energy / pivot_gev), 0.0, None)
+    return radius.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else radius
+
+
 def sphere_radius_from_volume(volume_km3: float) -> float:
     """Radius of a sphere with the given volume.
 
@@ -617,7 +677,8 @@ def dm_line_target_volume_km3(radius_km: float, column_depth_km: float) -> float
     soft-volume machinery used for the power-law case, offered here for
     side-by-side comparison against the muon-range convention
     (:func:`range_target_volume_km3`), not as a replacement for it -- see
-    ``examples/23_dm_lines.py``.
+    ``examples/34_dm_line_sensitivity.py``, which uses the muon-range
+    convention for exactly that reason.
 
     Parameters
     ----------

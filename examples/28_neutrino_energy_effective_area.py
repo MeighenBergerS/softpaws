@@ -62,6 +62,7 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import brentq
 
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 from softpaws.data.schema import SEASONS
@@ -74,6 +75,7 @@ from softpaws.transport.attenuation import (
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
+    light_reach_radius_km,
     muon_range_km,
     sphere_radius_from_volume,
     stochastic_muon_range_km,
@@ -186,7 +188,7 @@ def upgoing_columns() -> tuple[np.ndarray, np.ndarray]:
 
 def target_volume_cm3(
     length_km: np.ndarray,
-    radius_km: float = RADIUS_KM,
+    radius_km: float | np.ndarray = RADIUS_KM,
 ) -> np.ndarray:
     """Target volume for a monochromatic parent: projected column plus detector.
 
@@ -194,17 +196,80 @@ def target_volume_cm3(
     ----------
     length_km : np.ndarray
         Effective muon length [km] at each neutrino energy.
-    radius_km : float, optional
-        Radius of the spherical instrumented volume [km].
+    radius_km : float or np.ndarray, optional
+        Radius of the spherical instrumented volume [km]. An array is
+        broadcast against ``length_km``, which is how the reach law of
+        :func:`~softpaws.transport.soft_volume.light_reach_radius_km` enters.
 
     Returns
     -------
     volume : np.ndarray
         Target volume [cm^3].
     """
-    proj_area = np.pi * radius_km**2
-    v_det = 4.0 / 3.0 * np.pi * radius_km**3
+    radius = np.asarray(radius_km, dtype=float)
+    proj_area = np.pi * radius**2
+    v_det = 4.0 / 3.0 * np.pi * radius**3
     return (proj_area * length_km + v_det) * CM_PER_KM**3
+
+
+def required_radius_km(ratio: np.ndarray, radius_km: float = RADIUS_KM) -> np.ndarray:
+    """Sphere radius that would scale the target volume by ``ratio``.
+
+    The implied selection efficiency is the published area divided by the
+    model. Where it departs from a constant, the departure can be pushed into
+    the geometry, and for a sphere the projected area dominates the target
+    volume, so the radius that would absorb it is close to ``R sqrt(ratio)``.
+    Solving the full cubic instead keeps the small ``V_det`` term honest.
+
+    Parameters
+    ----------
+    ratio : np.ndarray
+        Required scaling of the target volume at each energy.
+    radius_km : float, optional
+        Nominal instrumented radius [km].
+
+    Returns
+    -------
+    radius : np.ndarray
+        Required radius [km], ``NaN`` where ``ratio`` is not finite.
+    """
+    lengths = stochastic_muon_range_km(
+        (1.0 - MEAN_INELASTICITY) * 10.0**COMMON_LOG10_E, DEFAULT_MUON_THRESHOLD_GEV
+    )
+    out = np.full(np.shape(ratio), np.nan)
+    for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths)):
+        if not np.isfinite(r) or r <= 0.0:
+            continue
+        target = r * float(target_volume_cm3(np.array([length]))[0])
+        out[i] = brentq(
+            lambda x: float(target_volume_cm3(np.array([length]), x)[0]) - target,
+            1.0e-4,
+            50.0,
+        )
+    return out
+
+
+def fit_reach_law(log10_e: np.ndarray, radius_needed_km: np.ndarray) -> tuple[float, float]:
+    """Least-squares reach law through the radii the published curve demands.
+
+    Parameters
+    ----------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the points to fit.
+    radius_needed_km : np.ndarray
+        Radius each point demands [km]; ``NaN`` entries are dropped.
+
+    Returns
+    -------
+    reach_km : float
+        Growth of the reach per e-fold of energy [km].
+    pivot_gev : float
+        Energy at which the effective radius equals the instrumented one [GeV].
+    """
+    valid = np.isfinite(radius_needed_km)
+    ln_e = np.log(10.0 ** np.asarray(log10_e)[valid])
+    slope, intercept = np.polyfit(ln_e, np.asarray(radius_needed_km)[valid], 1)
+    return float(slope), float(np.exp((RADIUS_KM - intercept) / slope))
 
 
 def effective_area_absorbed(volume_cm3: np.ndarray) -> np.ndarray:
@@ -232,6 +297,8 @@ def effective_area_absorbed(volume_cm3: np.ndarray) -> np.ndarray:
 def effective_area_regenerated(
     length_km: np.ndarray,
     threshold_gev: float,
+    reach_km: float | None = None,
+    pivot_gev: float = 1.0e6,
 ) -> np.ndarray:
     """Effective area with neutral-current regeneration kept.
 
@@ -249,6 +316,12 @@ def effective_area_regenerated(
     threshold_gev : float
         Muon selection threshold [GeV], used only to zero out rungs that have
         fallen below it.
+    reach_km : float or None, optional
+        Growth of the light reach per e-fold [km]. ``None`` keeps the static
+        instrumented radius.
+    pivot_gev : float, optional
+        Energy at which the reach vanishes [GeV]. Ignored when ``reach_km`` is
+        ``None``.
 
     Returns
     -------
@@ -271,7 +344,14 @@ def effective_area_regenerated(
             np.log10(rung_energy), COMMON_LOG10_E, length_km, left=0.0, right=length_km[-1]
         )
         rung_length[(1.0 - MEAN_INELASTICITY) * rung_energy <= threshold_gev] = 0.0
-        rung_volume = target_volume_cm3(rung_length)
+        rung_radius = (
+            RADIUS_KM
+            if reach_km is None
+            else light_reach_radius_km(
+                RADIUS_KM, (1.0 - MEAN_INELASTICITY) * rung_energy, reach_km, pivot_gev
+            )
+        )
+        rung_volume = target_volume_cm3(rung_length, rung_radius)
         rung_rate = n_nucleon * CROSS_SECTION.cc(rung_energy) * rung_volume
         # Sum the ladder at each declination, then average over solid angle.
         per_dec = (rung_weight * rung_rate[:, None]).sum(axis=0)
@@ -357,7 +437,7 @@ def make_figure(
     with plt.style.context(str(_STYLE)):
         fig, axes = plt.subplots(1, 2, figsize=(6.0, 2.6))
 
-        colors = ("C0", "C1", "C3", "C2")
+        colors = ("C0", "C1", "C3", "C2", "C4")
 
         ax = axes[0]
         ax.plot(COMMON_LOG10_E, icecube, color="k", lw=1.8, label="IceCube, upgoing")
@@ -375,7 +455,7 @@ def make_figure(
         ax.set_yscale("log")
         ax.set_ylim(0.3, 4.0)
         ax.set_ylabel("IceCube / model")
-        ax.set_title("(b) residual, no free parameters", fontsize=7)
+        ax.set_title("(b) residual; only the reach law is fitted", fontsize=7)
         ax.legend(fontsize=5.5, loc="upper left")
 
         for ax in axes:
@@ -458,6 +538,29 @@ def main() -> None:
     curves["+ nu_tau -> tau -> mu"] = curves["stochastic + NC regeneration"] + (
         effective_area_tau_channel(lengths["stochastic"], args.threshold)
     )
+
+    # --- Fit the reach law, the same two-parameter form calibrated on ARCA. ---
+    print("\nFitting the reach law against the DR2 upgoing table ...")
+    lo, hi = STATS_LOG10_E
+    band = (COMMON_LOG10_E >= lo) & (COMMON_LOG10_E <= hi)
+    ratio = np.full(COMMON_LOG10_E.size, np.nan)
+    ratio[band] = (icecube / curves["+ nu_tau -> tau -> mu"])[band]
+    needed = required_radius_km(ratio)
+    reach_km, pivot_gev = fit_reach_law(COMMON_LOG10_E, needed)
+    print(f"  reach   Lambda = {reach_km * 1e3:6.1f} m per e-fold "
+          f"({reach_km * 1e3 * np.log(10.0):.0f} m per decade)")
+    print(f"  pivot   E_piv  = 10^{np.log10(pivot_gev):.2f} GeV")
+    print(f"  instrumented R = {RADIUS_KM * 1e3:6.0f} m")
+    print("  required radius by energy:")
+    for log10_e in (5.0, 6.0, 7.0, 7.8):
+        i = int(np.argmin(np.abs(COMMON_LOG10_E - log10_e)))
+        if np.isfinite(needed[i]):
+            print(f"    log10(E/GeV) = {COMMON_LOG10_E[i]:4.1f}   {needed[i] * 1e3:6.0f} m")
+
+    print("  forward-running with the fitted reach ...")
+    curves["+ fitted reach"] = effective_area_regenerated(
+        lengths["stochastic"], args.threshold, reach_km=reach_km, pivot_gev=pivot_gev
+    ) + effective_area_tau_channel(lengths["stochastic"], args.threshold)
 
     report(icecube, curves, lengths)
     make_figure(icecube, curves, args.out)

@@ -20,6 +20,7 @@ from softpaws.transport.soft_volume import (
     dm_line_target_volume_km3,
     dynamic_projected_area_km2,
     dynamic_projected_radius_km,
+    light_reach_radius_km,
     muon_range_km,
     range_target_volume_km3,
     soft_volume_diffusion,
@@ -349,6 +350,34 @@ def test_dynamic_radius_grows_logarithmically_above_critical_energy():
     r_eff = dynamic_projected_radius_km(r, energy, light_yield_length_km=l_growth)
     expected = r + l_growth * np.log(energy / e_crit)
     assert r_eff[0] == pytest.approx(expected, rel=1e-9)
+
+
+def test_light_reach_radius_equals_static_at_pivot():
+    r = sphere_radius_from_volume(1.0)
+    assert light_reach_radius_km(r, E_1PEV, 0.035, E_1PEV)[0] == pytest.approx(r, rel=1e-12)
+
+
+def test_light_reach_radius_is_signed_about_the_pivot():
+    # The point of dropping the clip: below the pivot the radius must fall
+    # below R_det, which dynamic_projected_radius_km cannot represent.
+    r = sphere_radius_from_volume(1.0)
+    reach, pivot = 0.035, E_1PEV
+    assert light_reach_radius_km(r, 0.01 * pivot, reach, pivot)[0] < r
+    assert light_reach_radius_km(r, 100.0 * pivot, reach, pivot)[0] > r
+
+
+def test_light_reach_radius_grows_logarithmically():
+    r = sphere_radius_from_volume(1.0)
+    reach, pivot = 0.035, E_1PEV
+    energies = pivot * np.array([1.0, np.e, np.e**2])
+    radii = light_reach_radius_km(r, energies, reach, pivot)
+    assert np.allclose(np.diff(radii), reach, rtol=1e-12)
+
+
+def test_light_reach_radius_clips_at_zero():
+    # A steep reach must not drive the radius negative at low energy.
+    r = sphere_radius_from_volume(1.0)
+    assert light_reach_radius_km(r, 1.0e2, 0.5, E_1PEV)[0] == 0.0
 
 
 def test_dynamic_area_is_pi_r_eff_squared():

@@ -48,6 +48,8 @@ dataverse_files/
 # inputs, not bulk release data.
 !src/softpaws/data/xsec/**/*.csv
 !src/softpaws/data/coefficients/*.csv
+# Published KM3NeT/ARCA effective areas: a 60-row table, same category.
+!src/softpaws/data/km3net/*.csv
 
 # Generated output from examples (keep the directory via .gitkeep)
 examples/output/*

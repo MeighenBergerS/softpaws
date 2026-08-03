@@ -79,7 +79,7 @@ def test_phi_vanishes_at_zero():
     # Phi(0) = 0 identically: a monochromatic source (a dark matter line, App.
     # I) has no continuum spectral index to attenuate against, so the s=0
     # line-of-sight propagator e^{-l Phi(0)} is trivially 1 for every l --
-    # the identity examples/23_dm_lines.py's App. I treatment relies on.
+    # the identity examples/34_dm_line_sensitivity.py's App. I treatment relies on.
     assert float(phi_eigenvalue(0.0, B_1PEV, D_1PEV)) == pytest.approx(0.0, abs=1e-12)
 
 

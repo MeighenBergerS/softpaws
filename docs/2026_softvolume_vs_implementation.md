@@ -122,7 +122,7 @@ default path.
 
 ### 2.4 Dark matter lines (App. I) — Eq. I.2 implemented and checked; the `s=0` line-of-sight limit turns out to already equal the pre-existing J-factor calculation
 
-`examples/23_dm_lines.py::dm_line_flux_general_s` now implements Eq. I.2
+`examples/34_dm_line_sensitivity.py::dm_line_flux_general_s` now implements Eq. I.2
 literally, at general `s`. Working out what it says at the physical value
 `s=0` (a monochromatic line has no continuum spectral index to average over):
 `Φ(0)=0` identically, so the line-of-sight propagator `e^{-ℓΦ(0)}` is exactly
@@ -152,7 +152,7 @@ they aren't mistaken for implementing a paper equation that doesn't exist:
 
 - **Tabulated BGR18 cross section** (`cross_section.py`, `bgr18_cross_section`)
   as an alternative to the paper's single power law `σ_νN ∝ E^λ` (Eq. 5-region
-  analogue in Sec. III.B) — used in `examples/23_dm_lines.py` because the power
+  analogue in Sec. III.B) — used in `examples/34_dm_line_sensitivity.py` because the power
   law isn't valid up to the DM masses probed there.
 - **PREM-layered per-event Earth column** (`attenuation.py:225-284`,
   `prem_density`/`prem_column`) vs. the paper's implicit constant-density
