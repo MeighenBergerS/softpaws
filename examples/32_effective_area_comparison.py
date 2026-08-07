@@ -65,7 +65,7 @@ from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
     muon_range_km,
-    sphere_radius_from_volume,
+    prism_projected_area_km2,
     stochastic_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
@@ -82,7 +82,13 @@ _DEFAULT_OUT_DIR = _HERE / "output"
 CROSS_SECTION = bgr18_cross_section()
 
 # --- IceCube, example 28's numbers ------------------------------------------
-IC_RADIUS_KM = sphere_radius_from_volume(1.0)  # ~0.62 km
+# IceCube as an upright hexagonal prism: ~1 km^2 of footprint by 1 km of
+# instrumented height, giving V_det = 1.00 km^3 exactly. IC_RADIUS_KM is the
+# area-equivalent radius of the hexagon, so pi R^2 is the footprint.
+IC_FOOTPRINT_KM2 = 1.0
+IC_HEIGHT_KM = 1.0
+IC_N_SIDES = 6
+IC_RADIUS_KM = float(np.sqrt(IC_FOOTPRINT_KM2 / np.pi))  # ~0.564 km
 IC_LOG10_E = np.linspace(3.0, 8.0, 26)
 IC_FIT_BAND = (5.0, 7.8)  # band the reach law is calibrated over
 N_DEC = 60
@@ -190,30 +196,59 @@ def icecube_published(data_dir: pathlib.Path) -> np.ndarray:
     return total / total_livetime_s
 
 
-def ic_upgoing_columns() -> tuple[np.ndarray, np.ndarray]:
-    """PREM column depths and solid-angle weights over the upgoing hemisphere."""
+def ic_upgoing_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """PREM columns, solid-angle weights and zenith cosines, upgoing hemisphere.
+
+    IceCube sits at the Pole, so a source at declination ``dec`` arrives at
+    ``|cos theta_z| = sin(dec)``, which is the third return value.
+    """
     dec_deg = np.linspace(0.5, 89.5, N_DEC)
     columns = np.array([prem_column(float(d)) for d in dec_deg])
-    return columns, np.cos(np.deg2rad(dec_deg))
+    dec_rad = np.deg2rad(dec_deg)
+    return columns, np.cos(dec_rad), np.sin(dec_rad)
 
 
 def ic_target_volume_cm3(
+    length_km: np.ndarray,
+    radius_km: float | np.ndarray = IC_RADIUS_KM,
+    cos_theta: float | np.ndarray = 0.0,
+) -> np.ndarray:
+    """Prism target volume, projected column plus detector [cm^3].
+
+    An array ``cos_theta`` is appended as a trailing axis, since the projected
+    area depends on the arrival direction where the instrumented volume does not.
+    """
+    radius = np.asarray(radius_km, dtype=float)
+    length = np.asarray(length_km, dtype=float)
+    zenith = np.asarray(cos_theta, dtype=float)
+    if zenith.ndim:
+        radius = radius[..., None]
+        length = length[..., None]
+    proj_area = prism_projected_area_km2(zenith, radius, IC_HEIGHT_KM, IC_N_SIDES)
+    return (proj_area * length + np.pi * radius**2 * IC_HEIGHT_KM) * CM_PER_KM**3
+
+
+def ic_mean_target_volume_cm3(
     length_km: np.ndarray, radius_km: float | np.ndarray = IC_RADIUS_KM
 ) -> np.ndarray:
-    """Spherical target volume, projected column plus detector [cm^3]."""
-    radius = np.asarray(radius_km, dtype=float)
-    return (np.pi * radius**2 * length_km + 4.0 / 3.0 * np.pi * radius**3) * CM_PER_KM**3
+    """Target volume averaged over the upgoing hemisphere [cm^3]."""
+    _, weights, cos_theta = ic_upgoing_columns()
+    return np.average(
+        ic_target_volume_cm3(length_km, radius_km, cos_theta), axis=-1, weights=weights
+    )
 
 
 def ic_required_radius_km(ratio: np.ndarray, lengths: np.ndarray) -> np.ndarray:
-    """Sphere radius that would scale the target volume by ``ratio`` at each energy."""
+    """Footprint radius that would scale the target volume by ``ratio`` at each energy."""
     out = np.full(np.shape(ratio), np.nan)
     for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths)):
         if not np.isfinite(r) or r <= 0.0:
             continue
-        target = r * float(ic_target_volume_cm3(np.array([length]))[0])
+        target = r * float(ic_mean_target_volume_cm3(np.array([length]))[0])
         out[i] = brentq(
-            lambda x: float(ic_target_volume_cm3(np.array([length]), x)[0]) - target, 1.0e-4, 50.0
+            lambda x: float(ic_mean_target_volume_cm3(np.array([length]), x)[0]) - target,
+            1.0e-4,
+            50.0,
         )
     return out
 
@@ -226,7 +261,7 @@ def ic_effective_area_regenerated(
 ) -> np.ndarray:
     """Direct nu_mu channel, NC regeneration kept, upgoing-averaged [cm^2]."""
     energy = 10.0**IC_LOG10_E
-    columns, weights = ic_upgoing_columns()
+    columns, weights, cos_theta = ic_upgoing_columns()
     n_nucleon = nucleon_number_density()
     out = np.empty(energy.size)
     for i, e_nu in enumerate(energy):
@@ -243,17 +278,17 @@ def ic_effective_area_regenerated(
             )
         )
         rung_rate = (
-            n_nucleon * CROSS_SECTION.cc(rung_energy)
-            * ic_target_volume_cm3(rung_length, rung_radius)
+            n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None]
+            * ic_target_volume_cm3(rung_length, rung_radius, cos_theta)
         )
-        out[i] = np.average((rung_weight * rung_rate[:, None]).sum(axis=0), weights=weights)
+        out[i] = np.average((rung_weight * rung_rate).sum(axis=0), weights=weights)
     return out
 
 
 def ic_effective_area_tau_channel(length_km: np.ndarray, threshold_gev: float) -> np.ndarray:
     """nu_tau -> tau -> mu channel, upgoing-averaged, static footprint [cm^2]."""
     energy = 10.0**IC_LOG10_E
-    columns, weights = ic_upgoing_columns()
+    columns, weights, cos_theta = ic_upgoing_columns()
     n_nucleon = nucleon_number_density()
     muon_fraction = MEAN_Z * (1.0 - MEAN_INELASTICITY)
     out = np.empty(energy.size)
@@ -267,10 +302,10 @@ def ic_effective_area_tau_channel(length_km: np.ndarray, threshold_gev: float) -
         )
         rung_length[muon_fraction * rung_energy <= threshold_gev] = 0.0
         rung_rate = (
-            n_nucleon * CROSS_SECTION.cc(rung_energy)
-            * ic_target_volume_cm3(rung_length) * BR_TAU_TO_MU
+            n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None]
+            * ic_target_volume_cm3(rung_length, IC_RADIUS_KM, cos_theta) * BR_TAU_TO_MU
         )
-        out[i] = np.average((rung_weight * rung_rate[:, None]).sum(axis=0), weights=weights)
+        out[i] = np.average((rung_weight * rung_rate).sum(axis=0), weights=weights)
     return out
 
 

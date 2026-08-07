@@ -283,6 +283,184 @@ def phi_symbol_three_moment(
     return phi if np.iscomplexobj(s) else np.real(phi)
 
 
+def n_moment_coefficients(
+    mu: np.ndarray,
+    q: float,
+    p: float,
+    dps: int = 80,
+) -> np.ndarray:
+    """Calibrate the ``N``-moment loss family to the first ``N`` moments.
+
+    Generalization of :func:`two_moment_loss_spectrum` and
+    :func:`three_moment_loss_spectrum` to arbitrary order. The family is
+    ``dGamma/dy = y^(q-1) (1-y)^p sum_j a_j y^j``, whose moments are Beta
+    functions, ``<y^n> = sum_j a_j B(n + q + j, p + 1)``, so matching
+    ``mu_1 ... mu_N`` is a dense ``N x N`` linear system in the ``a_j`` and the
+    exponent stays in closed form (:func:`phi_symbol_n_moment`). The base
+    exponents ``(q, p)`` are held fixed, normally at their three-moment
+    calibration.
+
+    The matrix is a Beta-function Hankel matrix, and reconstructing a density
+    from its moments on ``(0, 1)`` is the classical ill-posed Hausdorff problem:
+    the condition number grows about three decades per added moment, from
+    ``1e4`` at ``N = 4`` to ``1e13`` at ``N = 10``. The solve is therefore done
+    in extended precision with ``mpmath`` and only the result is returned in
+    double precision. Note what is and is not well posed here: the *exponent*
+    converges geometrically in ``N`` while the reconstructed *shape* does not
+    converge at all, because both the moments and ``Phi`` are blind to the soft
+    region that carries most of the collisions. See
+    ``examples/37_moment_convergence.py``.
+
+    Parameters
+    ----------
+    mu : np.ndarray
+        Moments ``mu_1 ... mu_N`` [km^-1], setting ``N = len(mu)``. The first two
+        are the drift and diffusion coefficients ``b_mu`` and ``d_mu``.
+    q : float
+        Soft exponent of the base weight, so ``dGamma/dy ~ y^(q-1)`` as
+        ``y -> 0``. Negative for real loss spectra.
+    p : float
+        Hard exponent of the base weight, the ``(1 - y)^p`` softening.
+    dps : int, optional
+        ``mpmath`` working precision [decimal digits]. The default of ``80``
+        covers ``N <= 10``.
+
+    Returns
+    -------
+    a : np.ndarray
+        Polynomial coefficients ``a_0 ... a_{N-1}`` [km^-1].
+
+    Raises
+    ------
+    ImportError
+        Raised if ``mpmath`` is not installed. Double precision is not enough
+        for this solve, so there is no fallback.
+    """
+    try:
+        import mpmath as mp
+    except ImportError as exc:  # pragma: no cover - depends on the environment
+        raise ImportError(
+            "n_moment_coefficients needs mpmath: the moment matrix is too "
+            "ill-conditioned to solve in double precision."
+        ) from exc
+    n = len(mu)
+    with mp.workdps(dps):
+        q_mp, p_mp = mp.mpf(float(q)), mp.mpf(float(p))
+        matrix = mp.matrix(n, n)
+        rhs = mp.matrix(n, 1)
+        for i in range(n):
+            for j in range(n):
+                matrix[i, j] = mp.beta(mp.mpf(i + 1) + q_mp + j, p_mp + 1)
+            rhs[i] = mp.mpf(float(mu[i]))
+        solution = mp.lu_solve(matrix, rhs)
+    return np.array([float(v) for v in solution])
+
+
+def n_moment_loss_spectrum(
+    a: np.ndarray,
+    q: float,
+    p: float,
+    y: np.ndarray,
+) -> np.ndarray:
+    """Reconstructed ``dGamma/dy`` of the ``N``-moment loss family.
+
+    Evaluates ``y^(q-1) (1-y)^p sum_j a_j y^j`` for the coefficients returned by
+    :func:`n_moment_coefficients`.
+
+    We caution that this reproduces the moments of the loss spectrum and not its
+    shape. Against a tabulated spectrum the reconstruction is off by orders of
+    magnitude below ``y ~ 1e-4`` for every ``N``, and adding moments moves the
+    error around instead of reducing it. Use it to audit the calibration, and
+    the tabulated spectrum or the log-augmented family of ``examples/38`` when
+    the shape itself is the target.
+
+    Parameters
+    ----------
+    a : np.ndarray
+        Polynomial coefficients ``a_0 ... a_{N-1}`` [km^-1].
+    q : float
+        Soft exponent of the base weight.
+    p : float
+        Hard exponent of the base weight.
+    y : np.ndarray
+        Grid of fractional energy losses in ``(0, 1)``.
+
+    Returns
+    -------
+    dgamma_dy : np.ndarray
+        Differential loss rate [km^-1] on ``y``.
+    """
+    polynomial = np.zeros_like(np.asarray(y, dtype=float))
+    for j, a_j in enumerate(a):
+        polynomial = polynomial + a_j * y**j
+    return y ** (q - 1.0) * (1.0 - y) ** p * polynomial
+
+
+def _beta_complex(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """``B(a, b)`` via complex ``loggamma``, valid for negative non-integer ``a``.
+
+    The base soft exponent ``q`` is negative for real loss spectra, so ``q + j``
+    lands on the negative real axis where the real-valued ``loggamma`` is
+    undefined. Promoting to complex keeps the branch bookkeeping correct. Unlike
+    :func:`_beta`, this survives the large imaginary arguments of the
+    characteristic function.
+    """
+    a = np.asarray(a, dtype=complex)
+    b = np.asarray(b, dtype=complex)
+    return np.exp(loggamma(a) + loggamma(b) - loggamma(a + b))
+
+
+def phi_symbol_n_moment(
+    s: complex | np.ndarray,
+    a: np.ndarray,
+    q: float,
+    p: float,
+) -> np.ndarray:
+    """Mellin symbol ``Phi(s)`` of the ``N``-moment loss family, for any ``s``.
+
+    Term by term, ``int_0^1 dy y^(q-1+j) (1-y)^p [1 - (1-y)^s]`` is a difference
+    of Beta functions, so the exponent stays closed form at every order,
+
+    .. math:: \\Phi(s) = \\sum_j a_j
+        \\bigl[\\,B(q+j,\\,p+1) - B(q+j,\\,p+1+s)\\,\\bigr].
+
+    The ``j = 0`` term diverges as ``q -> 0`` while its difference stays finite,
+    so the digamma limit of :func:`phi_symbol` is substituted there, as in
+    :func:`phi_symbol_three_moment`. Like the two- and three-moment symbols this
+    accepts **complex** ``s``, which the log-loss inversion needs.
+
+    Calibrated to PROPOSAL at ``1`` PeV in water, the error at ``A = 8`` against
+    a direct quadrature of the tabulated spectrum falls from ``15.7%`` at
+    ``N = 2`` to ``0.52%`` at ``N = 3`` and ``0.032%`` at ``N = 4``, then gains
+    roughly a factor of five per moment.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable. Real or complex; the dtype is preserved.
+    a : np.ndarray
+        Polynomial coefficients from :func:`n_moment_coefficients` [km^-1].
+    q : float
+        Soft exponent of the base weight.
+    p : float
+        Hard exponent of the base weight.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Symbol ``Phi(s)`` [km^-1], matching the shape and dtype of ``s``.
+    """
+    s_array = np.asarray(s)
+    total = np.zeros(s_array.shape, dtype=complex)
+    for j, a_j in enumerate(a):
+        if abs(q + j) < _Q_DIGAMMA_LIMIT:
+            term = digamma(p + 1.0 + s_array) - digamma(p + 1.0)
+        else:
+            term = _beta_complex(q + j, p + 1.0) - _beta_complex(q + j, p + 1.0 + s_array)
+        total = total + a_j * term
+    return total if np.iscomplexobj(s_array) else total.real
+
+
 def phi_eigenvalue_three_moment(
     spectral_index_value: float | np.ndarray,
     b_mu: float | np.ndarray,

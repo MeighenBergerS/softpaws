@@ -70,10 +70,11 @@ event's actual energy likelihood before any number here is quoted.
 
 **What the IceCube side is.** An Asimov dataset injected at the paper's Table 2
 best fit (``PHI0_TRUTH``, ``GAMMA_TRUTH``), not the observed DR2 events. So the
-green region is a 9.5-year *forecast*, centred on the injected truth by
-construction, rather than IceCube's published contour -- and that normalization
-sits below IceCube's own 9.5-year ``nu_mu`` fit, which would reduce the tension.
-Every tension number below inherits that caveat.
+green region is a *forecast* over DR2's full 13.6-year good-run exposure,
+centred on the injected truth by construction, rather than IceCube's published
+contour -- and that normalization sits below IceCube's own 9.5-year ``nu_mu``
+fit (a different, shorter dataset), which would reduce the tension. Every
+tension number below inherits that caveat.
 
 Usage
 -----
@@ -113,7 +114,7 @@ from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
     muon_range_km,
-    sphere_radius_from_volume,
+    prism_projected_area_km2,
     stochastic_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
@@ -136,10 +137,22 @@ CROSS_SECTION = bgr18_cross_section()
 # KM_COLUMN_DEPTH_KM = 2.5 km, a 1000-day livetime, a 2 pi solid angle).
 # ---------------------------------------------------------------------------
 
-# IceCube: 9.5-year DR2 upgoing sky. Threshold pinned by the smearing matrix's
+# IceCube: DR2 upgoing sky. Threshold pinned by the smearing matrix's
 # 5th-percentile accepted muon energy (example 28), not fitted here.
-IC_RADIUS_KM = sphere_radius_from_volume(1.0)  # ~0.62 km
-IC_LIVETIME_S = 9.5 * 365.25 * 86400.0
+#
+# The exposure is summed from the release's own good-run lists rather than
+# assumed: DR2 covers 2008-2022 across 14 seasons, and the good-run total is
+# 4963.4 days = 13.589 yr, not the 9.5 yr of the separate Abbasi:2021qfz
+# diffuse nu_mu measurement. Convolving the 14-season A_eff with a 9.5-year
+# livetime, as earlier versions of this example did, understates the IceCube
+# expectation by a factor of 1.43.
+# IceCube as an upright hexagonal prism: ~1 km^2 of footprint by 1 km of
+# instrumented height, which gives V_det = 1.00 km^3 exactly. IC_RADIUS_KM is the
+# area-equivalent radius of the hexagon, so pi R^2 is the footprint.
+IC_FOOTPRINT_KM2 = 1.0
+IC_HEIGHT_KM = 1.0
+IC_N_SIDES = 6
+IC_RADIUS_KM = float(np.sqrt(IC_FOOTPRINT_KM2 / np.pi))  # ~0.564 km
 IC_SOLID_ANGLE_SR = 2.0 * np.pi  # upgoing hemisphere only
 IC_AEFF_LOG10_E = np.linspace(3.0, 8.0, 26)
 IC_STATS_LOG10_E = (5.0, 7.8)  # band example 28 calibrated the reach law over
@@ -179,6 +192,29 @@ KM_BAND_LOG10_E = np.array([7.0, 10.0])
 # which is the point of quoting both.
 PHI0_PRIOR_TOPS = (1.5, 3.0, 5.0)
 
+# ---------------------------------------------------------------------------
+# Li, Machado, Naredo-Tuero and Schwemberger (arXiv:2502.04508), whose 3.5 sigma
+# is the published number this example's 1.9 sigma has to be reconciled against.
+# Their stated assumptions, for the ingredient ladder of `tension_ladder`:
+#
+#   * the IceCube side is a Gaussian *prior* on the flux parameters at the
+#     collaboration's combined fit, not a forward-modelled event distribution;
+#   * the event enters through P(N_hit | E_nu) integrated over all E_nu, whose
+#     90% interval is 23-2400 PeV under an E^-2 prior and 4-760 PeV under the
+#     E^-2.52 diffuse prior; we can only impose a window, so both are tried;
+#   * the ARCA21 exposure is quoted as 288 days;
+#   * no statement is made about the rest of the UHE band, i.e. no second
+#     Poisson term. They note that adding KM3NeT's own non-observation, with a
+#     flat energy probability across the window, returns 1.9 sigma.
+# ---------------------------------------------------------------------------
+LI_SIGMA_PUBLISHED = 3.5
+LI_EDGES = np.log10(np.array([23.0, 2400.0]) * 1.0e6)
+LI_EDGES_DIFFUSE_PRIOR = np.log10(np.array([4.0, 760.0]) * 1.0e6)
+LI_LIVETIME_S = 288.0 * 86400.0
+# IceCube combined fit as they quote it: phi0 = 1.83 +0.13 -0.16, gamma = 2.52 +- 0.04.
+LI_PHI0, LI_PHI0_SIGMA = 1.83, (0.16, 0.13)
+LI_GAMMA, LI_GAMMA_SIGMA = 2.52, 0.04
+
 # Profile-likelihood contour levels for two free parameters.
 DELTA_LNL_LEVELS = 0.5 * chi2.isf([0.32, 0.05], df=2)  # ~1.15, ~3.00
 
@@ -211,8 +247,16 @@ def _canonical_irf_season(season: str) -> str:
     return "IC86" if season.startswith("IC86") else season
 
 
-def icecube_upgoing(data_dir: pathlib.Path) -> np.ndarray:
-    """Livetime-weighted published IceCube effective area, upgoing sky [cm^2]."""
+def icecube_upgoing(data_dir: pathlib.Path) -> tuple[np.ndarray, float]:
+    """Livetime-weighted published IceCube effective area, upgoing sky.
+
+    Returns
+    -------
+    aeff : np.ndarray
+        Livetime-weighted effective area [cm^2] on ``IC_AEFF_LOG10_E``.
+    livetime_s : float
+        Total DR2 good-run livetime summed over all seasons [s].
+    """
     irf_dir = data_dir / "irfs"
     uptime_dir = data_dir / "uptime"
     total = np.zeros_like(IC_AEFF_LOG10_E)
@@ -231,35 +275,63 @@ def icecube_upgoing(data_dir: pathlib.Path) -> np.ndarray:
         )
         total += livetime_s * np.interp(IC_AEFF_LOG10_E, aeff.log10_energy_centers, curve)
         total_livetime_s += livetime_s
-    return total / total_livetime_s
+    return total / total_livetime_s, total_livetime_s
 
 
-def ic_upgoing_columns() -> tuple[np.ndarray, np.ndarray]:
-    """PREM column depths and solid-angle weights over the upgoing hemisphere."""
+def ic_upgoing_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """PREM columns, solid-angle weights and zenith cosines, upgoing hemisphere.
+
+    IceCube sits at the Pole, so a source at declination ``dec`` arrives at
+    ``|cos theta_z| = sin(dec)``, which is the third return value.
+    """
     dec_deg = np.linspace(0.5, 89.5, 60)
     columns = np.array([prem_column(float(d)) for d in dec_deg])
-    return columns, np.cos(np.deg2rad(dec_deg))
+    dec_rad = np.deg2rad(dec_deg)
+    return columns, np.cos(dec_rad), np.sin(dec_rad)
 
 
 def ic_target_volume_cm3(
+    length_km: np.ndarray,
+    radius_km: float | np.ndarray = IC_RADIUS_KM,
+    cos_theta: float | np.ndarray = 0.0,
+) -> np.ndarray:
+    """Prism target volume, projected column plus detector [cm^3].
+
+    An array ``cos_theta`` is appended as a trailing axis, since the projected
+    area depends on the arrival direction where the instrumented volume does not.
+    """
+    radius = np.asarray(radius_km, dtype=float)
+    length = np.asarray(length_km, dtype=float)
+    zenith = np.asarray(cos_theta, dtype=float)
+    if zenith.ndim:
+        radius = radius[..., None]
+        length = length[..., None]
+    proj_area = prism_projected_area_km2(zenith, radius, IC_HEIGHT_KM, IC_N_SIDES)
+    v_det = np.pi * radius**2 * IC_HEIGHT_KM
+    return (proj_area * length + v_det) * CM_PER_KM**3
+
+
+def ic_mean_target_volume_cm3(
     length_km: np.ndarray, radius_km: float | np.ndarray = IC_RADIUS_KM
 ) -> np.ndarray:
-    """Spherical target volume, projected column plus detector [cm^3]."""
-    radius = np.asarray(radius_km, dtype=float)
-    proj_area = np.pi * radius**2
-    v_det = 4.0 / 3.0 * np.pi * radius**3
-    return (proj_area * length_km + v_det) * CM_PER_KM**3
+    """Target volume averaged over the upgoing hemisphere [cm^3]."""
+    _, weights, cos_theta = ic_upgoing_columns()
+    return np.average(
+        ic_target_volume_cm3(length_km, radius_km, cos_theta), axis=-1, weights=weights
+    )
 
 
 def ic_required_radius_km(ratio: np.ndarray, lengths: np.ndarray) -> np.ndarray:
-    """Sphere radius that would scale the target volume by ``ratio`` at each energy."""
+    """Footprint radius that would scale the target volume by ``ratio`` at each energy."""
     out = np.full(np.shape(ratio), np.nan)
     for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths)):
         if not np.isfinite(r) or r <= 0.0:
             continue
-        target = r * float(ic_target_volume_cm3(np.array([length]))[0])
+        target = r * float(ic_mean_target_volume_cm3(np.array([length]))[0])
         out[i] = brentq(
-            lambda x: float(ic_target_volume_cm3(np.array([length]), x)[0]) - target, 1.0e-4, 50.0
+            lambda x: float(ic_mean_target_volume_cm3(np.array([length]), x)[0]) - target,
+            1.0e-4,
+            50.0,
         )
     return out
 
@@ -303,7 +375,7 @@ def ic_effective_area_regenerated(
 ) -> np.ndarray:
     """Direct nu_mu channel, NC regeneration kept, upgoing-averaged [cm^2]."""
     energy = 10.0**IC_AEFF_LOG10_E
-    columns, weights = ic_upgoing_columns()
+    columns, weights, cos_theta = ic_upgoing_columns()
     n_nucleon = nucleon_number_density()
     out = np.empty(energy.size)
     for i, e_nu in enumerate(energy):
@@ -319,9 +391,9 @@ def ic_effective_area_regenerated(
                 IC_RADIUS_KM, (1.0 - MEAN_INELASTICITY) * rung_energy, reach_km, pivot_gev
             )
         )
-        rung_volume = ic_target_volume_cm3(rung_length, rung_radius)
-        rung_rate = n_nucleon * CROSS_SECTION.cc(rung_energy) * rung_volume
-        per_dec = (rung_weight * rung_rate[:, None]).sum(axis=0)
+        rung_volume = ic_target_volume_cm3(rung_length, rung_radius, cos_theta)
+        rung_rate = n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None] * rung_volume
+        per_dec = (rung_weight * rung_rate).sum(axis=0)
         out[i] = np.average(per_dec, weights=weights)
     return out
 
@@ -329,7 +401,7 @@ def ic_effective_area_regenerated(
 def ic_effective_area_tau_channel(length_km: np.ndarray, threshold_gev: float) -> np.ndarray:
     """nu_tau -> tau -> mu channel, upgoing-averaged, static footprint [cm^2]."""
     energy = 10.0**IC_AEFF_LOG10_E
-    columns, weights = ic_upgoing_columns()
+    columns, weights, cos_theta = ic_upgoing_columns()
     n_nucleon = nucleon_number_density()
     muon_fraction = MEAN_Z * (1.0 - MEAN_INELASTICITY)
     out = np.empty(energy.size)
@@ -343,17 +415,17 @@ def ic_effective_area_tau_channel(length_km: np.ndarray, threshold_gev: float) -
         )
         rung_length[muon_fraction * rung_energy <= threshold_gev] = 0.0
         rung_rate = (
-            n_nucleon * CROSS_SECTION.cc(rung_energy)
-            * ic_target_volume_cm3(rung_length) * BR_TAU_TO_MU
+            n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None]
+            * ic_target_volume_cm3(rung_length, IC_RADIUS_KM, cos_theta) * BR_TAU_TO_MU
         )
-        per_dec = (rung_weight * rung_rate[:, None]).sum(axis=0)
+        per_dec = (rung_weight * rung_rate).sum(axis=0)
         out[i] = np.average(per_dec, weights=weights)
     return out
 
 
 def build_icecube_aeff(
     data_dir: pathlib.Path, threshold_gev: float
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, float]:
     """IceCube nu_mu + nu_tau->mu effective area with the fitted reach law.
 
     Calibrates the reach law against the published DR2 upgoing table, exactly
@@ -367,8 +439,10 @@ def build_icecube_aeff(
         ``log10(E_nu / GeV)`` grid.
     aeff : np.ndarray
         Effective area [cm^2] on that grid.
+    livetime_s : float
+        Total DR2 good-run livetime summed over all seasons [s].
     """
-    published = icecube_upgoing(data_dir)
+    published, livetime_s = icecube_upgoing(data_dir)
     energy_mu = (1.0 - MEAN_INELASTICITY) * 10.0**IC_AEFF_LOG10_E
     length = stochastic_muon_range_km(energy_mu, threshold_gev)
     base = ic_effective_area_regenerated(length, threshold_gev) + ic_effective_area_tau_channel(
@@ -389,7 +463,11 @@ def build_icecube_aeff(
         f"  IceCube: reach = {reach_km * 1e3:.1f} m/e-fold, "
         f"residual {np.std(residual):.3f} dex rms against the published table"
     )
-    return IC_AEFF_LOG10_E, curve
+    print(
+        f"  IceCube: DR2 good-run livetime = {livetime_s / 86400.0:.1f} d "
+        f"= {livetime_s / (365.25 * 86400.0):.3f} yr, summed over the release"
+    )
+    return IC_AEFF_LOG10_E, curve, livetime_s
 
 
 # ---------------------------------------------------------------------------
@@ -693,13 +771,13 @@ def expected_counts(
 
 
 def asimov_ic(
-    aeff_log10_e: np.ndarray, aeff: np.ndarray,
+    aeff_log10_e: np.ndarray, aeff: np.ndarray, livetime_s: float,
     phi0: float = PHI0_TRUTH, gamma: float = GAMMA_TRUTH,
     bkg_total: float = 0.0, bkg_slope: float = 3.7,
 ) -> np.ndarray:
     """Expected (Asimov) IceCube counts from an injected truth flux, plus background."""
     counts = expected_counts(
-        IC_FIT_EDGES, aeff_log10_e, aeff, phi0, gamma, IC_LIVETIME_S, IC_SOLID_ANGLE_SR
+        IC_FIT_EDGES, aeff_log10_e, aeff, phi0, gamma, livetime_s, IC_SOLID_ANGLE_SR
     )
     if bkg_total > 0.0:
         counts = counts + bkg_total * atmospheric_template(IC_FIT_EDGES, bkg_slope)
@@ -717,7 +795,11 @@ def asimov_ic(
 
 
 def km_rate_coefficients(
-    gamma_grid: np.ndarray, aeff_log10_e: np.ndarray, aeff: np.ndarray
+    gamma_grid: np.ndarray,
+    aeff_log10_e: np.ndarray,
+    aeff: np.ndarray,
+    edges: np.ndarray = KM_EDGES,
+    livetime_s: float = KM_LIVETIME_S,
 ) -> tuple[np.ndarray, np.ndarray]:
     """ARCA21 expected counts at ``phi0 = 1``, in the event window and the band.
 
@@ -727,18 +809,24 @@ def km_rate_coefficients(
         Spectral indices to tabulate.
     aeff_log10_e, aeff : np.ndarray
         Effective area [cm^2] and its ``log10(E_nu / GeV)`` grid.
+    edges : np.ndarray, optional
+        ``log10(E_nu / GeV)`` edges of the event window. Defaults to
+        :data:`KM_EDGES`; :func:`tension_ladder` passes Ref. [Li et al.]'s
+        interval instead.
+    livetime_s : float, optional
+        ARCA21 exposure [s]. Defaults to :data:`KM_LIVETIME_S`.
 
     Returns
     -------
     a_window : np.ndarray
-        Counts per unit ``phi0`` inside :data:`KM_EDGES`.
+        Counts per unit ``phi0`` inside ``edges``.
     a_band : np.ndarray
         Counts per unit ``phi0`` over :data:`KM_BAND_LOG10_E`, the range across
         which no other bright track is asserted.
     """
-    kwargs = dict(livetime_s=KM_LIVETIME_S, solid_angle_sr=KM_SOLID_ANGLE_SR)
+    kwargs = dict(livetime_s=livetime_s, solid_angle_sr=KM_SOLID_ANGLE_SR)
     a_window = np.array([
-        expected_counts(KM_EDGES, aeff_log10_e, aeff, 1.0, g, **kwargs).sum() for g in gamma_grid
+        expected_counts(edges, aeff_log10_e, aeff, 1.0, g, **kwargs).sum() for g in gamma_grid
     ])
     a_band = np.array([
         expected_counts(KM_BAND_LOG10_E, aeff_log10_e, aeff, 1.0, g, n_sub=240, **kwargs).sum()
@@ -788,12 +876,12 @@ def phi0_for_one_event(a_window: np.ndarray) -> np.ndarray:
 
 
 def ic_signal_coefficients(
-    gamma_grid: np.ndarray, aeff_log10_e: np.ndarray, aeff: np.ndarray
+    gamma_grid: np.ndarray, aeff_log10_e: np.ndarray, aeff: np.ndarray, livetime_s: float
 ) -> np.ndarray:
     """IceCube per-bin expected counts at ``phi0 = 1``, one row per ``gamma``."""
     return np.array([
         expected_counts(
-            IC_FIT_EDGES, aeff_log10_e, aeff, 1.0, g, IC_LIVETIME_S, IC_SOLID_ANGLE_SR
+            IC_FIT_EDGES, aeff_log10_e, aeff, 1.0, g, livetime_s, IC_SOLID_ANGLE_SR
         )
         for g in gamma_grid
     ])
@@ -863,6 +951,135 @@ def compatibility(
     return float(ts), p_value, float(norm.isf(0.5 * p_value))
 
 
+def flux_prior_surface(phi0_grid: np.ndarray, gamma_grid: np.ndarray) -> np.ndarray:
+    """Gaussian constraint on ``(phi0, gamma)``, the IceCube side of Ref. Li et al.
+
+    Their IceCube input is not a forward-modelled event distribution but a
+    Gaussian prior at the collaboration's combined fit, so the ladder needs the
+    same object on the same grid. The asymmetric ``phi0`` error is carried as a
+    two-sided Gaussian.
+
+    Parameters
+    ----------
+    phi0_grid, gamma_grid : np.ndarray
+        Grid axes shared with the other likelihood surfaces.
+
+    Returns
+    -------
+    log_l : np.ndarray, shape (n_phi0, n_gamma)
+        Log-likelihood, zero at the quoted central values.
+    """
+    sigma_lo, sigma_hi = LI_PHI0_SIGMA
+    delta_phi0 = phi0_grid[:, None] - LI_PHI0
+    sigma_phi0 = np.where(delta_phi0 < 0.0, sigma_lo, sigma_hi)
+    delta_gamma = gamma_grid[None, :] - LI_GAMMA
+    return -0.5 * (delta_phi0 / sigma_phi0) ** 2 - 0.5 * (delta_gamma / LI_GAMMA_SIGMA) ** 2
+
+
+def tension_ladder(
+    phi0_grid: np.ndarray,
+    gamma_grid: np.ndarray,
+    km_log10_e: np.ndarray,
+    km_aeff: np.ndarray,
+    ic_log_l: np.ndarray,
+) -> None:
+    """Walk from Ref. Li et al.'s configuration to ours, one ingredient at a time.
+
+    Every rung is scored with the same profile-likelihood ratio on two degrees
+    of freedom, so the differences between rungs are attributable to the
+    ingredient that changed and not to the statistic. The published $3.5\\sigma$
+    is a Bayes factor over a marginalized posterior and is printed for reference
+    only; the gap between it and the first rung is the part of their analysis
+    this machinery cannot reproduce, which is the event's energy likelihood
+    ``P(N_hit | E_nu)`` in place of a window.
+
+    The decomposition is order dependent, since the ingredients are not
+    independent. This is one stated path.
+
+    Parameters
+    ----------
+    phi0_grid, gamma_grid : np.ndarray
+        Grid axes shared with the other likelihood surfaces.
+    km_log10_e, km_aeff : np.ndarray
+        Published ARCA21 bright-track effective area [cm^2] and its grid.
+    ic_log_l : np.ndarray, shape (n_phi0, n_gamma)
+        Our IceCube profile likelihood, the last ingredient to be swapped in.
+    """
+    li_ic = flux_prior_surface(phi0_grid, gamma_grid)
+    cache: dict[tuple[float, float, float], tuple[np.ndarray, np.ndarray]] = {}
+
+    def sigma_for(edges: np.ndarray, livetime_s: float, extended: bool, ic: np.ndarray) -> float:
+        key = (float(edges[0]), float(edges[-1]), livetime_s)
+        if key not in cache:
+            cache[key] = km_rate_coefficients(gamma_grid, km_log10_e, km_aeff, edges, livetime_s)
+        a_window, a_band = cache[key]
+        km = km_log_likelihood(phi0_grid[:, None], a_window, a_band, extended=extended)
+        return compatibility(ic, km)[2]
+
+    config = dict(edges=LI_EDGES, livetime_s=LI_LIVETIME_S, extended=False, ic=li_ic)
+    rows = [
+        ("their configuration, our statistic", {}),
+        ("+ our event window, E_nu = E_mu / (1 - <y_w>)", dict(edges=KM_EDGES)),
+        ("+ the ARCA21 bright-track exposure, 335 d", dict(livetime_s=KM_LIVETIME_S)),
+        ("+ KM3NeT's non-observation above the window", dict(extended=True)),
+        ("+ our IceCube forward model, DR2 Asimov", dict(ic=ic_log_l)),
+    ]
+
+    print("\n  Ingredient ladder from Ref. [Li et al.] to this example:")
+    print(f"    {'their published Bayes factor':<46} {LI_SIGMA_PUBLISHED:5.2f} sigma")
+    previous = None
+    for label, change in rows:
+        config.update(change)
+        sigma = sigma_for(**config)
+        step = "     --" if previous is None else f"  {sigma - previous:+5.2f}"
+        print(f"    {label:<46} {sigma:5.2f} sigma {step}")
+        previous = sigma
+
+    alt = sigma_for(LI_EDGES_DIFFUSE_PRIOR, LI_LIVETIME_S, False, li_ic)
+    print(f"    (first rung with their E^-2.52 energy interval: {alt:.2f} sigma)")
+
+
+def li_cross_checks(
+    km_log10_e: np.ndarray,
+    km_aeff: np.ndarray,
+    ic_log10_e: np.ndarray,
+    ic_aeff: np.ndarray,
+    ic_livetime_s: float,
+) -> None:
+    """Reproduce the two event counts Ref. [Li et al.] quotes, as a response check.
+
+    They quote $0.005$ events at KM3NeT over $72$-$2600$ PeV for IceCube's
+    nominal flux, and $75$ events at IceCube over the same interval for the
+    normalization their one event implies. Both are direct statements about the
+    two responses, so recomputing them with ours says whether the responses
+    agree before any statistic is applied.
+
+    Parameters
+    ----------
+    km_log10_e, km_aeff : np.ndarray
+        Published ARCA21 bright-track effective area [cm^2] and its grid.
+    ic_log10_e, ic_aeff : np.ndarray
+        Our IceCube effective area [cm^2] and its grid.
+    ic_livetime_s : float
+        DR2 good-run livetime [s].
+    """
+    edges = np.log10(np.array([72.0, 2600.0]) * 1.0e6)
+    km_counts = expected_counts(
+        edges, km_log10_e, km_aeff, LI_PHI0, LI_GAMMA, LI_LIVETIME_S, KM_SOLID_ANGLE_SR
+    ).sum()
+    km_unit = expected_counts(
+        edges, km_log10_e, km_aeff, 1.0, LI_GAMMA, LI_LIVETIME_S, KM_SOLID_ANGLE_SR
+    ).sum()
+    ic_counts = expected_counts(
+        edges, ic_log10_e, ic_aeff, 1.0 / km_unit, LI_GAMMA, ic_livetime_s, IC_SOLID_ANGLE_SR
+    ).sum()
+    print("\n  Cross-check against the two counts Ref. [Li et al.] quotes over 72-2600 PeV:")
+    print(f"    ARCA21 at their nominal flux: {km_counts:.4f} events   (they quote 0.005)")
+    print(f"    phi0 for one ARCA21 event at gamma = {LI_GAMMA}: {1.0 / km_unit:.1f}")
+    print(f"    IceCube at that phi0:         {ic_counts:.1f} events     (they quote 75)")
+    print("    the IceCube number holds A_eff flat above 10^8 GeV, so it is a lower bound")
+
+
 def bayes_factor(
     phi0_grid: np.ndarray, gamma_grid: np.ndarray,
     km_log_l: np.ndarray, ic_log_l: np.ndarray, phi0_top: float,
@@ -922,7 +1139,7 @@ def report(
     """Print the best fits, the tension, and the Bayes-factor sensitivity."""
     ic_phi0, ic_gamma = ic_best
     km_phi0, km_gamma = km_best
-    print(f"\n  IceCube (Asimov, 9.5 yr): phi0 = {ic_phi0:.2f}, gamma = {ic_gamma:.2f}")
+    print(f"\n  IceCube (Asimov, DR2 exposure): phi0 = {ic_phi0:.2f}, gamma = {ic_gamma:.2f}")
     print(f"  ARCA21 (one event, two-bin): phi0 = {km_phi0:.2f}, gamma = {km_gamma:.2f}")
 
     j = int(np.argmin(np.abs(gamma_grid - ic_gamma)))
@@ -1041,7 +1258,7 @@ def make_figure(
     """
     log_phi0 = np.log10(phi0_grid)
     with plt.style.context(str(_STYLE)):
-        fig, ax = plt.subplots(figsize=(3.6, 3.3))
+        fig, ax = plt.subplots(figsize=(3.6, 3.6))
 
         deltas = {}
         for label, surface in (("IceCube", ic_log_l), ("ARCA21", km_extended)):
@@ -1093,7 +1310,7 @@ def main() -> None:
     args = parse_args()
 
     print(f"Building IceCube A_eff(E_nu), loading DR2 from: {args.data_dir}")
-    ic_log10_e, ic_aeff = build_icecube_aeff(args.data_dir, args.threshold)
+    ic_log10_e, ic_aeff, ic_livetime_s = build_icecube_aeff(args.data_dir, args.threshold)
 
     print("Loading the released ARCA21 bright-track effective area ...")
     km_log10_e, km_aeff = arca21_published_aeff()
@@ -1115,10 +1332,12 @@ def main() -> None:
         None if ceiling is None else km_rate_coefficients(gamma_grid, *ceiling)[0]
     )
 
-    signal = asimov_ic(ic_log10_e, ic_aeff)
-    ic_observed = asimov_ic(ic_log10_e, ic_aeff, bkg_total=BKG_FRACTION * signal.sum())
+    signal = asimov_ic(ic_log10_e, ic_aeff, ic_livetime_s)
+    ic_observed = asimov_ic(
+        ic_log10_e, ic_aeff, ic_livetime_s, bkg_total=BKG_FRACTION * signal.sum()
+    )
     ic_log_l = ic_log_likelihood(
-        phi0_grid, ic_signal_coefficients(gamma_grid, ic_log10_e, ic_aeff),
+        phi0_grid, ic_signal_coefficients(gamma_grid, ic_log10_e, ic_aeff, ic_livetime_s),
         ic_observed, atmospheric_template(IC_FIT_EDGES),
     )
 
@@ -1128,6 +1347,8 @@ def main() -> None:
         phi0_grid, gamma_grid, ic_log_l, km_window, km_extended,
         a_window, a_window_ceiling, ic_best, km_best,
     )
+    tension_ladder(phi0_grid, gamma_grid, km_log10_e, km_aeff, ic_log_l)
+    li_cross_checks(km_log10_e, km_aeff, ic_log10_e, ic_aeff, ic_livetime_s)
     make_figure(args.out, phi0_grid, gamma_grid, ic_log_l, km_extended, ic_best, km_best)
 
 

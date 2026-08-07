@@ -277,10 +277,10 @@ def build_proposal_table(
 
     Returns
     -------
-    table : np.ndarray, shape (n, 4)
-        Columns of energy [GeV] and the moments ``b_mu``, ``d_mu``, ``t_mu``
-        [km^-1], the latter three at
-        :data:`~softpaws.utils.constants.RHO_WATER_G_CM3`.
+    table : np.ndarray, shape (n, 7)
+        Columns of energy [GeV], the ``y``-moments ``b_mu``, ``d_mu``, ``t_mu``,
+        and the log-loss moments ``Phi'(0)``, ``-Phi''(0)``, ``Phi'''(0)``, all
+        [km^-1] at :data:`~softpaws.utils.constants.RHO_WATER_G_CM3`.
 
     Raises
     ------
@@ -317,7 +317,9 @@ def build_proposal_table(
     ) * scale
 
     y = loss_spectrum_y_grid()
+    log_loss = -np.log1p(-y)
     t_mu = np.empty_like(energy_gev)
+    phi_moments = np.empty((energy_gev.size, 3))
     for i, energy in enumerate(energy_gev):
         spectrum = proposal_loss_spectrum(energy, y)["total"]
         for order, reference in ((1, b_mu[i]), (2, d_mu[i])):
@@ -328,8 +330,10 @@ def build_proposal_table(
                     f"at E = {energy:.3g} GeV: {quadrature:.6g} vs {reference:.6g}."
                 )
         t_mu[i] = np.trapezoid(y**3 * spectrum, y)
+        for order in (1, 2, 3):
+            phi_moments[i, order - 1] = np.trapezoid(log_loss**order * spectrum, y)
 
-    table = np.column_stack([energy_gev, b_mu, d_mu, t_mu])
+    table = np.column_stack([energy_gev, b_mu, d_mu, t_mu, phi_moments])
     path = pathlib.Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     np.savetxt(
@@ -342,7 +346,12 @@ def build_proposal_table(
             "Bremsstrahlung + e+e- pair production (Kelner-Kokoulin-Petrukhin) + "
             "photonuclear (ALLM97, Butkevich-Mikheyev shadowing); no ionization.\n"
             "b_mu = <y>, d_mu = <y^2>, t_mu = <y^3> per unit length.\n"
-            "E [GeV], b_mu [km^-1], d_mu [km^-1], t_mu [km^-1]"
+            "The last three are the log-loss moments the first-passage range needs, "
+            "Phi^(n)(0) = <(-ln(1-y))^n>, which no family calibrated to the "
+            "y-moments reproduces: a two-moment fit is 8% low on the first and 56% "
+            "low on the second.\n"
+            "E [GeV], b_mu [km^-1], d_mu [km^-1], t_mu [km^-1], "
+            "phi1 [km^-1], phi2 [km^-1], phi3 [km^-1]"
         ),
     )
     return table
@@ -459,6 +468,58 @@ def third_moment_coefficient(
     """
     t_water = _interpolate(energy_gev, source, 2)
     return t_water * (density_g_cm3 / RHO_WATER_G_CM3)
+
+
+def log_loss_moments(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """The three log-loss moments of the kernel, from the tabulated spectrum.
+
+    Where ``b_mu``, ``d_mu`` and ``t_mu`` are moments of the fractional loss
+    ``y``, these are moments of the *logarithmic* loss ``-ln(1-y)``, which is
+    what the first-passage range of
+    :func:`softpaws.transport.soft_volume.stochastic_muon_range_km` and its
+    variance are built from:
+
+    .. math:: \\Phi'(0) = \\langle -\\ln(1-y)\\rangle, \\quad
+        -\\Phi''(0) = \\langle \\ln^2(1-y)\\rangle, \\quad
+        \\Phi'''(0) = \\langle -\\ln^3(1-y)\\rangle .
+
+    They are read from the shipped table rather than reconstructed from
+    ``b_mu``, ``d_mu``, ``t_mu``, because no family calibrated to the
+    ``y``-moments reproduces them. ``-ln(1-y)`` diverges as ``y -> 1`` where
+    ``y`` saturates, so these moments are dominated by the hard end of the
+    kernel that a calibrated family gets wrong: against PROPOSAL's own spectrum
+    the two-moment family of
+    :func:`softpaws.transport.eigenvalue.two_moment_loss_spectrum` is 8% low on
+    the first, 56% low on the second and 87% low on the third, and the
+    three-moment family is 1% high, 15% high and 40% high.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+        density, as for the ``y``-moments.
+    source : {"proposal"}, optional
+        Which tabulation to interpolate. Defaults to :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    phi_prime, phi_second, phi_third : np.ndarray
+        ``Phi'(0)``, ``-Phi''(0)`` and ``Phi'''(0)`` [km^-1], all positive.
+
+    Raises
+    ------
+    ValueError
+        Raised for ``source="table1"``, which tabulates no log-loss moments, or
+        if the shipped PROPOSAL table predates these columns.
+    """
+    scale = density_g_cm3 / RHO_WATER_G_CM3
+    return tuple(_interpolate(energy_gev, source, column) * scale for column in (3, 4, 5))
 
 
 def ionization_coefficient(density_g_cm3: float = RHO_WATER_G_CM3) -> float:

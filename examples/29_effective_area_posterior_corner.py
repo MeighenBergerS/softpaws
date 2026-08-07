@@ -3,7 +3,7 @@
 Example 28 builds the per-neutrino-energy effective area with nothing fitted --
 the stochastic first-passage range (``docs/first_passage_range.md``),
 neutral-current regeneration, and the ``nu_tau -> tau -> mu`` channel -- and
-lands within 0.044 dex rms of the published IceCube upgoing table. This example
+lands within 0.049 dex rms of the published IceCube upgoing table. This example
 asks the complementary question: if the model's few physical handles are allowed
 to float, where does the data put them, and do they land on the values they were
 *derived* to have?
@@ -16,8 +16,8 @@ Five parameters float, each with an independent expectation:
 
 ``eps_0``
     Constant selection efficiency, capped at 1: the model is a geometric
-    ceiling, so no efficiency can exceed it. Example 28's residual runs 0.56 to
-    0.82, so a *constant* cannot describe it -- where the fit puts this, and
+    ceiling, so no efficiency can exceed it. Example 28's residual runs 0.58 to
+    0.84 over the fitted band, so a *constant* cannot describe it -- where the fit puts this, and
     what trend it leaves behind, is the point.
 ``log10(E_thr/GeV)``
     Muon selection threshold. The DR2 smearing matrix pins it independently: the
@@ -43,7 +43,7 @@ Five parameters float, each with an independent expectation:
     is the static-footprint model. This is the parameter the earlier
     four-parameter version of this fit did not have, and its absence is why
     that version had to push the residual trend into ``lambda``: example 28's
-    ratio inversion gives ``Lambda = 14.3`` m per e-fold independently, so the
+    ratio inversion gives ``Lambda = 19.3`` m per e-fold independently, so the
     question here is whether the posterior finds it and releases ``lambda``.
 
 The ``nu_tau`` flux ratio is *not* floated: it is fixed by oscillations over
@@ -95,7 +95,6 @@ from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
-    sphere_radius_from_volume,
     stochastic_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
@@ -109,7 +108,16 @@ _DEFAULT_OUT_DIR = _HERE / "output"
 
 COMMON_LOG10_E = np.linspace(3.0, 8.0, 26)
 STATS_LOG10_E = (5.0, 7.8)
-RADIUS_KM = sphere_radius_from_volume(1.0)
+# IceCube as an upright hexagonal prism: ~1 km^2 of footprint by 1 km of
+# instrumented height, giving V_det = 1.00 km^3 exactly. RADIUS_KM is the
+# area-equivalent radius of the hexagon, so pi R^2 is the footprint, and
+# SIDE_COEFF is the prism perimeter divided by pi R, the coefficient of the
+# side-projection term (2.0 for a cylinder, 2.10 for a hexagon).
+FOOTPRINT_KM2 = 1.0
+HEIGHT_KM = 1.0
+N_SIDES = 6
+RADIUS_KM = float(np.sqrt(FOOTPRINT_KM2 / np.pi))
+SIDE_COEFF = float(2.0 * np.sqrt(np.pi * N_SIDES * np.tan(np.pi / N_SIDES)) / np.pi)
 N_DEC = 40
 N_RUNG = 80
 CROSS_SECTION = bgr18_cross_section()
@@ -130,10 +138,10 @@ CORNER_LABELS = [
 REACH_PIVOT_GEV = 1.0e6
 
 # Example 28 inverts the published-to-model ratio for the radius each energy
-# demands and fits a straight line through it in ln E, giving 14.3 m per e-fold
+# demands and fits a straight line through it in ln E, giving 19.3 m per e-fold
 # with no reference to this posterior. That is the independent expectation for
 # Lambda, in the same sense that 0.454 is the independent expectation for lam.
-REACH_EXAMPLE28_KM = 0.0143
+REACH_EXAMPLE28_KM = 0.0193
 
 # Effective log-log slope of the BGR18 CC cross section over the fitted band,
 # and the pivot the tilt rotates about. lam = LAMBDA_BGR18 recovers the table.
@@ -224,18 +232,33 @@ def precompute_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:
     Returns
     -------
     ladders : dict
-        ``"mu"`` and ``"tau"`` -> ``(energies, weights)`` with ``energies`` of
-        shape ``(n_energy, N_RUNG)`` [GeV] and ``weights`` the matching
-        hemisphere-averaged arrival probabilities.
+        ``"mu"`` and ``"tau"`` -> ``(energies, weights, weights_cos,
+        weights_sin)`` with ``energies`` of shape ``(n_energy, N_RUNG)`` [GeV]
+        and the three weight arrays the matching hemisphere averages of the
+        arrival probability against 1, ``|cos theta_z|`` and ``sin theta_z``.
+
+    Notes
+    -----
+    A prism presents a direction-dependent area, so the declination average no
+    longer commutes with the target volume the way it did for a sphere. The
+    volume is linear in the two geometry terms, ``pi R^2 |cos|`` and
+    ``(P / pi) h sin``, so averaging the transmission against each of them
+    separately keeps the result exact while still collapsing the declination
+    axis once and for all. At the Pole ``|cos theta_z| = sin(dec)``.
     """
     dec_deg = np.linspace(0.5, 89.5, N_DEC)
     columns = np.array([prem_column(float(d)) for d in dec_deg])
-    solid_angle = np.cos(np.deg2rad(dec_deg))
+    dec_rad = np.deg2rad(dec_deg)
+    solid_angle = np.cos(dec_rad)
+    cos_theta = np.sin(dec_rad)
+    sin_theta = np.cos(dec_rad)
 
-    ladders: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    ladders: dict[str, tuple[np.ndarray, ...]] = {}
     for flavour in ("mu", "tau"):
         energies = np.empty((COMMON_LOG10_E.size, N_RUNG))
         weights = np.empty((COMMON_LOG10_E.size, N_RUNG))
+        weights_cos = np.empty((COMMON_LOG10_E.size, N_RUNG))
+        weights_sin = np.empty((COMMON_LOG10_E.size, N_RUNG))
         for i, log10_e in enumerate(COMMON_LOG10_E):
             rung_energy, rung_weight = flavour_transmission(
                 10.0**log10_e, columns, CROSS_SECTION, flavour=flavour,
@@ -243,7 +266,13 @@ def precompute_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:
             )
             energies[i] = rung_energy
             weights[i] = np.average(rung_weight, axis=1, weights=solid_angle)
-        ladders[flavour] = (energies, weights)
+            weights_cos[i] = np.average(
+                rung_weight * cos_theta[None, :], axis=1, weights=solid_angle
+            )
+            weights_sin[i] = np.average(
+                rung_weight * sin_theta[None, :], axis=1, weights=solid_angle
+            )
+        ladders[flavour] = (energies, weights, weights_cos, weights_sin)
     return ladders
 
 
@@ -275,7 +304,7 @@ def model_aeff(
         ("tau", MEAN_Z * (1.0 - MEAN_INELASTICITY), F_TAU * BR_TAU_TO_MU),
     )
     for flavour, muon_fraction, weight in channels:
-        energies, arrival = ladders[flavour]
+        energies, arrival, arrival_cos, arrival_sin = ladders[flavour]
         muon_energy = muon_fraction * energies
         length = stochastic_muon_range_km(
             muon_energy.ravel(), threshold, b_scale=b_scale
@@ -283,14 +312,17 @@ def model_aeff(
         radius = light_reach_radius_km(
             RADIUS_KM, muon_energy, reach_km, REACH_PIVOT_GEV
         )
-        volume_cm3 = (
-            np.pi * radius**2 * length + 4.0 / 3.0 * np.pi * radius**3
-        ) * CM_PER_KM**3
         # BGR18 tilted about the pivot; lam = LAMBDA_BGR18 recovers the table.
         sigma = CROSS_SECTION.cc(energies) * (energies / LAMBDA_PIVOT_GEV) ** (
             lam - LAMBDA_BGR18
         )
-        total += weight * (arrival * n_nucleon * sigma * volume_cm3).sum(axis=1)
+        rate = n_nucleon * sigma * CM_PER_KM**3
+        # Each geometry term carries its own declination average; see
+        # precompute_ladders. V_det is isotropic and rides on the plain one.
+        cap = np.pi * radius**2 * length * arrival_cos
+        side = SIDE_COEFF * radius * HEIGHT_KM * length * arrival_sin
+        v_det = np.pi * radius**2 * HEIGHT_KM * arrival
+        total += weight * (rate * (cap + side + v_det)).sum(axis=1)
     return eps_0 * total
 
 
@@ -310,7 +342,10 @@ def log_probability(
     # truncated Gaussian the event-rate fits use.
     log_prior = -0.5 * ((theta[2] - B_SCALE_MEAN) / B_SCALE_STD) ** 2
     predicted = model_aeff(theta, ladders)
-    if np.any(predicted <= 0.0):
+    # Non-finite as well as non-positive: below b_scale ~ 0.287 the calibrated
+    # kernel has d_mu >= b_mu and is no longer a loss spectrum at all, and this
+    # prior still admits that corner. Example 33 guards the same way.
+    if not np.all(np.isfinite(predicted)) or np.any(predicted <= 0.0):
         return -np.inf
     residual = np.log(observed[mask] / predicted[mask])
     return log_prior - 0.5 * float(np.sum((residual / sigma_ln) ** 2))

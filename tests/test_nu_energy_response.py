@@ -12,7 +12,11 @@ from softpaws.transport.attenuation import (
     regenerated_transmission,
     survival_probability,
 )
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
+from softpaws.transport.coefficients import (
+    diffusion_coefficient,
+    drift_coefficient,
+    log_loss_moments,
+)
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.loss_distribution import (
     log_loss_cdf,
@@ -23,6 +27,7 @@ from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     muon_range_km,
     stochastic_muon_range_km,
+    stochastic_muon_range_variance_km2,
 )
 
 
@@ -107,23 +112,20 @@ def test_regeneration_only_adds_flux():
 
 
 def test_closed_form_matches_the_depth_integral():
+    # Pinned to the family: the depth integral runs against that kernel, so this
+    # checks the renewal expansion and not the choice of loss moments.
     energy = np.array([1.0e4, 1.0e5, 1.0e6, 1.0e7, 1.0e8])
-    closed = stochastic_muon_range_km(energy, method="closed")
-    quadrature = stochastic_muon_range_km(energy, method="quadrature")
+    closed = stochastic_muon_range_km(energy, method="closed", log_loss_source="family")
+    quadrature = stochastic_muon_range_km(energy, method="quadrature", log_loss_source="family")
     # The renewal expansion is exact to well under a centimetre over four
     # decades; see docs/first_passage_range.md.
     assert np.allclose(closed, quadrature, atol=1.0e-2)
 
 
 def test_closed_form_replaces_mean_y_by_mean_log():
-    from scipy.special import polygamma
-
-    from softpaws.transport.eigenvalue import two_moment_loss_spectrum
-
     energy = np.array([1.0e8])
-    b_mu, d_mu = _coefficients(float(energy[0]))
-    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
-    first = kappa * polygamma(1, p + 1.0)
+    b_mu, _ = _coefficients(float(energy[0]))
+    first = float(log_loss_moments(energy)[0][0])
     # Phi'(0) = <-ln(1-y)> >= <y> = b_mu for any positive loss spectrum, so the
     # stochastic range is always the shorter one.
     assert first > b_mu
@@ -134,6 +136,67 @@ def test_closed_form_replaces_mean_y_by_mean_log():
 def test_stochastic_range_rejects_unknown_method():
     with pytest.raises(ValueError, match="method must be"):
         stochastic_muon_range_km(np.array([1.0e6]), method="nope")
+
+
+def test_ionization_splice_deactivates_above_its_matching_energy():
+    # A fitted threshold can land above E_*, at which point there is no ionizing
+    # segment to splice: the muon stops counting while it is still radiative.
+    # The two-regime range has to degrade to the radiative one there, not fail,
+    # because the posterior samplers of examples 29 and 33 do sample it.
+    energy = np.array([1.0e6, 1.0e8])
+    high = stochastic_muon_range_km(energy, threshold_gev=3.0e4)
+    radiative = stochastic_muon_range_km(energy, threshold_gev=3.0e4, include_ionization=False)
+    assert np.allclose(high, radiative)
+
+
+def test_ionization_splice_never_exceeds_the_csda_range():
+    # Both treatments now carry the same loss terms, so the stochastic range can
+    # only be the shorter one: fluctuations remove range, they never add it.
+    # Purely radiative it can exceed R_CSDA near threshold, which is the defect
+    # the splice removes.
+    energy = np.logspace(3.5, 8.0, 20)
+    spliced = stochastic_muon_range_km(energy)
+    csda = muon_range_km(energy)
+    assert np.all(spliced <= csda + 1.0e-9)
+    radiative = stochastic_muon_range_km(energy, include_ionization=False)
+    assert np.any(radiative > csda)
+
+
+def test_ionization_splice_is_deterministic_below_the_matching_energy():
+    # A muon born below E_* never enters the radiative regime the first-passage
+    # expansion describes, so the CSDA range is the whole of its answer.
+    energy = np.array([2.0e3, 5.0e3, 9.0e3])
+    assert np.allclose(stochastic_muon_range_km(energy), muon_range_km(energy))
+
+
+def test_ionization_splice_is_continuous_across_the_matching_energy():
+    # The deterministic segment starts at the mean arrival energy and not at
+    # E_*, which is what keeps the two regimes from double counting the
+    # first-passage overshoot. Leaving it in opens a ~0.4 km step here.
+    match = 1.0e4
+    below = stochastic_muon_range_km(np.array([match * 0.999]), match_energy_gev=match)[0]
+    above = stochastic_muon_range_km(np.array([match * 1.001]), match_energy_gev=match)[0]
+    assert above - below == pytest.approx(0.0, abs=0.1)
+
+
+def test_ionization_splice_shortens_at_low_energy_and_lengthens_at_high():
+    # Two effects run against each other in the spliced decade: ionization
+    # shortens it, and dropping the production-energy loss rate for a muon that
+    # is by then at TeV energies lengthens it. The second wins only at the top.
+    low, high = np.array([1.0e5]), np.array([1.0e8])
+    assert stochastic_muon_range_km(low) < stochastic_muon_range_km(
+        low, include_ionization=False
+    )
+    assert stochastic_muon_range_km(high) > stochastic_muon_range_km(
+        high, include_ionization=False
+    )
+
+
+def test_ionization_splice_closed_form_matches_the_depth_integral():
+    energy = np.array([1.0e5, 1.0e6, 1.0e7, 1.0e8])
+    closed = stochastic_muon_range_km(energy, method="closed", log_loss_source="family")
+    quadrature = stochastic_muon_range_km(energy, method="quadrature", log_loss_source="family")
+    assert np.allclose(closed, quadrature, atol=1.0e-2)
 
 
 def test_flavour_transmission_reproduces_the_geometric_ladder():
@@ -171,3 +234,96 @@ def test_flavour_transmission_rejects_unknown_flavour():
 
     with pytest.raises(ValueError, match="flavour must be"):
         flavour_transmission(1.0e6, np.array([1.0e8]), flavour="electron")
+
+
+def test_ionization_splice_stays_finite_for_an_invalid_loss_spectrum():
+    # b_scale below ~0.287 drives d_mu / b_mu above 1, where the two-moment
+    # kernel is no longer a loss spectrum and the range is meaningless. It still
+    # has to come back finite: examples 29 and 33 sample that corner, and an
+    # infinity there kills the chain instead of being rejected by the posterior.
+    value = stochastic_muon_range_km(np.array([1.86e6]), 226.76, b_scale=0.2433)
+    assert np.all(np.isfinite(value))
+
+
+# ---------------------------------------------------------------------------
+# Variance of the first-passage range. The reference numbers are the PROPOSAL
+# Monte Carlo of examples/39_range_moment_estimator.py, 2000 muons per point,
+# propagated from the production energy down to 100 TeV.
+# ---------------------------------------------------------------------------
+
+# log10(eps / GeV) -> sigma_R [km w.e.] measured, stopping at 1e5 GeV.
+_MC_SIGMA_KM = {6.0: 2.330, 6.5: 3.030, 7.0: 3.583, 7.5: 4.063}
+
+
+def test_range_variance_matches_the_monte_carlo():
+    # Parameter-free: the closed form carries no freedom once the kernel is
+    # fixed. The coefficients are frozen at the production energy here where the
+    # Monte Carlo sees them run, which is most of the residual.
+    for log10_energy, sigma_mc in _MC_SIGMA_KM.items():
+        variance = stochastic_muon_range_variance_km2(10.0**log10_energy, 1.0e5)[0]
+        assert np.sqrt(variance) == pytest.approx(sigma_mc, rel=0.07)
+
+
+def test_range_variance_needs_the_overshoot_constant():
+    # Without the constant the expansion is a large-w asymptote and runs high.
+    # This is what makes the constant worth carrying rather than dropping.
+    energy = 1.0e6
+    phi_prime, phi_second, _ = (float(m[0]) for m in log_loss_moments(energy))
+    leading_only = phi_second * np.log(energy / 1.0e5) / phi_prime**3
+    with_constant = stochastic_muon_range_variance_km2(energy, 1.0e5)[0]
+    assert leading_only > with_constant
+    assert np.sqrt(leading_only) / _MC_SIGMA_KM[6.0] > 1.15
+    assert np.sqrt(with_constant) / _MC_SIGMA_KM[6.0] == pytest.approx(1.0, abs=0.05)
+
+
+def test_range_variance_beats_the_second_order_form():
+    # The drift-diffusion transport carries d_mu = <y^2> where the range needs
+    # <ln^2(1-y)>. The two differ by a factor of about four, so its spread is
+    # low at every lever arm and gets worse with distance.
+    energies = 10.0 ** np.array([6.0, 7.0, 7.5])
+    b_mu = drift_coefficient(energies)
+    d_mu = diffusion_coefficient(energies)
+    drift = b_mu + 0.5 * d_mu
+    w = np.log(energies / 1.0e5)
+    second_order = np.sqrt(w * d_mu / drift**3)
+    exact = np.sqrt(stochastic_muon_range_variance_km2(energies, 1.0e5))
+    measured = np.array([_MC_SIGMA_KM[6.0], _MC_SIGMA_KM[7.0], _MC_SIGMA_KM[7.5]])
+    assert np.all(second_order < 0.75 * measured)
+    assert np.all(np.abs(exact / measured - 1.0) < 0.07)
+    # And the deficit widens rather than closing.
+    assert np.all(np.diff(second_order / measured) < 0.0)
+
+
+def test_range_variance_grows_with_the_lever_arm():
+    energy = np.logspace(5.5, 8.0, 12)
+    variance = stochastic_muon_range_variance_km2(energy, 1.0e5)
+    assert np.all(np.diff(variance) > 0.0)
+
+
+def test_range_variance_scales_with_the_kernel():
+    # Every moment is linear in the kernel normalization, so a rescaled kernel
+    # scales the variance by 1 / b_scale^2 exactly.
+    energy = np.array([1.0e6, 1.0e7])
+    base = stochastic_muon_range_variance_km2(energy, 1.0e5)
+    scaled = stochastic_muon_range_variance_km2(energy, 1.0e5, b_scale=2.0)
+    assert np.allclose(scaled, base / 4.0)
+
+
+def test_range_variance_vanishes_below_threshold():
+    assert stochastic_muon_range_variance_km2(np.array([0.5e3]))[0] == 0.0
+    # And it floors at zero rather than going negative where the expansion in
+    # 1 / w stops applying, a few e-folds above threshold.
+    assert stochastic_muon_range_variance_km2(np.array([1.2e3]))[0] == 0.0
+
+
+def test_log_loss_moments_exceed_the_y_moments():
+    # -ln(1-y) >= y for every positive loss spectrum, and the gap grows with the
+    # order because the logarithm diverges where y saturates.
+    energy = np.array([1.0e5, 1.0e6, 1.0e7])
+    phi_prime, phi_second, phi_third = log_loss_moments(energy)
+    assert np.all(phi_prime > drift_coefficient(energy))
+    assert np.all(phi_second > diffusion_coefficient(energy))
+    second_gap = phi_second / diffusion_coefficient(energy)
+    first_gap = phi_prime / drift_coefficient(energy)
+    assert np.all(second_gap > first_gap)
+    assert np.all(phi_third > 0.0)

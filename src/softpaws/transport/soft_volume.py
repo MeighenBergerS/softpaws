@@ -54,7 +54,7 @@ is an apples-to-oranges comparison; see ``examples/20_effective_area_soft_vs_irf
 from __future__ import annotations
 
 import numpy as np
-from scipy.special import polygamma
+from scipy.special import gammainc, polygamma
 
 from ..utils.constants import RHO_WATER_G_CM3
 from .coefficients import (
@@ -62,6 +62,7 @@ from .coefficients import (
     critical_energy_gev,
     diffusion_coefficient,
     drift_coefficient,
+    log_loss_moments,
 )
 from .eigenvalue import (
     phi_eigenvalue,
@@ -76,6 +77,14 @@ from .source import DEFAULT_LAMBDA, inelasticity_factor
 # :func:`range_target_volume_km3`; the resulting volume depends on it only
 # logarithmically.
 DEFAULT_MUON_THRESHOLD_GEV = 1.0e3
+
+# Matching energy between the two regimes of :func:`stochastic_muon_range_km`:
+# radiative and stochastic above, deterministic and ionizing below. It has to sit
+# well above the critical energy ``E_c ~ 600`` GeV, where the scale-invariant
+# kernel that the first-passage derivation assumes stops describing the losses,
+# and low enough that the radiative treatment still covers most of the range.
+# 10 TeV is 17 E_c and leaves one decade to the default threshold.
+DEFAULT_IONIZATION_MATCH_GEV = 1.0e4
 
 
 def spectral_penalty(
@@ -214,6 +223,81 @@ def dynamic_projected_area_km2(
         radius_km, energy_gev, light_yield_length_km, density_g_cm3, b_scale, source,
     )
     return np.pi * r_eff**2
+
+
+def prism_projected_area_km2(
+    cos_theta: float | np.ndarray,
+    radius_km: float | np.ndarray,
+    height_km: float,
+    n_sides: int | None = 6,
+    n_blocks: int = 1,
+) -> np.ndarray:
+    """Projected area of an upright convex prism, averaged over azimuth.
+
+    A sphere presents ``pi R^2`` from every direction, which is convenient and
+    wrong for an array that is as wide as it is tall. This is the projection of
+    an upright prism of regular ``n_sides`` cross-section,
+
+    .. math:: A_\\mathrm{proj}(\\theta_z) = \\pi R^2 |\\cos\\theta_z|
+        + \\frac{P}{\\pi} h \\sin\\theta_z,
+
+    with ``R`` the area-equivalent radius of the cross-section, so that the
+    footprint is ``pi R^2`` and the instrumented volume ``pi R^2 h`` whatever
+    ``n_sides`` is, and ``P = 2 R sqrt(pi n tan(pi/n))`` its perimeter. The
+    ``P / pi`` in the side term is the azimuthal average of the silhouette width
+    of a convex cross-section, which for a circle (``n_sides=None``) returns the
+    ``2 R h sin theta`` of the cylinder form used for the ARCA blocks.
+
+    Two consequences are worth stating because they are easy to guess wrongly.
+    The two terms *add* at oblique incidence, so the maximum is neither face-on
+    value: a 1 km^2 by 1 km hexagonal prism presents 1.00 km^2 vertically and
+    1.19 km^2 horizontally but 1.55 km^2 at ``theta_z = 50``. And its
+    direction-averaged area is ``S/4 = 1.43`` km^2 by Cauchy's formula, above
+    the 1.21 km^2 of the equal-volume sphere, because the sphere minimises
+    surface area at fixed volume and therefore also minimises mean projected
+    area. Replacing a sphere by any equal-volume prism raises the ceiling.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith angle. Only its magnitude is used, so
+        upgoing and downgoing arrivals of the same obliquity agree.
+    radius_km : float or np.ndarray
+        Area-equivalent radius of the cross-section [km], broadcast against
+        ``cos_theta``. An energy-dependent radius is how the reach law of
+        :func:`light_reach_radius_km` enters.
+    height_km : float
+        Instrumented height of one prism [km].
+    n_sides : int or None, optional
+        Sides of the regular cross-section; 6 (the default) for an IceCube-like
+        hexagonal footprint, ``None`` for a circular one. A hexagon has a 5%
+        longer perimeter than the circle of equal area, which is the whole of
+        its effect on this expression.
+    n_blocks : int, optional
+        Number of identical prisms. Defaults to 1.
+
+    Returns
+    -------
+    area : np.ndarray
+        Projected area [km^2], broadcast over ``cos_theta`` and ``radius_km``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``n_sides`` is given and is less than 3.
+    """
+    if n_sides is not None and n_sides < 3:
+        raise ValueError(f"n_sides must be at least 3 or None for a circle, got {n_sides}.")
+    cos_abs = np.abs(np.asarray(cos_theta, dtype=float))
+    sin_theta = np.sqrt(np.clip(1.0 - cos_abs**2, 0.0, 1.0))
+    radius = np.asarray(radius_km, dtype=float)
+    if n_sides is None:
+        perimeter = 2.0 * np.pi * radius
+    else:
+        perimeter = 2.0 * radius * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
+    cap = np.pi * radius**2 * cos_abs
+    side = perimeter / np.pi * height_km * sin_theta
+    return n_blocks * (cap + side)
 
 
 def light_reach_radius_km(
@@ -463,6 +547,9 @@ def stochastic_muon_range_km(
     ell_max_scale: float = 2.5,
     n_ell: int = 161,
     method: str = "closed",
+    include_ionization: bool = True,
+    match_energy_gev: float = DEFAULT_IONIZATION_MATCH_GEV,
+    log_loss_source: str = "table",
 ) -> np.ndarray:
     """Muon range to a threshold, averaged over the exact stochastic loss law.
 
@@ -498,6 +585,55 @@ def stochastic_muon_range_km(
     constant. Since ``-ln(1-y) >= y`` for every positive loss spectrum, the
     stochastic range is always the shorter one.
 
+    **Ionization and the two-regime range.** The expansion above is purely
+    radiative, but a threshold of 1 TeV sits within a factor of two of the muon
+    critical energy in water (``E_c = a_mu / b_mu ~ 600`` GeV,
+    :func:`~softpaws.transport.coefficients.critical_energy_gev`), so the last
+    e-fold of the range -- the one that sets where a tabulated effective area
+    turns on -- is not radiative at all. Ionization cannot simply be added to
+    ``Phi``: it removes a fixed amount of energy per unit length and not a fixed
+    *fraction*, so it is additive in ``E`` and not in ``ln E``, which is the
+    structure the whole subordinator derivation rests on.
+
+    With ``include_ionization`` (the default) the range is therefore spliced at a
+    matching energy ``E_*`` chosen well above ``E_c``,
+
+    .. math:: L(\\varepsilon) = \\underbrace{\\frac{\\ln(\\varepsilon/E_*)}
+        {\\Phi'(0)} - \\frac{\\Phi''(0)}{2\\Phi'(0)^2}}_{\\text{stochastic,
+        radiative}} \\;+\\; \\underbrace{\\frac{1}{b_\\mu(E_a)}
+        \\ln\\frac{E_a + E_c}{E_\\mathrm{thr} + E_c}}_{\\text{deterministic,
+        with ionization}},
+
+    which leaves the derivation untouched above ``E_*`` and appends an almost
+    constant offset below it, so the result is still closed form. Muons born
+    below ``E_*`` get the deterministic range alone (:func:`muon_range_km`).
+    Passing ``include_ionization=False`` recovers the purely radiative range,
+    which is what Table E.1 of the paper contrasts against ``R_CSDA``.
+
+    The deterministic segment starts at ``E_a = E_* exp(-<overshoot>)`` and not
+    at ``E_*``, because a first passage overshoots the level it crosses. By
+    Wald's identity ``E[W(tau)] = w + <overshoot>`` with
+    ``<overshoot> = -Phi''(0) / 2 Phi'(0)`` in log energy, which is the same
+    quantity the renewal constant above measures in depth, so starting the CSDA
+    segment at ``E_*`` would count that stretch of track twice. It is worth 0.4
+    km, and leaving it in shows up as a 0.4 km discontinuity at ``E_*``.
+
+    The net effect on the range is small and changes sign across the band, from
+    -13% at ``E_nu = 10^4`` GeV, where the muon never enters the radiative
+    regime at all, through -0.9% at ``10^6`` GeV to +1.9% at ``10^8``. Two
+    effects run against each other in the spliced decade. Ionization shortens it
+    by 1.20 km; ceasing to apply the production-energy ``Phi'(0)`` to a muon
+    that is by then at TeV energies, where the loss rate is lower, lengthens it
+    by 2.17 km, and the two nearly cancel once the overshoot is removed.
+
+    ``match_energy_gev`` is a convention and the answer moves with it: a factor
+    of three either way from the default changes the range by about 3%, which is
+    the systematic this treatment carries. Lowering it keeps more of the track
+    stochastic, which is right down to ``E_c``; raising it keeps more of the
+    ionization, which matters most near threshold. Neither limit is uniformly
+    better, and only a deterministic drift inside ``W(ell)`` would remove the
+    choice.
+
     Unlike the soft volume's spectral length ``1/Phi(A)``, this carries no
     spectral weighting -- it is the right length for a **monochromatic** parent,
     which is what a tabulated effective area is differential in (App. I's
@@ -532,6 +668,30 @@ def stochastic_muon_range_km(
         :func:`softpaws.transport.loss_distribution.log_loss_cdf`; it is orders
         of magnitude slower and is kept as the independent check that the
         closed form is exercised against.
+    include_ionization : bool, optional
+        Splice the deterministic ionizing range below ``match_energy_gev`` onto
+        the radiative first passage above it, as derived above. Defaults to
+        ``True``. ``False`` gives the purely radiative range.
+    match_energy_gev : float, optional
+        Matching energy ``E_*`` [GeV] between the two regimes, which has to sit
+        well above the critical energy for the splice to be meaningful.
+        Defaults to :data:`DEFAULT_IONIZATION_MATCH_GEV`. Ignored when
+        ``include_ionization`` is ``False``, and also when it falls at or below
+        ``threshold_gev``, where there is no ionizing segment left to splice and
+        the range degrades to the purely radiative one.
+    log_loss_source : {"table", "family"}, optional
+        Where ``Phi'(0)`` and ``Phi''(0)`` come from. ``"table"`` (the default)
+        reads them from the tabulated spectrum via
+        :func:`~softpaws.transport.coefficients.log_loss_moments`; ``"family"``
+        reconstructs them from the two-moment calibration of ``b_mu`` and
+        ``d_mu``. The family is 8% low on the first moment and 56% low on the
+        second, because ``-ln(1-y)`` weights the hard end of the kernel that a
+        fit to the ``y``-moments does not constrain, and the resulting range is
+        6.9% long over ``10^5`` to ``10^8`` GeV. The bias is almost pure
+        normalization -- 0.7% rms of residual tilt across that band -- so it
+        moves an effective-area ceiling and leaves its shape alone. Kept as an
+        option because ``source="table1"`` has no log-loss columns and because
+        ``method="quadrature"`` checks against the family's own kernel.
 
     Returns
     -------
@@ -541,20 +701,41 @@ def stochastic_muon_range_km(
     Raises
     ------
     ValueError
-        Raised if ``method`` is not one of the two supported values.
+        Raised if ``method`` or ``log_loss_source`` is not one of its supported
+        values, or if the two are combined incompatibly.
 
     Notes
     -----
     ``b_mu`` and ``d_mu`` are evaluated once, at the production energy, rather
     than followed down the track -- the same percent-level approximation
-    :func:`muon_range_km` makes and justifies.
+    :func:`muon_range_km` makes and justifies. Against a PROPOSAL Monte Carlo
+    that cost is 4.5% rms on the range, dropping to 1.8% if the moments are
+    integrated down the trajectory instead
+    (``examples/39_range_moment_estimator.py``).
 
-    The two methods agree to better than 2 mm over ``10^4`` to ``10^8`` GeV.
+    With ``log_loss_source="family"`` the two methods agree to better than 4 cm
+    over ``10^4`` to ``10^8`` GeV. The
+    residual is the depth grid: it is sized to the range to ``E_thr`` while the
+    integrand falls off on the shorter range to ``E_*``, so the spliced form is
+    sampled more coarsely than the purely radiative one, which agrees to 2 mm.
     The closed form is an expansion in ``1 / ln(eps / E_thr)``, so it should
     not be pushed to ``eps -> E_thr``, where the length vanishes anyway.
     """
     if method not in ("closed", "quadrature"):
         raise ValueError(f"method must be 'closed' or 'quadrature', got {method!r}.")
+    if log_loss_source not in ("table", "family"):
+        raise ValueError(
+            f"log_loss_source must be 'table' or 'family', got {log_loss_source!r}."
+        )
+    if method == "quadrature" and log_loss_source != "family":
+        # The depth integral runs against log_loss_cdf, which builds the
+        # two-moment family's kernel. Checking a table-based closed form against
+        # it would compare two different kernels and disagree by ~7% by
+        # construction, so the internal check is pinned to the family.
+        raise ValueError(
+            "method='quadrature' checks the closed form against the two-moment "
+            "family's own depth integral, so it needs log_loss_source='family'."
+        )
 
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
     deterministic = muon_range_km(energy, threshold_gev, density_g_cm3, b_scale, source)
@@ -562,14 +743,57 @@ def stochastic_muon_range_km(
     d_mu = diffusion_coefficient(energy, density_g_cm3, source)
     selectable = (energy > threshold_gev) & (deterministic > 0.0)
 
-    if method == "closed":
+    # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length.
+    if log_loss_source == "table" and source != "table1":
+        first, second, _ = (
+            b_scale * moment for moment in log_loss_moments(energy, density_g_cm3, source)
+        )
+    else:
+        # Table 1 tabulates no log-loss columns, so there the family is the only
+        # route; it is 8% low on the first moment and 56% low on the second.
         kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
-        # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length.
         first = kappa * polygamma(1, p + 1.0)
         second = -kappa * polygamma(2, p + 1.0)
+
+    # Above the matching energy the first passage is radiative and stochastic; below it
+    # the muon is within reach of E_c and slows deterministically. The stochastic part
+    # already carries the muon *past* E_*, since first passage overshoots the level it
+    # crosses: by Wald, E[W(tau)] = w + <overshoot> with <overshoot> = -Phi''(0)/2Phi'(0)
+    # in log energy, which is the same quantity the renewal constant measures in depth.
+    # The deterministic segment therefore starts at the mean arrival energy and not at
+    # E_*, and its b_mu is evaluated there, which is where the muon actually is.
+    # A threshold at or above E_* leaves no ionizing segment to splice on, since
+    # the muon stops counting while it is still radiative. Clamping the floor
+    # degrades the two-regime range back to the purely radiative one, which is
+    # what a fitted threshold above E_* should get.
+    if include_ionization and match_energy_gev > threshold_gev:
+        stochastic_floor = float(match_energy_gev)
+        # A first passage crosses its level from above, so the overshoot is
+        # non-negative and the arrival energy lies in [E_thr, E_*]. Both bounds
+        # bind only where the calibrated kernel is not a valid loss spectrum at
+        # all -- ``d_mu / b_mu >= 1`` puts ``p + 1 <= 0`` -- which a sampler
+        # exploring an unphysical b_scale does reach, and where an unclamped
+        # exponential would return an infinite range instead of a wrong one.
+        overshoot = np.clip(second / (2.0 * first), 0.0, None)
+        arrival_gev = np.clip(
+            stochastic_floor * np.exp(-overshoot), threshold_gev, stochastic_floor
+        )
+        offset_km = muon_range_km(arrival_gev, threshold_gev, density_g_cm3, b_scale, source)
+    else:
+        stochastic_floor = float(threshold_gev)
+        offset_km = np.zeros_like(energy)
+    stochastic_regime = selectable & (energy > stochastic_floor)
+
+    if method == "closed":
         with np.errstate(divide="ignore", invalid="ignore"):
-            length = np.log(energy / threshold_gev) / first + second / (2.0 * first**2)
-        out = np.where(selectable, length, 0.0)
+            length = (
+                np.log(energy / stochastic_floor) / first
+                + second / (2.0 * first**2)
+                + offset_km
+            )
+        # Muons born below E_* never enter the radiative regime, so the deterministic
+        # range is the whole of their answer.
+        out = np.where(stochastic_regime, length, np.where(selectable, deterministic, 0.0))
         return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
 
     from .loss_distribution import log_loss_cdf
@@ -578,10 +802,196 @@ def stochastic_muon_range_km(
     for i, eps in enumerate(energy):
         if not selectable[i]:
             continue
+        if not stochastic_regime[i]:
+            out[i] = float(deterministic[i])
+            continue
         ell = np.linspace(0.0, ell_max_scale * float(deterministic[i]), n_ell)
-        cdf = log_loss_cdf(np.log(eps / threshold_gev), ell, float(b_mu[i]), float(d_mu[i]))
-        out[i] = float(np.trapezoid(cdf, ell))
+        cdf = log_loss_cdf(np.log(eps / stochastic_floor), ell, float(b_mu[i]), float(d_mu[i]))
+        out[i] = float(np.trapezoid(cdf, ell)) + float(offset_km[i])
     return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
+
+
+def stochastic_muon_range_variance_km2(
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+) -> np.ndarray:
+    """Variance of the muon range to a threshold, from the same first passage.
+
+    :func:`stochastic_muon_range_km` returns the *mean* depth at which a muon
+    first falls below ``E_thr``. Individual muons scatter about it by tens of
+    percent, and that spread has a closed form built from the same kernel. With
+    ``w = ln(varepsilon / E_thr)``,
+
+    .. math:: \\mathrm{Var}(R) = \\frac{-\\Phi''(0)\\,w}{\\Phi'(0)^3}
+        - \\frac{\\Phi'''(0)}{3\\,\\Phi'(0)^3}
+        + \\frac{\\Phi''(0)^2}{4\\,\\Phi'(0)^4}.
+
+    The structure mirrors the mean, and both constants are moments of the same
+    stationary overshoot. A first passage crosses its level from above; the
+    *mean* overshoot ``-Phi''(0) / 2 Phi'(0)`` is the constant in the mean, and
+    its *variance* ``Phi'''(0) / 3 Phi'(0) - Phi''(0)^2 / 4 Phi'(0)^2``, divided
+    by ``Phi'(0)^2`` to turn log-energy into depth, is the constant here. It
+    enters negatively: a muon that overshoots further crossed its level sooner.
+
+    Both terms matter. Against a direct simulation of PROPOSAL's kernel the
+    leading term alone runs 8 to 25% high over ``w = 3.5`` to ``9.2``; with the
+    constant the agreement is better than 2%, and against PROPOSAL itself the
+    spread comes out to 3.5% rms with nothing fitted. The second-order
+    drift-diffusion transport, by contrast, is 30 to 40% low at every ``w`` and
+    worsens with distance, because it carries ``d_mu = <y^2>`` where this
+    quantity needs ``<ln^2(1-y)>``, and the two differ by a factor of four. See
+    ``examples/39_range_moment_estimator.py``.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the kernel normalization. All three moments
+        scale with it, so the variance scales as ``1 / b_scale^2``.
+    source : {"proposal"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`. Needs the log-loss moment
+        columns, which ``"table1"`` does not have.
+
+    Returns
+    -------
+    variance_km2 : np.ndarray
+        Variance of the range [km^2 w.e.], zero below threshold.
+
+    Notes
+    -----
+    Purely radiative, with no counterpart to the ionization splice of
+    :func:`stochastic_muon_range_km`. Below the matching energy the loss is
+    deterministic and adds no variance of its own, but the energy at which the
+    muon *arrives* there fluctuates by the overshoot, and that fluctuation is
+    anticorrelated with the first-passage depth above it. Reproducing the
+    spliced variance therefore needs that covariance, which is not derived here;
+    for a threshold at or below the critical energy this result is the
+    stochastic part alone.
+
+    The expansion is in ``1 / w`` and its constant term is negative, so it
+    returns zero rather than a negative variance for ``w`` below about one,
+    where a muon reaches the threshold in a handful of collisions and no
+    expansion of this kind applies.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    phi_prime, phi_second, phi_third = (
+        b_scale * moment for moment in log_loss_moments(energy, density_g_cm3, source)
+    )
+
+    with np.errstate(divide="ignore", invalid="ignore"):
+        w = np.log(energy / threshold_gev)
+        overshoot_variance = (
+            phi_third / (3.0 * phi_prime) - phi_second**2 / (4.0 * phi_prime**2)
+        ) / phi_prime**2
+        variance = phi_second * w / phi_prime**3 - overshoot_variance
+
+    out = np.where(energy > threshold_gev, np.clip(variance, 0.0, None), 0.0)
+    return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
+
+
+def truncated_muon_range_km(
+    energy_gev: float | np.ndarray,
+    column_km: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+) -> np.ndarray:
+    """First-passage range cut at a finite upstream column [km].
+
+    :func:`stochastic_muon_range_km` integrates the first-passage probability to
+    infinite depth, which is right whenever the medium supplies more column than
+    any muon survives and wrong whenever it does not. A downgoing track is always
+    the second case, since the muon cannot be born above the ice; so is any
+    detector under a few km of water, where an upgoing muon at the top of the
+    band would need more column than the site has. The honest length is then the
+    *limited* expectation
+
+    .. math:: L(\\varepsilon, X) = \\mathbb{E}[\\tau(w) \\wedge X]
+        = \\int_0^X {\\rm d}\\ell\\;\\mathbb{P}[W(\\ell) < w].
+
+    Evaluating that integral directly needs the log-loss CDF at every depth.
+    Matching a gamma law to the first two moments of the first-passage depth --
+    :func:`stochastic_muon_range_km` and
+    :func:`stochastic_muon_range_variance_km2` -- turns it into an incomplete
+    gamma function instead, at no cost in accuracy that matters here: example
+    33's ``--check-truncation`` holds it against a direct Gil-Pelaez inversion.
+
+    Both moments are built from the tabulated log-loss moments, so this agrees
+    with :func:`stochastic_muon_range_km` with ``include_ionization=False`` in
+    the ``column_km -> inf`` limit. There is no ionization splice: the truncation
+    is only interesting where the column runs out well before the muon reaches
+    the critical energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    column_km : float or np.ndarray
+        Available upstream column, as a length of the medium [km]. Broadcast
+        against ``energy_gev``; ``inf`` returns the untruncated range.
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the kernel normalization.
+    source : {"proposal"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    length_km : np.ndarray
+        Expected truncated range [km], zero for muons born below threshold.
+    """
+    energy = np.asarray(energy_gev, dtype=float)
+    # The tabulated moments come back at least one-dimensional; keep the shape of
+    # the input so a scalar energy gives a scalar length, as the callers assume.
+    phi_prime, phi_second, _ = (
+        np.reshape(b_scale * moment, np.shape(energy))
+        for moment in log_loss_moments(energy, density_g_cm3, source)
+    )
+
+    selectable = energy > threshold_gev
+    w = np.where(selectable, np.log(np.maximum(energy, threshold_gev) / threshold_gev), 0.0)
+    mean = w / phi_prime + phi_second / (2.0 * phi_prime**2)
+    variance = np.reshape(
+        stochastic_muon_range_variance_km2(
+            np.maximum(energy, threshold_gev * (1.0 + 1.0e-12)),
+            threshold_gev,
+            density_g_cm3,
+            b_scale,
+            source,
+        ),
+        np.shape(energy),
+    )
+
+    column = np.asarray(column_km, dtype=float)
+    # An infinite column is the untruncated case; the general expression below
+    # would evaluate inf * 0 on it.
+    capped = np.where(np.isfinite(column), column, 0.0)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        shape = mean**2 / variance
+        x = capped / (variance / mean)
+        limited = mean * gammainc(shape + 1.0, x) + capped * (1.0 - gammainc(shape, x))
+    # A few e-folds above threshold the variance expansion floors at zero, where
+    # the first passage is effectively deterministic and the limited expectation
+    # is just the shorter of the two lengths.
+    limited = np.where(variance > 0.0, limited, np.minimum(mean, capped))
+    limited = np.where(np.isfinite(column), limited, mean)
+    return np.where(selectable & (mean > 0.0), np.clip(limited, 0.0, None), 0.0)
 
 
 def range_target_volume_km3(

@@ -55,6 +55,40 @@ dataverse_files/
 examples/output/*
 !examples/output/.gitkeep
 
+# Paper: the manuscript and everything around it. The derivation notes
+# (docs/*_notes.md, docs/first_passage_range.md) stay versioned -- library
+# docstrings cite them.
+docs/*.tex
+docs/*.tex.*
+docs/*.bib
+docs/*.bib.*
+docs/figures/
+docs/run_logs/
+docs/numbers.json
+docs/.bibliography-cache.json
+docs/collect_numbers.py
+docs/measure_style.py
+docs/revision_plan*.md
+docs/phase*.md
+docs/*style_guide*.md
+
+# LaTeX build products
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.synctex.gz
+*.toc
+texput.log
+docs/main.log
+
+# Scratch results written by examples at the repository root
+/results.json
+
 # IDE / OS
 .vscode/
 .idea/

@@ -18,10 +18,10 @@ sky-averaged benchmark, with the one thing the sky average could hide -- an
 error that integrates away -- exposed instead.
 
 The DR2 effective area is natively binned this way: ``IC86_effectiveArea.csv``
-carries 50 uniform ``sin(dec)`` bands, and example 28 averaged over them. Panels
+carries 50 uniform ``sin(dec)`` bands, and example 28 averaged over them. Figures
 (a) and (b) put them back.
 
-Three things follow from the geometry, and the figure separates them.
+Three things follow from the geometry, and the figures separate them.
 
 **Upgoing (dec > 0 at the Pole).** The neutrino crosses a PREM chord that grows
 from zero at the horizon to the full diameter at the nadir, so the Earth turns
@@ -36,7 +36,7 @@ equivalent its free range would cover. This is the truncation of example 34,
 here for a power-law source rather than a line. Overlaid on that is something
 the model does not have and does not claim to: the atmospheric-muon veto, which
 removes essentially the whole downgoing sky at 10 TeV and still suppresses it
-twentyfold at 100 TeV. What the panel shows is that the suppression *lifts* --
+twentyfold at 100 TeV. What the figure shows is that the suppression *lifts* --
 by 1 PeV the downgoing bands are within 25% of the upgoing ones. Above that they
 overshoot: at 10 PeV the published downgoing area exceeds this model by a third,
 so the geometric bound the upgoing sky respects to a few percent fails in the one
@@ -50,17 +50,17 @@ sidereal day, so the effective area has to be averaged along the source's
 zenith track. For an upright cylinder that also sweeps the projected area
 between ``pi R^2`` overhead and ``2 R h`` at the horizon. Both averages are one
 quadrature here; a Monte Carlo pipeline pays for them in simulation statistics.
-The consequence is visible in panel (c): a polar site has strongly
+The consequence is visible in figure (d): a polar site has strongly
 declination-dependent reach and a mid-latitude one is nearly uniform, because
 the sweep averages the two opposed effects together.
 
-Panels (c) and (d) turn that into the observable a point-source search quotes.
+Figures (c) and (d) turn that into the observable a point-source search quotes.
 Both are background-free geometric ceilings in the sense of example 34 -- no
 angular cut, no selection efficiency, no background model, and no reach -- so
 they must lie *below* anything a real search achieves, and how far below is the
 price of the things they leave out.
 
-Panel (c) is that check, and it is a second parameter-free benchmark on an
+Figure (c) is that check, and it is a second parameter-free benchmark on an
 observable quite unlike an effective area. IceCube's 14-year PSTracks 90% CL
 median sensitivity (arXiv:2507.07275) is a declination curve for the same
 channel this model computes -- through-going muon tracks -- so the model is run
@@ -72,7 +72,7 @@ should be rather than as a fitted nuisance. The shape is reproduced without
 anything being tuned to it: both curves are minimal at the horizon and rise to
 either pole, for the two opposed reasons above.
 
-Panel (d) is the forecast the check earns, and one choice in it is not cosmetic.
+Figure (d) is the forecast the check earns, and one choice in it is not cosmetic.
 The sensitivity is an integral over energy, and where that integral sits decides
 whether it has any declination structure at all: below ~100 TeV the Earth is
 transparent from every direction and the muon range is short enough that no site
@@ -85,14 +85,18 @@ mid-latitude one averages them away over each sidereal day.
 
 Two numbers are carried in rather than fitted. The reach ``Lambda`` and its
 pivot come from example 28's fit to the DR2 upgoing average; applying that one
-pair to all 50 bands is a prediction, not a fit, and panel (b) shows it as the
+pair to all 50 bands is a prediction, not a fit, and figure (b) shows it as the
 dashed curves.
 
-One caveat spans the two halves of the figure. The effective area of panels (a)
-and (b) is the DR2 10-year release, while the sensitivity of panel (c) is the
-14-year PSTracks selection, and the selection was not frozen between them. The
+One caveat spans the two halves of this set. The effective area of figures (a)
+and (b) is the DR2 release, whose 14 seasons span 2008-2022 for 13.6 yr of
+good-run livetime, while the sensitivity of figure (c) is the 14-year PSTracks
+selection, and the selection was not frozen between them. (Note that the DR2
+readme describes the event files as a "10 year sample"; that sentence is
+inherited from the DR1 readme and is contradicted by the release's own
+season list and good-run lists.) The
 model is the same in both, so the comparison is fair in shape; the normalization
-of the panel (c) gap carries that difference.
+of the figure (c) gap carries that difference.
 
 Usage
 -----
@@ -100,6 +104,9 @@ Usage
     python examples/35_point_source_effective_area.py --gamma 2.5
     python examples/35_point_source_effective_area.py --emin-gev 1e3
     python examples/35_point_source_effective_area.py --data-dir /path/to/dataverse_files
+    python examples/35_point_source_effective_area.py --out-dir /path/to/figures
+
+Writes four standalone figures, ``35a``-``35d``, in the order described above.
 """
 
 import argparse
@@ -108,18 +115,16 @@ from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.special import gammainc, polygamma
 
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 from softpaws.data.schema import SEASONS
 from softpaws.transport.attenuation import flavour_transmission, prem_column
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.eigenvalue import two_moment_loss_spectrum
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
-    sphere_radius_from_volume,
+    prism_projected_area_km2,
+    truncated_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
@@ -163,12 +168,12 @@ N_SUB_BAND = 5
 # declination scan cost one pass over these bands, and makes it worth taking
 # many. It has to be many: at the Pole the hour angle drops out and each
 # declination maps to a single band, so this binning *is* the resolution of
-# panel (c) there, and a coarse grid shows up as visible steps.
+# figure (c) there, and a coarse grid shows up as visible steps.
 N_COS_THETA = 180
 # Hour-angle samples per sidereal day. Irrelevant at the Pole, where the zenith
 # of a given declination never changes.
 N_HOUR_ANGLE = 192
-# Declination grid for panel (c).
+# Declination grid for figure (c).
 N_DEC_GRID = 73
 
 # Rungs of the neutral-current / tau regeneration ladder, as in example 34.
@@ -185,13 +190,13 @@ N_EVENTS_LIMIT = 2.44
 # Pivot at which the quoted point-source flux normalization is defined [GeV].
 PIVOT_ENERGY_GEV = 1.0e5
 
-# Bottom of the analysis window for panel (d) [GeV]. Below this the Earth is
+# Bottom of the analysis window for figure (d) [GeV]. Below this the Earth is
 # transparent from every direction and no site runs out of muon column, so the
 # ceiling carries no declination information; see the module docstring.
 DEFAULT_EMIN_GEV = 1.0e5
 
 # ---------------------------------------------------------------------------
-# The published point-source sensitivity, for panel (c)
+# The published point-source sensitivity, for figure (c)
 # ---------------------------------------------------------------------------
 
 # IceCube's 14-year PSTracks 90% CL median sensitivity (arXiv:2507.07275, the
@@ -202,7 +207,7 @@ DEFAULT_EMIN_GEV = 1.0e5
 #     constant for an E^-2 source, so the comparison is pivot-free even though
 #     both sides happen to quote it at 100 TeV.
 #   * y-axis in TeV cm^-2 s^-1, per flavor, hence the factor below.
-#   * 14 years, which the model is held to rather than the 10 of panel (d).
+#   * 14 years, which the model is held to rather than DR2's own 13.6.
 #   * their central 90% sensitive energy range for gamma = 2 runs from about
 #     1 TeV near the horizon upward (their App. D), so the model is integrated
 #     from the bottom of the common grid rather than over the UHE window.
@@ -221,20 +226,22 @@ TEV_TO_GEV = 1.0e3
 # ---------------------------------------------------------------------------
 
 # Reach law of Eq. (17), fitted there against the DR2 upgoing average:
-# Lambda = 14.3 m per e-fold (33 m per decade) with the pivot above the fitted
+# Lambda = 21.3 m per e-fold (49 m per decade) with the pivot above the fitted
 # band, so it is an extrapolation there too. Nothing about it is refitted here;
-# applying one pair to every declination band is the prediction panel (b) tests.
-REACH_KM = 0.0143
-REACH_PIVOT_GEV = 10.0**8.63
+# applying one pair to every declination band is the prediction figure (b) tests.
+REACH_KM = 0.0213
+REACH_PIVOT_GEV = 10.0**8.72
 
 # ---------------------------------------------------------------------------
 # Sites
 # ---------------------------------------------------------------------------
 
 # IceCube, the one site with a published declination-resolved table to check
-# against: 1 km^3 of ice taken as a sphere of that volume, in-ice array spanning
-# roughly 1.45-2.45 km, at the geographic South Pole.
+# against: 1 km^3 of ice taken as an upright hexagonal prism, ~1 km^2 of
+# footprint by the 1 km of instrumented height the strings span, at the
+# geographic South Pole. The array runs roughly 1.45-2.45 km deep.
 ICECUBE_VOLUME_KM3 = 1.0
+ICECUBE_HEIGHT_KM = 1.0
 ICECUBE_DEPTH_KM = 1.95
 ICECUBE_LATITUDE_DEG = -90.0
 
@@ -268,7 +275,7 @@ RHO_LAKE_G_CM3 = 1.0
 # Reference declinations
 # ---------------------------------------------------------------------------
 
-# Marked in panel (c). NGC 1068 and TXS 0506+056 are the two sources IceCube has
+# Marked in figure (c). NGC 1068 and TXS 0506+056 are the two sources IceCube has
 # reported evidence for; the Galactic Center anchors the halo signal of example
 # 34 on the same axis. NGC 1068 sits within a hundredth of a degree of the
 # celestial equator, which at the Pole is the horizon -- the least defensible
@@ -299,19 +306,19 @@ def parse_args() -> argparse.Namespace:
         "--gamma",
         type=float,
         default=2.0,
-        help="Spectral index of the point source used for panel (c).",
+        help="Spectral index of the point source used for figure (c).",
     )
     parser.add_argument(
         "--emin-gev",
         type=float,
         default=DEFAULT_EMIN_GEV,
-        help="Bottom of the analysis energy window for panel (c) [GeV].",
+        help="Bottom of the analysis energy window for figure (c) [GeV].",
     )
     parser.add_argument(
         "--livetime-yr",
         type=float,
         default=10.0,
-        help="Exposure used for panel (c), applied to every site [yr].",
+        help="Exposure used for figure (c), applied to every site [yr].",
     )
     parser.add_argument(
         "--reach-km",
@@ -320,10 +327,10 @@ def parse_args() -> argparse.Namespace:
         help="Growth of the light reach per e-fold [km], carried in from example 28.",
     )
     parser.add_argument(
-        "--out",
+        "--out-dir",
         type=pathlib.Path,
-        default=_DEFAULT_OUT_DIR / "35_point_source_effective_area.pdf",
-        help="Output file for the figure.",
+        default=_DEFAULT_OUT_DIR,
+        help="Directory for the four figures, written as '35a'-'35d'.",
     )
     return parser.parse_args()
 
@@ -332,70 +339,6 @@ def parse_args() -> argparse.Namespace:
 # Truncated first-passage range
 # ---------------------------------------------------------------------------
 
-
-def truncated_range_km(
-    energy_mu_gev: np.ndarray,
-    column_km: np.ndarray,
-    threshold_gev: float,
-    density_g_cm3: float,
-) -> np.ndarray:
-    """Expected first-passage range cut at a finite upstream column [km].
-
-    The same closed form used in examples 33 and 34. Eq. (16) integrates the
-    first-passage probability to infinite depth, which is right whenever the
-    medium supplies more column than any muon survives and wrong whenever it
-    does not -- which for a downgoing track is always, since the muon cannot be
-    born above the ice. Matching a gamma law to the first two renewal moments of
-    the first-passage depth,
-
-    .. math:: \\mathbb{E}[\\tau] = \\frac{w}{\\Phi'(0)}
-        - \\frac{\\Phi''(0)}{2\\Phi'(0)^2}, \\qquad
-        \\mathrm{Var}[\\tau] = -\\frac{w\\,\\Phi''(0)}{\\Phi'(0)^3},
-
-    turns the limited expectation ``E[tau(w) ^ X]`` into an incomplete gamma
-    function. On an infinite column it reduces to
-    :func:`~softpaws.transport.soft_volume.stochastic_muon_range_km` exactly.
-
-    Parameters
-    ----------
-    energy_mu_gev : np.ndarray
-        Muon energy at production [GeV].
-    column_km : np.ndarray
-        Available upstream column, as a length of the medium [km]. Broadcast
-        against ``energy_mu_gev``; ``inf`` returns the untruncated range.
-    threshold_gev : float
-        Muon energy below which the track is not selected [GeV].
-    density_g_cm3 : float
-        Medium density [g cm^-3].
-
-    Returns
-    -------
-    length : np.ndarray
-        Expected truncated range [km], zero for muons born below threshold.
-    """
-    energy = np.asarray(energy_mu_gev, dtype=float)
-    b_mu = drift_coefficient(energy, density_g_cm3)
-    d_mu = diffusion_coefficient(energy, density_g_cm3)
-    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
-    # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length.
-    first = kappa * polygamma(1, p + 1.0)
-    second = -kappa * polygamma(2, p + 1.0)
-
-    selectable = energy > threshold_gev
-    w = np.where(selectable, np.log(np.maximum(energy, threshold_gev) / threshold_gev), 0.0)
-    mean = w / first + second / (2.0 * first**2)
-    variance = w * second / first**3
-
-    column = np.asarray(column_km, dtype=float)
-    # An infinite column is the untruncated case; the general expression below
-    # would evaluate inf * 0 on it.
-    capped = np.where(np.isfinite(column), column, 0.0)
-    with np.errstate(divide="ignore", invalid="ignore"):
-        shape = mean**2 / variance
-        x = capped / (variance / mean)
-        limited = mean * gammainc(shape + 1.0, x) + capped * (1.0 - gammainc(shape, x))
-    limited = np.where(np.isfinite(column), limited, mean)
-    return np.where(selectable & (mean > 0.0), np.clip(limited, 0.0, None), 0.0)
 
 
 # ---------------------------------------------------------------------------
@@ -411,8 +354,10 @@ class Site:
     ----------
     name : str
         Label used in the figure and the printed tables.
-    shape : {"sphere", "cylinder"}
-        Body used for the projected area and the instrumented volume.
+    shape : {"sphere", "cylinder", "prism"}
+        Body used for the projected area and the instrumented volume. A prism
+        is a cylinder whose cross-section is a regular ``n_sides``-gon of the
+        same area, which lengthens the perimeter and so the side projection.
     latitude_deg : float
         Geographic latitude [deg]. Sets how a declination maps to a zenith.
     depth_km : float
@@ -440,6 +385,7 @@ class Site:
     height_km: float = 0.0
     n_blocks: int = 1
     linestyle: str = "-"
+    n_sides: int = 6
 
     def projected_area_km2(
         self,
@@ -450,7 +396,11 @@ class Site:
 
         A sphere presents ``pi R^2`` from every direction. An upright cylinder
         presents ``pi R^2`` overhead and ``2 R h`` at the horizon, and the
-        convex-body projection interpolates between them.
+        convex-body projection interpolates between them. A prism replaces the
+        ``2 R h`` by ``(P / pi) h`` for the perimeter ``P`` of its regular
+        cross-section, 5% larger than the circle of equal area for a hexagon.
+        The two terms add, so the oblique projection exceeds both face-on
+        values.
 
         Parameters
         ----------
@@ -468,10 +418,13 @@ class Site:
         cos_theta = np.asarray(cos_theta, dtype=float)
         if self.shape == "sphere":
             return np.pi * radius**2 * np.ones_like(cos_theta)
-        sin_theta = np.sqrt(np.clip(1.0 - cos_theta**2, 0.0, 1.0))
-        cap = np.pi * radius**2 * np.abs(cos_theta)
-        side = 2.0 * radius * self.height_km * sin_theta
-        return self.n_blocks * (cap + side)
+        return prism_projected_area_km2(
+            cos_theta,
+            radius,
+            self.height_km,
+            n_sides=self.n_sides if self.shape == "prism" else None,
+            n_blocks=self.n_blocks,
+        )
 
     def detector_volume_km3(self, radius_km: float | np.ndarray) -> np.ndarray:
         """Volume of the instrumented body itself [km^3].
@@ -533,10 +486,10 @@ class Site:
 
 
 def build_sites() -> list[Site]:
-    """The five detectors panel (c) compares.
+    """The five detectors figure (c) compares.
 
     IceCube is first because it is the only one with a published
-    declination-resolved effective area, so it is the site panels (a) and (b)
+    declination-resolved effective area, so it is the site figures (a) and (b)
     validate the model against. The other four are the instrumented footprint
     and nothing else.
 
@@ -548,12 +501,15 @@ def build_sites() -> list[Site]:
     return [
         Site(
             name="IceCube",
-            shape="sphere",
+            shape="prism",
             latitude_deg=ICECUBE_LATITUDE_DEG,
             depth_km=ICECUBE_DEPTH_KM,
             density_g_cm3=RHO_ICE_G_CM3,
-            radius_km=sphere_radius_from_volume(ICECUBE_VOLUME_KM3),
+            # 1 km^2 of hexagonal footprint by 1 km of instrumented height,
+            # which reproduces ICECUBE_VOLUME_KM3 exactly.
+            radius_km=float(np.sqrt(ICECUBE_VOLUME_KM3 / (np.pi * ICECUBE_HEIGHT_KM))),
             color="k",
+            height_km=ICECUBE_HEIGHT_KM,
         ),
         Site(
             name="ARCA230",
@@ -673,7 +629,7 @@ def directional_aeff_cm2(
             )
             muon_energy = muon_fraction * rung_energy
             # (n_rung, n_dir): each rung's muon under each direction's column.
-            length = truncated_range_km(
+            length = truncated_muon_range_km(
                 muon_energy[:, None],
                 muon_column_km[None, :],
                 threshold_gev,
@@ -811,7 +767,7 @@ def icecube_model_banded(
 
 
 # ---------------------------------------------------------------------------
-# Panel (c): point-source sensitivity
+# Figure (c): point-source sensitivity
 # ---------------------------------------------------------------------------
 
 
@@ -969,7 +925,7 @@ def report_bands(
     static: np.ndarray,
     with_reach: np.ndarray,
 ) -> None:
-    """Print the band-by-band residuals behind panels (a) and (b)."""
+    """Print the band-by-band residuals behind figures (a) and (b)."""
     lo, hi = STATS_LOG10_E
     band = (COMMON_LOG10_E >= lo) & (COMMON_LOG10_E <= hi)
     upgoing = sin_dec_centers > 0.0
@@ -1047,7 +1003,7 @@ def report_sites(
     gamma: float,
     emin_gev: float,
 ) -> None:
-    """Print the point-source sensitivities behind panel (d)."""
+    """Print the point-source sensitivities behind figure (d)."""
     print(
         f"\nPoint-source ceiling, E^2 phi at 100 TeV [GeV cm^-2 s^-1], "
         f"gamma = {gamma:g}, E_nu > 10^{np.log10(emin_gev):.0f} GeV"
@@ -1126,99 +1082,168 @@ def report_published(
         print("  the ceiling is respected at every declination, which is the check")
 
 
-def make_figure(
+def _save(fig: "plt.Figure", out_dir: pathlib.Path, stem: str) -> None:
+    """Write one figure to ``out_dir`` as both PDF and PNG.
+
+    Parameters
+    ----------
+    fig : matplotlib.figure.Figure
+        Figure to write.
+    out_dir : pathlib.Path
+        Destination directory, created if missing.
+    stem : str
+        File name without a suffix.
+    """
+    fig.tight_layout()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for suffix in (".pdf", ".png"):
+        path = out_dir / f"{stem}{suffix}"
+        fig.savefig(path, dpi=300, bbox_inches="tight")
+        print(f"Figure saved to: {path.resolve()}")
+    plt.close(fig)
+
+
+def _curve_angle_deg(ax: "plt.Axes", x: np.ndarray, y: np.ndarray, x0: float) -> float:
+    """On-screen angle of a curve at ``x0``, in degrees.
+
+    A data-space slope is not the angle a label should carry: the axes are log
+    in ``y`` and linear in ``x``, and the box is not square. Transforming two
+    nearby points through ``ax.transData`` gives the angle actually drawn, so
+    the label lies along the curve whatever the aspect ratio turns out to be.
+    Call only after the limits are set and the canvas has been drawn.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        Axes the curve lives in, with its limits already final.
+    x, y : np.ndarray
+        The curve, sorted ascending in ``x``.
+    x0 : float
+        Where along the curve to measure.
+
+    Returns
+    -------
+    angle : float
+        Rotation [deg] for a text label lying along the curve.
+    """
+    span = 0.04 * (np.max(x) - np.min(x))
+    ends = np.array([x0 - span, x0 + span])
+    points = ax.transData.transform(
+        np.column_stack([ends, np.interp(ends, x, y)])
+    )
+    delta = points[1] - points[0]
+    return float(np.degrees(np.arctan2(delta[1], delta[0])))
+
+
+def figure_bands(
+    sin_dec_centers: np.ndarray,
+    published: np.ndarray,
+    static: np.ndarray,
+    out_dir: pathlib.Path,
+) -> None:
+    """Published and model effective area in a few upgoing declination bands."""
+    show_bands = [
+        int(np.argmin(np.abs(sin_dec_centers - s))) for s in (0.1, 0.4, 0.7, 0.95)
+    ]
+    label_x = 7.5
+
+    with plt.style.context(str(_STYLE)):
+        fig, ax = plt.subplots(figsize=(3.4, 3.4))
+        for j, color in zip(show_bands, ("C0", "C1", "C2", "C3")):
+            dec = np.rad2deg(np.arcsin(sin_dec_centers[j]))
+            ax.plot(COMMON_LOG10_E, published[:, j], color=color, lw=1.4)
+            ax.plot(COMMON_LOG10_E, static[:, j], color=color, lw=1.0, ls="--")
+            # Sat between this band's curve and the next one down: the bands are
+            # only a factor of two or three apart here, so a larger drop would
+            # land the label on its neighbour.
+            ax.text(
+                label_x,
+                0.6 * np.interp(label_x, COMMON_LOG10_E, published[:, j]),
+                rf"$\delta = {dec:.0f}^\circ$",
+                color=color,
+                fontsize=8,
+                ha="center",
+                va="center",
+            )
+        ax.plot([], [], color="0.3", lw=1.4, label="IceCube")
+        ax.plot([], [], color="0.3", lw=1.0, ls="--", label="Model")
+        ax.set_yscale("log")
+        ax.set_xlim(COMMON_LOG10_E[0], COMMON_LOG10_E[-1])
+        ax.set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$", fontsize=8)
+        ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]", fontsize=8)
+        ax.tick_params(labelsize=8)
+        ax.legend(fontsize=8, loc="lower right")
+        _save(fig, out_dir, "35a_effective_area_bands")
+
+
+def figure_residual(
     sin_dec_centers: np.ndarray,
     published: np.ndarray,
     static: np.ndarray,
     with_reach: np.ndarray,
-    sites: list[Site],
-    dec_grid: np.ndarray,
-    sensitivity: dict[str, np.ndarray],
-    matched: np.ndarray,
-    published_sensitivity: tuple[np.ndarray, np.ndarray],
-    gamma: float,
-    emin_gev: float,
-    out_path: pathlib.Path,
+    out_dir: pathlib.Path,
 ) -> None:
-    """Draw the four-panel figure and write it to disk."""
-    show_bands = [
-        int(np.argmin(np.abs(sin_dec_centers - s))) for s in (0.1, 0.4, 0.7, 0.95)
-    ]
+    """Residual against the published table, band by band across the sky."""
     show_energies = (5.0, 6.0, 7.0)
-    colors = ("C0", "C1", "C2", "C3")
+    text_x = -0.5
 
     with plt.style.context(str(_STYLE)):
-        fig, axgrid = plt.subplots(2, 2, figsize=(5.4, 4.4))
-        axes = axgrid.ravel()
-
-        # --- (a) a few upgoing bands, published against model ---------------
-        ax = axes[0]
-        for j, color in zip(show_bands, colors):
-            dec = np.rad2deg(np.arcsin(sin_dec_centers[j]))
-            ax.plot(COMMON_LOG10_E, published[:, j], color=color, lw=1.4)
-            ax.plot(COMMON_LOG10_E, static[:, j], color=color, lw=1.0, ls="--")
-            ax.text(
-                COMMON_LOG10_E[-1] + 0.12,
-                published[-1, j],
-                rf"$\delta = {dec:.0f}^\circ$",
-                color=color,
-                fontsize=5.0,
-                va="center",
-                clip_on=False,
-            )
-        ax.plot([], [], color="0.3", lw=1.4, label="IceCube DR2")
-        ax.plot([], [], color="0.3", lw=1.0, ls="--", label="model, no free parameters")
-        ax.set_yscale("log")
-        ax.set_xlim(COMMON_LOG10_E[0], COMMON_LOG10_E[-1] + 1.0)
-        ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]")
-        ax.set_title("(a) upgoing declination bands", fontsize=7)
-        ax.legend(fontsize=5.5, loc="upper left")
-
-        # --- (b) residual across the sky ------------------------------------
-        ax = axes[1]
-        for log10_e, color in zip(show_energies, colors):
+        fig, ax = plt.subplots(figsize=(3.4, 3.4))
+        lowest = None
+        for log10_e, color in zip(show_energies, ("C0", "C1", "C2")):
             i = int(np.argmin(np.abs(COMMON_LOG10_E - log10_e)))
+            ratio = published[i] / static[i]
             ax.plot(
                 sin_dec_centers,
-                published[i] / static[i],
+                ratio,
                 color=color,
                 lw=1.1,
                 label=rf"$10^{{{log10_e:.0f}}}$ GeV",
             )
             ax.plot(sin_dec_centers, published[i] / with_reach[i], color=color, lw=0.9, ls="--")
+            if lowest is None:
+                lowest = ratio
         ax.axhline(1.0, color="0.6", lw=0.8, ls=":")
         ax.axvspan(-1.0, 0.0, color="0.88", alpha=0.7, lw=0)
-        ax.text(-0.5, 2.5, "downgoing:\nveto suppressed", fontsize=5.0, ha="center", va="top")
+        # Tucked under the lowest curve, which is the 10^5 GeV one: that is where
+        # the veto bites hardest and so where the empty space is.
+        ax.text(
+            text_x,
+            0.45 * float(np.interp(text_x, sin_dec_centers, lowest)),
+            "downgoing:\nveto suppressed",
+            fontsize=8,
+            ha="center",
+            va="top",
+        )
         ax.set_yscale("log")
         ax.set_xlim(-1.0, 1.0)
-        ax.set_ylim(3.0e-3, 3.0)
-        ax.set_xlabel(r"$\sin\delta$")
-        ax.set_ylabel("IceCube / model")
-        ax.set_title("(b) residual by declination", fontsize=7)
-        ax.legend(fontsize=5.0, loc="lower right", ncol=1)
+        ax.set_ylim(1.0e-3, 3.0)
+        ax.set_xlabel(r"$\sin\delta$", fontsize=8)
+        ax.set_ylabel("IceCube / model", fontsize=8)
+        ax.tick_params(labelsize=8)
+        ax.legend(fontsize=8, loc="lower right")
+        _save(fig, out_dir, "35b_residual_by_declination")
 
-        # --- (c) against IceCube's published point-source sensitivity -------
-        ax = axes[2]
-        pub_sin_dec, pub_flux = published_sensitivity
-        ax.plot(
-            pub_sin_dec,
-            pub_flux,
-            color="k",
-            lw=1.4,
-            label="IceCube 14 yr, published",
-        )
-        ax.plot(
-            np.sin(np.deg2rad(dec_grid)),
-            matched,
-            color="C0",
-            lw=1.1,
-            ls="--",
-            label="model ceiling, same setup",
-        )
+
+def figure_published_sensitivity(
+    dec_grid: np.ndarray,
+    matched: np.ndarray,
+    published_sensitivity: tuple[np.ndarray, np.ndarray],
+    out_dir: pathlib.Path,
+) -> None:
+    """Model ceiling against IceCube's published point-source sensitivity."""
+    pub_sin_dec, pub_flux = published_sensitivity
+    sin_dec = np.sin(np.deg2rad(dec_grid))
+    label_x = 0.3
+
+    with plt.style.context(str(_STYLE)):
+        fig, ax = plt.subplots(figsize=(3.4, 3.4))
+        ax.plot(pub_sin_dec, pub_flux, color="k", lw=1.4)
+        ax.plot(sin_dec, matched, color="C0", lw=1.1, ls="--")
         ax.fill_between(
-            np.sin(np.deg2rad(dec_grid)),
+            sin_dec,
             matched,
-            np.interp(np.sin(np.deg2rad(dec_grid)), pub_sin_dec, pub_flux),
+            np.interp(sin_dec, pub_sin_dec, pub_flux),
             color="C0",
             alpha=0.12,
             lw=0,
@@ -1226,13 +1251,40 @@ def make_figure(
         ax.axvspan(-1.0, 0.0, color="0.88", alpha=0.7, lw=0)
         ax.set_yscale("log")
         ax.set_xlim(-1.0, 1.0)
-        ax.set_xlabel(r"$\sin\delta$")
-        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]")
-        ax.set_title(r"(c) shaded gap $=$ background $+$ selection", fontsize=7)
-        ax.legend(fontsize=5.0, loc="upper center")
+        ax.set_xlabel(r"$\sin\delta$", fontsize=8)
+        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]", fontsize=8)
+        ax.tick_params(labelsize=8)
 
-        # --- (d) the same ceiling at ultra-high energy, five sites ----------
-        ax = axes[3]
+        # The labels replace a legend, so they have to sit on their curves: draw
+        # once to freeze the transform, then take the angle off the screen.
+        fig.canvas.draw()
+        for x, y, name, color in (
+            (pub_sin_dec, pub_flux, "IceCube", "k"),
+            (sin_dec, matched, "Model", "C0"),
+        ):
+            ax.text(
+                label_x,
+                1.18 * float(np.interp(label_x, x, y)),
+                name,
+                fontsize=8,
+                color=color,
+                ha="center",
+                va="bottom",
+                rotation=_curve_angle_deg(ax, x, y, label_x),
+                rotation_mode="anchor",
+            )
+        _save(fig, out_dir, "35c_published_sensitivity")
+
+
+def figure_site_ceiling(
+    sites: list[Site],
+    dec_grid: np.ndarray,
+    sensitivity: dict[str, np.ndarray],
+    out_dir: pathlib.Path,
+) -> None:
+    """Ultra-high-energy point-source ceiling for the five sites."""
+    with plt.style.context(str(_STYLE)):
+        fig, ax = plt.subplots(figsize=(3.4, 3.4))
         for site in sites:
             ax.plot(
                 dec_grid,
@@ -1245,43 +1297,33 @@ def make_figure(
         ax.set_yscale("log")
         ax.set_xlim(-90.0, 90.0)
         # Headroom above the curves so the legend and the source markers have
-        # somewhere to live that is not on top of the data.
+        # somewhere to live that is not on top of the data. At 8 pt the source
+        # names are tall enough that this has to be generous.
         curves = np.concatenate([sensitivity[site.name] for site in sites])
-        low, high = 0.6 * curves.min(), 9.0 * curves.max()
+        low, high = 0.7 * curves.min(), 25.0 * curves.max()
         ax.set_ylim(low, high)
-        # NGC 1068 and TXS 0506+056 are six degrees apart, indistinguishable on
-        # this axis, so their labels are staggered in height rather than allowed
-        # to overlap.
-        for k, (name, dec) in enumerate(REFERENCE_SOURCES):
+        # NGC 1068 and TXS 0506+056 are six degrees apart, so their labels would
+        # collide if both sat on the same side. Putting NGC 1068 to the left of
+        # its line separates them without staggering them in height.
+        label_side = {"NGC 1068": -1.0}
+        for name, dec in REFERENCE_SOURCES:
             ax.axvline(dec, color="0.7", lw=0.6, ls=":")
             ax.text(
-                dec + 2.5,
-                low * (high / low) ** (0.97 - 0.20 * (k % 2)),
+                dec + 2.8 * label_side.get(name, 1.0),
+                low * (high / low) ** 0.98,
                 name,
                 rotation=90,
-                fontsize=4.5,
+                fontsize=8,
+                ha="center",
                 va="top",
                 color="0.45",
             )
         ax.set_xticks([-90, -45, 0, 45, 90])
-        ax.set_xlabel(r"source declination $\delta$ [deg]")
-        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]")
-        ax.set_title(
-            rf"(d) ceiling, $\gamma = {gamma:g}$, "
-            rf"$E_\nu > 10^{{{np.log10(emin_gev):.0f}}}$ GeV",
-            fontsize=7,
-        )
-        ax.legend(fontsize=4.5, loc="upper left", handlelength=1.6, labelspacing=0.35)
-
-        axes[0].set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$")
-
-        fig.tight_layout()
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        for suffix in (".pdf", ".png"):
-            path = out_path.with_suffix(suffix)
-            fig.savefig(path, dpi=300, bbox_inches="tight")
-            print(f"Figure saved to: {path.resolve()}")
-        plt.close(fig)
+        ax.set_xlabel(r"source declination $\delta$ [deg]", fontsize=8)
+        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]", fontsize=8)
+        ax.tick_params(labelsize=8)
+        ax.legend(fontsize=8, loc="upper right")
+        _save(fig, out_dir, "35d_site_ceiling")
 
 
 def main() -> None:
@@ -1323,8 +1365,8 @@ def main() -> None:
         _, source_weights = zenith_band_weights(site.latitude_deg, source_decs)
         aeff_at_sources[site.name] = bands @ source_weights.T
         if site is icecube:
-            # Panel (c) is held to the published analysis' own setup rather than
-            # to the ultra-high-energy window and exposure panel (d) chooses.
+            # Figure (c) is held to the published analysis' own setup rather than
+            # to the ultra-high-energy window and exposure figure (d) chooses.
             matched = point_source_sensitivity(
                 bands @ weights.T,
                 PUBLISHED_LIVETIME_YR * 365.25 * 24.0 * 3600.0,
@@ -1335,20 +1377,12 @@ def main() -> None:
     published_curve = load_published_sensitivity(_PUBLISHED_SENSITIVITY)
     report_published(dec_grid, matched, published_curve)
     report_sites(sites, dec_grid, sensitivity, aeff_at_sources, args.gamma, args.emin_gev)
-    make_figure(
-        sin_dec_centers,
-        published,
-        static,
-        with_reach,
-        sites,
-        dec_grid,
-        sensitivity,
-        matched,
-        published_curve,
-        args.gamma,
-        args.emin_gev,
-        args.out,
-    )
+
+    print()
+    figure_bands(sin_dec_centers, published, static, args.out_dir)
+    figure_residual(sin_dec_centers, published, static, with_reach, args.out_dir)
+    figure_published_sensitivity(dec_grid, matched, published_curve, args.out_dir)
+    figure_site_ceiling(sites, dec_grid, sensitivity, args.out_dir)
 
 
 if __name__ == "__main__":

@@ -22,6 +22,7 @@ from softpaws.transport.soft_volume import (
     dynamic_projected_radius_km,
     light_reach_radius_km,
     muon_range_km,
+    prism_projected_area_km2,
     range_target_volume_km3,
     soft_volume_diffusion,
     soft_volume_drift,
@@ -428,3 +429,72 @@ def test_response_light_yield_length_matches_transport_function():
     )
     expected = expected_volume_cm3 * nucleon_number_density() * cc_cross_section(e_nu)
     assert resp.threshold_effective_area_cm2(e_nu)[0] == pytest.approx(expected[0], rel=1e-12)
+
+
+# ---------------------------------------------------------------------------
+# Prism geometry
+# ---------------------------------------------------------------------------
+
+
+def test_prism_reduces_to_the_cylinder_form():
+    # n_sides=None is the circular cross-section, which is the pi R^2 |cos| +
+    # 2 R h sin the ARCA blocks already used.
+    radius, height = 0.517, 0.7
+    for cos_theta in (1.0, 0.6, 0.0):
+        sin_theta = np.sqrt(1.0 - cos_theta**2)
+        expected = np.pi * radius**2 * cos_theta + 2.0 * radius * height * sin_theta
+        got = prism_projected_area_km2(cos_theta, radius, height, n_sides=None)
+        assert got == pytest.approx(expected, rel=1e-12)
+
+
+def test_prism_mean_projection_is_the_cauchy_surface_area():
+    # Cauchy: the direction average of the projected area of a convex body is
+    # S / 4. For a hexagonal prism S = 2 A_foot + P h.
+    radius, height, n_sides = float(np.sqrt(1.0 / np.pi)), 1.0, 6
+    theta = np.linspace(0.0, 0.5 * np.pi, 20001)
+    area = prism_projected_area_km2(np.cos(theta), radius, height, n_sides)
+    mean = np.trapezoid(area * np.sin(theta), theta) / np.trapezoid(np.sin(theta), theta)
+    perimeter = 2.0 * radius * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
+    assert mean == pytest.approx((2.0 * np.pi * radius**2 + perimeter * height) / 4.0, rel=1e-6)
+
+
+def test_prism_mean_projection_exceeds_the_equal_volume_sphere():
+    # The sphere minimises surface area at fixed volume, so by Cauchy it also
+    # minimises mean projected area: no equal-volume prism can present less.
+    height = 1.0
+    radius = float(np.sqrt(1.0 / (np.pi * height)))  # V_det = pi R^2 h = 1 km^3
+    theta = np.linspace(0.0, 0.5 * np.pi, 20001)
+    area = prism_projected_area_km2(np.cos(theta), radius, height)
+    mean = np.trapezoid(area * np.sin(theta), theta) / np.trapezoid(np.sin(theta), theta)
+    sphere = np.pi * sphere_radius_from_volume(1.0) ** 2
+    assert mean > sphere
+    assert mean / sphere == pytest.approx(1.18, abs=0.01)
+
+
+def test_prism_projection_peaks_at_oblique_incidence():
+    # The cap and side terms add, so the maximum is neither face-on value. This
+    # is the part that a "1.0 vertical to 1.19 horizontal" reading misses.
+    radius, height = float(np.sqrt(1.0 / np.pi)), 1.0
+    cos_theta = np.cos(np.linspace(0.0, 0.5 * np.pi, 2001))
+    area = prism_projected_area_km2(cos_theta, radius, height)
+    assert area.max() > area[0]
+    assert area.max() > area[-1]
+    assert area.max() == pytest.approx(1.55, abs=0.01)
+
+
+def test_prism_is_symmetric_between_upgoing_and_downgoing():
+    radius, height = 0.5, 1.0
+    up = prism_projected_area_km2(-0.4, radius, height)
+    down = prism_projected_area_km2(0.4, radius, height)
+    assert up == pytest.approx(down, rel=1e-12)
+
+
+def test_prism_scales_with_the_number_of_blocks():
+    single = prism_projected_area_km2(0.3, 0.5, 1.0, n_blocks=1)
+    triple = prism_projected_area_km2(0.3, 0.5, 1.0, n_blocks=3)
+    assert triple == pytest.approx(3.0 * single, rel=1e-12)
+
+
+def test_prism_rejects_degenerate_cross_sections():
+    with pytest.raises(ValueError, match="n_sides must be at least 3"):
+        prism_projected_area_km2(0.5, 1.0, 1.0, n_sides=2)

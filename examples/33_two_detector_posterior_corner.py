@@ -48,7 +48,7 @@ costs seconds per energy and cannot go inside a sampler. Here the first-passage
 depth is matched to a gamma law on its first two renewal moments -- mean
 ``w / Phi'(0) - Phi''(0) / (2 Phi'(0)^2)`` and variance
 ``-w Phi''(0) / Phi'(0)^3`` -- whose limited expected value is an incomplete
-gamma function (:func:`truncated_range_km`). It reproduces the exact integral to
+gamma function (:func:`truncated_muon_range_km`). It reproduces the exact integral to
 better than 0.2% from ``10^5`` to ``10^8`` GeV at every truncation depth;
 ``--check-truncation`` runs that comparison.
 
@@ -80,7 +80,6 @@ import corner
 import emcee
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.special import gammainc, polygamma
 from scipy.stats import chi2, gaussian_kde
 
 from softpaws.comparison.likelihood import B_SCALE_MEAN, B_SCALE_STD
@@ -89,13 +88,12 @@ from softpaws.data.schema import SEASONS
 from softpaws.transport.attenuation import flavour_transmission, prem_column
 from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.eigenvalue import two_moment_loss_spectrum
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
     muon_range_km,
-    sphere_radius_from_volume,
     stochastic_muon_range_km,
+    truncated_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
@@ -169,7 +167,7 @@ B_SCALE_FLOOR = float(
 # demands and fits a straight line through it in ln E. That is the independent
 # expectation for IceCube's Lambda, in the same sense that LAMBDA_BGR18 is the
 # independent expectation for lam. ARCA has no counterpart yet.
-REACH_EXAMPLE28_KM = 0.0143
+REACH_EXAMPLE28_KM = 0.0193
 # The DR2 smearing matrix's own handle on IceCube's threshold: the 5th
 # percentile of accepted reconstructed muon energy, flat at ~700 GeV across
 # three decades of E_nu. ARCA publishes no equivalent.
@@ -226,7 +224,15 @@ PRIORS = {
 IC_LOG10_E = np.linspace(3.0, 8.0, 26)
 # The top of the DR2 simulation (100 PeV) is excluded, as in examples 28 and 29.
 IC_FIT_BAND = (5.0, 7.8)
-IC_RADIUS_KM = sphere_radius_from_volume(1.0)
+# IceCube as an upright hexagonal prism: ~1 km^2 of footprint by 1 km of
+# instrumented height, giving V_det = 1.00 km^3 exactly. IC_RADIUS_KM is the
+# area-equivalent radius of the hexagon and IC_SIDE_COEFF the prism perimeter
+# divided by pi R, the coefficient of the side-projection term.
+IC_FOOTPRINT_KM2 = 1.0
+IC_HEIGHT_KM = 1.0
+IC_N_SIDES = 6
+IC_RADIUS_KM = float(np.sqrt(IC_FOOTPRINT_KM2 / np.pi))
+IC_SIDE_COEFF = float(2.0 * np.sqrt(np.pi * IC_N_SIDES * np.tan(np.pi / IC_N_SIDES)) / np.pi)
 IC_N_DEC = 40
 IC_N_RUNG = 80
 
@@ -285,101 +291,15 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-# ---------------------------------------------------------------------------
-# Truncated first-passage range
-# ---------------------------------------------------------------------------
-
-
-def truncated_range_km(
-    energy_mu_gev: np.ndarray,
-    column_km: np.ndarray,
-    threshold_gev: float,
-    b_scale: float = 1.0,
-    density_g_cm3: float = RHO_WATER_G_CM3,
-) -> np.ndarray:
-    """Expected first-passage range cut at a finite available column [km].
-
-    :func:`~softpaws.transport.soft_volume.stochastic_muon_range_km` evaluates
-    ``E[tau(w)]``, the expected depth at which a muon born at ``epsilon`` first
-    falls below threshold, integrating Eq. (16) to infinity. ARCA sits under
-    only ~3.2 km of sea water, so a downgoing muon cannot be born further
-    upstream than the surface and the honest length is the *limited* expectation
-
-    .. math:: L(\\varepsilon, X) = \\mathbb{E}[\\tau(w_\\star) \\wedge X]
-        = \\int_0^X d\\ell\\;\\mathbb{P}[W(\\ell) < w_\\star].
-
-    Evaluating that integral directly needs the log-loss CDF at every depth,
-    which is one Gil-Pelaez inversion per energy and far too slow to sit inside
-    a sampler. Renewal theory gives the first two moments of ``tau`` in closed
-    form from the same two-moment loss spectrum the untruncated range uses,
-
-    .. math:: \\mathbb{E}[\\tau] = \\frac{w}{\\Phi'(0)}
-        - \\frac{\\Phi''(0)}{2\\Phi'(0)^2}, \\qquad
-        \\mathrm{Var}[\\tau] = -\\frac{w\\,\\Phi''(0)}{\\Phi'(0)^3},
-
-    and matching a gamma law to them turns the limited expectation into
-
-    .. math:: \\mathbb{E}[\\tau \\wedge X] = \\mathbb{E}[\\tau]\\,P(k+1, X/\\theta)
-        + X\\,[1 - P(k, X/\\theta)],
-
-    with ``P`` the regularized lower incomplete gamma function. The gamma law is
-    a *shape* assumption on ``tau``, not on the loss spectrum: it is exact in
-    both limits that matter (``X -> inf`` returns the untruncated mean by
-    construction, ``X -> 0`` returns ``X``), and ``--check-truncation`` shows it
-    holds to better than 0.2% in between.
-
-    Parameters
-    ----------
-    energy_mu_gev : np.ndarray
-        Muon energy at production [GeV].
-    column_km : np.ndarray
-        Available upstream column ``X``, as a length of water at
-        ``density_g_cm3`` [km]. Broadcast against ``energy_mu_gev``; ``inf`` is
-        allowed and returns the untruncated range.
-    threshold_gev : float
-        Muon energy below which the track is not selected [GeV].
-    b_scale : float, optional
-        Multiplicative rescaling of the drift coefficient. Defaults to 1.
-    density_g_cm3 : float, optional
-        Target-medium density [g cm^-3]. Defaults to water.
-
-    Returns
-    -------
-    length : np.ndarray
-        Expected truncated range [km], zero for muons born below threshold.
-    """
-    energy = np.asarray(energy_mu_gev, dtype=float)
-    b_mu = b_scale * drift_coefficient(energy, density_g_cm3)
-    d_mu = diffusion_coefficient(energy, density_g_cm3)
-    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
-    # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length.
-    first = kappa * polygamma(1, p + 1.0)
-    second = -kappa * polygamma(2, p + 1.0)
-
-    # Muons born below threshold get w = 0, which keeps the mean and variance
-    # finite and non-negative; they are zeroed out at the end.
-    selectable = energy > threshold_gev
-    w = np.where(selectable, np.log(np.maximum(energy, threshold_gev) / threshold_gev), 0.0)
-    mean = w / first + second / (2.0 * first**2)
-    variance = w * second / first**3
-
-    column = np.asarray(column_km, dtype=float)
-    # An infinite column is the untruncated case; feeding it to the general
-    # expression below would evaluate ``inf * 0``. The upgoing sky is the reason
-    # it appears: rock supplies more column than any muon survives.
-    capped = np.where(np.isfinite(column), column, 0.0)
-    with np.errstate(divide="ignore", invalid="ignore"):
-        gamma_shape = mean**2 / variance
-        x = capped / (variance / mean)
-        limited = mean * gammainc(gamma_shape + 1.0, x) + capped * (
-            1.0 - gammainc(gamma_shape, x)
-        )
-    limited = np.where(np.isfinite(column), limited, mean)
-    return np.where(selectable & (mean > 0.0), np.clip(limited, 0.0, None), 0.0)
-
 
 def check_truncation() -> None:
-    """Compare :func:`truncated_range_km` against the Gil-Pelaez integral."""
+    """Compare :func:`truncated_muon_range_km` against the Gil-Pelaez integral.
+
+    The reference builds the two-moment family's kernel, where the closed form
+    now reads its log-loss moments from the table, so the two differ by the ~7%
+    the family costs. What this still checks is the gamma-law truncation: the
+    ratio has to be flat in ``X / L``, which is the approximation under test.
+    """
     from scipy.integrate import cumulative_trapezoid
 
     from softpaws.transport.loss_distribution import log_loss_cdf
@@ -398,12 +318,18 @@ def check_truncation() -> None:
         for fraction in (0.25, 0.5, 1.0, 2.0):
             column = fraction * untruncated
             exact = float(np.interp(column, ell, cumulative))
-            closed = float(truncated_range_km(energy, np.array([column]), threshold)[0])
+            closed = float(truncated_muon_range_km(energy, np.array([column]), threshold)[0])
             print(
                 f"{log10_e:12.1f} {fraction:7.2f} {exact:9.3f} {closed:9.3f} "
                 f"{closed / exact:7.4f}"
             )
     print("  exact: Eq. (16) cut at X by Gil-Pelaez inversion, as in example 30.")
+
+
+# ---------------------------------------------------------------------------
+# Truncated first-passage range
+# ---------------------------------------------------------------------------
+
 
 
 # ---------------------------------------------------------------------------
@@ -485,18 +411,33 @@ def icecube_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:
     Returns
     -------
     ladders : dict
-        ``"mu"`` and ``"tau"`` -> ``(energies, weights)``, both of shape
-        ``(IC_LOG10_E.size, IC_N_RUNG)``, with ``energies`` in GeV and
-        ``weights`` the hemisphere-averaged arrival probabilities.
+        ``"mu"`` and ``"tau"`` -> ``(energies, weights, weights_cos,
+        weights_sin)``, all of shape ``(IC_LOG10_E.size, IC_N_RUNG)``, with
+        ``energies`` in GeV and the three weight arrays the hemisphere averages
+        of the arrival probability against 1, ``|cos theta_z|`` and
+        ``sin theta_z``.
+
+    Notes
+    -----
+    The prism of :func:`icecube_model` presents a direction-dependent area, so
+    the declination average no longer commutes with the target volume. The
+    volume is linear in the two geometry terms, so averaging the transmission
+    against each separately is exact and still collapses the declination axis
+    once. At the Pole ``|cos theta_z| = sin(dec)``.
     """
     dec_deg = np.linspace(0.5, 89.5, IC_N_DEC)
     columns = np.array([prem_column(float(d)) for d in dec_deg])
-    solid_angle = np.cos(np.deg2rad(dec_deg))
+    dec_rad = np.deg2rad(dec_deg)
+    solid_angle = np.cos(dec_rad)
+    cos_theta = np.sin(dec_rad)
+    sin_theta = np.cos(dec_rad)
 
-    ladders: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    ladders: dict[str, tuple[np.ndarray, ...]] = {}
     for flavour in ("mu", "tau"):
         energies = np.empty((IC_LOG10_E.size, IC_N_RUNG))
         weights = np.empty((IC_LOG10_E.size, IC_N_RUNG))
+        weights_cos = np.empty((IC_LOG10_E.size, IC_N_RUNG))
+        weights_sin = np.empty((IC_LOG10_E.size, IC_N_RUNG))
         for i, log10_e in enumerate(IC_LOG10_E):
             rung_energy, rung_weight = flavour_transmission(
                 10.0**log10_e, columns, CROSS_SECTION, flavour=flavour,
@@ -504,7 +445,13 @@ def icecube_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:
             )
             energies[i] = rung_energy
             weights[i] = np.average(rung_weight, axis=1, weights=solid_angle)
-        ladders[flavour] = (energies, weights)
+            weights_cos[i] = np.average(
+                rung_weight * cos_theta[None, :], axis=1, weights=solid_angle
+            )
+            weights_sin[i] = np.average(
+                rung_weight * sin_theta[None, :], axis=1, weights=solid_angle
+            )
+        ladders[flavour] = (energies, weights, weights_cos, weights_sin)
     return ladders
 
 
@@ -677,18 +624,23 @@ def icecube_model(
         ("tau", MEAN_Z * (1.0 - MEAN_INELASTICITY), F_TAU * BR_TAU_TO_MU),
     )
     for flavour, muon_fraction, weight in channels:
-        energies, arrival = ladders[flavour]
+        energies, arrival, arrival_cos, arrival_sin = ladders[flavour]
         energies, arrival = energies[nodes], arrival[nodes]
+        arrival_cos, arrival_sin = arrival_cos[nodes], arrival_sin[nodes]
         muon_energy = muon_fraction * energies
         length = stochastic_muon_range_km(
             muon_energy.ravel(), threshold, b_scale=b_scale
         ).reshape(muon_energy.shape)
         radius = light_reach_radius_km(IC_RADIUS_KM, muon_energy, reach_km, REACH_PIVOT_GEV)
-        volume_cm3 = (
-            np.pi * radius**2 * length + 4.0 / 3.0 * np.pi * radius**3
-        ) * CM_PER_KM**3
         sigma = _tilted_cc(energies, lam)
-        total += weight * (arrival * n_nucleon * sigma * volume_cm3).sum(axis=1)
+        # Each geometry term carries its own declination average; see
+        # icecube_ladders. V_det is isotropic and rides on the plain one.
+        cap = np.pi * radius**2 * length * arrival_cos
+        side = IC_SIDE_COEFF * radius * IC_HEIGHT_KM * length * arrival_sin
+        v_det = np.pi * radius**2 * IC_HEIGHT_KM * arrival
+        total += weight * (
+            n_nucleon * sigma * CM_PER_KM**3 * (cap + side + v_det)
+        ).sum(axis=1)
     return eps_0 * total
 
 
@@ -743,7 +695,7 @@ def arca_model(
         # (n_energy, n_rung, n_zenith): each rung's muon under each direction's
         # overburden. The reach follows the muon, so the radius has no zenith
         # axis, but the projected area it feeds does.
-        length = truncated_range_km(
+        length = truncated_muon_range_km(
             muon_energy[:, :, None], muon_column_km[None, None, :], threshold, b_scale
         )
         radius = light_reach_radius_km(

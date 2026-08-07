@@ -77,7 +77,7 @@ from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
     muon_range_km,
-    sphere_radius_from_volume,
+    prism_projected_area_km2,
     stochastic_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
@@ -92,7 +92,16 @@ _DEFAULT_OUT_DIR = _HERE / "output"
 # Coarser than example 26's 61-point grid: every point costs one exact log-loss
 # inversion, and the curve is smooth on this scale.
 COMMON_LOG10_E = np.linspace(3.0, 8.0, 26)
-RADIUS_KM = sphere_radius_from_volume(1.0)  # ~0.62 km, IceCube-like
+
+# IceCube as an upright hexagonal prism and not a sphere. The array is ~1 km^2 of
+# footprint by 1 km of instrumented height, which reproduces V_det = 1.00 km^3
+# exactly, where an equal-volume sphere reproduces the volume but presents the
+# same 1.21 km^2 in every direction. RADIUS_KM is the area-equivalent radius of
+# the hexagon, so pi R^2 is the footprint and pi R^2 h the instrumented volume.
+FOOTPRINT_KM2 = 1.0
+HEIGHT_KM = 1.0
+N_SIDES = 6
+RADIUS_KM = float(np.sqrt(FOOTPRINT_KM2 / np.pi))  # ~0.564 km
 
 # Declination samples for the upgoing-hemisphere average. The published table is
 # binned in sin(dec), so the average is taken with sin(dec) weighting.
@@ -171,8 +180,8 @@ def icecube_upgoing(data_dir: pathlib.Path) -> np.ndarray:
     return total / total_livetime_s
 
 
-def upgoing_columns() -> tuple[np.ndarray, np.ndarray]:
-    """PREM column depths and solid-angle weights over the upgoing hemisphere.
+def upgoing_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """PREM columns, solid-angle weights and zenith cosines, upgoing hemisphere.
 
     Returns
     -------
@@ -180,36 +189,79 @@ def upgoing_columns() -> tuple[np.ndarray, np.ndarray]:
         Layered-PREM column along each declination's Earth chord [g cm^-2].
     weights : np.ndarray, shape (N_DEC,)
         Solid-angle weights, ``cos(dec)``, for averaging over the hemisphere.
+    cos_theta : np.ndarray, shape (N_DEC,)
+        Cosine of the arrival zenith angle. IceCube sits at the Pole, so a
+        source at declination ``dec`` arrives at ``cos(theta_z) = -sin(dec)``
+        and only the magnitude enters the projected area.
     """
     dec_deg = np.linspace(0.5, 89.5, N_DEC)
     columns = np.array([prem_column(float(d)) for d in dec_deg])
-    return columns, np.cos(np.deg2rad(dec_deg))
+    dec_rad = np.deg2rad(dec_deg)
+    return columns, np.cos(dec_rad), np.sin(dec_rad)
 
 
 def target_volume_cm3(
     length_km: np.ndarray,
     radius_km: float | np.ndarray = RADIUS_KM,
+    cos_theta: float | np.ndarray = 0.0,
 ) -> np.ndarray:
     """Target volume for a monochromatic parent: projected column plus detector.
+
+    The projected area now depends on the arrival direction, so this returns one
+    volume per (energy, declination) pair when ``cos_theta`` is an array. The
+    detector volume itself does not: a prism of footprint ``pi R^2`` and height
+    ``HEIGHT_KM`` holds ``pi R^2 h`` whatever direction it is viewed from.
 
     Parameters
     ----------
     length_km : np.ndarray
         Effective muon length [km] at each neutrino energy.
     radius_km : float or np.ndarray, optional
-        Radius of the spherical instrumented volume [km]. An array is
+        Area-equivalent radius of the prism cross-section [km]. An array is
         broadcast against ``length_km``, which is how the reach law of
         :func:`~softpaws.transport.soft_volume.light_reach_radius_km` enters.
+    cos_theta : float or np.ndarray, optional
+        Cosine of the arrival zenith. Appended as a trailing axis when it is an
+        array. Defaults to 0, the horizontal arrival.
 
     Returns
     -------
     volume : np.ndarray
-        Target volume [cm^3].
+        Target volume [cm^3], of shape ``length_km.shape + cos_theta.shape``.
     """
     radius = np.asarray(radius_km, dtype=float)
-    proj_area = np.pi * radius**2
-    v_det = 4.0 / 3.0 * np.pi * radius**3
-    return (proj_area * length_km + v_det) * CM_PER_KM**3
+    length = np.asarray(length_km, dtype=float)
+    zenith = np.asarray(cos_theta, dtype=float)
+    if zenith.ndim:
+        radius = radius[..., None]
+        length = length[..., None]
+    proj_area = prism_projected_area_km2(zenith, radius, HEIGHT_KM, N_SIDES)
+    v_det = np.pi * radius**2 * HEIGHT_KM
+    return (proj_area * length + v_det) * CM_PER_KM**3
+
+
+def mean_target_volume_cm3(
+    length_km: np.ndarray,
+    radius_km: float | np.ndarray = RADIUS_KM,
+) -> np.ndarray:
+    """Target volume averaged over the upgoing hemisphere at fixed energy.
+
+    Parameters
+    ----------
+    length_km : np.ndarray
+        Effective muon length [km] at each neutrino energy.
+    radius_km : float or np.ndarray, optional
+        Area-equivalent radius of the prism cross-section [km].
+
+    Returns
+    -------
+    volume : np.ndarray
+        Solid-angle-averaged target volume [cm^3], one per energy.
+    """
+    _, weights, cos_theta = upgoing_columns()
+    return np.average(
+        target_volume_cm3(length_km, radius_km, cos_theta), axis=-1, weights=weights
+    )
 
 
 def required_radius_km(ratio: np.ndarray, radius_km: float = RADIUS_KM) -> np.ndarray:
@@ -240,9 +292,9 @@ def required_radius_km(ratio: np.ndarray, radius_km: float = RADIUS_KM) -> np.nd
     for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths)):
         if not np.isfinite(r) or r <= 0.0:
             continue
-        target = r * float(target_volume_cm3(np.array([length]))[0])
+        target = r * float(mean_target_volume_cm3(np.array([length]))[0])
         out[i] = brentq(
-            lambda x: float(target_volume_cm3(np.array([length]), x)[0]) - target,
+            lambda x: float(mean_target_volume_cm3(np.array([length]), x)[0]) - target,
             1.0e-4,
             50.0,
         )
@@ -272,13 +324,17 @@ def fit_reach_law(log10_e: np.ndarray, radius_needed_km: np.ndarray) -> tuple[fl
     return float(slope), float(np.exp((RADIUS_KM - intercept) / slope))
 
 
-def effective_area_absorbed(volume_cm3: np.ndarray) -> np.ndarray:
+def effective_area_absorbed(length_km: np.ndarray) -> np.ndarray:
     """Effective area with pure-absorption Earth attenuation (today's treatment).
+
+    The projected area and the transmission both depend on the arrival
+    direction, so the average is taken over their product and not over the
+    transmission alone.
 
     Parameters
     ----------
-    volume_cm3 : np.ndarray
-        Target volume [cm^3] at each energy of ``COMMON_LOG10_E``.
+    length_km : np.ndarray
+        Effective muon length [km] at each energy of ``COMMON_LOG10_E``.
 
     Returns
     -------
@@ -286,12 +342,17 @@ def effective_area_absorbed(volume_cm3: np.ndarray) -> np.ndarray:
         Effective area [cm^2], averaged over the upgoing hemisphere.
     """
     energy = 10.0**COMMON_LOG10_E
-    columns, weights = upgoing_columns()
+    columns, weights, cos_theta = upgoing_columns()
     survival = survival_probability(
         energy[:, None], columns[None, :], cross_section=CROSS_SECTION
     )
-    d_nu = np.average(survival, axis=1, weights=weights)
-    return volume_cm3 * nucleon_number_density() * CROSS_SECTION.cc(energy) * d_nu
+    volume = target_volume_cm3(length_km, RADIUS_KM, cos_theta)
+    per_dec = volume * survival
+    return (
+        np.average(per_dec, axis=1, weights=weights)
+        * nucleon_number_density()
+        * CROSS_SECTION.cc(energy)
+    )
 
 
 def effective_area_regenerated(
@@ -329,7 +390,7 @@ def effective_area_regenerated(
         Effective area [cm^2], averaged over the upgoing hemisphere.
     """
     energy = 10.0**COMMON_LOG10_E
-    columns, weights = upgoing_columns()
+    columns, weights, cos_theta = upgoing_columns()
     n_nucleon = nucleon_number_density()
 
     out = np.empty(energy.size)
@@ -351,10 +412,10 @@ def effective_area_regenerated(
                 RADIUS_KM, (1.0 - MEAN_INELASTICITY) * rung_energy, reach_km, pivot_gev
             )
         )
-        rung_volume = target_volume_cm3(rung_length, rung_radius)
-        rung_rate = n_nucleon * CROSS_SECTION.cc(rung_energy) * rung_volume
+        rung_volume = target_volume_cm3(rung_length, rung_radius, cos_theta)
+        rung_rate = n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None] * rung_volume
         # Sum the ladder at each declination, then average over solid angle.
-        per_dec = (rung_weight * rung_rate[:, None]).sum(axis=0)
+        per_dec = (rung_weight * rung_rate).sum(axis=0)
         out[i] = np.average(per_dec, weights=weights)
     return out
 
@@ -399,7 +460,7 @@ def effective_area_tau_channel(
         Effective area [cm^2], averaged over the upgoing hemisphere.
     """
     energy = 10.0**COMMON_LOG10_E
-    columns, weights = upgoing_columns()
+    columns, weights, cos_theta = upgoing_columns()
     n_nucleon = nucleon_number_density()
     # Muon energy from the two-step decay chain, as a fraction of the parent.
     muon_fraction = MEAN_Z * (1.0 - MEAN_INELASTICITY)
@@ -419,11 +480,11 @@ def effective_area_tau_channel(
         rung_length[muon_fraction * rung_energy <= threshold_gev] = 0.0
         rung_rate = (
             n_nucleon
-            * CROSS_SECTION.cc(rung_energy)
-            * target_volume_cm3(rung_length)
+            * CROSS_SECTION.cc(rung_energy)[:, None]
+            * target_volume_cm3(rung_length, RADIUS_KM, cos_theta)
             * BR_TAU_TO_MU
         )
-        per_dec = (rung_weight * rung_rate[:, None]).sum(axis=0)
+        per_dec = (rung_weight * rung_rate).sum(axis=0)
         out[i] = np.average(per_dec, weights=weights)
     return out
 
@@ -435,7 +496,7 @@ def make_figure(
 ) -> None:
     """Draw the two-panel comparison and write it to disk."""
     with plt.style.context(str(_STYLE)):
-        fig, axes = plt.subplots(1, 2, figsize=(6.0, 2.6))
+        fig, axes = plt.subplots(1, 2, figsize=(6.0, 3.0))
 
         colors = ("C0", "C1", "C3", "C2", "C4")
 
@@ -524,12 +585,8 @@ def main() -> None:
 
     print("Building effective areas ...")
     curves = {
-        "CSDA range, absorption only": effective_area_absorbed(
-            target_volume_cm3(lengths["deterministic"])
-        ),
-        "stochastic, absorption only": effective_area_absorbed(
-            target_volume_cm3(lengths["stochastic"])
-        ),
+        "CSDA range, absorption only": effective_area_absorbed(lengths["deterministic"]),
+        "stochastic, absorption only": effective_area_absorbed(lengths["stochastic"]),
         "stochastic + NC regeneration": effective_area_regenerated(
             lengths["stochastic"], args.threshold
         ),

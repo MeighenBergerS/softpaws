@@ -108,15 +108,14 @@ from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.special import gammainc, polygamma
 
 from softpaws.transport.attenuation import flavour_transmission, prem_column
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.eigenvalue import phi_eigenvalue, two_moment_loss_spectrum
+from softpaws.transport.eigenvalue import phi_eigenvalue
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
-    sphere_radius_from_volume,
+    prism_projected_area_km2,
+    truncated_muon_range_km,
 )
 from softpaws.transport.source import (
     MEAN_INELASTICITY,
@@ -179,9 +178,12 @@ EW_ISOSPIN = 0.5
 # Sites
 # ---------------------------------------------------------------------------
 
-# IceCube-Gen2 baseline: ~8 km^3 instrumented, taken as a sphere of that volume
-# as in example 23, at the geographic South Pole.
+# IceCube-Gen2 baseline: ~8 km^3 instrumented, taken as an upright hexagonal
+# prism of that volume, at the geographic South Pole. Gen2 extends the footprint
+# and not the depth, so the height is the same 1 km of instrumented string that
+# IceCube spans and the footprint carries the whole of the volume increase.
 GEN2_VOLUME_KM3 = 8.0
+GEN2_HEIGHT_KM = 1.0
 GEN2_LATITUDE_DEG = -90.0
 # Depth of the instrumented volume's centre below the ice surface [km]. The
 # in-ice array spans roughly 1.45-2.45 km; Gen2 extends the footprint rather
@@ -601,71 +603,6 @@ def zenith_exposure(
 # ---------------------------------------------------------------------------
 
 
-def truncated_range_km(
-    energy_mu_gev: np.ndarray,
-    column_km: np.ndarray,
-    threshold_gev: float,
-    density_g_cm3: float,
-) -> np.ndarray:
-    """Expected first-passage range cut at a finite upstream column [km].
-
-    Identical to the closed form of example 33. Eq. (16) integrates the
-    first-passage probability to infinite depth, which is right when the medium
-    supplies more column than any muon survives and wrong whenever it does not
-    -- under ARCA's 3.2 km of sea water, and, for this signal, under IceCube's
-    2 km of ice. The limited expectation ``E[tau(w) ^ X]`` follows from matching
-    a gamma law to the first two renewal moments of the first-passage depth,
-
-    .. math:: \\mathbb{E}[\\tau] = \\frac{w}{\\Phi'(0)}
-        - \\frac{\\Phi''(0)}{2\\Phi'(0)^2}, \\qquad
-        \\mathrm{Var}[\\tau] = -\\frac{w\\,\\Phi''(0)}{\\Phi'(0)^3},
-
-    which turns it into an incomplete gamma function. Example 33's
-    ``--check-truncation`` holds this against a direct Gil-Pelaez inversion of
-    the log-loss CDF and finds better than 0.2% from ``10^5`` to ``10^8`` GeV at
-    every truncation depth.
-
-    Parameters
-    ----------
-    energy_mu_gev : np.ndarray
-        Muon energy at production [GeV].
-    column_km : np.ndarray
-        Available upstream column, as a length of the medium [km]. Broadcast
-        against ``energy_mu_gev``; ``inf`` returns the untruncated range.
-    threshold_gev : float
-        Muon energy below which the track is not selected [GeV].
-    density_g_cm3 : float
-        Medium density [g cm^-3].
-
-    Returns
-    -------
-    length : np.ndarray
-        Expected truncated range [km], zero for muons born below threshold.
-    """
-    energy = np.asarray(energy_mu_gev, dtype=float)
-    b_mu = drift_coefficient(energy, density_g_cm3)
-    d_mu = diffusion_coefficient(energy, density_g_cm3)
-    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
-    # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length.
-    first = kappa * polygamma(1, p + 1.0)
-    second = -kappa * polygamma(2, p + 1.0)
-
-    selectable = energy > threshold_gev
-    w = np.where(selectable, np.log(np.maximum(energy, threshold_gev) / threshold_gev), 0.0)
-    mean = w / first + second / (2.0 * first**2)
-    variance = w * second / first**3
-
-    column = np.asarray(column_km, dtype=float)
-    # An infinite column is the untruncated case; the general expression below
-    # would evaluate inf * 0 on it.
-    capped = np.where(np.isfinite(column), column, 0.0)
-    with np.errstate(divide="ignore", invalid="ignore"):
-        shape = mean**2 / variance
-        x = capped / (variance / mean)
-        limited = mean * gammainc(shape + 1.0, x) + capped * (1.0 - gammainc(shape, x))
-    limited = np.where(np.isfinite(column), limited, mean)
-    return np.where(selectable & (mean > 0.0), np.clip(limited, 0.0, None), 0.0)
-
 
 # ---------------------------------------------------------------------------
 # Sites
@@ -683,9 +620,10 @@ class Site:
     density_g_cm3: float
     radius_km: float
     color: str
-    # Cylinders only; ignored for a sphere.
+    # Cylinders and prisms only; ignored for a sphere.
     height_km: float = 0.0
     n_blocks: int = 1
+    n_sides: int = 6
 
     def projected_area_km2(
         self,
@@ -696,15 +634,21 @@ class Site:
 
         A sphere presents ``pi R^2`` from every direction. An upright cylinder
         presents ``pi R^2`` overhead and ``2 R h`` at the horizon, and the
-        convex-body projection interpolates between them.
+        convex-body projection interpolates between them. A prism replaces the
+        ``2 R h`` by ``(P / pi) h`` for the perimeter ``P`` of its regular
+        cross-section. The two terms add, so the oblique projection exceeds
+        both face-on values.
         """
         radius = np.asarray(radius_km)
         if self.shape == "sphere":
             return np.pi * radius**2 * np.ones_like(np.asarray(theta_deg, dtype=float))
-        theta = np.deg2rad(theta_deg)
-        cap = np.pi * radius**2 * np.abs(np.cos(theta))
-        side = 2.0 * radius * self.height_km * np.sin(theta)
-        return self.n_blocks * (cap + side)
+        return prism_projected_area_km2(
+            np.cos(np.deg2rad(theta_deg)),
+            radius,
+            self.height_km,
+            n_sides=self.n_sides if self.shape == "prism" else None,
+            n_blocks=self.n_blocks,
+        )
 
     def detector_volume_km3(self, radius_km: float | np.ndarray) -> np.ndarray:
         """Volume of the instrumented body itself [km^3]."""
@@ -759,12 +703,13 @@ def build_sites(volume_km3: float) -> list[Site]:
     return [
         Site(
             name="IceCube-Gen2",
-            shape="sphere",
+            shape="prism",
             latitude_deg=GEN2_LATITUDE_DEG,
             depth_km=GEN2_DEPTH_KM,
             density_g_cm3=RHO_ICE_G_CM3,
-            radius_km=sphere_radius_from_volume(volume_km3),
+            radius_km=float(np.sqrt(volume_km3 / (np.pi * GEN2_HEIGHT_KM))),
             color="C0",
+            height_km=GEN2_HEIGHT_KM,
         ),
         Site(
             name="ARCA230",
@@ -877,7 +822,7 @@ def site_effective_area_cm2(
             )
             muon_energy = muon_fraction * rung_energy
             # (n_rung, n_theta): each rung's muon under each band's overburden.
-            length = truncated_range_km(
+            length = truncated_muon_range_km(
                 muon_energy[:, None], muon_column_km[None, :], threshold_gev,
                 site.density_g_cm3,
             )
@@ -1051,7 +996,7 @@ def make_figure(
     """
     colors = {site.name: site.color for site in sites}
     with plt.style.context(str(_STYLE)):
-        fig, ax = plt.subplots(figsize=(3.6, 2.9))
+        fig, ax = plt.subplots(figsize=(3.6, 3.6))
 
         for name, curve in curves.items():
             ax.plot(mass_gev, curve, color=colors[name], lw=1.5, label=name)
