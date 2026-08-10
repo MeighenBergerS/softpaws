@@ -130,6 +130,16 @@ def parse_args() -> argparse.Namespace:
         help="Muon selection threshold [GeV]; the DR2 smearing matrix supports ~700-1000.",
     )
     parser.add_argument(
+        "--kernel-evaluation",
+        choices=("running", "frozen"),
+        default="running",
+        help=(
+            "Where along the descent the loss kernel is read. 'running' follows it "
+            "down; 'frozen' holds the production-energy value, which is the closed "
+            "form of Eq. (C4) as written and is short by 3-11% across this band."
+        ),
+    )
+    parser.add_argument(
         "--out",
         type=pathlib.Path,
         default=_DEFAULT_OUT_DIR / "28_neutrino_energy_effective_area.pdf",
@@ -577,10 +587,17 @@ def main() -> None:
     icecube = icecube_upgoing(args.data_dir)
 
     energy_mu = (1.0 - MEAN_INELASTICITY) * 10.0**COMMON_LOG10_E
-    print(f"Computing muon lengths (threshold = {args.threshold:g} GeV) ...")
+    print(
+        f"Computing muon lengths (threshold = {args.threshold:g} GeV, "
+        f"kernel {args.kernel_evaluation}) ..."
+    )
     lengths = {
-        "deterministic": muon_range_km(energy_mu, args.threshold),
-        "stochastic": stochastic_muon_range_km(energy_mu, args.threshold),
+        "deterministic": muon_range_km(
+            energy_mu, args.threshold, kernel_evaluation=args.kernel_evaluation
+        ),
+        "stochastic": stochastic_muon_range_km(
+            energy_mu, args.threshold, kernel_evaluation=args.kernel_evaluation
+        ),
     }
 
     print("Building effective areas ...")

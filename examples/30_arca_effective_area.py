@@ -75,7 +75,6 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.integrate import cumulative_trapezoid
 from scipy.optimize import brentq
 
 from softpaws.transport.attenuation import (
@@ -83,14 +82,12 @@ from softpaws.transport.attenuation import (
     prem_column,
     regenerated_transmission,
 )
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.loss_distribution import log_loss_cdf
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
-    muon_range_km,
     stochastic_muon_range_km,
+    truncated_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
@@ -146,15 +143,12 @@ RHO_SEA_G_CM3 = RHO_WATER_G_CM3
 # Grids
 # ---------------------------------------------------------------------------
 
-# 0.2 dex. Each node costs one Gil-Pelaez inversion of the log-loss CDF.
+# 0.2 dex.
 COMMON_LOG10_E = np.arange(4.0, 10.01, 0.2)
 
 # Zenith sampling. theta = 0 is straight down through the sea, theta = 180 is
 # straight up through the Earth.
 N_ZENITH = 90
-
-# Depth grid for the truncated first-passage integral [km of water].
-N_ELL = 401
 
 CROSS_SECTION = bgr18_cross_section()
 
@@ -196,6 +190,16 @@ def parse_args() -> argparse.Namespace:
         help="Instrumented height of a detection unit [km]. The as-built optical "
         "modules span 632 m; an acceptance height a little beyond the end modules "
         "is defensible, so this is worth varying.",
+    )
+    parser.add_argument(
+        "--kernel-evaluation",
+        choices=("running", "frozen"),
+        default="running",
+        help=(
+            "Where along the descent the loss kernel is read. 'running' follows it "
+            "down; 'frozen' holds the production-energy value, which is the closed "
+            "form of Eq. (C4) as written."
+        ),
     )
     parser.add_argument(
         "--out",
@@ -370,57 +374,27 @@ def earth_column_g_cm2(theta_deg: np.ndarray, depth_km: float) -> np.ndarray:
 # ---------------------------------------------------------------------------
 
 
-def build_length_table(
+def truncated_range_km(
     energy_mu_gev: np.ndarray,
+    column_km: np.ndarray,
     threshold_gev: float,
-) -> tuple[np.ndarray, np.ndarray]:
-    """Cumulative first-passage length against depth, on the muon-energy grid.
+    kernel_evaluation: str = "running",
+) -> np.ndarray:
+    """Truncated first-passage range ``E[tau ^ X]``, from the library.
 
     Eq. (16) of the draft is ``L = Integral_0^inf d_ell P[W(ell) < w_star]``.
     Cutting the integral at a finite ``X`` gives ``E[tau(w_star) ^ X]``, the
     length available when the muon cannot be born further upstream than ``X``.
-    This tabulates the whole family at once by running the Gil-Pelaez inversion
-    of :func:`~softpaws.transport.loss_distribution.log_loss_cdf` on a depth
-    grid and integrating cumulatively, one inversion per energy rather than one
-    per (energy, depth) pair.
 
-    Parameters
-    ----------
-    energy_mu_gev : np.ndarray, shape (n_e,)
-        Muon energy at production [GeV].
-    threshold_gev : float
-        Muon selection threshold [GeV].
-
-    Returns
-    -------
-    ell_km : np.ndarray, shape (N_ELL,)
-        Depth grid [km of water].
-    cumulative_km : np.ndarray, shape (n_e, N_ELL)
-        ``E[tau ^ ell]`` [km] at each depth, for each energy.
-    """
-    deterministic = muon_range_km(energy_mu_gev, threshold_gev)
-    ell_km = np.linspace(0.0, 2.5 * float(np.max(deterministic)), N_ELL)
-
-    b_mu = np.atleast_1d(drift_coefficient(energy_mu_gev))
-    d_mu = np.atleast_1d(diffusion_coefficient(energy_mu_gev))
-
-    cumulative = np.zeros((energy_mu_gev.size, N_ELL))
-    for i, eps in enumerate(energy_mu_gev):
-        if eps <= threshold_gev:
-            continue
-        cdf = log_loss_cdf(np.log(eps / threshold_gev), ell_km, float(b_mu[i]), float(d_mu[i]))
-        cumulative[i] = cumulative_trapezoid(cdf, ell_km, initial=0.0)
-    return ell_km, cumulative
-
-
-def truncated_range_km(
-    energy_mu_gev: np.ndarray,
-    column_km: np.ndarray,
-    grid_log10_e: np.ndarray,
-    ell_km: np.ndarray,
-    cumulative_km: np.ndarray,
-) -> np.ndarray:
-    """Truncated first-passage range ``E[tau ^ X]``, by table lookup.
+    This used to build its own table, running the Gil-Pelaez inversion of
+    :func:`~softpaws.transport.loss_distribution.log_loss_cdf` on a depth grid
+    and interpolating. That route carried two approximations the library no
+    longer makes: it read the loss moments off the *two-moment family*, which is
+    8% low on ``Phi'(0)`` and 56% low on ``-Phi''(0)`` because ``-ln(1-y)``
+    weights the hard end of the kernel a fit to the ``y``-moments does not
+    constrain, and it froze them at the production energy. The library form is
+    closed (a pair of incomplete gamma functions matched to the first two
+    first-passage moments), so it needs no table at all.
 
     Parameters
     ----------
@@ -429,24 +403,29 @@ def truncated_range_km(
     column_km : np.ndarray, shape (m,)
         Available upstream column ``X`` [km of water]; ``inf`` is allowed and
         returns the untruncated length.
-    grid_log10_e : np.ndarray, shape (n_e,)
-        ``log10`` of the muon energies the table was built on.
-    ell_km, cumulative_km : np.ndarray
-        Output of :func:`build_length_table`.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    kernel_evaluation : {"running", "frozen"}, optional
+        Passed through to
+        :func:`~softpaws.transport.soft_volume.truncated_muon_range_km`.
 
     Returns
     -------
     length : np.ndarray, shape (n, m)
         Effective length [km].
     """
-    x = np.minimum(np.atleast_1d(column_km), ell_km[-1])
-    # Interpolate in depth on each energy row, then in energy between rows.
-    per_row = np.array([np.interp(x, ell_km, row) for row in cumulative_km])
-    log10_e = np.log10(np.atleast_1d(energy_mu_gev))
-    out = np.empty((log10_e.size, x.size))
-    for j in range(x.size):
-        out[:, j] = np.interp(log10_e, grid_log10_e, per_row[:, j])
-    return np.clip(out, 0.0, None)
+    energy = np.atleast_1d(np.asarray(energy_mu_gev, dtype=float))
+    column = np.atleast_1d(np.asarray(column_km, dtype=float))
+    return np.clip(
+        truncated_muon_range_km(
+            energy[:, None],
+            column[None, :],
+            threshold_gev,
+            kernel_evaluation=kernel_evaluation,
+        ),
+        0.0,
+        None,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -459,10 +438,8 @@ def effective_area(
     n_blocks: int,
     threshold_gev: float,
     depth_km: float,
-    grid_log10_e: np.ndarray,
-    ell_km: np.ndarray,
-    cumulative_km: np.ndarray,
     flavour: str,
+    kernel_evaluation: str = "running",
     cos_range: tuple[float, float] = (-1.0, 1.0),
     truncate: bool = True,
     reach_km: float | None = None,
@@ -487,8 +464,9 @@ def effective_area(
         Muon selection threshold [GeV].
     depth_km : float
         Depth of the instrumented volume below the sea surface [km].
-    grid_log10_e, ell_km, cumulative_km : np.ndarray
-        The first-passage table; see :func:`build_length_table`.
+    kernel_evaluation : {"running", "frozen"}
+        Where along the descent the loss kernel is read; see
+        :func:`truncated_range_km`.
     flavour : {"mu", "tau"}
         ``"mu"`` is the direct charged-current muon. ``"tau"`` is the
         ``nu_tau -> tau -> mu`` chain of Sec. IV, which costs the branching
@@ -540,7 +518,7 @@ def effective_area(
             )
         # (n_rung, n_theta) length: each rung's muon, each direction's column.
         length = truncated_range_km(
-            rung_energy * muon_fraction, available_km, grid_log10_e, ell_km, cumulative_km
+            rung_energy * muon_fraction, available_km, threshold_gev, kernel_evaluation
         )
         length[rung_energy * muon_fraction <= threshold_gev, :] = 0.0
 
@@ -906,18 +884,14 @@ def main() -> None:
     radius_km = args.block_radius_km
 
     energy_mu = (1.0 - MEAN_INELASTICITY) * 10.0**COMMON_LOG10_E
-    # The tau chain puts the muon a factor <z> lower, so the table has to reach
-    # below the direct-channel grid.
-    table_log10_e = np.arange(2.0, 10.01, 0.2)
-    print(f"Building the first-passage table (threshold = {args.threshold:g} GeV) ...")
-    ell_km, cumulative_km = build_length_table(10.0**table_log10_e, args.threshold)
-
     theta_deg, _ = zenith_grid()
     available = upstream_column_km(theta_deg, args.depth_km)
     lengths = {
-        "free": stochastic_muon_range_km(energy_mu, args.threshold),
+        "free": stochastic_muon_range_km(
+            energy_mu, args.threshold, kernel_evaluation=args.kernel_evaluation
+        ),
         "vertical_down": truncated_range_km(
-            energy_mu, np.array([args.depth_km]), table_log10_e, ell_km, cumulative_km
+            energy_mu, np.array([args.depth_km]), args.threshold, args.kernel_evaluation
         )[:, 0],
     }
     print(
@@ -930,9 +904,7 @@ def main() -> None:
     kwargs = dict(
         threshold_gev=args.threshold,
         depth_km=args.depth_km,
-        grid_log10_e=table_log10_e,
-        ell_km=ell_km,
-        cumulative_km=cumulative_km,
+        kernel_evaluation=args.kernel_evaluation,
     )
     a230_mu = effective_area(radius_km, N_BLOCKS_FULL, flavour="mu", **kwargs)
     a230_tau = effective_area(radius_km, N_BLOCKS_FULL, flavour="tau", **kwargs)

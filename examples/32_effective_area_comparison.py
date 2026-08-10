@@ -48,7 +48,6 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.integrate import cumulative_trapezoid
 from scipy.optimize import brentq
 
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
@@ -58,15 +57,13 @@ from softpaws.transport.attenuation import (
     prem_column,
     regenerated_transmission,
 )
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.loss_distribution import log_loss_cdf
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
-    muon_range_km,
     prism_projected_area_km2,
     stochastic_muon_range_km,
+    truncated_muon_range_km,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
@@ -103,7 +100,6 @@ ARCA_FIT_BAND = (4.0, 7.5)  # digitized trigger curve saturates past the top
 MAX_SEA_PATH_KM = 100.0
 RHO_SEA_G_CM3 = RHO_WATER_G_CM3
 N_ZENITH = 90
-N_ELL = 401
 
 # Colour carries which curve it is, line style carries which detector, so the
 # two legends factorize.
@@ -382,38 +378,28 @@ def earth_column_g_cm2(theta_deg: np.ndarray, depth_km: float) -> np.ndarray:
     return np.where(theta_deg > 90.0, earth, water)
 
 
-def build_length_table(
-    energy_mu_gev: np.ndarray, threshold_gev: float
-) -> tuple[np.ndarray, np.ndarray]:
-    """Cumulative first-passage length against depth, on the muon-energy grid."""
-    deterministic = muon_range_km(energy_mu_gev, threshold_gev)
-    ell_km = np.linspace(0.0, 2.5 * float(np.max(deterministic)), N_ELL)
-    b_mu = np.atleast_1d(drift_coefficient(energy_mu_gev))
-    d_mu = np.atleast_1d(diffusion_coefficient(energy_mu_gev))
-    cumulative = np.zeros((energy_mu_gev.size, N_ELL))
-    for i, eps in enumerate(energy_mu_gev):
-        if eps <= threshold_gev:
-            continue
-        cdf = log_loss_cdf(np.log(eps / threshold_gev), ell_km, float(b_mu[i]), float(d_mu[i]))
-        cumulative[i] = cumulative_trapezoid(cdf, ell_km, initial=0.0)
-    return ell_km, cumulative
-
-
 def truncated_range_km(
     energy_mu_gev: np.ndarray,
     column_km: np.ndarray,
-    grid_log10_e: np.ndarray,
-    ell_km: np.ndarray,
-    cumulative_km: np.ndarray,
+    threshold_gev: float,
+    kernel_evaluation: str = "running",
 ) -> np.ndarray:
-    """Truncated first-passage range ``E[tau ^ X]``, by table lookup [km]."""
-    x = np.minimum(np.atleast_1d(column_km), ell_km[-1])
-    per_row = np.array([np.interp(x, ell_km, row) for row in cumulative_km])
-    log10_e = np.log10(np.atleast_1d(energy_mu_gev))
-    out = np.empty((log10_e.size, x.size))
-    for j in range(x.size):
-        out[:, j] = np.interp(log10_e, grid_log10_e, per_row[:, j])
-    return np.clip(out, 0.0, None)
+    """Truncated first-passage range ``E[tau ^ X]``, from the library [km].
+
+    Was a private Gil-Pelaez table built on the two-moment family with the
+    kernel frozen at production; see :func:`truncated_range_km` in example 30
+    for what that cost. The library form is closed and needs no table.
+    """
+    energy = np.atleast_1d(np.asarray(energy_mu_gev, dtype=float))
+    column = np.atleast_1d(np.asarray(column_km, dtype=float))
+    return np.clip(
+        truncated_muon_range_km(
+            energy[:, None], column[None, :], threshold_gev,
+            kernel_evaluation=kernel_evaluation,
+        ),
+        0.0,
+        None,
+    )
 
 
 def arca_effective_area(
@@ -421,10 +407,8 @@ def arca_effective_area(
     n_blocks: int,
     threshold_gev: float,
     depth_km: float,
-    grid_log10_e: np.ndarray,
-    ell_km: np.ndarray,
-    cumulative_km: np.ndarray,
     flavour: str,
+    kernel_evaluation: str = "running",
     reach_km: float | None = None,
     pivot_gev: float = 1.0e6,
 ) -> np.ndarray:
@@ -449,7 +433,7 @@ def arca_effective_area(
         else:
             rung_energy, rung_weight = regenerated_transmission(float(e_nu), columns, CROSS_SECTION)
         length = truncated_range_km(
-            rung_energy * muon_fraction, available_km, grid_log10_e, ell_km, cumulative_km
+            rung_energy * muon_fraction, available_km, threshold_gev, kernel_evaluation
         )
         length[rung_energy * muon_fraction <= threshold_gev, :] = 0.0
 
@@ -506,12 +490,7 @@ def arca230_curves(threshold_gev: float, depth_km: float) -> tuple[dict[str, np.
     reach_km : float
         Fitted growth of the light reach per e-fold [km].
     """
-    table_log10_e = np.arange(2.0, 10.01, 0.2)
-    ell_km, cumulative_km = build_length_table(10.0**table_log10_e, threshold_gev)
-    kwargs = dict(
-        threshold_gev=threshold_gev, depth_km=depth_km,
-        grid_log10_e=table_log10_e, ell_km=ell_km, cumulative_km=cumulative_km,
-    )
+    kwargs = dict(threshold_gev=threshold_gev, depth_km=depth_km)
     tau = arca_effective_area(ARCA230_RADIUS_KM, N_BLOCKS_FULL, flavour="tau", **kwargs)
     base = arca_effective_area(ARCA230_RADIUS_KM, N_BLOCKS_FULL, flavour="mu", **kwargs) + tau
 

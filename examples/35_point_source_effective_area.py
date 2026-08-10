@@ -226,11 +226,16 @@ TEV_TO_GEV = 1.0e3
 # ---------------------------------------------------------------------------
 
 # Reach law of Eq. (17), fitted there against the DR2 upgoing average:
-# Lambda = 21.3 m per e-fold (49 m per decade) with the pivot above the fitted
+# Lambda = 17.8 m per e-fold (41 m per decade) with the pivot above the fitted
 # band, so it is an extrapolation there too. Nothing about it is refitted here;
 # applying one pair to every declination band is the prediction figure (b) tests.
-REACH_KM = 0.0213
-REACH_PIVOT_GEV = 10.0**8.72
+#
+# Carried in by hand, so it has to be re-read from example 28 whenever the range
+# changes: the frozen-kernel range gave 21.3 m per e-fold and 10^8.72 GeV, and
+# leaving those in place while the range ran produced a residual that belonged
+# to the stale constant and not to the declination.
+REACH_KM = 0.0178
+REACH_PIVOT_GEV = 10.0**9.67
 
 # ---------------------------------------------------------------------------
 # Sites

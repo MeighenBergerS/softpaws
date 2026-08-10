@@ -112,14 +112,52 @@ def test_regeneration_only_adds_flux():
 
 
 def test_closed_form_matches_the_depth_integral():
-    # Pinned to the family: the depth integral runs against that kernel, so this
-    # checks the renewal expansion and not the choice of loss moments.
+    # Pinned to the family and to the frozen kernel: the depth integral builds
+    # one kernel and holds it for the whole descent, so this checks the renewal
+    # expansion and neither the choice of loss moments nor where they are read.
     energy = np.array([1.0e4, 1.0e5, 1.0e6, 1.0e7, 1.0e8])
-    closed = stochastic_muon_range_km(energy, method="closed", log_loss_source="family")
-    quadrature = stochastic_muon_range_km(energy, method="quadrature", log_loss_source="family")
+    common = {"log_loss_source": "family", "kernel_evaluation": "frozen"}
+    closed = stochastic_muon_range_km(energy, method="closed", **common)
+    quadrature = stochastic_muon_range_km(energy, method="quadrature", **common)
     # The renewal expansion is exact to well under a centimetre over four
     # decades; see docs/first_passage_range.md.
     assert np.allclose(closed, quadrature, atol=1.0e-2)
+
+
+def test_running_kernel_lengthens_the_range_by_more_at_longer_lever_arm():
+    # Freezing the kernel at production charges the muon the loss rate of the
+    # top of its descent for the whole of it, so it is short -- one-sidedly, and
+    # by more the further the muon falls. Measured against PROPOSAL in
+    # examples/39_range_moment_estimator.py: 4.0% rms frozen, 1.4% running.
+    energy = np.array([1.0e4, 1.0e5, 1.0e6, 1.0e7, 1.0e8])
+    running = stochastic_muon_range_km(energy)
+    frozen = stochastic_muon_range_km(energy, kernel_evaluation="frozen")
+    excess = running / frozen - 1.0
+    assert np.all(excess >= 0.0)
+    assert np.all(np.diff(excess) > 0.0)
+    # Effective areas live at the top of this band, where it is worth ~11%.
+    assert excess[-1] == pytest.approx(0.11, abs=0.02)
+
+
+def test_running_and_frozen_agree_when_the_kernel_does_not_run():
+    # The two differ only through the energy dependence of the kernel, so over a
+    # lever arm short enough that it cannot run they have to coincide. The
+    # ionization tail has to come off for this: it spans a decade below E_* and
+    # runs whatever the radiative segment above does.
+    energy, threshold = np.array([1.02e5]), 1.0e5
+    common = {"threshold_gev": threshold, "include_ionization": False}
+    assert stochastic_muon_range_km(energy, **common) == pytest.approx(
+        stochastic_muon_range_km(energy, kernel_evaluation="frozen", **common), rel=1.0e-3
+    )
+
+
+def test_kernel_evaluation_rejects_an_unknown_mode():
+    with pytest.raises(ValueError, match="kernel_evaluation must be"):
+        stochastic_muon_range_km(np.array([1.0e6]), kernel_evaluation="nope")
+    with pytest.raises(ValueError, match="needs kernel_evaluation='frozen'"):
+        stochastic_muon_range_km(
+            np.array([1.0e6]), method="quadrature", log_loss_source="family"
+        )
 
 
 def test_closed_form_replaces_mean_y_by_mean_log():
@@ -173,29 +211,45 @@ def test_ionization_splice_is_continuous_across_the_matching_energy():
     # The deterministic segment starts at the mean arrival energy and not at
     # E_*, which is what keeps the two regimes from double counting the
     # first-passage overshoot. Leaving it in opens a ~0.4 km step here.
+    #
+    # A residual step survives because the two regimes shed log energy at
+    # different rates -- Phi'(0) above E_*, b_mu below it -- so the overshoot
+    # stretch is costed at the radiative rate on one side and the CSDA rate on
+    # the other. It is 0.13 km against a ~5 km range, inside the 3% that
+    # ``match_energy_gev`` is a convention for either way.
     match = 1.0e4
     below = stochastic_muon_range_km(np.array([match * 0.999]), match_energy_gev=match)[0]
     above = stochastic_muon_range_km(np.array([match * 1.001]), match_energy_gev=match)[0]
-    assert above - below == pytest.approx(0.0, abs=0.1)
+    assert above - below == pytest.approx(0.0, abs=0.2)
 
 
-def test_ionization_splice_shortens_at_low_energy_and_lengthens_at_high():
-    # Two effects run against each other in the spliced decade: ionization
-    # shortens it, and dropping the production-energy loss rate for a muon that
-    # is by then at TeV energies lengthens it. The second wins only at the top.
-    low, high = np.array([1.0e5]), np.array([1.0e8])
-    assert stochastic_muon_range_km(low) < stochastic_muon_range_km(
-        low, include_ionization=False
+def test_ionization_splice_shortens_the_range_at_every_energy():
+    # Ionization adds a loss channel below E_*, so it can only remove range.
+    energy = np.array([1.0e5, 1.0e6, 1.0e8])
+    assert np.all(
+        stochastic_muon_range_km(energy)
+        < stochastic_muon_range_km(energy, include_ionization=False)
     )
-    assert stochastic_muon_range_km(high) > stochastic_muon_range_km(
-        high, include_ionization=False
+
+
+def test_frozen_splice_changes_sign_where_running_does_not():
+    # Under a frozen kernel two effects ran against each other in the spliced
+    # decade: ionization shortened the range, and dropping the production-energy
+    # loss rate for a muon that is by then at TeV energies lengthened it, with
+    # the second winning at the top. Running the kernel down the trajectory
+    # already carries the second, so only the shortening survives.
+    high = np.array([1.0e8])
+    frozen = {"kernel_evaluation": "frozen"}
+    assert stochastic_muon_range_km(high, **frozen) > stochastic_muon_range_km(
+        high, include_ionization=False, **frozen
     )
 
 
 def test_ionization_splice_closed_form_matches_the_depth_integral():
     energy = np.array([1.0e5, 1.0e6, 1.0e7, 1.0e8])
-    closed = stochastic_muon_range_km(energy, method="closed", log_loss_source="family")
-    quadrature = stochastic_muon_range_km(energy, method="quadrature", log_loss_source="family")
+    common = {"log_loss_source": "family", "kernel_evaluation": "frozen"}
+    closed = stochastic_muon_range_km(energy, method="closed", **common)
+    quadrature = stochastic_muon_range_km(energy, method="quadrature", **common)
     assert np.allclose(closed, quadrature, atol=1.0e-2)
 
 

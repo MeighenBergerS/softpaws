@@ -218,7 +218,13 @@ def test_muon_range_matches_closed_form():
     b = drift_coefficient(E_1PEV)[0]
     e_crit = critical_energy_gev(E_1PEV)[0]
     expected = np.log((E_1PEV + e_crit) / (DEFAULT_MUON_THRESHOLD_GEV + e_crit)) / b
-    assert muon_range_km(E_1PEV)[0] == pytest.approx(expected, rel=1e-12)
+    # The closed form exists only with b_mu held at the production energy; the
+    # running default integrates dE / (a_mu + b_mu(E) E) instead.
+    frozen = muon_range_km(E_1PEV, kernel_evaluation="frozen")[0]
+    assert frozen == pytest.approx(expected, rel=1e-12)
+    # Running is the longer of the two, because a muon that has fallen a decade
+    # radiates at a lower rate than the one the frozen form keeps charging it.
+    assert muon_range_km(E_1PEV)[0] > frozen
 
 
 def test_muon_range_is_tens_of_km_at_uhe():
@@ -231,7 +237,7 @@ def test_muon_range_grows_logarithmically():
     # Two decades in energy lengthen the range by well under a factor of two --
     # the qualitative difference from a spectral length, which is flat.
     ratio = muon_range_km(E_100PEV)[0] / muon_range_km(E_1PEV)[0]
-    assert 1.1 < ratio < 1.6
+    assert 1.1 < ratio < 1.7
 
 
 def test_muon_range_vanishes_below_threshold():

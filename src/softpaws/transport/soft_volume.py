@@ -62,6 +62,7 @@ from .coefficients import (
     critical_energy_gev,
     diffusion_coefficient,
     drift_coefficient,
+    ionization_coefficient,
     log_loss_moments,
 )
 from .eigenvalue import (
@@ -491,6 +492,7 @@ def muon_range_km(
     density_g_cm3: float = RHO_WATER_G_CM3,
     b_scale: float = 1.0,
     source: str = DEFAULT_SOURCE,
+    kernel_evaluation: str = "running",
 ) -> np.ndarray:
     """Muon range from a starting energy down to a detection threshold.
 
@@ -531,11 +533,99 @@ def muon_range_km(
     along the track. Because ``b_mu`` moves by only 14% between 1 PeV and 100 PeV
     (Table 1), this is a percent-level approximation over the range of interest.
     """
+    if kernel_evaluation not in ("frozen", "running"):
+        raise ValueError(
+            f"kernel_evaluation must be 'frozen' or 'running', got {kernel_evaluation!r}."
+        )
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
-    b_mu = b_scale * drift_coefficient(energy, density_g_cm3, source)
-    e_crit = critical_energy_gev(energy, density_g_cm3, b_scale, source)
-    ratio = (energy + e_crit) / (threshold_gev + e_crit)
-    return np.clip(np.log(ratio) / b_mu, 0.0, None)
+    if kernel_evaluation == "frozen":
+        b_mu = b_scale * drift_coefficient(energy, density_g_cm3, source)
+        e_crit = critical_energy_gev(energy, density_g_cm3, b_scale, source)
+        ratio = (energy + e_crit) / (threshold_gev + e_crit)
+        return np.clip(np.log(ratio) / b_mu, 0.0, None)
+
+    # Running: -dE/dx = a_mu + b_mu(E) E has no closed-form integral once b_mu
+    # itself runs, so integrate dL = dE / (a_mu + b_mu(E) E) on a shared
+    # logarithmic grid. Frozen b_mu recovers the closed form above exactly.
+    top = float(np.max(energy))
+    if top <= threshold_gev:
+        return np.zeros_like(energy)
+    log10_grid = np.linspace(
+        np.log10(threshold_gev),
+        np.log10(top),
+        max(2, int(np.ceil((np.log10(top) - np.log10(threshold_gev)) * 48)) + 1),
+    )
+    grid = 10.0**log10_grid
+    b_grid = b_scale * drift_coefficient(grid, density_g_cm3, source)
+    a_mu = b_scale * ionization_coefficient(density_g_cm3)
+    integrand = grid / (a_mu + b_grid * grid)
+    ln_grid = log10_grid * np.log(10.0)
+    cumulative = np.concatenate(
+        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
+    )
+    return np.clip(np.interp(np.log10(energy), log10_grid, cumulative), 0.0, None)
+
+
+def _log_loss_moments_at(
+    energy_gev: np.ndarray,
+    density_g_cm3: float,
+    b_scale: float,
+    source: str,
+    log_loss_source: str,
+) -> tuple[np.ndarray, np.ndarray]:
+    """``Phi'(0)`` and ``-Phi''(0)`` at each energy, by whichever route is asked for.
+
+    Factored out of :func:`stochastic_muon_range_km` so that the frozen and
+    running evaluations read the kernel the same way and differ only in *where*
+    they read it.
+    """
+    if log_loss_source == "table" and source != "table1":
+        first, second, _ = log_loss_moments(energy_gev, density_g_cm3, source)
+        return b_scale * first, b_scale * second
+    # Table 1 tabulates no log-loss columns, so there the family is the only
+    # route; it is 8% low on the first moment and 56% low on the second.
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3, source)
+    d_mu = diffusion_coefficient(energy_gev, density_g_cm3, source)
+    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
+    return kappa * polygamma(1, p + 1.0), -kappa * polygamma(2, p + 1.0)
+
+
+def _running_radiative_length_km(
+    energy_gev: np.ndarray,
+    floor_gev: float,
+    density_g_cm3: float,
+    b_scale: float,
+    source: str,
+    log_loss_source: str,
+    nodes_per_decade: int,
+) -> np.ndarray:
+    """The radiative segment with the kernel followed down the trajectory.
+
+    The rate at which log energy is shed is a local quantity, so over a descent
+    spanning decades the depth accumulates as ``dL / dlnE = 1 / Phi'(0; E)``
+    and the frozen form ``ln(eps/E_floor) / Phi'(0; eps)`` is the value of that
+    integrand at the *top* of the descent, where the loss rate is highest. It is
+    therefore short, one-sidedly and by more the further the muon falls.
+
+    Evaluated once on a shared logarithmic grid and interpolated, so the cost is
+    independent of how many production energies are asked for.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    top = float(np.max(energy))
+    if top <= floor_gev:
+        return np.zeros_like(energy)
+    log10_lo, log10_hi = np.log10(floor_gev), np.log10(top)
+    n_nodes = max(2, int(np.ceil((log10_hi - log10_lo) * nodes_per_decade)) + 1)
+    log10_grid = np.linspace(log10_lo, log10_hi, n_nodes)
+    first, _ = _log_loss_moments_at(
+        10.0**log10_grid, density_g_cm3, b_scale, source, log_loss_source
+    )
+    ln_grid = log10_grid * np.log(10.0)
+    integrand = 1.0 / first
+    cumulative = np.concatenate(
+        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
+    )
+    return np.interp(np.log10(energy), log10_grid, cumulative)
 
 
 def stochastic_muon_range_km(
@@ -550,6 +640,8 @@ def stochastic_muon_range_km(
     include_ionization: bool = True,
     match_energy_gev: float = DEFAULT_IONIZATION_MATCH_GEV,
     log_loss_source: str = "table",
+    kernel_evaluation: str = "running",
+    running_nodes_per_decade: int = 48,
 ) -> np.ndarray:
     """Muon range to a threshold, averaged over the exact stochastic loss law.
 
@@ -618,13 +710,15 @@ def stochastic_muon_range_km(
     segment at ``E_*`` would count that stretch of track twice. It is worth 0.4
     km, and leaving it in shows up as a 0.4 km discontinuity at ``E_*``.
 
-    The net effect on the range is small and changes sign across the band, from
-    -13% at ``E_nu = 10^4`` GeV, where the muon never enters the radiative
-    regime at all, through -0.9% at ``10^6`` GeV to +1.9% at ``10^8``. Two
-    effects run against each other in the spliced decade. Ionization shortens it
-    by 1.20 km; ceasing to apply the production-energy ``Phi'(0)`` to a muon
-    that is by then at TeV energies, where the loss rate is lower, lengthens it
-    by 2.17 km, and the two nearly cancel once the overshoot is removed.
+    The splice shortens the range at every energy, by 17% at ``E_nu = 10^4``
+    GeV, where the muon never enters the radiative regime at all, through 6.7%
+    at ``10^6`` to 4.3% at ``10^8``. Under ``kernel_evaluation="frozen"`` it
+    instead changed sign across the band (-13%, -1.6%, +1.4%), because two
+    effects ran against each other in the spliced decade: ionization shortened
+    the range while ceasing to apply the production-energy ``Phi'(0)`` to a muon
+    that is by then at TeV energies lengthened it, and the two nearly cancelled.
+    Running the kernel down the trajectory already carries the second of those,
+    so the splice is left doing only the physical job it exists for.
 
     ``match_energy_gev`` is a convention and the answer moves with it: a factor
     of three either way from the default changes the range by about 3%, which is
@@ -692,6 +786,29 @@ def stochastic_muon_range_km(
         moves an effective-area ceiling and leaves its shape alone. Kept as an
         option because ``source="table1"`` has no log-loss columns and because
         ``method="quadrature"`` checks against the family's own kernel.
+    kernel_evaluation : {"running", "frozen"}, optional
+        Where along the descent the kernel is read. ``"running"`` (the default)
+        follows it down, so the radiative segment is
+        ``int dlnE / Phi'(0; E)`` and both renewal constants are read at the
+        level being crossed. ``"frozen"`` holds the production-energy kernel for
+        the whole descent, which is the closed form of Eq.~(C4) as written.
+
+        Freezing is short, one-sidedly, and by more the further the muon falls,
+        because it evaluates the loss rate at the top of the descent where that
+        rate is highest. Against a PROPOSAL propagation (example 39, stopping at
+        100 TeV) the mean range is 4.0% rms and 6.5% worst over ``w = 1.15`` to
+        ``5.76``, against 1.4% and 2.5% running. Effective areas reach
+        ``w ~ 9``, where the two differ by 11%. The gap is a rising tilt and not
+        a normalization: 0% at ``10^4`` GeV of parent energy, 2.1% at ``10^5``,
+        4.4% at ``10^6``, 7.3% at ``10^7`` and 11.3% at ``10^8``.
+
+        Kept selectable because the frozen form is what the drift-diffusion
+        literature evaluates and what ``method="quadrature"`` can check.
+    running_nodes_per_decade : int, optional
+        Grid density for the running integral. The integrand ``1/Phi'(0; E)``
+        varies by ``E^-beta`` with ``beta ~ 0.028``, so it is nearly linear in
+        ``lnE``: the default is converged to 6 mm over four decades, two orders
+        below the 4 cm at which the closed form tracks its own depth integral.
 
     Returns
     -------
@@ -727,6 +844,19 @@ def stochastic_muon_range_km(
         raise ValueError(
             f"log_loss_source must be 'table' or 'family', got {log_loss_source!r}."
         )
+    if kernel_evaluation not in ("frozen", "running"):
+        raise ValueError(
+            f"kernel_evaluation must be 'frozen' or 'running', got {kernel_evaluation!r}."
+        )
+    if method == "quadrature" and kernel_evaluation != "frozen":
+        # The depth integral builds one kernel and holds it for the whole
+        # descent, so it is a frozen calculation by construction. Checking the
+        # running closed form against it would measure the running, not the
+        # renewal expansion the check exists for.
+        raise ValueError(
+            "method='quadrature' freezes the kernel at the production energy, so "
+            "it needs kernel_evaluation='frozen'."
+        )
     if method == "quadrature" and log_loss_source != "family":
         # The depth integral runs against log_loss_cdf, which builds the
         # two-moment family's kernel. Checking a table-based closed form against
@@ -738,22 +868,18 @@ def stochastic_muon_range_km(
         )
 
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
-    deterministic = muon_range_km(energy, threshold_gev, density_g_cm3, b_scale, source)
+    deterministic = muon_range_km(
+        energy, threshold_gev, density_g_cm3, b_scale, source, kernel_evaluation
+    )
     b_mu = b_scale * drift_coefficient(energy, density_g_cm3, source)
     d_mu = diffusion_coefficient(energy, density_g_cm3, source)
     selectable = (energy > threshold_gev) & (deterministic > 0.0)
 
-    # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length.
-    if log_loss_source == "table" and source != "table1":
-        first, second, _ = (
-            b_scale * moment for moment in log_loss_moments(energy, density_g_cm3, source)
-        )
-    else:
-        # Table 1 tabulates no log-loss columns, so there the family is the only
-        # route; it is 8% low on the first moment and 56% low on the second.
-        kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
-        first = kappa * polygamma(1, p + 1.0)
-        second = -kappa * polygamma(2, p + 1.0)
+    # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length,
+    # here at the production energy.
+    first, second = _log_loss_moments_at(
+        energy, density_g_cm3, b_scale, source, log_loss_source
+    )
 
     # Above the matching energy the first passage is radiative and stochastic; below it
     # the muon is within reach of E_c and slows deterministically. The stochastic part
@@ -766,29 +892,57 @@ def stochastic_muon_range_km(
     # the muon stops counting while it is still radiative. Clamping the floor
     # degrades the two-regime range back to the purely radiative one, which is
     # what a fitted threshold above E_* should get.
+    # Both renewal constants -- the mean overshoot in log energy and the
+    # constant it contributes to the depth -- belong to the *crossing*, so a
+    # running evaluation reads them at the level being crossed. Freezing reads
+    # everything at production, which is what makes it a frozen calculation.
+    stochastic_floor = float(
+        match_energy_gev
+        if include_ionization and match_energy_gev > threshold_gev
+        else threshold_gev
+    )
+    if kernel_evaluation == "running":
+        crossing_first, crossing_second = _log_loss_moments_at(
+            np.array([stochastic_floor]), density_g_cm3, b_scale, source, log_loss_source
+        )
+    else:
+        crossing_first, crossing_second = first, second
+
     if include_ionization and match_energy_gev > threshold_gev:
-        stochastic_floor = float(match_energy_gev)
         # A first passage crosses its level from above, so the overshoot is
         # non-negative and the arrival energy lies in [E_thr, E_*]. Both bounds
         # bind only where the calibrated kernel is not a valid loss spectrum at
         # all -- ``d_mu / b_mu >= 1`` puts ``p + 1 <= 0`` -- which a sampler
         # exploring an unphysical b_scale does reach, and where an unclamped
         # exponential would return an infinite range instead of a wrong one.
-        overshoot = np.clip(second / (2.0 * first), 0.0, None)
+        overshoot = np.clip(crossing_second / (2.0 * crossing_first), 0.0, None)
         arrival_gev = np.clip(
             stochastic_floor * np.exp(-overshoot), threshold_gev, stochastic_floor
         )
-        offset_km = muon_range_km(arrival_gev, threshold_gev, density_g_cm3, b_scale, source)
+        offset_km = muon_range_km(
+            arrival_gev, threshold_gev, density_g_cm3, b_scale, source, kernel_evaluation
+        )
     else:
-        stochastic_floor = float(threshold_gev)
         offset_km = np.zeros_like(energy)
     stochastic_regime = selectable & (energy > stochastic_floor)
 
     if method == "closed":
         with np.errstate(divide="ignore", invalid="ignore"):
+            if kernel_evaluation == "running":
+                radiative_km = _running_radiative_length_km(
+                    energy,
+                    stochastic_floor,
+                    density_g_cm3,
+                    b_scale,
+                    source,
+                    log_loss_source,
+                    running_nodes_per_decade,
+                )
+            else:
+                radiative_km = np.log(energy / stochastic_floor) / first
             length = (
-                np.log(energy / stochastic_floor) / first
-                + second / (2.0 * first**2)
+                radiative_km
+                + crossing_second / (2.0 * crossing_first**2)
                 + offset_km
             )
         # Muons born below E_* never enter the radiative regime, so the deterministic
@@ -811,12 +965,42 @@ def stochastic_muon_range_km(
     return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
 
 
+def _running_variance_rate_km2(
+    energy_gev: np.ndarray,
+    floor_gev: float,
+    density_g_cm3: float,
+    b_scale: float,
+    source: str,
+    nodes_per_decade: int = 48,
+) -> np.ndarray:
+    """``int dlnE (-Phi''(0; E)) / Phi'(0; E)^3``, the running form of the term
+    linear in ``w`` in :func:`stochastic_muon_range_variance_km2`."""
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    top = float(np.max(energy))
+    if top <= floor_gev:
+        return np.zeros_like(energy)
+    log10_grid = np.linspace(
+        np.log10(floor_gev),
+        np.log10(top),
+        max(2, int(np.ceil((np.log10(top) - np.log10(floor_gev)) * nodes_per_decade)) + 1),
+    )
+    first, second, _ = log_loss_moments(10.0**log10_grid, density_g_cm3, source)
+    first, second = b_scale * first, b_scale * second
+    ln_grid = log10_grid * np.log(10.0)
+    integrand = second / first**3
+    cumulative = np.concatenate(
+        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
+    )
+    return np.interp(np.log10(energy), log10_grid, cumulative)
+
+
 def stochastic_muon_range_variance_km2(
     energy_gev: float | np.ndarray,
     threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
     density_g_cm3: float = RHO_WATER_G_CM3,
     b_scale: float = 1.0,
     source: str = DEFAULT_SOURCE,
+    kernel_evaluation: str = "running",
 ) -> np.ndarray:
     """Variance of the muon range to a threshold, from the same first passage.
 
@@ -883,17 +1067,34 @@ def stochastic_muon_range_variance_km2(
     where a muon reaches the threshold in a handful of collisions and no
     expansion of this kind applies.
     """
+    if kernel_evaluation not in ("frozen", "running"):
+        raise ValueError(
+            f"kernel_evaluation must be 'frozen' or 'running', got {kernel_evaluation!r}."
+        )
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
     phi_prime, phi_second, phi_third = (
         b_scale * moment for moment in log_loss_moments(energy, density_g_cm3, source)
     )
+    if kernel_evaluation == "running":
+        # Both constants belong to the crossing, so both are read at the level
+        # being crossed; only the term linear in w accumulates down the descent.
+        phi_prime, phi_second, phi_third = (
+            b_scale * np.reshape(moment, ())
+            for moment in log_loss_moments(np.array([threshold_gev]), density_g_cm3, source)
+        )
 
     with np.errstate(divide="ignore", invalid="ignore"):
         w = np.log(energy / threshold_gev)
         overshoot_variance = (
             phi_third / (3.0 * phi_prime) - phi_second**2 / (4.0 * phi_prime**2)
         ) / phi_prime**2
-        variance = phi_second * w / phi_prime**3 - overshoot_variance
+        if kernel_evaluation == "running":
+            linear = _running_variance_rate_km2(
+                energy, threshold_gev, density_g_cm3, b_scale, source
+            )
+        else:
+            linear = phi_second * w / phi_prime**3
+        variance = linear - overshoot_variance
 
     out = np.where(energy > threshold_gev, np.clip(variance, 0.0, None), 0.0)
     return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
@@ -906,6 +1107,7 @@ def truncated_muon_range_km(
     density_g_cm3: float = RHO_WATER_G_CM3,
     b_scale: float = 1.0,
     source: str = DEFAULT_SOURCE,
+    kernel_evaluation: str = "running",
 ) -> np.ndarray:
     """First-passage range cut at a finite upstream column [km].
 
@@ -956,17 +1158,37 @@ def truncated_muon_range_km(
     length_km : np.ndarray
         Expected truncated range [km], zero for muons born below threshold.
     """
+    if kernel_evaluation not in ("frozen", "running"):
+        raise ValueError(
+            f"kernel_evaluation must be 'frozen' or 'running', got {kernel_evaluation!r}."
+        )
     energy = np.asarray(energy_gev, dtype=float)
     # The tabulated moments come back at least one-dimensional; keep the shape of
     # the input so a scalar energy gives a scalar length, as the callers assume.
+    constant_at = energy if kernel_evaluation == "frozen" else np.array([threshold_gev])
     phi_prime, phi_second, _ = (
-        np.reshape(b_scale * moment, np.shape(energy))
-        for moment in log_loss_moments(energy, density_g_cm3, source)
+        np.reshape(b_scale * moment, np.shape(energy) if kernel_evaluation == "frozen" else ())
+        for moment in log_loss_moments(constant_at, density_g_cm3, source)
     )
 
     selectable = energy > threshold_gev
     w = np.where(selectable, np.log(np.maximum(energy, threshold_gev) / threshold_gev), 0.0)
-    mean = w / phi_prime + phi_second / (2.0 * phi_prime**2)
+    if kernel_evaluation == "running":
+        radiative = np.reshape(
+            _running_radiative_length_km(
+                np.maximum(energy, threshold_gev),
+                threshold_gev,
+                density_g_cm3,
+                b_scale,
+                source,
+                "table",
+                48,
+            ),
+            np.shape(energy),
+        )
+    else:
+        radiative = w / phi_prime
+    mean = radiative + phi_second / (2.0 * phi_prime**2)
     variance = np.reshape(
         stochastic_muon_range_variance_km2(
             np.maximum(energy, threshold_gev * (1.0 + 1.0e-12)),
@@ -974,6 +1196,7 @@ def truncated_muon_range_km(
             density_g_cm3,
             b_scale,
             source,
+            kernel_evaluation,
         ),
         np.shape(energy),
     )
