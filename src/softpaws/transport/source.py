@@ -20,8 +20,23 @@ SIGMA0_CM2 = 1.48e-33
 E0_CROSS_GEV = 1.0e7  # 10 PeV
 DEFAULT_LAMBDA = 0.4
 
-# Average CC (DIS) inelasticity <y_w>; near-elastic at UHE (Section 2.3).
+# Average CC (DIS) inelasticity <y_w>; near-elastic at UHE (Section 2.3). This is
+# the asymptotic value, reached above ~10 PeV; use mean_inelasticity() wherever
+# the answer is wanted over a range of energies.
 MEAN_INELASTICITY = 0.2
+
+# Mean CC inelasticity against energy, <y_w>(E), for nu_N. Tabulated from Gandhi,
+# Quigg, Reno and Sarcevic, Phys. Rev. D 58 (1998) 093009 [hep-ph/9807264],
+# Table II. The fall from ~0.48 to ~0.1 tracks the shift of the cross section
+# from valence to sea quarks: at low energy the struck parton carries a large
+# momentum fraction, and at UHE the small-x gluon sea makes the scattering
+# near-elastic.
+_INELASTICITY_LOG10_E = np.array(
+    [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0]
+)
+_INELASTICITY_MEAN = np.array(
+    [0.483, 0.477, 0.421, 0.339, 0.265, 0.208, 0.166, 0.135, 0.115, 0.100, 0.087]
+)
 
 
 def cc_cross_section(
@@ -51,6 +66,44 @@ def cc_cross_section(
     """
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
     return SIGMA0_CM2 * (energy / E0_CROSS_GEV) ** lam
+
+
+def mean_inelasticity(energy_gev: float | np.ndarray) -> np.ndarray:
+    """Mean charged-current inelasticity ``<y_w>`` at a given energy.
+
+    :data:`MEAN_INELASTICITY` is the asymptotic value and is right above ~10 PeV.
+    Five decades lower it is wrong by more than a factor of two, and a muon range
+    grows like ``ln[(1 - y_w) E / E_thr]``, so freezing it inflates the range --
+    and any effective area built on one -- at the low-energy end of a tabulated
+    response. This interpolates the tabulated dependence in ``log10(E)`` and
+    holds the end values outside the table.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+
+    Returns
+    -------
+    mean_y : np.ndarray
+        Mean inelasticity, falling from ~0.48 near 100 GeV to ~0.09 at
+        ``10^12`` GeV.
+
+    Notes
+    -----
+    These are the ``nu_N`` values. Antineutrinos scatter with a larger ``<y_w>``
+    below ~100 TeV, where the valence contribution still distinguishes the two,
+    and the difference washes out above it; that split is not carried here.
+
+    Examples
+    --------
+    >>> float(mean_inelasticity(1.0e4)[0])
+    0.421
+    >>> bool(mean_inelasticity(1.0e4) > mean_inelasticity(1.0e7))
+    True
+    """
+    log10_e = np.atleast_1d(np.log10(np.asarray(energy_gev, dtype=float)))
+    return np.interp(log10_e, _INELASTICITY_LOG10_E, _INELASTICITY_MEAN)
 
 
 def inelasticity_factor(

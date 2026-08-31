@@ -263,7 +263,7 @@ TRIDENT_HEIGHT_KM = 0.570
 TRIDENT_LATITUDE_DEG = 17.4
 TRIDENT_DEPTH_KM = 0.5 * (2.800 + 3.400)
 
-PONE_BLOCK_RADIUS_KM = 0.200
+PONE_BLOCK_RADIUS_KM = 0.120
 PONE_BLOCK_HEIGHT_KM = 1.0
 PONE_N_BLOCKS = 7
 PONE_LATITUDE_DEG = 47.75
@@ -396,6 +396,7 @@ class Site:
         self,
         cos_theta: np.ndarray,
         radius_km: float | np.ndarray,
+        height_km: float | np.ndarray | None = None,
     ) -> np.ndarray:
         """Projected area presented to a given arrival zenith [km^2].
 
@@ -413,6 +414,10 @@ class Site:
             Cosine of the arrival zenith; ``+1`` is overhead.
         radius_km : float or np.ndarray
             Effective radius [km], broadcast against ``cos_theta``.
+        height_km : float or np.ndarray, optional
+            Effective height [km]. ``None`` (the default) uses the instrumented
+            one; a light reach that dilates the body vertically as well as
+            radially passes its own.
 
         Returns
         -------
@@ -426,18 +431,22 @@ class Site:
         return prism_projected_area_km2(
             cos_theta,
             radius,
-            self.height_km,
+            self.height_km if height_km is None else height_km,
             n_sides=self.n_sides if self.shape == "prism" else None,
             n_blocks=self.n_blocks,
         )
 
-    def detector_volume_km3(self, radius_km: float | np.ndarray) -> np.ndarray:
+    def detector_volume_km3(
+        self, radius_km: float | np.ndarray, height_km: float | np.ndarray | None = None
+    ) -> np.ndarray:
         """Volume of the instrumented body itself [km^3].
 
         Parameters
         ----------
         radius_km : float or np.ndarray
             Effective radius [km].
+        height_km : float or np.ndarray, optional
+            Effective height [km]; see :meth:`projected_area_km2`.
 
         Returns
         -------
@@ -447,7 +456,8 @@ class Site:
         radius = np.asarray(radius_km, dtype=float)
         if self.shape == "sphere":
             return 4.0 / 3.0 * np.pi * radius**3
-        return self.n_blocks * np.pi * radius**2 * self.height_km
+        height = self.height_km if height_km is None else np.asarray(height_km, dtype=float)
+        return self.n_blocks * np.pi * radius**2 * height
 
     def columns(self, cos_theta: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Neutrino column and available muon column for each arrival direction.

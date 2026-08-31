@@ -229,7 +229,7 @@ def dynamic_projected_area_km2(
 def prism_projected_area_km2(
     cos_theta: float | np.ndarray,
     radius_km: float | np.ndarray,
-    height_km: float,
+    height_km: float | np.ndarray,
     n_sides: int | None = 6,
     n_blocks: int = 1,
 ) -> np.ndarray:
@@ -267,8 +267,10 @@ def prism_projected_area_km2(
         Area-equivalent radius of the cross-section [km], broadcast against
         ``cos_theta``. An energy-dependent radius is how the reach law of
         :func:`light_reach_radius_km` enters.
-    height_km : float
-        Instrumented height of one prism [km].
+    height_km : float or np.ndarray
+        Instrumented height of one prism [km], broadcast against ``cos_theta``
+        and ``radius_km``. An energy-dependent height is how a light reach that
+        extends the boundary vertically as well as radially enters.
     n_sides : int or None, optional
         Sides of the regular cross-section; 6 (the default) for an IceCube-like
         hexagonal footprint, ``None`` for a circular one. A hexagon has a 5%
@@ -297,8 +299,116 @@ def prism_projected_area_km2(
     else:
         perimeter = 2.0 * radius * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
     cap = np.pi * radius**2 * cos_abs
-    side = perimeter / np.pi * height_km * sin_theta
+    side = perimeter / np.pi * np.asarray(height_km, dtype=float) * sin_theta
     return n_blocks * (cap + side)
+
+
+def eroded_prism_target_km2(
+    cos_theta: float | np.ndarray,
+    radius_km: float | np.ndarray,
+    height_km: float | np.ndarray,
+    min_chord_km: float = 0.0,
+    n_sides: int | None = 6,
+    n_blocks: int = 1,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Target area and volume of a prism that a track must cross for ``min_chord_km``.
+
+    :func:`prism_projected_area_km2` counts every line that touches the body,
+    including the ones that clip a corner and leave again. A reconstructed track
+    is not made that way: it needs a lever arm inside the instrumented volume,
+    and a selection that demands one throws the clipping tracks away. Imposing a
+    minimum in-detector path ``l`` is therefore a *selection* statement with a
+    geometric consequence, and the consequence is the whole of what it does here.
+
+    The lines whose chord through a convex body ``K`` exceeds ``l`` are exactly
+    the lines meeting the erosion ``K n (K - l n)``, so both the area and the
+    volume follow from that one body. For an upright prism the erosion factorizes:
+    the cross-section becomes the lens of two copies offset by ``l sin(theta)``,
+    and the height falls to ``h - l cos(theta)``. Hence
+
+    .. math:: A(\\theta) = A_{\\rm lens}\\,|\\cos\\theta|
+        + w_{\\rm lens}\\,(h - l|\\cos\\theta|)\\,\\sin\\theta,
+        \\qquad V(\\theta) = A_{\\rm lens}\\,(h - l|\\cos\\theta|),
+
+    with ``A_lens`` and ``w_lens`` the area and the perpendicular width of the
+    lens. ``V`` is the volume in which a vertex still leaves ``l`` of track
+    before the muon exits, which is the right instrumented term to pair with
+    ``A``: entering tracks need a chord, starting ones need a remaining path.
+
+    The erosion is strongest at oblique incidence, which is where the intact
+    prism's cap and side terms add. That is the whole reason it matters: it
+    removes the oblique enhancement that a published declination dependence does
+    not carry, and takes the direction-averaged area down towards the
+    equal-volume sphere's.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith angle; only its magnitude is used.
+    radius_km : float or np.ndarray
+        Area-equivalent radius of the cross-section [km].
+    height_km : float or np.ndarray
+        Instrumented height of one prism [km].
+    min_chord_km : float, optional
+        Minimum path inside the instrumented volume [km]. Defaults to 0, which
+        returns :func:`prism_projected_area_km2` and the intact volume exactly.
+    n_sides : int or None, optional
+        Sides of the regular cross-section; ``None`` for a circle. The lens is
+        computed for the circle of equal area and the perimeter enters only
+        through the side term, which is the same Cauchy-level treatment of the
+        cross-section shape that :func:`prism_projected_area_km2` makes.
+    n_blocks : int, optional
+        Number of identical prisms. Defaults to 1.
+
+    Returns
+    -------
+    area_km2 : np.ndarray
+        Projected area of the eroded body [km^2].
+    volume_km3 : np.ndarray
+        Volume of the eroded body [km^3].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``n_sides`` is given and is less than 3, or if
+        ``min_chord_km`` is negative.
+
+    Examples
+    --------
+    >>> a, v = eroded_prism_target_km2(0.5, 0.5642, 1.0, 0.0)
+    >>> bool(np.isclose(a, prism_projected_area_km2(0.5, 0.5642, 1.0)))
+    True
+    """
+    if n_sides is not None and n_sides < 3:
+        raise ValueError(f"n_sides must be at least 3 or None for a circle, got {n_sides}.")
+    if min_chord_km < 0.0:
+        raise ValueError(f"min_chord_km must be non-negative, got {min_chord_km}.")
+    cos_abs = np.abs(np.asarray(cos_theta, dtype=float))
+    sin_theta = np.sqrt(np.clip(1.0 - cos_abs**2, 0.0, 1.0))
+    radius = np.asarray(radius_km, dtype=float)
+    height = np.asarray(height_km, dtype=float)
+    ell = float(min_chord_km)
+
+    if n_sides is None:
+        perimeter = 2.0 * np.pi * radius
+    else:
+        perimeter = 2.0 * radius * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
+    # Cauchy's mean width, carried as a correction on the circle's 2R so that
+    # the l -> 0 limit reproduces prism_projected_area_km2 for any cross-section.
+    with np.errstate(divide="ignore", invalid="ignore"):
+        width_factor = np.where(
+            radius > 0.0, perimeter / (2.0 * np.pi * np.maximum(radius, 1e-12)), 1.0)
+
+    offset = np.clip(ell * sin_theta, 0.0, 2.0 * radius)
+    half = np.clip(0.5 * offset / np.maximum(radius, 1e-12), 0.0, 1.0)
+    lens = (2.0 * radius**2 * np.arccos(half)
+            - 0.5 * offset * np.sqrt(np.clip(4.0 * radius**2 - offset**2, 0.0, None)))
+    width = 2.0 * np.sqrt(np.clip(radius**2 - 0.25 * offset**2, 0.0, None)) * width_factor
+    eroded_height = np.clip(height - ell * cos_abs, 0.0, None)
+
+    area = n_blocks * (lens * cos_abs + width * eroded_height * sin_theta)
+    volume = n_blocks * lens * eroded_height
+    return area, volume
 
 
 def light_reach_radius_km(

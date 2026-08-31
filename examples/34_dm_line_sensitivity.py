@@ -199,9 +199,10 @@ ARCA_LATITUDE_DEG = 36.27
 ARCA_DEPTH_KM = 3.5 - 0.5 * ARCA_BLOCK_HEIGHT_KM
 
 # P-ONE, Cascadia Basin off Vancouver Island. Seven clusters of ten 1 km
-# mooring lines, each cluster a cylinder of radius 200 m; seafloor at 2660 m
-# (arXiv:2005.09493, arXiv:2108.04961).
-PONE_BLOCK_RADIUS_KM = 0.200
+# mooring lines at 80 m spacing, 400 m between cluster centres (ICRC2023
+# reference geometry, PoS(ICRC2023)1175), so each cluster is a cylinder of
+# radius ~120 m; seafloor at 2660 m (arXiv:2005.09493, arXiv:2108.04961).
+PONE_BLOCK_RADIUS_KM = 0.120
 PONE_BLOCK_HEIGHT_KM = 1.0
 PONE_N_BLOCKS = 7
 PONE_LATITUDE_DEG = 47.75

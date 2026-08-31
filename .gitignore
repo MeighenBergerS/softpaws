@@ -50,6 +50,12 @@ dataverse_files/
 !src/softpaws/data/coefficients/*.csv
 # Published KM3NeT/ARCA effective areas: a 60-row table, same category.
 !src/softpaws/data/km3net/*.csv
+# Digitized P-ONE (ICRC2023) and TRIDENT (Nature Astron. 2023) effective areas.
+!src/softpaws/data/pone/*.csv
+!src/softpaws/data/trident/*.csv
+
+# IceCube HESE 7.5-year release: ~90 MB of Monte Carlo json, bulk release data.
+src/softpaws/data/hese/*.json
 
 # Generated output from examples (keep the directory via .gitkeep)
 examples/output/*

@@ -265,6 +265,11 @@ def ic_effective_area_regenerated(
         rung_length = np.interp(
             np.log10(rung_energy), IC_LOG10_E, length_km, left=0.0, right=length_km[-1]
         )
+        # A rung whose muon is born below threshold contributes nothing at all,
+        # so the instrumented volume has to be masked out too and not just the
+        # column: V_det counts starting events, and a starting event whose muon
+        # cannot be selected is not one.
+        selectable = ((1.0 - MEAN_INELASTICITY) * rung_energy > threshold_gev)[:, None]
         rung_length[(1.0 - MEAN_INELASTICITY) * rung_energy <= threshold_gev] = 0.0
         rung_radius = (
             IC_RADIUS_KM
@@ -275,7 +280,7 @@ def ic_effective_area_regenerated(
         )
         rung_rate = (
             n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None]
-            * ic_target_volume_cm3(rung_length, rung_radius, cos_theta)
+            * ic_target_volume_cm3(rung_length, rung_radius, cos_theta) * selectable
         )
         out[i] = np.average((rung_weight * rung_rate).sum(axis=0), weights=weights)
     return out
@@ -296,10 +301,12 @@ def ic_effective_area_tau_channel(length_km: np.ndarray, threshold_gev: float) -
             np.log10(rung_energy * muon_fraction / (1.0 - MEAN_INELASTICITY)),
             IC_LOG10_E, length_km, left=0.0, right=length_km[-1],
         )
+        selectable = (muon_fraction * rung_energy > threshold_gev)[:, None]
         rung_length[muon_fraction * rung_energy <= threshold_gev] = 0.0
         rung_rate = (
             n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None]
-            * ic_target_volume_cm3(rung_length, IC_RADIUS_KM, cos_theta) * BR_TAU_TO_MU
+            * ic_target_volume_cm3(rung_length, IC_RADIUS_KM, cos_theta)
+            * BR_TAU_TO_MU * selectable
         )
         out[i] = np.average((rung_weight * rung_rate).sum(axis=0), weights=weights)
     return out
@@ -353,12 +360,18 @@ def zenith_grid() -> tuple[np.ndarray, np.ndarray]:
 
 
 def projected_area_km2(
-    theta_deg: np.ndarray, radius_km: float | np.ndarray, n_blocks: int
+    theta_deg: np.ndarray, radius_km: float | np.ndarray, n_blocks: int,
+    height_km: float | np.ndarray = BLOCK_HEIGHT_KM,
 ) -> np.ndarray:
-    """Projected area of upright cylindrical building blocks [km^2]."""
+    """Projected area of upright cylindrical building blocks [km^2].
+
+    ``height_km`` defaults to the as-built block height. Passing a larger one is
+    how a light reach that extends the boundary vertically as well as radially
+    enters; see example 45.
+    """
     theta = np.deg2rad(theta_deg)
     cap = np.pi * np.asarray(radius_km) ** 2 * np.abs(np.cos(theta))
-    side = 2.0 * np.asarray(radius_km) * BLOCK_HEIGHT_KM * np.sin(theta)
+    side = 2.0 * np.asarray(radius_km) * np.asarray(height_km) * np.sin(theta)
     return n_blocks * (cap + side)
 
 
@@ -447,7 +460,10 @@ def arca_effective_area(
             area_km2 = projected_area_km2(theta_deg[None, :], r_eff, n_blocks)
             v_det_km3 = n_blocks * np.pi * r_eff**2 * BLOCK_HEIGHT_KM
 
-        volume_km3 = area_km2 * length + v_det_km3
+        # As at IceCube, a sub-threshold rung has to lose the instrumented volume
+        # along with the column.
+        selectable = (rung_energy * muon_fraction > threshold_gev)[:, None]
+        volume_km3 = (area_km2 * length + v_det_km3) * selectable
         rate = n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None] * volume_km3 * CM_PER_KM**3
         if flavour == "tau":
             rate = rate * BR_TAU_TO_MU
