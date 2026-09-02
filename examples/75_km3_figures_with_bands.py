@@ -32,6 +32,7 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.patches import Patch
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -101,8 +102,8 @@ def figure_posteriors(u, ratios, out_dir) -> None:
         for prior in ("E^-2", "SPL", "BPL"):
             posteriors[(prior, label)] = _EX57.posterior(rates, prior)
     with plt.style.context(str(_STYLE)):
-        fig, ax = plt.subplots(figsize=(3.5, 3.0))
-        shown = {"E^-2": r"$E^{-2}$ (KM3NeT's prior)", "SPL": "SPL", "BPL": "BPL"}
+        fig, ax = plt.subplots(figsize=(3.4, 3.4))
+        shown = {"E^-2": r"$E^{-2}$", "SPL": "SPL", "BPL": "BPL"}
         for prior, color in PRIOR_COLORS.items():
             stack = np.array([posteriors[(prior, label)] for label in _EX69.VARIANTS])
             ax.fill_between(_EX57.LOG10_ENU, stack.min(axis=0), stack.max(axis=0),
@@ -112,13 +113,13 @@ def figure_posteriors(u, ratios, out_dir) -> None:
         mode, lo, hi = (np.log10(v * 1.0e6) for v in _EX57.KM3NET_ENU_PEV)
         ax.axvspan(lo, hi, color="0.92", zorder=0)
         ax.axvline(mode, color="0.35", lw=0.9, ls="-.",
-                   label=r"KM3NeT, $E^{-2}$ (90\%)")
+                   label="KM3NeT Mean")
         ax.set_xlim(_EX57.LOG10_ENU[0], _EX57.LOG10_ENU[-1])
         ax.set_ylim(0.0, None)
         ax.set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$")
-        ax.set_ylabel("posterior density")
-        ax.legend(fontsize=5.5, frameon=False, loc="upper right",
-                  title="bands: loss-model ensemble", title_fontsize=5.5)
+        ax.set_ylabel("Posterior density")
+        ax.set_box_aspect(1)
+        ax.legend(loc="upper right", bbox_to_anchor=(0.9, 1.0))
         _save(fig, out_dir, "75a_event_energy_banded")
 
 
@@ -158,49 +159,41 @@ def figure_tension(u, ratios, args, out_dir) -> None:
         span = ", ".join(f"{label or 'baseline'} {s:.2f}" for label, s in sigmas.items())
         print(f"  {family}: tension [sigma] {span}")
 
+    level68, level95 = ex31.DELTA_LNL_LEVELS
     with plt.style.context(str(_STYLE)):
-        fig, axes = plt.subplots(1, 2, figsize=(6.2, 3.0), sharey=True,
-                                 gridspec_kw={"wspace": 0.08})
-        for ax, family in zip(axes, ("SPL", "BPL")):
+        for family, stem in (("BPL", "75b_tension_bpl"), ("SPL", "75c_tension_spl")):
             r = results[family]
             color = {"SPL": "#7570b3", "BPL": "#1b9e77"}[family]
+            fig, ax = plt.subplots(figsize=(3.4, 3.4))
             ic = r["ic"] - r["ic"].max()
-            ax.contourf(gamma_grid, phi0_grid, -ic,
-                        levels=[0.0, *ex31.DELTA_LNL_LEVELS],
-                        colors=["#d95f02"] * 2, alpha=0.2)
-            ax.contour(gamma_grid, phi0_grid, -ic, levels=ex31.DELTA_LNL_LEVELS,
-                       colors="#d95f02", linewidths=[1.1, 0.8])
-            window = r["window"] - r["window"].max()
-            ax.contourf(gamma_grid, phi0_grid, -window,
-                        levels=[0.0, ex31.DELTA_LNL_LEVELS[0]], colors=[color],
-                        alpha=0.08)
-            for label, lw, alpha in ((None, 1.2, 1.0), (ENVELOPE[0], 0.7, 0.8),
-                                     (ENVELOPE[1], 0.7, 0.8)):
-                km = r["km"][label] - r["km"][label].max()
-                ax.contour(gamma_grid, phi0_grid, -km,
-                           levels=[ex31.DELTA_LNL_LEVELS[0]], colors=color,
-                           linewidths=[lw], alpha=alpha,
-                           linestyles=["-" if label is None else ":"])
-            ax.plot(gamma_grid, r["one_event"], color=color, lw=0.8, ls=":")
+            for lo, hi, alpha in ((0.0, level68, 0.4), (level68, level95, 0.2)):
+                ax.contourf(gamma_grid, phi0_grid, -ic, levels=[lo, hi],
+                            colors=["#d95f02"], alpha=alpha)
+            # One combined ARCA term: the energy likelihood unioned over the
+            # ensemble variants, so a single pair of contours carries both.
+            combined = np.max(
+                np.stack([r["km"][label] - r["km"][label].max()
+                          for label in r["km"]]), axis=0)
+            combined -= combined.max()
+            for lo, hi, alpha in ((0.0, level68, 0.4), (level68, level95, 0.2)):
+                ax.contourf(gamma_grid, phi0_grid, -combined, levels=[lo, hi],
+                            colors=[color], alpha=alpha)
+                ax.contour(gamma_grid, phi0_grid, -combined, levels=[hi],
+                           colors=color, linewidths=[0.8], alpha=alpha + 0.3)
             ax.plot(*r["truth"][::-1], marker="+", color="k", ms=7, mew=1.2)
-            sig = list(r["sigmas"].values())
-            ax.text(0.04, 0.96,
-                    f"{family}\n{r['sigmas'][None]:.2f}$\\sigma$ "
-                    f"({min(sig):.2f}-{max(sig):.2f} over the ensemble)",
-                    transform=ax.transAxes, fontsize=6.5, va="top")
+            ax.text(0.04, 0.96, f"{family}\n{r['sigmas'][None]:.2f}$\\sigma$",
+                    transform=ax.transAxes, va="top")
             ax.set_yscale("log")
             ax.set_ylim(phi0_grid[0], phi0_grid[-1])
             ax.set_xlim(gamma_grid[0], gamma_grid[-1])
             ax.set_xlabel(rf"${r['index_label']}$")
-        axes[0].set_ylabel(r"$\phi_0$ at 100 TeV "
-                           r"[$10^{-18}$ GeV$^{-1}$ cm$^{-2}$ s$^{-1}$ sr$^{-1}$]")
-        handles = [plt.Line2D([], [], color="#d95f02", lw=1.1, label="IceCube (Asimov)"),
-                   plt.Line2D([], [], color="0.3", lw=1.2,
-                              label="ARCA21, energy likelihood"),
-                   plt.Line2D([], [], color="0.3", lw=0.7, ls=":",
-                              label="envelope variants (BB, ALLM91)")]
-        axes[-1].legend(handles=handles, fontsize=6, frameon=False, loc="lower right")
-        _save(fig, out_dir, "75b_tension_banded")
+            ax.set_ylabel(r"$\phi_0$ at 100 TeV "
+                          r"[$10^{-18}$ GeV$^{-1}$ cm$^{-2}$ s$^{-1}$ sr$^{-1}$]")
+            ax.set_box_aspect(1)
+            handles = [Patch(facecolor="#d95f02", alpha=0.4, label="IceCube"),
+                       Patch(facecolor=color, alpha=0.4, label="ARCA21")]
+            ax.legend(handles=handles, loc="lower right")
+            _save(fig, out_dir, stem)
 
 
 def main() -> None:

@@ -1010,7 +1010,7 @@ def _forest_panel(
     ax.set_yticks([])
     # Headroom for the name above the topmost whisker.
     ax.set_ylim(-0.5, len(detectors) - 0.15)
-    ax.set_xlabel(LABELS[name], fontsize=10, labelpad=1.5)
+    ax.set_xlabel(LABELS[name], fontsize=8, labelpad=1.5)
     ax.tick_params(axis="x", labelsize=8, pad=1.5)
     ax.tick_params(axis="y", length=0)
     for side in ("top", "right"):

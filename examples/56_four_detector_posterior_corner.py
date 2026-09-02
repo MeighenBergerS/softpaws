@@ -383,7 +383,7 @@ def make_figure(detectors, out_path: pathlib.Path) -> None:
         pad = 0.05 * (hi - lo)
         ranges.append((lo - pad, hi + pad))
 
-    rc = {"xtick.labelsize": 9, "ytick.labelsize": 9, "axes.labelsize": 12, "font.size": 10}
+    rc = {"xtick.labelsize": 8, "ytick.labelsize": 8, "axes.labelsize": 8, "font.size": 8}
     with plt.style.context(str(_STYLE)), plt.rc_context(rc):
         fig, _ = plt.subplots(k, k, figsize=(7.2, 7.2))
         for row, d in enumerate(detectors):
@@ -396,7 +396,7 @@ def make_figure(detectors, out_path: pathlib.Path) -> None:
                 fill_contours=filled, contourf_kwargs={"colors": fills} if filled else None,
                 contour_kwargs={"linewidths": 1.1, "linestyles": styles[row]},
                 hist_kwargs={"density": True, "lw": 1.3, "ls": styles[row], "histtype": "step"},
-                label_kwargs={"fontsize": 12}, smooth=0.8, no_fill_contours=not filled)
+                label_kwargs={"fontsize": 8}, smooth=0.8, no_fill_contours=not filled)
 
         axes = np.array(fig.axes[: k * k]).reshape((k, k))
         for column, name in enumerate(ex.CORNER_PARAMS):
@@ -416,16 +416,16 @@ def make_figure(detectors, out_path: pathlib.Path) -> None:
         handles = [plt.Line2D([], [], color=d.color, lw=1.6, ls=styles[i],
                               label=f"{d.name} ({d.selection_level})")
                    for i, d in enumerate(detectors)]
-        handles.append(plt.Line2D([], [], color="0.35", lw=1.0, ls=":", label="first principles"))
+        handles.append(plt.Line2D([], [], color="0.35", lw=1.0, ls=":", label="First principles"))
         legend_ax = fig.add_axes([legend_cell.x0, legend_cell.y0, legend_cell.width,
                                   legend_cell.height])
         legend_ax.axis("off")
-        legend_ax.legend(handles=handles, loc="upper left", frameon=False, fontsize=8.5,
+        legend_ax.legend(handles=handles, loc="upper left", frameon=False, fontsize=8,
                          handlelength=1.8, borderaxespad=0.0)
 
         forest = fig.add_axes([left, top - 0.44 * span, width, 0.38 * span])
         ex._forest_panel(forest, detectors, "eps_0")
-        forest.set_title("instrument response,\nnot compared", fontsize=9, pad=5.0,
+        forest.set_title("Instrument response,\nnot compared", fontsize=8, pad=5.0,
                          color="0.35")
         reach = fig.add_axes([left, bottom + 0.10 * span, width, 0.38 * span])
         ex._forest_panel(reach, detectors, "reach_km", scale=1.0e3)

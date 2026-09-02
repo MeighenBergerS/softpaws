@@ -266,33 +266,30 @@ def figure_spectrum(components, band, data, out_dir) -> None:
     model_e = total.sum(axis=1)
     band_e = np.sqrt((band**2).sum(axis=1))
     data_e = data.sum(axis=1)
-    labels = {"conv": "atm. conventional", "prompt": "atm. prompt",
-              "astro_mu": r"astro $\nu_\mu$",
-              "astro_tau": r"astro $\nu_\tau \to \tau \to \mu$"}
-    styles = {"conv": ("0.45", "-"), "prompt": ("0.45", ":"),
-              "astro_mu": ("C0", "-"), "astro_tau": ("C1", "-")}
+    atmos_e = (components["conv"] + components["prompt"]).sum(axis=1)
     with plt.style.context(str(_STYLE)):
         fig, (ax, axr) = plt.subplots(
-            2, 1, sharex=True, figsize=(3.4, 3.4),
+            2, 1, sharex=True, figsize=(3.4, 4.6),
             gridspec_kw={"height_ratios": (2.6, 1.0), "hspace": 0.08})
-        for name, grid in components.items():
-            color, ls = styles[name]
-            ax.plot(centers, grid.sum(axis=1), color=color, ls=ls, lw=0.9,
-                    label=labels[name])
-        ax.plot(centers, model_e, color="k", lw=1.4, label="model, nothing fitted")
+        ax.plot(centers, atmos_e, color="0.45", ls="-", lw=0.9,
+                label="Atmospheric")
+        ax.plot(centers, components["astro_mu"].sum(axis=1), color="C0",
+                lw=0.9, label=r"Astro $\nu_\mu$")
+        ax.plot(centers, components["astro_tau"].sum(axis=1), color="C1",
+                lw=0.9, label=r"Astro $\nu_\tau \to \tau \to \mu$")
+        ax.plot(centers, model_e, color="k", lw=1.4,
+                label="Model, nothing fitted")
         ax.fill_between(centers, model_e - band_e, model_e + band_e,
                         color="k", alpha=0.15, lw=0)
         sel = data_e > 0.0
         err_lo, err_hi = poisson_errors(data_e[sel])
         ax.errorbar(centers[sel], data_e[sel], yerr=(err_lo, err_hi),
                     fmt="o", color="k", ms=2.5, lw=0.8, label="IC86 events")
-        for edge in _EX51.FIT_RECO:
-            ax.axvline(edge, color="0.6", ls="--", lw=0.7)
-            axr.axvline(edge, color="0.6", ls="--", lw=0.7)
         ax.set_yscale("log")
         ax.set_ylim(0.3, 3.0e5)
-        ax.set_ylabel("events per 0.25 dex")
-        ax.legend(loc="upper right", fontsize=6)
+        ax.set_ylabel("Events per 0.25 dex")
+        ax.set_box_aspect(1)
+        ax.legend(loc="upper right")
 
         shown = sel & (model_e > 0.0)
         axr.errorbar(centers[shown], data_e[shown] / model_e[shown],
@@ -307,47 +304,50 @@ def figure_spectrum(components, band, data, out_dir) -> None:
         axr.set_ylim(0.3, 20.0)
         axr.set_xlim(3.0, 8.0)
         axr.set_xlabel(r"$\log_{10}(E_{\mathrm{reco}} / \mathrm{GeV})$")
-        axr.set_ylabel("data / model")
+        axr.set_ylabel("Data / model")
+        axr.set_box_aspect(1.0 / 2.6)
         _save(fig, out_dir, "76a_reco_spectrum")
 
 
 def figure_declination(components, band, data, dec_edges, out_dir) -> None:
-    """Figure 76b: declination distributions, full window and the high tail."""
+    """Figures 76b/76c: declination over the window and above the high cut."""
     sin_edges = np.sin(np.deg2rad(dec_edges))
     sin_centers = 0.5 * (sin_edges[:-1] + sin_edges[1:])
     total = sum(components.values())
+    atmos = components["conv"] + components["prompt"]
     window = ((_EX51.RECO_EDGES[:-1] >= _EX51.FIT_RECO[0] - 1.0e-9)
               & (_EX51.RECO_EDGES[1:] <= _EX51.FIT_RECO[1] + 1.0e-9))
     high = _EX51.RECO_EDGES[:-1] >= HIGH_RECO - 1.0e-9
+    panels = (
+        ("76b_declination", window, r"$E_{\mathrm{reco}} > 10^{4.25}$ GeV"),
+        ("76c_declination_high", window & high,
+         rf"$E_{{\mathrm{{reco}}}} > 10^{{{HIGH_RECO:.0f}}}$ GeV"),
+    )
     with plt.style.context(str(_STYLE)):
-        fig, axes = plt.subplots(1, 2, figsize=(3.4, 1.9), sharex=True,
-                                 gridspec_kw={"wspace": 0.35})
-        for ax, sel, title in zip(
-                axes, (window, window & high),
-                (r"$E_{\mathrm{reco}} > 10^{4.25}$ GeV",
-                 rf"$E_{{\mathrm{{reco}}}} > 10^{{{HIGH_RECO:.0f}}}$ GeV")):
+        for stem, sel, title in panels:
+            fig, ax = plt.subplots(figsize=(3.0, 3.0))
             model_d = total[sel].sum(axis=0)
             band_d = np.sqrt((band[sel] ** 2).sum(axis=0))
             data_d = data[sel].sum(axis=0)
-            conv_d = components["conv"][sel].sum(axis=0)
-            ax.stairs(model_d, sin_edges, color="k", lw=1.2,
-                      label="model")
+            atmos_d = atmos[sel].sum(axis=0)
+            ax.stairs(model_d, sin_edges, color="k", lw=1.2, label="Model")
             ax.stairs(np.clip(model_d - band_d, 0.0, None), sin_edges,
                       baseline=model_d + band_d, fill=True, color="k",
                       alpha=0.15, lw=0)
-            ax.stairs(conv_d, sin_edges, color="0.45", lw=0.8, ls="--",
-                      label="atm. conv.")
+            ax.stairs(atmos_d, sin_edges, color="0.45", lw=0.8, ls="--",
+                      label="Atmospheric")
             occupied = data_d > 0.0
             err_lo, err_hi = poisson_errors(data_d[occupied])
             ax.errorbar(sin_centers[occupied], data_d[occupied],
                         yerr=(err_lo, err_hi), fmt="o",
                         color="k", ms=2.5, lw=0.8, label="IC86 events")
-            ax.set_title(title, fontsize=7)
+            ax.set_title(title)
             ax.set_xlabel(r"$\sin\delta$")
+            ax.set_ylabel("Events per band")
             ax.set_yscale("log")
-        axes[0].set_ylabel("events per band")
-        axes[0].legend(loc="lower left", fontsize=6)
-        _save(fig, out_dir, "76b_declination")
+            ax.set_box_aspect(1)
+            ax.legend(loc="lower left")
+            _save(fig, out_dir, stem)
 
 
 def main() -> None:

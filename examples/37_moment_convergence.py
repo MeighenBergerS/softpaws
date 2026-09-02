@@ -692,18 +692,12 @@ def figure_exponent_vs_proposal(
             ha="center",
         )
         ax.plot(a_die, 0.0, "v", ms=4, color=c_second, zorder=5)
-        ax.annotate(
-            rf"$A_{{\mathrm{{die}}}}={a_die:.1f}$",
-            xy=(a_die, 0.0),
-            xytext=(7.5, -0.20),
-            color=c_second,
-        )
         ax.annotate(r"$\Phi<0$: growing mode", xy=(2.0, -0.06), color="0.35", va="top")
 
         ax.set_xlim(_FIG_A_MIN, _FIG_A_MAX)
         ax.set_ylim(-1.0, 2.0)
         ax.set_box_aspect(1.0)
-        ax.set_xlabel(r"effective spectral index $A=\gamma-\lambda-1$")
+        ax.set_xlabel(r"Effective spectral index $A=\gamma-\lambda-1$")
         ax.set_ylabel(r"$\Phi(A)$ [km$^{-1}$]")
 
         # Curves carry their own names along their own slopes, as in example 36.

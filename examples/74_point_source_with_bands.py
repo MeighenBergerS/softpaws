@@ -143,13 +143,13 @@ def figure_bands(sin_dec_centers, published, variants, out_dir) -> None:
         ax.plot([], [], color="0.3", lw=1.4, label="IceCube")
         ax.plot([], [], color="0.3", lw=0.9, ls="--", label="Model")
         ax.fill_between([], [], [], color="0.3", alpha=0.35,
-                        label="loss-model band")
+                        label="Loss-model band")
         ax.set_yscale("log")
         ax.set_xlim(log10_e[0], log10_e[-1])
-        ax.set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$", fontsize=8)
-        ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]", fontsize=8)
-        ax.tick_params(labelsize=8)
-        ax.legend(fontsize=7, loc="lower right")
+        ax.set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$")
+        ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]")
+        ax.set_box_aspect(1)
+        ax.legend(loc="lower right")
         _save(fig, out_dir, "74a_effective_area_bands")
 
 
@@ -176,24 +176,35 @@ def figure_residual(sin_dec_centers, published, variants, out_dir) -> None:
 
 
 def figure_sensitivity(dec_grid, variants, published_curve, out_dir) -> None:
-    """74c: the matched sensitivity ceiling with its band."""
+    """74c: the matched sensitivity ceiling, labels on the curves as in 35c."""
     pub_sin_dec, pub_flux = published_curve
     sin_dec = np.sin(np.deg2rad(dec_grid))
+    matched = variants["baseline"]["matched"]
+    label_x = 0.3
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
-        ax.plot(pub_sin_dec, pub_flux, color="k", lw=1.4, label="IceCube")
+        ax.plot(pub_sin_dec, pub_flux, color="k", lw=1.4)
         lo, hi = _band(variants, lambda v: v["matched"])
-        ax.fill_between(sin_dec, lo, hi, color="C0", alpha=0.35, lw=0,
-                        label="model, loss-model band")
-        ax.plot(sin_dec, variants["baseline"]["matched"], color="C0", lw=1.1, ls="--")
+        ax.fill_between(sin_dec, lo, hi, color="C0", alpha=0.35, lw=0)
+        ax.plot(sin_dec, matched, color="C0", lw=1.1, ls="--")
+        ax.fill_between(sin_dec, matched,
+                        np.interp(sin_dec, pub_sin_dec, pub_flux),
+                        color="C0", alpha=0.12, lw=0)
         ax.axvspan(-1.0, 0.0, color="0.88", alpha=0.7, lw=0)
         ax.set_yscale("log")
         ax.set_xlim(-1.0, 1.0)
-        ax.set_xlabel(r"$\sin\delta$", fontsize=8)
-        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]",
-                      fontsize=8)
-        ax.tick_params(labelsize=8)
-        ax.legend(fontsize=7, frameon=False, loc="upper left")
+        ax.set_xlabel(r"$\sin\delta$")
+        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]")
+        ax.set_box_aspect(1)
+        # The labels replace a legend, so they sit on their curves: draw once
+        # to freeze the transform, then take the angle off the screen.
+        fig.canvas.draw()
+        for x, y, name, color in ((pub_sin_dec, pub_flux, "IceCube", "k"),
+                                  (sin_dec, matched, "Model", "C0")):
+            ax.text(label_x, 1.18 * float(np.interp(label_x, x, y)), name,
+                    color=color, ha="center", va="bottom",
+                    rotation=_EX35._curve_angle_deg(ax, x, y, label_x),
+                    rotation_mode="anchor")
         _save(fig, out_dir, "74c_published_sensitivity")
 
 
@@ -211,15 +222,21 @@ def figure_site_ceiling(sites, dec_grid, variants, out_dir) -> None:
             floor, top = min(floor, central.min()), max(top, central.max())
         ax.set_yscale("log")
         ax.set_xlim(-90.0, 90.0)
-        ax.set_ylim(0.7 * floor, 25.0 * top)
+        low, high = 0.7 * floor, 25.0 * top
+        ax.set_ylim(low, high)
+        # NGC 1068 and TXS 0506+056 are six degrees apart, so NGC 1068's label
+        # sits to the left of its line, as in example 35's original.
+        label_side = {"NGC 1068": -1.0}
         for name, dec in _EX35.REFERENCE_SOURCES:
             ax.axvline(dec, color="0.7", lw=0.6, ls=":")
+            ax.text(dec + 2.8 * label_side.get(name, 1.0),
+                    low * (high / low) ** 0.98, name, rotation=90,
+                    ha="center", va="top", color="0.45")
         ax.set_xticks([-90, -45, 0, 45, 90])
-        ax.set_xlabel(r"source declination $\delta$ [deg]", fontsize=8)
-        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]",
-                      fontsize=8)
-        ax.tick_params(labelsize=8)
-        ax.legend(fontsize=7, loc="upper right")
+        ax.set_xlabel(r"Source declination $\delta$ [deg]")
+        ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]")
+        ax.set_box_aspect(1)
+        ax.legend(loc="upper right")
         _save(fig, out_dir, "74d_site_ceiling")
 
 

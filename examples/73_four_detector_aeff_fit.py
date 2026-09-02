@@ -145,7 +145,8 @@ def figure_single(detectors, sigma: float, out_dir) -> None:
         ax.set_ylim(1.0e3, 2.0e8)
         ax.set_xlabel(r"$\log_{10}(E_\nu\,/\,\mathrm{GeV})$")
         ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]")
-        ax.legend(fontsize=6, frameon=False, loc="lower right")
+        ax.set_box_aspect(1)
+        ax.legend(frameon=False, loc="lower right")
         # Draw once to freeze the transform, then set each name on its curve.
         fig.canvas.draw()
         for detector in detectors:
@@ -154,7 +155,7 @@ def figure_single(detectors, sigma: float, out_dir) -> None:
                      if slope_of is not None else 0.0)
             x, y = medians[anchor_on]
             height = factor * float(np.interp(y_at if y_at is not None else x0, x, y))
-            ax.text(x0, height, detector.name, color=detector.color, fontsize=6.5,
+            ax.text(x0, height, detector.name, color=detector.color,
                     ha=ha, va="center", rotation=angle, rotation_mode="anchor")
         _save(fig, out_dir, "73a_four_detector_aeff")
 
