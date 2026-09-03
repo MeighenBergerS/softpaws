@@ -81,8 +81,8 @@ Nothing gets refactored until the current outputs are pinned.
 
 1. Commit the working tree as it is (13 modified files, examples 77 to 83, the
    two untracked CSVs). Tag it `pre-cleanup`.
-2. Move the manuscript out of `docs/` into `paper/` and update `.gitignore`
-   so the ignore rules follow it. `docs/` becomes the docs-site source.
+2. Done 2026-09-03: the manuscript moved out of `docs/` into `/paper/`, which
+   `.gitignore` now excludes whole. `docs/` becomes the docs-site source.
 3. Delete root junk: `pdflatex.tmp`, `texput.log`, `results.json`,
    `docs/pdflatex.tmp`, `src/softpaws.egg-info/`, `examples/__pycache__/`,
    `examples/mceq_tmp.py`, `examples/energy_grid.txt`, `examples/upgoing.txt`,
@@ -120,8 +120,10 @@ library and delete the private copy. Never move two hubs in one commit.
 | 1.11 | `transport/event_energy.py` | `57`, `68`, `71` (potential density, flux-agnostic posterior, tension ladder) | `58`, `67`, `75` |
 
 Not lifted: the BSM scripts `59` to `66` (stau, millicharge). They belong to a
-later paper. They move to `scripts/future_bsm/` untouched and ruff-excluded,
-or to a branch. Decide in Phase 3.
+later paper. They move to `scripts/future_bsm/` untouched and ruff-excluded
+in Phase 3. Their `load_example` calls keep working there only if the hubs
+they load (`51`, `35`, `45`, `46`, `57`, `63`) are copied alongside them, so
+the move takes the hub scripts' pre-cleanup versions with it.
 
 Exit criterion: no `load_example` call remains anywhere, and every entry in
 `baseline.json` passes.
@@ -164,10 +166,9 @@ Exit criterion: no `load_example` call remains anywhere, and every entry in
    with `python -m build` and `unzip -l dist/*.whl`, then `pip install` into
    a fresh venv from a clean clone and run the tests.
 7. **Data root.** Add `softpaws.data.data_root()` that reads
-   `SOFTPAWS_DATA_DIR`, falling back to the package directory, and a
-   `softpaws-fetch-dr2` console script that downloads the DR2 release from
-   Dataverse (DOI 10.7910/DVN/MMIIZA) and the HESE 7.5-year files into it.
-   Remove every mention of `neutrino_subhalos`.
+   `SOFTPAWS_DATA_DIR`, falling back to the package directory. Loaders raise
+   a clear error naming the DOI and the expected layout when a file is
+   missing. No download code. Remove every mention of `neutrino_subhalos`.
 8. **`tests/conftest.py`** copied from prometheus: chdir to the repo root and
    `--run-slow` gating. Mark the MCMC and PROPOSAL tests slow.
 
@@ -261,20 +262,32 @@ README rewritten to the prometheus structure (badges, link table, summary,
 citation, contributing, getting help). `CITATION.cff`. `CHANGELOG.md` with a
 `0.1.0` entry. Version in `pyproject.toml` and `__init__.py` from one source.
 Tag `v0.1.0`. Clean-clone install and `run_all.py` as the acceptance test.
-Publishing to PyPI is a separate decision; the name is free.
+PyPI is wired but not triggered: `publish.yml` uploads on a version tag
+through trusted publishing once the project is registered there, and the
+README install line stays `pip install git+https://...` until then.
 
-## 4. Decisions needed from you
+## 4. Decisions (settled 2026-09-03)
 
-1. **Manuscript location.** `paper/` inside this repository, gitignored as
-   today, or its own repository. The plan assumes `paper/`.
-2. **The BSM scripts (59 to 66).** Park in `scripts/future_bsm/` or on a
-   branch. The plan assumes a branch, so `main` carries one paper.
-3. **PyPI.** Publish `0.1.0` or stay at `pip install git+https://...`.
+1. **Manuscript location.** `/paper/` at the repository root, ignored by git
+   and never synced. Done: the manuscript, its backups, figures, run logs,
+   plans, referee reports, style guides and the three paper tools
+   (`collect_numbers.py`, `make_recipe_table.py`, `measure_style.py`) now
+   live there. The four derivation notes stay in `docs/` and feed the site.
+2. **The BSM scripts (59 to 66).** Move to `scripts/future_bsm/` untouched,
+   excluded from ruff and CI, with a one-line README saying they wait for the
+   next paper.
+3. **PyPI.** GitHub-only for now, but everything set up for PyPI: PEP 621
+   metadata complete (classifiers, URLs, keywords), `python -m build` clean,
+   `twine check` clean, a `publish.yml` workflow that uploads on a `v*` tag
+   through trusted publishing, and the name `softpaws` registered on TestPyPI
+   first.
 4. **The paper-script directory name.** `2026_muon_transport` until the arXiv
    number exists, then rename.
-5. **HESE and `bounds/` data.** Fetch on demand with the DR2 release, or ship
-   the two small `bounds/` CSVs in the wheel and fetch only HESE. The plan
-   assumes the second.
+5. **IceCube data.** The user fetches the DR2 release and the HESE 7.5-year
+   files themselves. The package ships no fetch command. `installation.md`
+   and `data.md` give the DOIs, the expected directory layout
+   (`events/`, `irfs/`, `uptime/`), and the `SOFTPAWS_DATA_DIR` variable that
+   points at it. The two small `bounds/` CSVs ship in the wheel.
 
 ## 5. Order and effort
 
