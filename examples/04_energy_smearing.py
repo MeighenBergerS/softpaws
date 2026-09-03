@@ -19,6 +19,9 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.data.icecube import (
+    irf_season as canonical_irf_season,
+)
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_smearing
 from softpaws.data.schema import SEASONS
 from softpaws.response.irfs import SmearingMatrix
@@ -50,10 +53,6 @@ def parse_args() -> argparse.Namespace:
         help="Output file for the figure.",
     )
     return parser.parse_args()
-
-
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
 
 
 def whole_sky_response(sm: SmearingMatrix, log10_e_injected: float) -> np.ndarray:
@@ -106,7 +105,7 @@ def combine_seasons(data_dir: pathlib.Path) -> np.ndarray:
     sm_cache: dict[str, SmearingMatrix] = {}
 
     for season in SEASONS:
-        irf_season = _canonical_irf_season(season)
+        irf_season = canonical_irf_season(season)
         if irf_season not in sm_cache:
             print(f"  parsing smearing table for {irf_season} ...")
             raw = np.loadtxt(irf_dir / f"{irf_season}_smearing.csv", comments="#")

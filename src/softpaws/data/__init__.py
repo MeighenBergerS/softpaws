@@ -7,6 +7,16 @@ committed here (see ``.gitignore``).
 """
 
 from .container import EventSet
+from .icecube import (
+    IC86_SEASONS,
+    hemisphere_average,
+    irf_season,
+    livetime_weighted_effective_area,
+    load_effective_area,
+    load_events,
+    season_livetime_s,
+    total_livetime_s,
+)
 from .loader import (
     compute_livetime_s,
     load_all_seasons,
@@ -18,11 +28,19 @@ from .schema import EVENTS_DTYPE, SEASONS
 
 __all__ = [
     "EVENTS_DTYPE",
+    "IC86_SEASONS",
     "SEASONS",
     "EventSet",
     "compute_livetime_s",
+    "hemisphere_average",
+    "irf_season",
+    "livetime_weighted_effective_area",
+    "load_effective_area",
+    "load_events",
     "load_all_seasons",
     "load_irfs",
     "load_season",
     "load_uptime",
+    "season_livetime_s",
+    "total_livetime_s",
 ]

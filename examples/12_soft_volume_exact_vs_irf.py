@@ -66,8 +66,12 @@ from softpaws.comparison.rates import (
     irf_expected_counts,
     observed_counts,
 )
-from softpaws.data.container import EventSet
-from softpaws.data.loader import compute_livetime_s, load_all_seasons, load_irfs, load_uptime
+from softpaws.data.icecube import (
+    IC86_SEASONS,
+    load_events,
+    total_livetime_s,
+)
+from softpaws.data.loader import load_irfs
 from softpaws.response.soft_volume import SoftVolumeResponse, power_law_flux
 
 _HERE = pathlib.Path(__file__).parent
@@ -75,10 +79,6 @@ _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
 _DEFAULT_OUT_DIR = _HERE / "output"
 
-IC86_SEASONS = (
-    "IC86_I", "IC86_II", "IC86_III", "IC86_IV", "IC86_V", "IC86_VI",
-    "IC86_VII", "IC86_VIII", "IC86_IX", "IC86_X", "IC86_XI",
-)
 
 RADIUS_KM = 0.62  # IceCube-like instrumented sphere
 PHI0 = 0.63  # reference flux normalization [1e-18 GeV^-1 cm^-2 s^-1 sr^-1]
@@ -115,24 +115,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def load_ic86_observed_and_livetime(data_dir: pathlib.Path) -> tuple[np.ndarray, float]:
-    raw = load_all_seasons(data_dir)
-    events = EventSet(raw)
-    # Restrict to IC86 seasons so the observed sample matches the single IC86
-    # IRF used for the prediction.
-    mask = np.zeros(events.n_events, dtype=bool)
-    for season in IC86_SEASONS:
-        uptime = load_uptime(data_dir / "uptime" / f"{season}_exp.csv")
-        for start, stop in uptime:
-            mask |= (events.time >= start) & (events.time <= stop)
-    ic86_events = EventSet(events.data[mask])
-
-    counts = observed_counts(ic86_events, LOG10_E_EDGES, DEC_MIN, DEC_MAX)
-
-    livetime_s = sum(
-        compute_livetime_s(load_uptime(data_dir / "uptime" / f"{season}_exp.csv"))
-        for season in IC86_SEASONS
-    )
-    return counts, livetime_s
+    """Binned IC86 upgoing counts and the IC86 livetime, from the library loaders."""
+    events = load_events(data_dir, IC86_SEASONS, within_uptime=True)
+    counts = observed_counts(events, LOG10_E_EDGES, DEC_MIN, DEC_MAX)
+    return counts, total_livetime_s(data_dir, IC86_SEASONS)
 
 
 def make_figure(

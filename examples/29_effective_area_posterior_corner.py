@@ -88,8 +88,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from softpaws.comparison.likelihood import B_SCALE_MEAN, B_SCALE_STD
-from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
-from softpaws.data.schema import SEASONS
+from softpaws.data.icecube import (
+    livetime_weighted_effective_area,
+)
 from softpaws.transport.attenuation import flavour_transmission, prem_column
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.soft_volume import (
@@ -186,40 +187,13 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
+def icecube_upgoing(data_dir: pathlib.Path):
+    """Livetime-weighted DR2 effective area over the upgoing sky [cm^2].
 
-
-def icecube_upgoing(data_dir: pathlib.Path) -> np.ndarray:
-    """Livetime-weighted IceCube effective area over the upgoing sky.
-
-    Parameters
-    ----------
-    data_dir : pathlib.Path
-        Root of the DR2 data directory.
-
-    Returns
-    -------
-    aeff : np.ndarray, shape (COMMON_LOG10_E.size,)
-        Effective area [cm^2].
+    Delegates to :func:`softpaws.data.icecube.livetime_weighted_effective_area`
+    on ``COMMON_LOG10_E``.
     """
-    total = np.zeros_like(COMMON_LOG10_E)
-    total_livetime_s = 0.0
-    cache: dict[str, object] = {}
-    for season in SEASONS:
-        key = _canonical_irf_season(season)
-        if key not in cache:
-            raw = np.genfromtxt(data_dir / "irfs" / f"{key}_effectiveArea.csv", comments="#")
-            cache[key] = parse_aeff(raw)
-        aeff = cache[key]
-        livetime_s = compute_livetime_s(load_uptime(data_dir / "uptime" / f"{season}_exp.csv"))
-        upgoing = aeff.sin_dec_centers > 0.0
-        curve = np.average(
-            aeff.values[:, upgoing], axis=1, weights=np.diff(aeff.sin_dec_edges)[upgoing]
-        )
-        total += livetime_s * np.interp(COMMON_LOG10_E, aeff.log10_energy_centers, curve)
-        total_livetime_s += livetime_s
-    return total / total_livetime_s
+    return livetime_weighted_effective_area(data_dir, COMMON_LOG10_E)[0]
 
 
 def precompute_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:

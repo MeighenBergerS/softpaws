@@ -64,8 +64,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import brentq
 
-from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
-from softpaws.data.schema import SEASONS
+from softpaws.data.icecube import (
+    livetime_weighted_effective_area,
+)
 from softpaws.transport.attenuation import (
     flavour_transmission,
     prem_column,
@@ -148,46 +149,13 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
+def icecube_upgoing(data_dir: pathlib.Path):
+    """Livetime-weighted DR2 effective area over the upgoing sky [cm^2].
 
-
-def icecube_upgoing(data_dir: pathlib.Path) -> np.ndarray:
-    """Livetime-weighted IceCube effective area, averaged over the upgoing sky.
-
-    Parameters
-    ----------
-    data_dir : pathlib.Path
-        Root of the DR2 data directory.
-
-    Returns
-    -------
-    aeff : np.ndarray, shape (COMMON_LOG10_E.size,)
-        Effective area [cm^2], solid-angle averaged over ``sin(dec) > 0``.
+    Delegates to :func:`softpaws.data.icecube.livetime_weighted_effective_area`
+    on ``COMMON_LOG10_E``.
     """
-    irf_dir = data_dir / "irfs"
-    uptime_dir = data_dir / "uptime"
-
-    total = np.zeros_like(COMMON_LOG10_E)
-    total_livetime_s = 0.0
-    aeff_cache: dict[str, object] = {}
-
-    for season in SEASONS:
-        irf_season = _canonical_irf_season(season)
-        if irf_season not in aeff_cache:
-            raw = np.genfromtxt(irf_dir / f"{irf_season}_effectiveArea.csv", comments="#")
-            aeff_cache[irf_season] = parse_aeff(raw)
-        aeff = aeff_cache[irf_season]
-
-        livetime_s = compute_livetime_s(load_uptime(uptime_dir / f"{season}_exp.csv"))
-        upgoing = aeff.sin_dec_centers > 0.0
-        curve = np.average(
-            aeff.values[:, upgoing], axis=1, weights=np.diff(aeff.sin_dec_edges)[upgoing]
-        )
-        total += livetime_s * np.interp(COMMON_LOG10_E, aeff.log10_energy_centers, curve)
-        total_livetime_s += livetime_s
-
-    return total / total_livetime_s
+    return livetime_weighted_effective_area(data_dir, COMMON_LOG10_E)[0]
 
 
 def upgoing_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:

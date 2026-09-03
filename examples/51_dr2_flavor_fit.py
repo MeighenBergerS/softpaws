@@ -98,8 +98,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize
 
+from softpaws.data.icecube import (
+    IC86_SEASONS,
+)
 from softpaws.data.loader import compute_livetime_s, load_season, load_uptime
-from softpaws.data.schema import SEASONS
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -116,7 +118,6 @@ _GEN2_CACHE = _DEFAULT_OUT_DIR / "51_gen2_responses.npz"
 _MCEQ_CACHE = _HERE / "output" / "22_mceq_atmospheric_flux.npz"
 
 #: Seasons entering the fit: the IC86 configurations share one IRF set.
-IC86_SEASONS = tuple(s for s in SEASONS if s.startswith("IC86"))
 
 #: Astrophysical pivot: the per-flavour normalization unit and the index seed,
 #: from the combined fit (arXiv:2308.00191). ``N = 1`` in the fit means this

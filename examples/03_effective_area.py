@@ -18,8 +18,9 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
-from softpaws.data.schema import SEASONS
+from softpaws.data.icecube import (
+    livetime_weighted_effective_area,
+)
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -46,77 +47,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def hemisphere_average(aeff, hemisphere: str) -> np.ndarray:
-    """Solid-angle-weighted average of an EffectiveArea grid over one hemisphere.
-
-    Parameters
-    ----------
-    aeff : softpaws.response.irfs.EffectiveArea
-        Tabulated effective area for one season.
-    hemisphere : {"upgoing", "downgoing"}
-        ``"upgoing"`` selects ``dec > 0`` (``sin(dec) > 0``) bins;
-        ``"downgoing"`` selects ``dec < 0`` bins.
-
-    Returns
-    -------
-    curve : np.ndarray, shape (N,)
-        Effective area [cm²] on ``aeff.log10_energy_centers``, averaged
-        over the selected declination bins weighted by their width in
-        ``sin(dec)``.
-    """
-    centers = aeff.sin_dec_centers
-    mask = centers > 0.0 if hemisphere == "upgoing" else centers < 0.0
-
-    widths = np.diff(aeff.sin_dec_edges)[mask]
-    values = aeff.values[:, mask]
-
-    return np.average(values, axis=1, weights=widths)
-
-
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
-
-
 def combine_seasons(data_dir: pathlib.Path) -> dict[str, np.ndarray]:
-    """Load per-season effective areas and combine via livetime weighting.
-
-    Only the effective-area table is needed here, so it is loaded directly
-    via :func:`~softpaws.data.loader.parse_aeff` (and cached per canonical
-    IRF season) rather than via ``load_irfs``, which would also parse the
-    much larger smearing table unnecessarily.
-
-    Returns
-    -------
-    combined : dict[str, np.ndarray]
-        ``"upgoing"`` and ``"downgoing"`` -> combined curve [cm²] on
-        ``COMMON_LOG10_E``.
-    """
-    irf_dir = data_dir / "irfs"
-    uptime_dir = data_dir / "uptime"
-
-    sums = {"upgoing": np.zeros_like(COMMON_LOG10_E), "downgoing": np.zeros_like(COMMON_LOG10_E)}
-    weights = {"upgoing": 0.0, "downgoing": 0.0}
-    aeff_cache: dict[str, object] = {}
-
-    for season in SEASONS:
-        irf_season = _canonical_irf_season(season)
-        if irf_season not in aeff_cache:
-            raw = np.genfromtxt(irf_dir / f"{irf_season}_effectiveArea.csv", comments="#")
-            aeff_cache[irf_season] = parse_aeff(raw)
-        aeff = aeff_cache[irf_season]
-
-        uptime = load_uptime(uptime_dir / f"{season}_exp.csv")
-        livetime_s = compute_livetime_s(uptime)
-
-        for hemisphere in ("upgoing", "downgoing"):
-            curve = hemisphere_average(aeff, hemisphere)
-            interp = np.interp(COMMON_LOG10_E, aeff.log10_energy_centers, curve)
-            sums[hemisphere] += livetime_s * interp
-            weights[hemisphere] += livetime_s
-
-        print(f"  {season:>10}: livetime = {livetime_s / 86400.0:8.1f} d")
-
-    return {h: sums[h] / weights[h] for h in ("upgoing", "downgoing")}
+    """Livetime-weighted effective area per hemisphere on ``COMMON_LOG10_E`` [cm^2]."""
+    return {
+        h: livetime_weighted_effective_area(data_dir, COMMON_LOG10_E, h)[0]
+        for h in ("upgoing", "downgoing")
+    }
 
 
 def make_figure(combined: dict[str, np.ndarray], out_path: pathlib.Path) -> None:

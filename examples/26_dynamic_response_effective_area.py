@@ -47,6 +47,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize_scalar
 
+from softpaws.data.icecube import (
+    irf_season as canonical_irf_season,
+)
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 from softpaws.data.schema import SEASONS
 from softpaws.response.soft_volume import SoftVolumeResponse
@@ -117,10 +120,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
-
-
 def combine_seasons_icecube(data_dir: pathlib.Path) -> tuple[np.ndarray, np.ndarray]:
     """Livetime-weighted IceCube effective area, resolved in declination.
 
@@ -149,7 +148,7 @@ def combine_seasons_icecube(data_dir: pathlib.Path) -> tuple[np.ndarray, np.ndar
     aeff_cache: dict[str, object] = {}
 
     for season in SEASONS:
-        irf_season = _canonical_irf_season(season)
+        irf_season = canonical_irf_season(season)
         if irf_season not in aeff_cache:
             raw = np.genfromtxt(irf_dir / f"{irf_season}_effectiveArea.csv", comments="#")
             aeff_cache[irf_season] = parse_aeff(raw)
