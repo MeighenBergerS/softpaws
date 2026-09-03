@@ -60,6 +60,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
+from softpaws.fluxes import ICECUBE_BPL_2025, ICECUBE_TRACKS_2022, broken_power_law_shape
 from softpaws.transport.coefficients import (
     diffusion_coefficient,
     drift_coefficient,
@@ -130,13 +131,13 @@ LOG10_ENU = np.linspace(7.0, 10.5, 351)
 
 #: IceCube's broken power law (example 54's constants): lower index and
 #: break held, ``(phi0, gamma_2)`` free in the fit.
-BPL_GAMMA_1 = 1.31
-BPL_LOG_BREAK = 4.39
-BPL_ICECUBE = (1.77, 2.735)
+BPL_GAMMA_1 = ICECUBE_BPL_2025.gamma_1
+BPL_LOG_BREAK = ICECUBE_BPL_2025.log10_break_gev
+BPL_ICECUBE = (ICECUBE_BPL_2025.phi0, ICECUBE_BPL_2025.gamma_2)
 
 #: Example 31's single power-law truth, and IceCube's 9.5-year tracks fit,
 #: as the two single-power-law injections.
-SPL_ICECUBE_TRACKS = (1.44, 2.37)
+SPL_ICECUBE_TRACKS = (ICECUBE_TRACKS_2022.phi0, ICECUBE_TRACKS_2022.gamma)
 
 COLORS = {"exact": "#e7298a", "gaussian": "#7570b3", "csda": "#1b9e77", "km3net": "0.3",
           "SPL": "#1b9e77", "BPL": "#e7298a", "IceCube": "#7570b3"}
@@ -259,10 +260,7 @@ def flux_shape(name: str, energy_gev) -> np.ndarray:
 
 def bpl_shape(energy_gev, gamma_2):
     """IceCube's broken power law, unit flux at 100 TeV on the upper branch."""
-    e_break = 10.0**BPL_LOG_BREAK
-    above = (energy_gev / 1.0e5) ** (-gamma_2)
-    below = (e_break / 1.0e5) ** (-gamma_2) * (energy_gev / e_break) ** (-BPL_GAMMA_1)
-    return np.where(energy_gev >= e_break, above, below)
+    return broken_power_law_shape(energy_gev, gamma_2, BPL_GAMMA_1, BPL_LOG_BREAK)
 
 
 def posterior(likelihood: np.ndarray, prior: str) -> np.ndarray:

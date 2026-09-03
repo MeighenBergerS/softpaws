@@ -23,6 +23,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.fluxes import REFERENCE_SPL
 from softpaws.response.soft_volume import SoftVolumeResponse
 
 _HERE = pathlib.Path(__file__).parent
@@ -30,8 +31,8 @@ _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_OUT_DIR = _HERE / "output"
 
 RADIUS_KM = 0.62  # IceCube-like instrumented sphere
-PHI0 = 0.63  # best-fit flux normalization [1e-18 GeV^-1 cm^-2 s^-1 sr^-1]
-GAMMA = 2.38  # best-fit spectral index
+PHI0 = REFERENCE_SPL.phi0  # [1e-18 GeV^-1 cm^-2 s^-1 sr^-1] at 100 TeV
+GAMMA = REFERENCE_SPL.gamma
 LIVETIME_S = 9.5 * 365.25 * 86400.0  # IceCube 9.5 yr exposure
 SOLID_ANGLE_SR = 2.0 * np.pi  # upgoing hemisphere
 LOG10_E_EDGES = np.arange(4.0, 9.01, 0.5)  # 10 TeV to 1 EeV, half-decade bins

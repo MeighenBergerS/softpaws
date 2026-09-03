@@ -57,6 +57,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
 from softpaws.data.loader import compute_livetime_s, load_uptime
+from softpaws.fluxes import ICECUBE_BPL_2025, broken_power_law_shape
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -70,10 +71,10 @@ COLOR_BPL, COLOR_SPL = "#e7298a", "#1b9e77"
 #: per-flavour flux at 100 TeV [1e-18 GeV^-1 cm^-2 s^-1 sr^-1] on the upper
 #: branch with its symmetrized error, the index above the break with its
 #: symmetrized error, and the fixed lower branch.
-BPL_PHI0 = (1.77, 0.185)
-BPL_GAMMA_2 = (2.735, 0.071)
-BPL_GAMMA_1 = 1.31
-BPL_LOG_BREAK = 4.39
+BPL_PHI0 = (ICECUBE_BPL_2025.phi0, ICECUBE_BPL_2025.phi0_err)
+BPL_GAMMA_2 = (ICECUBE_BPL_2025.gamma_2, ICECUBE_BPL_2025.gamma_2_err)
+BPL_GAMMA_1 = ICECUBE_BPL_2025.gamma_1
+BPL_LOG_BREAK = ICECUBE_BPL_2025.log10_break_gev
 
 #: Tau-flux scan at the anchored ``nu_mu`` flux [combined-fit units], wider
 #: than example 51's: under the broken power law the profile is flatter and
@@ -127,15 +128,8 @@ def spl_shape(energy_gev, gamma):
 
 
 def bpl_shape(energy_gev, gamma_2):
-    """IceCube's broken power law, unit flux at 100 TeV on the upper branch.
-
-    The lower branch is continuous at the break and held at the published
-    index; only the index above the break varies.
-    """
-    e_break = 10.0**BPL_LOG_BREAK
-    above = (energy_gev / 1.0e5) ** (-gamma_2)
-    below = (e_break / 1.0e5) ** (-gamma_2) * (energy_gev / e_break) ** (-BPL_GAMMA_1)
-    return np.where(energy_gev >= e_break, above, below)
+    """IceCube's broken power law, unit flux at 100 TeV on the upper branch."""
+    return broken_power_law_shape(energy_gev, gamma_2, BPL_GAMMA_1, BPL_LOG_BREAK)
 
 
 @dataclass

@@ -102,6 +102,13 @@ from softpaws.data.icecube import (
     IC86_SEASONS,
 )
 from softpaws.data.loader import compute_livetime_s, load_season, load_uptime
+from softpaws.fluxes import (
+    FLUX_UNIT,
+    ICECUBE_COMBINED_2023,
+    ICECUBE_TRACKS_2022,
+    AtmosphericFlux,
+    load_mceq_table,
+)
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -122,8 +129,8 @@ _MCEQ_CACHE = _HERE / "output" / "22_mceq_atmospheric_flux.npz"
 #: Astrophysical pivot: the per-flavour normalization unit and the index seed,
 #: from the combined fit (arXiv:2308.00191). ``N = 1`` in the fit means this
 #: flux.
-PIVOT_PHI0 = 1.80e-18
-PIVOT_GAMMA = 2.52
+PIVOT_PHI0 = ICECUBE_COMBINED_2023.phi0 * FLUX_UNIT
+PIVOT_GAMMA = ICECUBE_COMBINED_2023.gamma
 
 #: Reconstructed-energy grid the fold projects onto, and the window the fit
 #: uses. The grid is wider than the window so the fold conserves counts.
@@ -247,8 +254,10 @@ N_TAU_GRID = np.linspace(0.0, 100.0, 33)
 #: and their own with/without test (Aartsen et al. 2016) puts that
 #: assumption at 5% on the normalization and nothing on the index; the 5%
 #: is added to the normalization width in quadrature.
-TRACKS_GAMMA = (2.37, 0.09)
-TRACKS_PHI_MU = (1.44e-18, float(np.hypot(0.26e-18, 0.05 * 1.44e-18)))
+TRACKS_GAMMA = (ICECUBE_TRACKS_2022.gamma, ICECUBE_TRACKS_2022.gamma_err)
+TRACKS_PHI_MU = (ICECUBE_TRACKS_2022.phi0 * FLUX_UNIT,
+                 float(np.hypot(ICECUBE_TRACKS_2022.phi0_err, 0.05 * ICECUBE_TRACKS_2022.phi0))
+                 * FLUX_UNIT)
 
 #: Tau-flux scan at the anchored ``nu_mu`` flux [combined-fit units].
 #: The anchors in combined-fit units, as the likelihood takes them.
@@ -412,23 +421,10 @@ def atmospheric_fluxes(dec_edges_deg):
         raise FileNotFoundError(
             f"{_MCEQ_CACHE} not found; run example 22 once to tabulate the "
             "atmospheric flux.")
-    atm = np.load(_MCEQ_CACHE)
+    flux = AtmosphericFlux(load_mceq_table(_MCEQ_CACHE))
     centers = 0.5 * (dec_edges_deg[:-1] + dec_edges_deg[1:])
     energy = 10.0**LOG10_E_GRID
-    out = {}
-    for component in ("conv", "prompt"):
-        log_f = np.log10(np.clip(atm[component], 1.0e-99, None))
-        on_dec = np.array([
-            np.interp(centers, atm["dec_deg"], log_f[i])
-            for i in range(atm["energy_gev"].size)
-        ])
-        grid = np.empty((energy.size, centers.size))
-        for j in range(centers.size):
-            grid[:, j] = 10.0 ** np.interp(np.log10(energy),
-                                           np.log10(atm["energy_gev"]),
-                                           on_dec[:, j])
-        out[component] = grid
-    return out
+    return {c: flux.component_on_grid(c, energy, centers) for c in ("conv", "prompt")}
 
 
 def binned_events(data_dir: pathlib.Path, dec_edges_deg):

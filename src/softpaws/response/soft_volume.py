@@ -62,6 +62,9 @@ from collections.abc import Callable
 
 import numpy as np
 
+# The flux pivot and the single power law live in softpaws.fluxes; the names
+# stay importable from here.
+from ..fluxes.astrophysical import FLUX_PIVOT_GEV, power_law_flux  # noqa: E402, F401
 from ..transport.attenuation import (
     effective_solid_angle,
     neutrino_interaction_length_km,
@@ -90,9 +93,6 @@ from ..transport.source import (
 from ..transport.tau import tau_to_muon_ratio
 from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
-# Flux pivot energy for the power-law parametrization (Eq. 4.1): 100 TeV.
-FLUX_PIVOT_GEV = 1.0e5
-
 # Range the local effective spectral index is clipped to in
 # :meth:`SoftVolumeResponse.expected_counts_from_flux`. Wherever a tabulated flux
 # falls off a cliff -- an Earth-absorbed atmospheric spectrum, or the end of a
@@ -101,32 +101,6 @@ FLUX_PIVOT_GEV = 1.0e5
 # expansion was built for. The lower bound sits above the divergence of the soft
 # volume at ``gamma = lambda + 1``.
 GAMMA_EFF_BOUNDS = (1.5, 8.0)
-
-
-def power_law_flux(
-    energy_gev: float | np.ndarray,
-    phi0: float,
-    gamma: float,
-) -> np.ndarray:
-    """Single power-law diffuse neutrino flux (Eq. 4.1).
-
-    Parameters
-    ----------
-    energy_gev : float or np.ndarray
-        Neutrino energy [GeV].
-    phi0 : float
-        Flux normalization in units of ``1e-18 GeV^-1 cm^-2 s^-1 sr^-1`` at the
-        100 TeV pivot; of order unity for typical diffuse fluxes.
-    gamma : float
-        Spectral index, ``phi_nu ~ E^-gamma``.
-
-    Returns
-    -------
-    flux : np.ndarray
-        Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].
-    """
-    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
-    return (phi0 * 1.0e-18) * (energy / FLUX_PIVOT_GEV) ** (-gamma)
 
 
 class SoftVolumeResponse:

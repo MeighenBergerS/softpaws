@@ -115,7 +115,6 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.interpolate import RegularGridInterpolator
 
 from softpaws.comparison.rates import (
     fit_component_scales,
@@ -130,6 +129,15 @@ from softpaws.data.icecube import (
     total_livetime_s,
 )
 from softpaws.data.loader import load_irfs
+from softpaws.fluxes import (
+    ATMOSPHERE,
+    INTERACTION_MODEL,
+    PRIMARY_MODEL,
+    REFERENCE_SPL,
+    AtmosphericFlux,
+    build_mceq_table,
+    load_mceq_table,
+)
 from softpaws.response.soft_volume import (
     SoftVolumeResponse,
     power_law_flux,
@@ -145,8 +153,8 @@ _DEFAULT_TABLE = _DEFAULT_OUT_DIR / "22_mceq_atmospheric_flux.npz"
 
 
 RADIUS_KM = 0.62  # IceCube-like instrumented sphere
-PHI0 = 0.63  # reference flux normalization [1e-18 GeV^-1 cm^-2 s^-1 sr^-1]
-GAMMA = 2.38  # reference spectral index
+PHI0 = REFERENCE_SPL.phi0  # [1e-18 GeV^-1 cm^-2 s^-1 sr^-1] at 100 TeV
+GAMMA = REFERENCE_SPL.gamma
 LOG10_E_MIN_FIT = 5.0  # 100 TeV; the signal window
 LOG10_E_MIN_BKG_CAL = 4.0  # 10 TeV; lower edge of the background calibration window
 LOG10_E_EDGES = np.arange(3.0, 8.01, 0.5)
@@ -155,9 +163,6 @@ DEC_MIN, DEC_MAX = 0.0, 90.0  # upgoing hemisphere
 # MCEq settings. SIBYLL-2.3d and H3a are the standard conventional/prompt
 # atmospheric-neutrino baseline; the atmosphere is the South Pole profile MCEq
 # ships for IceCube, in January (austral summer, the thinner atmosphere).
-INTERACTION_MODEL = "SIBYLL2.3d"
-PRIMARY_MODEL = "H3a"
-ATMOSPHERE = ("SouthPole", "January")
 N_DEC_TABLE = 13  # production zeniths, evenly spaced in declination over the band
 
 
@@ -200,164 +205,19 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_flux_table(path: pathlib.Path, n_dec: int = N_DEC_TABLE) -> dict[str, np.ndarray]:
-    """Run MCEq once per zenith angle and cache the ``nu_mu`` fluxes.
-
-    Parameters
-    ----------
-    path : pathlib.Path
-        Destination ``.npz`` file.
-    n_dec : int, optional
-        Number of declinations sampled over ``[DEC_MIN, DEC_MAX]``, mapped to
-        MCEq production zeniths ``theta = 90 deg - dec``.
-
-    Returns
-    -------
-    table : dict of np.ndarray
-        Keys ``energy_gev`` (n_e,), ``dec_deg`` (n_dec,), and the fluxes
-        ``conv`` and ``prompt``, both of shape ``(n_e, n_dec)``, in
-        ``GeV^-1 cm^-2 s^-1 sr^-1`` and summed over ``nu_mu`` and ``nu_mu_bar``.
-    """
-    import importlib.util  # noqa: F401  (MCEq 1.4.1 uses it without importing it)
-
-    import crflux.models as pm
-    from MCEq.core import MCEqRun
-
-    dec_deg = np.linspace(DEC_MIN, DEC_MAX, n_dec)
-    mceq = MCEqRun(
-        interaction_model=INTERACTION_MODEL,
-        primary_model=(pm.HillasGaisser2012, PRIMARY_MODEL),
-        density_model=("MSIS00_IC", ATMOSPHERE),
-        theta_deg=0.0,
-    )
-
-    conv = np.empty((mceq.e_grid.size, n_dec))
-    prompt = np.empty_like(conv)
-    for j, dec in enumerate(dec_deg):
-        theta = 90.0 - dec
-        print(f"  MCEq: dec = {dec:5.1f} deg (production zenith {theta:5.1f} deg) ...")
-        mceq.set_theta_deg(theta)
-        mceq.solve()
-        conv[:, j] = mceq.get_solution("conv_numu") + mceq.get_solution("conv_antinumu")
-        prompt[:, j] = mceq.get_solution("pr_numu") + mceq.get_solution("pr_antinumu")
-
-    table = {
-        "energy_gev": np.asarray(mceq.e_grid, dtype=float),
-        "dec_deg": dec_deg,
-        "conv": conv,
-        "prompt": prompt,
-    }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(
-        path,
-        interaction_model=INTERACTION_MODEL,
-        primary_model=PRIMARY_MODEL,
-        atmosphere="/".join(ATMOSPHERE),
-        **table,
-    )
-    print(f"Flux table saved to: {path.resolve()}")
-    return table
+    """Run MCEq once per declination; see :func:`softpaws.fluxes.build_mceq_table`."""
+    print(f"Building MCEq flux table ({n_dec} zenith angles; this takes minutes) ...")
+    return build_mceq_table(path, (DEC_MIN, DEC_MAX), n_dec, INTERACTION_MODEL, PRIMARY_MODEL,
+                            ATMOSPHERE)
 
 
 def load_flux_table(path: pathlib.Path, recompute: bool = False) -> dict[str, np.ndarray]:
-    """Load the cached MCEq table, building it first if needed.
-
-    Parameters
-    ----------
-    path : pathlib.Path
-        Table file.
-    recompute : bool, optional
-        Rebuild even if ``path`` exists.
-
-    Returns
-    -------
-    table : dict of np.ndarray
-        As returned by :func:`build_flux_table`.
-    """
+    """Cached MCEq table, built if missing; see :func:`softpaws.fluxes.load_mceq_table`."""
     if recompute or not path.exists():
-        print(f"Building MCEq flux table ({N_DEC_TABLE} zenith angles; this takes minutes) ...")
         return build_flux_table(path)
-
-    with np.load(path) as data:
-        table = {key: data[key] for key in ("energy_gev", "dec_deg", "conv", "prompt")}
-        print(
-            f"Loaded MCEq flux table: {path.resolve()}\n"
-            f"  {data['interaction_model']} / {data['primary_model']} / {data['atmosphere']}, "
-            f"{table['dec_deg'].size} zenith angles"
-        )
+    table = load_mceq_table(path)
+    print(f"Loaded MCEq flux table: {path.resolve()} ({table['dec_deg'].size} zenith angles)")
     return table
-
-
-class AtmosphericFlux:
-    """Interpolated atmospheric ``nu_mu`` flux from an MCEq table.
-
-    Bilinear in ``(log10 E, dec)`` on the logarithm of the flux, which is the
-    interpolation both variables are smooth in. Callable in the two-argument
-    form the forward models expect.
-
-    Parameters
-    ----------
-    table : dict of np.ndarray
-        Table from :func:`load_flux_table`.
-    include_prompt : bool, optional
-        Whether to add the prompt (charm) component to the conventional one.
-        Defaults to ``True``.
-
-    Attributes
-    ----------
-    energy_gev : np.ndarray
-        Tabulated energies [GeV].
-    dec_deg : np.ndarray
-        Tabulated declinations [deg].
-    flux : np.ndarray, shape (n_e, n_dec)
-        Tabulated flux [GeV^-1 cm^-2 s^-1 sr^-1].
-
-    Examples
-    --------
-    >>> flux = AtmosphericFlux(load_flux_table(_DEFAULT_TABLE))  # doctest: +SKIP
-    >>> float(flux(1.0e5, 45.0)) > 0  # doctest: +SKIP
-    True
-    """
-
-    def __init__(self, table: dict[str, np.ndarray], include_prompt: bool = True) -> None:
-        self.energy_gev = np.asarray(table["energy_gev"], dtype=float)
-        self.dec_deg = np.asarray(table["dec_deg"], dtype=float)
-        flux = np.asarray(table["conv"], dtype=float)
-        if include_prompt:
-            flux = flux + np.asarray(table["prompt"], dtype=float)
-        self.flux = flux
-        # A floor keeps the logarithm finite where the cascade solution underflows.
-        floor = flux[flux > 0.0].min() * 1e-10
-        self._interp = RegularGridInterpolator(
-            (np.log10(self.energy_gev), self.dec_deg),
-            np.log(np.maximum(flux, floor)),
-            bounds_error=False,
-            fill_value=None,  # linear extrapolation off the ends of the table
-        )
-
-    def __call__(
-        self,
-        energy_gev: float | np.ndarray,
-        dec_deg: float | np.ndarray,
-    ) -> np.ndarray:
-        """Differential flux at an energy and declination.
-
-        Parameters
-        ----------
-        energy_gev : float or np.ndarray
-            Neutrino energy [GeV].
-        dec_deg : float or np.ndarray
-            Source declination [deg]; broadcast against ``energy_gev``.
-
-        Returns
-        -------
-        flux : np.ndarray
-            Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].
-        """
-        energy, dec = np.broadcast_arrays(
-            np.asarray(energy_gev, dtype=float), np.asarray(dec_deg, dtype=float)
-        )
-        points = np.stack([np.log10(energy), dec], axis=-1)
-        return np.exp(self._interp(points))
 
 
 # ---------------------------------------------------------------------------

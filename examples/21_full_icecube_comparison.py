@@ -61,6 +61,7 @@ from softpaws.data.icecube import (
     total_livetime_s,
 )
 from softpaws.data.loader import load_irfs
+from softpaws.fluxes import REFERENCE_SPL
 from softpaws.response.soft_volume import (
     SoftVolumeResponse,
     power_law_flux,
@@ -74,8 +75,8 @@ _DEFAULT_OUT_DIR = _HERE / "output"
 
 
 RADIUS_KM = 0.62  # IceCube-like instrumented sphere
-PHI0 = 0.63  # reference flux normalization [1e-18 GeV^-1 cm^-2 s^-1 sr^-1]
-GAMMA = 2.38  # reference spectral index
+PHI0 = REFERENCE_SPL.phi0  # [1e-18 GeV^-1 cm^-2 s^-1 sr^-1] at 100 TeV
+GAMMA = REFERENCE_SPL.gamma
 LOG10_E_MIN_FIT = 6.0  # 1 PeV; below this the sample is background-dominated
 LOG10_E_EDGES = np.arange(3.0, 8.01, 0.5)
 DEC_MIN, DEC_MAX = 0.0, 90.0  # upgoing hemisphere

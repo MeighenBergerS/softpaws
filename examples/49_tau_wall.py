@@ -43,6 +43,13 @@ import numpy as np
 
 from softpaws.data.loader import compute_livetime_s, load_uptime
 from softpaws.data.schema import SEASONS
+from softpaws.fluxes import (
+    ICECUBE_CASCADES_2020,
+    ICECUBE_COMBINED_2023,
+    ICECUBE_TRACKS_2022,
+    AtmosphericFlux,
+    load_mceq_table,
+)
 from softpaws.transport.attenuation import regenerated_transmission
 
 _HERE = pathlib.Path(__file__).parent
@@ -60,9 +67,9 @@ _MCEQ_CACHE = _HERE / "output" / "22_mceq_atmospheric_flux.npz"
 #: index. Northern tracks (arXiv:2111.10299), cascades (arXiv:2001.09520) and
 #: the combined fit (arXiv:2308.00191).
 ASTRO_FLUXES = {
-    "tracks": (1.44, 2.37),
-    "cascades": (1.66, 2.53),
-    "combined": (1.80, 2.52),
+    "tracks": (ICECUBE_TRACKS_2022.phi0, ICECUBE_TRACKS_2022.gamma),
+    "cascades": (ICECUBE_CASCADES_2020.phi0, ICECUBE_CASCADES_2020.gamma),
+    "combined": (ICECUBE_COMBINED_2023.phi0, ICECUBE_COMBINED_2023.gamma),
 }
 
 #: Upgoing arrival directions of the wall map; ``cos(theta) = -1`` is the
@@ -174,17 +181,8 @@ def atmospheric_flux(component: str, energy: np.ndarray,
         raise FileNotFoundError(
             f"{_MCEQ_CACHE} not found; run example 22 once to tabulate the "
             "atmospheric flux.")
-    atm = np.load(_MCEQ_CACHE)
-    log_f = np.log10(np.clip(atm[component], 1.0e-99, None))
-    on_dec = np.array([
-        np.interp(np.abs(dec_deg), atm["dec_deg"], log_f[i])
-        for i in range(atm["energy_gev"].size)
-    ])
-    out = np.empty((energy.size, dec_deg.size))
-    for j in range(dec_deg.size):
-        out[:, j] = 10.0 ** np.interp(np.log10(energy),
-                                      np.log10(atm["energy_gev"]), on_dec[:, j])
-    return out
+    flux = AtmosphericFlux(load_mceq_table(_MCEQ_CACHE))
+    return flux.component_on_grid(component, energy, dec_deg)
 
 
 def band_counts(aeff, flux, energy, widths, livetime_s, e_min_gev=0.0):
