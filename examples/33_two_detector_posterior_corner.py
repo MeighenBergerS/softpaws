@@ -90,6 +90,8 @@ from softpaws.detectors import ARCA230, ICECUBE, MAX_UPSTREAM_KM
 from softpaws.transport.attenuation import flavour_transmission, prem_column
 from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.cross_section import bgr18_cross_section
+from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
+from softpaws.transport.earth import zenith_grid as earth_zenith_grid
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
@@ -453,23 +455,8 @@ def icecube_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:
 
 
 def arca_zenith_grid() -> tuple[np.ndarray, np.ndarray]:
-    """Zenith samples and their solid-angle weights over the whole sky.
-
-    The convention matches the published ARCA figures: ``cos(theta) = +1`` is
-    vertically downgoing through the sea, ``-1`` vertically upgoing through the
-    Earth.
-
-    Returns
-    -------
-    theta_deg : np.ndarray, shape (ARCA_N_ZENITH,)
-        Zenith angle [deg].
-    weights : np.ndarray, shape (ARCA_N_ZENITH,)
-        Solid-angle weights, normalized to sum to one.
-    """
-    edges = np.linspace(1.0, -1.0, ARCA_N_ZENITH + 1)
-    cos_theta = 0.5 * (edges[:-1] + edges[1:])
-    theta_deg = np.rad2deg(np.arccos(np.clip(cos_theta, -1.0, 1.0)))
-    return theta_deg, np.full(ARCA_N_ZENITH, 1.0 / ARCA_N_ZENITH)
+    """Whole-sky zenith grid; see :func:`softpaws.transport.earth.zenith_grid`."""
+    return earth_zenith_grid(ARCA_N_ZENITH)
 
 
 def arca_projected_area_km2(
@@ -502,37 +489,15 @@ def arca_projected_area_km2(
 
 
 def arca_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Zenith weights, neutrino column, and available muon column for ARCA.
+    """Zenith weights, neutrino column [g cm^-2] and available muon column [km] for ARCA.
 
-    Upgoing directions get the layered-PREM Earth chord, evaluated at a
-    declination equal to the angle below the horizon, and effectively unlimited
-    upstream column for the muon -- rock supplies far more than any muon
-    survives. Downgoing directions get the sea water above the detector, which
-    is negligible for the neutrino except within a degree of the horizon, and
-    which is the whole of the muon's available column.
-
-    Returns
-    -------
-    weights : np.ndarray, shape (ARCA_N_ZENITH,)
-        Solid-angle weights over the whole sky.
-    neutrino_column : np.ndarray, shape (ARCA_N_ZENITH,)
-        Column traversed before reaching the detector [g cm^-2].
-    muon_column_km : np.ndarray, shape (ARCA_N_ZENITH,)
-        Column available upstream of the detector, as a length of sea water
-        [km].
+    Both columns come from :mod:`softpaws.transport.earth` at ``ARCA_DEPTH_KM``.
     """
     theta_deg, weights = arca_zenith_grid()
     cos_theta = np.cos(np.deg2rad(theta_deg))
-    with np.errstate(divide="ignore", invalid="ignore"):
-        downgoing_km = np.where(
-            cos_theta > 0.0, ARCA_DEPTH_KM / np.maximum(cos_theta, 1e-6), np.inf
-        )
-    muon_column_km = np.minimum(downgoing_km, ARCA_MAX_SEA_PATH_KM)
-
-    water = np.where(np.isfinite(downgoing_km), np.minimum(downgoing_km, ARCA_MAX_SEA_PATH_KM), 0.0)
-    water = water * CM_PER_KM * RHO_WATER_G_CM3
-    earth = np.array([prem_column(float(t) - 90.0) if t > 90.0 else 0.0 for t in theta_deg])
-    neutrino_column = np.where(theta_deg > 90.0, earth, water)
+    neutrino_column = neutrino_column_g_cm2(cos_theta, ARCA_DEPTH_KM, RHO_WATER_G_CM3,
+                                            ARCA_MAX_SEA_PATH_KM)
+    muon_column_km = overburden_km(cos_theta, ARCA_DEPTH_KM, ARCA_MAX_SEA_PATH_KM)
     return weights, neutrino_column, muon_column_km
 
 

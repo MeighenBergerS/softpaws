@@ -62,6 +62,8 @@ from softpaws.transport.attenuation import (
     regenerated_transmission,
 )
 from softpaws.transport.cross_section import bgr18_cross_section
+from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
+from softpaws.transport.earth import zenith_grid as earth_zenith_grid
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
@@ -351,12 +353,11 @@ def icecube_curves(
 # ---------------------------------------------------------------------------
 
 
-def zenith_grid() -> tuple[np.ndarray, np.ndarray]:
-    """Zenith samples and normalized weights over the full sky."""
-    edges = np.linspace(1.0, -1.0, N_ZENITH + 1)
-    cos_theta = 0.5 * (edges[:-1] + edges[1:])
-    theta_deg = np.rad2deg(np.arccos(np.clip(cos_theta, -1.0, 1.0)))
-    return theta_deg, np.full(N_ZENITH, 1.0 / N_ZENITH)
+def zenith_grid(
+    cos_range: tuple[float, float] = (-1.0, 1.0),
+) -> tuple[np.ndarray, np.ndarray]:
+    """Zenith samples and solid-angle weights; see :func:`softpaws.transport.earth.zenith_grid`."""
+    return earth_zenith_grid(N_ZENITH, cos_range)
 
 
 def projected_area_km2(
@@ -376,19 +377,15 @@ def projected_area_km2(
 
 
 def upstream_column_km(theta_deg: np.ndarray, depth_km: float) -> np.ndarray:
-    """Sea-water column available upstream of the detector [km of water]."""
-    cos_theta = np.cos(np.deg2rad(theta_deg))
-    with np.errstate(divide="ignore", invalid="ignore"):
-        downgoing = np.where(cos_theta > 0.0, depth_km / np.maximum(cos_theta, 1e-6), np.inf)
-    return np.minimum(downgoing, MAX_SEA_PATH_KM)
+    """Medium available upstream [km]; see :func:`softpaws.transport.earth.overburden_km`."""
+    return overburden_km(np.cos(np.deg2rad(theta_deg)), depth_km, MAX_SEA_PATH_KM)
 
 
 def earth_column_g_cm2(theta_deg: np.ndarray, depth_km: float) -> np.ndarray:
-    """Column depth traversed by the neutrino before reaching the detector [g cm^-2]."""
-    water_km = upstream_column_km(theta_deg, depth_km)
-    water = np.where(np.isfinite(water_km), water_km, 0.0) * CM_PER_KM * RHO_SEA_G_CM3
-    earth = np.array([prem_column(float(t) - 90.0) if t > 90.0 else 0.0 for t in theta_deg])
-    return np.where(theta_deg > 90.0, earth, water)
+    """Neutrino column [g cm^-2]; see :func:`softpaws.transport.earth.neutrino_column_g_cm2`."""
+    return neutrino_column_g_cm2(
+        np.cos(np.deg2rad(theta_deg)), depth_km, RHO_SEA_G_CM3, MAX_SEA_PATH_KM
+    )
 
 
 def truncated_range_km(

@@ -55,7 +55,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import chi2
 
-from softpaws.transport.attenuation import prem_column, regenerated_transmission
+from softpaws.transport.attenuation import regenerated_transmission
+from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
 from softpaws.transport.source import nucleon_number_density
 from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
@@ -128,16 +129,13 @@ class WaterSite:
 
 
 def water_columns(site: WaterSite):
-    """Example 33's :func:`arca_columns` for any depth."""
+    """Example 33's :func:`arca_columns` for any depth, from :mod:`softpaws.transport.earth`."""
     theta_deg, weights = _EX33.arca_zenith_grid()
     cos_theta = np.cos(np.deg2rad(theta_deg))
-    with np.errstate(divide="ignore", invalid="ignore"):
-        downgoing_km = np.where(cos_theta > 0.0, site.depth_km / np.maximum(cos_theta, 1e-6),
-                                np.inf)
-    muon_column_km = np.minimum(downgoing_km, _EX33.ARCA_MAX_SEA_PATH_KM)
-    water = np.where(np.isfinite(downgoing_km), muon_column_km, 0.0) * CM_PER_KM * RHO_WATER_G_CM3
-    earth = np.array([prem_column(float(t) - 90.0) if t > 90.0 else 0.0 for t in theta_deg])
-    return weights, np.where(theta_deg > 90.0, earth, water), muon_column_km
+    neutrino_column = neutrino_column_g_cm2(cos_theta, site.depth_km, RHO_WATER_G_CM3,
+                                            _EX33.ARCA_MAX_SEA_PATH_KM)
+    muon_column_km = overburden_km(cos_theta, site.depth_km, _EX33.ARCA_MAX_SEA_PATH_KM)
+    return weights, neutrino_column, muon_column_km
 
 
 def water_ladders(site: WaterSite, neutrino_column):

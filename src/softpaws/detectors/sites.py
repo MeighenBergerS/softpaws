@@ -18,9 +18,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from softpaws.transport.attenuation import prem_column
+from softpaws.transport.earth import MAX_UPSTREAM_KM, neutrino_column_g_cm2, overburden_km
 from softpaws.transport.soft_volume import prism_projected_area_km2
-from softpaws.utils.constants import CM_PER_KM, RHO_ICE_G_CM3, RHO_LAKE_G_CM3, RHO_WATER_G_CM3
+from softpaws.utils.constants import RHO_ICE_G_CM3, RHO_LAKE_G_CM3, RHO_WATER_G_CM3
 
 from .optics import ARCA_OPTICS, ICECUBE_OPTICS, Optics
 
@@ -38,11 +38,6 @@ __all__ = [
     "TRIDENT_2025",
     "get_site",
 ]
-
-#: Longest medium column a muon is given upstream of the detector [km]. Below
-#: the horizon the muon is born in rock, which never runs out, and this caps
-#: the near-horizon overburden so that no integral runs to infinity.
-MAX_UPSTREAM_KM = 100.0
 
 
 @dataclass(frozen=True)
@@ -242,21 +237,8 @@ class Site:
             detector medium [km].
         """
         cos_theta = np.asarray(cos_theta, dtype=float)
-        above = cos_theta > 0.0
-        with np.errstate(divide="ignore", invalid="ignore"):
-            overburden_km = np.where(
-                above, self.depth_km / np.maximum(cos_theta, 1.0e-6), np.inf
-            )
-        overburden_km = np.minimum(overburden_km, MAX_UPSTREAM_KM)
-
-        theta_deg = np.rad2deg(np.arccos(np.clip(cos_theta, -1.0, 1.0)))
-        earth = np.array(
-            [prem_column(float(t) - 90.0) if t > 90.0 else 0.0 for t in np.atleast_1d(theta_deg)]
-        ).reshape(np.shape(theta_deg))
-        medium = overburden_km * CM_PER_KM * self.density_g_cm3
-        neutrino_column = np.where(above, medium, earth)
-        # Below the horizon the muon is born in rock, which never runs out.
-        muon_column_km = np.where(above, overburden_km, MAX_UPSTREAM_KM)
+        neutrino_column = neutrino_column_g_cm2(cos_theta, self.depth_km, self.density_g_cm3)
+        muon_column_km = overburden_km(cos_theta, self.depth_km)
         return neutrino_column, muon_column_km
 
 
