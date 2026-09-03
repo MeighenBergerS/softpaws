@@ -18,7 +18,9 @@ The output is the predicted reconstructed-energy spectrum and declination
 distribution against the events, with data/model ratios printed per decade.
 The shaded band on the total is external-input uncertainty only: the +-25%
 hadronic spread on each atmospheric normalization and the tracks
-measurement's own normalization and index errors, in quadrature. The model
+measurement's own normalization and index errors. Each is a normalization
+error, correlated across every bin, so its contribution adds linearly over
+whatever bins are summed and only the sources combine in quadrature. The model
 carries a known boundary: below a reconstructed 10^4.25 GeV the turn-on and
 proxy region under-predicts progressively, which is why example 51 fits
 above that line; this example draws the line and quotes the ratios on both
@@ -39,7 +41,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import chi2
 
-from softpaws.data.loader import compute_livetime_s, load_uptime
+from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -131,6 +133,44 @@ def true_counts(response, flux, enu_edges, d_omega, livetime_s):
     return livetime_s * counts * d_omega[None, :]
 
 
+def published_response(data_dir: pathlib.Path, enu_edges, dec_edges):
+    """IceCube's own DR2 effective area on example 51's response grid.
+
+    The baseline the model has to beat: the released ``IC86_effectiveArea.csv``
+    is an average over each (true energy, true declination) bin, so it is
+    broadcast piecewise-constant onto ``LOG10_E_GRID`` inside each smearing bin
+    and taken at the band's own declination. The table is a ``nu_mu`` area, so
+    the tau channel is zero in this response.
+
+    Parameters
+    ----------
+    data_dir : pathlib.Path
+        Root of the DR2 release.
+    enu_edges : np.ndarray
+        True-energy bin edges of the smearing table [log10 GeV].
+    dec_edges : np.ndarray
+        Upgoing declination bin edges [deg].
+
+    Returns
+    -------
+    responses : dict of str -> np.ndarray
+        ``"mu"`` on (``LOG10_E_GRID``, bands) [cm^2], and ``"tau"`` of zeros.
+    """
+    raw = np.genfromtxt(data_dir / "irfs" / "IC86_effectiveArea.csv", comments="#")
+    aeff = parse_aeff(raw)
+    dec_centers = 0.5 * (dec_edges[:-1] + dec_edges[1:])
+    log10_e = np.clip(_EX51.LOG10_E_GRID, enu_edges[0] + 1.0e-9, enu_edges[-1] - 1.0e-9)
+    i_enu = np.searchsorted(enu_edges, log10_e, side="right") - 1
+    table_e_centers = aeff.log10_energy_centers
+    table_sin_edges = aeff.sin_dec_edges
+    i_table_e = np.searchsorted(table_e_centers, 0.5 * (enu_edges[i_enu] + enu_edges[i_enu + 1]))
+    i_table_e = np.clip(i_table_e - 1, 0, table_e_centers.size - 1)
+    i_table_d = np.clip(np.searchsorted(table_sin_edges, np.sin(np.deg2rad(dec_centers)),
+                                        side="right") - 1, 0, table_sin_edges.size - 2)
+    mu = aeff.values[np.ix_(i_table_e, i_table_d)]
+    return {"mu": mu, "tau": np.zeros_like(mu)}
+
+
 def astro_flux(gamma):
     """Per-flavour tracks-fit power law on the fine grid [GeV^-1 cm^-2 s^-1 sr^-1]."""
     energy = 10.0**_EX51.LOG10_E_GRID
@@ -145,8 +185,9 @@ def predict(responses, atmos, enu_edges, dec_edges, marginal, livetime_s):
     components : dict of str -> np.ndarray
         ``"conv"``, ``"prompt"``, ``"astro_mu"``, ``"astro_tau"`` on
         (reco bins, declination bands).
-    band : np.ndarray
-        One-sigma external-input uncertainty on the summed model, same shape.
+    errors : dict of str -> np.ndarray or tuple
+        Signed one-sigma grids per external input, same shape, each fully
+        correlated across bins; combine with :func:`combine_band`.
     """
     d_omega = 2.0 * np.pi * np.diff(np.sin(np.deg2rad(dec_edges)))
     marginal_tau = _EX51.RecoLikelihood._shifted_marginal(enu_edges, marginal)
@@ -176,16 +217,53 @@ def predict(responses, atmos, enu_edges, dec_edges, marginal, livetime_s):
                   + fold(true_counts(responses["tau"], flux_g, enu_edges,
                                      d_omega, livetime_s), tau=True))
         spread.append(varied - astro)
-    gamma_sigma = 0.5 * (np.abs(spread[0]) + np.abs(spread[1]))
-    band = np.sqrt((ATM_ERR * components["conv"]) ** 2
-                   + (ATM_ERR * components["prompt"]) ** 2
-                   + (ASTRO_PHI_ERR / ASTRO_PHI * astro) ** 2
-                   + gamma_sigma**2)
-    return components, band
+    errors = {
+        "conv": ATM_ERR * components["conv"],
+        "prompt": ATM_ERR * components["prompt"],
+        "astro_norm": ASTRO_PHI_ERR / ASTRO_PHI * astro,
+        "astro_gamma": (spread[0], spread[1]),
+    }
+    return components, errors
 
 
-def report(components, band, data):
-    """Print the data/model comparison; return the summary dict."""
+def combine_band(errors, reduce):
+    """One-sigma external-input band after summing bins with ``reduce``.
+
+    Every entry of ``errors`` is one normalization or index error, so it is
+    fully correlated across bins and its grid adds linearly under ``reduce``;
+    the sources then add in quadrature. Adding the per-bin grids in
+    quadrature across bins instead would shrink a 25% normalization error
+    by roughly the square root of the number of bins.
+
+    Parameters
+    ----------
+    errors : dict of str -> np.ndarray or tuple
+        Signed one-sigma grids per source, as returned by :func:`predict`.
+        ``"astro_gamma"`` holds the two signed index variations, which
+        change sign across the pivot and so must be reduced before taking
+        their magnitude.
+    reduce : callable
+        Maps a (reco bins, declination bands) grid to the sum wanted, for
+        example ``lambda g: g[window].sum()`` or ``lambda g: g.sum(axis=1)``.
+    """
+    terms = []
+    for key, grid in errors.items():
+        if key == "astro_gamma":
+            lo, hi = grid
+            terms.append(0.5 * (np.abs(reduce(lo)) + np.abs(reduce(hi))))
+        else:
+            terms.append(reduce(grid))
+    return np.sqrt(sum(term**2 for term in terms))
+
+
+def report(components, errors, data, baseline=None):
+    """Print the data/model comparison; return the summary dict.
+
+    ``baseline`` is the same prediction through IceCube's published effective
+    area (:func:`published_response`), the number the model has to be judged
+    against: if both land on the data, the benchmark tests the fluxes and the
+    smearing, not the transport.
+    """
     centers = 0.5 * (_EX51.RECO_EDGES[:-1] + _EX51.RECO_EDGES[1:])
     window = ((_EX51.RECO_EDGES[:-1] >= _EX51.FIT_RECO[0] - 1.0e-9)
               & (_EX51.RECO_EDGES[1:] <= _EX51.FIT_RECO[1] + 1.0e-9))
@@ -196,17 +274,35 @@ def report(components, band, data):
     for name, grid in components.items():
         print(f"  {name:<10s} {grid[window].sum():10.1f}")
     model_w = total[window].sum()
-    band_w = np.sqrt((band[window] ** 2).sum())
+    band_w = combine_band(errors, lambda g: g[window].sum())
     data_w = data[window].sum()
     print(f"  model      {model_w:10.1f} +- {band_w:.1f} (external inputs)")
+    print("  band by source, correlated across bins:")
+    for name, grid in errors.items():
+        if name == "astro_gamma":
+            value = 0.5 * sum(abs(g[window].sum()) for g in grid)
+        else:
+            value = grid[window].sum()
+        print(f"    {name:<12s} +- {value:6.1f}")
     print(f"  data       {data_w:10.0f}")
     print(f"  data/model {data_w / model_w:10.3f}")
+    base_e = None
+    if baseline is not None:
+        base_total = sum(baseline.values())
+        base_w = base_total[window].sum()
+        print("  published IRF, same fluxes (nu_mu only, no tau channel):")
+        for name in ("conv", "prompt", "astro_mu"):
+            print(f"    {name:<10s} {baseline[name][window].sum():10.1f}")
+        print(f"    total      {base_w:10.1f}   data/IRF {data_w / base_w:.3f}   "
+              f"model/IRF {model_w / base_w:.3f}")
+        base_e = base_total.sum(axis=1)
 
     astro = components["astro_mu"] + components["astro_tau"]
     tau_share = components["astro_tau"][window].sum() / astro[window].sum()
     print(f"  tau -> mu share of astrophysical tracks: {tau_share:.3f}")
 
-    print("\nData/model per half-decade (summed over bands):")
+    header = "\nData/model per half-decade (summed over bands)"
+    print(header + (", then data/IRF and model/IRF:" if base_e is not None else ":"))
     model_e = total.sum(axis=1)
     data_e = data.sum(axis=1)
     for lo in np.arange(3.0, 8.0, 0.5):
@@ -219,8 +315,12 @@ def report(components, band, data):
             marker = "   (straddles the window edge)"
         else:
             marker = ""
-        print(f"  10^{lo:.1f} - 10^{lo + 0.5:.1f}: "
-              f"{data_e[sel].sum() / model_e[sel].sum():7.2f}{marker}")
+        line = (f"  10^{lo:.1f} - 10^{lo + 0.5:.1f}: "
+                f"{data_e[sel].sum() / model_e[sel].sum():7.2f}")
+        if base_e is not None and base_e[sel].sum() > 0.0:
+            line += (f"   {data_e[sel].sum() / base_e[sel].sum():7.2f}"
+                     f"   {model_e[sel].sum() / base_e[sel].sum():7.2f}")
+        print(line + marker)
 
     occupied = window[:, None] & (total > 0.0)
     mu = np.clip(total[occupied], 1.0e-12, None)
@@ -259,18 +359,22 @@ def _save(fig, out_dir: pathlib.Path, stem: str) -> None:
     plt.close(fig)
 
 
-def figure_spectrum(components, band, data, out_dir) -> None:
+def figure_spectrum(components, errors, data, out_dir, baseline=None) -> None:
     """Figure 76a: reconstructed-energy spectrum and the data/model ratio."""
     centers = 0.5 * (_EX51.RECO_EDGES[:-1] + _EX51.RECO_EDGES[1:])
     total = sum(components.values())
     model_e = total.sum(axis=1)
-    band_e = np.sqrt((band**2).sum(axis=1))
+    band_e = combine_band(errors, lambda g: g.sum(axis=1))
     data_e = data.sum(axis=1)
     atmos_e = (components["conv"] + components["prompt"]).sum(axis=1)
     with plt.style.context(str(_STYLE)):
         fig, (ax, axr) = plt.subplots(
             2, 1, sharex=True, figsize=(3.4, 4.6),
             gridspec_kw={"height_ratios": (2.6, 1.0), "hspace": 0.08})
+        if baseline is not None:
+            base_e = sum(baseline.values()).sum(axis=1)
+            ax.plot(centers, base_e, color="k", ls="--", lw=0.9,
+                    label="Published IRF, same fluxes")
         ax.plot(centers, atmos_e, color="0.45", ls="-", lw=0.9,
                 label="Atmospheric")
         ax.plot(centers, components["astro_mu"].sum(axis=1), color="C0",
@@ -309,7 +413,7 @@ def figure_spectrum(components, band, data, out_dir) -> None:
         _save(fig, out_dir, "76a_reco_spectrum")
 
 
-def figure_declination(components, band, data, dec_edges, out_dir) -> None:
+def figure_declination(components, errors, data, dec_edges, out_dir) -> None:
     """Figures 76b/76c: declination over the window and above the high cut."""
     sin_edges = np.sin(np.deg2rad(dec_edges))
     sin_centers = 0.5 * (sin_edges[:-1] + sin_edges[1:])
@@ -327,7 +431,7 @@ def figure_declination(components, band, data, dec_edges, out_dir) -> None:
         for stem, sel, title in panels:
             fig, ax = plt.subplots(figsize=(3.0, 3.0))
             model_d = total[sel].sum(axis=0)
-            band_d = np.sqrt((band[sel] ** 2).sum(axis=0))
+            band_d = combine_band(errors, lambda g: g[sel].sum(axis=0))
             data_d = data[sel].sum(axis=0)
             atmos_d = atmos[sel].sum(axis=0)
             ax.stairs(model_d, sin_edges, color="k", lw=1.2, label="Model")
@@ -365,12 +469,14 @@ def main() -> None:
 
     print("Predicting with pinned inputs: MCEq atmosphere x 1.0, tracks flux "
           f"{ASTRO_PHI * 1e18:.2f}e-18 at gamma {ASTRO_GAMMA} per flavour, 1:1:1")
-    components, band = predict(responses, atmos, enu_edges, dec_edges, marginal,
-                               livetime_s)
-    report(components, band, data)
+    components, errors = predict(responses, atmos, enu_edges, dec_edges,
+                                 marginal, livetime_s)
+    baseline, _ = predict(published_response(args.data_dir, enu_edges, dec_edges),
+                          atmos, enu_edges, dec_edges, marginal, livetime_s)
+    report(components, errors, data, baseline)
 
-    figure_spectrum(components, band, data, args.out_dir)
-    figure_declination(components, band, data, dec_edges, args.out_dir)
+    figure_spectrum(components, errors, data, args.out_dir, baseline)
+    figure_declination(components, errors, data, dec_edges, args.out_dir)
 
 
 if __name__ == "__main__":

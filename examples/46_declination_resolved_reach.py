@@ -244,6 +244,11 @@ def column_volume_km3(ex45, site, site45, production_gev, cos_theta, available_k
         return np.zeros_like(cos_theta)
     truncated = np.clip(np.atleast_1d(truncated_muon_range_km(
         production_gev, available_km, threshold, site.density_g_cm3)), 0.0, None)
+    # Below the bedrock or the sea floor the muon is in rock, which shortens
+    # every upgoing column; downgoing directions are the optical medium alone.
+    ratio = ex45.rock_range_ratio(production_gev, threshold, cos_theta, site45,
+                                  site.height_km, site.density_g_cm3)
+    truncated = truncated * ratio
     profile = ex45.column_profile(production_gev, threshold, n_energy,
                                   site.density_g_cm3)
     if profile is None:
@@ -261,7 +266,7 @@ def column_volume_km3(ex45, site, site45, production_gev, cos_theta, available_k
     area = weight[:, None] * ((1.0 - halo_weight) * area_0[None, :]
                               + halo_weight * area_d)
     vol = (1.0 - halo_weight) * vol_0 + halo_weight * vol_d
-    clipped = np.minimum(column[:, None], available_km[None, :])
+    clipped = np.minimum(column[:, None] * ratio[None, :], available_km[None, :])
     span = clipped[-1]
     mean_area = np.where(
         span > 0.0,
@@ -453,9 +458,11 @@ def main() -> None:
     efficiency = 1.0
     if not args.first_principles:
         from dataclasses import replace
-        site45 = replace(site45, attenuation_override_m=42.0)
-        efficiency = 0.755
-        print("  fitted configuration: Lambda 42 m, normalization 0.755 "
+        # Example 45's nu_mu-only fit with rock below the ice (2026-09-02);
+        # the all-water kernel gave 42 m and 0.755.
+        site45 = replace(site45, attenuation_override_m=33.7)
+        efficiency = 0.956
+        print("  fitted configuration: Lambda 33.7 m, normalization 0.956 "
               "(--first-principles for derived optics)")
     print(f"  N = {min_modules:g} modules, channels {', '.join('nu_' + f for f in flavours)}, "
           f"Lambda = {ex45.attenuation_length_m(site45):.1f} m")

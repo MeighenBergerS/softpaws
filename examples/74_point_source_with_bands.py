@@ -57,10 +57,11 @@ _EX35 = load_example("35_point_source_effective_area.py", "_example_35")
 ENVELOPE = ("photo BB", "photo ALLM91")
 
 #: The fitted transport scale (example 72's informed four-site corner,
-#: b = 0.994 +- 0.028), applied to both log-loss moments exactly as the fits
-#: apply it. The fitted lambda (0.462 vs BGR18's 0.4538) has no hook in
-#: example 35's machinery; its <= 4% UHE tilt sits inside the drawn bands.
-B_SCALE_FITTED = 0.994
+#: b = 0.989 +- 0.028 with rock below the array), applied to both log-loss
+#: moments exactly as the fits apply it. The fitted lambda (0.465 vs BGR18's
+#: 0.4538) has no hook in example 35's machinery; its <= 4% UHE tilt sits
+#: inside the drawn bands.
+B_SCALE_FITTED = 0.989
 
 COLORS = {"pub": "0.3", "model": "#e7298a"}
 
@@ -93,6 +94,9 @@ def activate(ratios, label) -> None:
 def build_variant(args, sites, sin_dec_edges, dec_grid) -> dict:
     """Example 35's model objects under the active loss variant."""
     icecube = sites[0]
+    # The static, unfitted footprint, deliberately: the banded panels show the
+    # declination shape with nothing calibrated, and the level they leave is
+    # the flat factor the hemisphere calibration of example 45 absorbs.
     static = _EX35.icecube_model_banded(icecube, sin_dec_edges, args.threshold_gev)
     livetime_s = args.livetime_yr * 365.25 * 24.0 * 3600.0
     sensitivity, matched = {}, None

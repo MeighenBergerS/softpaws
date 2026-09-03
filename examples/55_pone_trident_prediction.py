@@ -100,7 +100,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--efficiency", type=float, default=None,
                         help="Flat normalization for both sites; defaults to example "
-                             "45's ARCA230 value, 0.720.")
+                             "45's ARCA230 value, 0.817 with rock below the sea floor.")
     parser.add_argument("--halo-weight", type=float, default=1.0,
                         help="Fraction of the reach-dilated halo counted (example 47).")
     parser.add_argument("--pone-radius-km", type=float, default=None,

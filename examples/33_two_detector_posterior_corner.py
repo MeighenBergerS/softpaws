@@ -94,6 +94,7 @@ from softpaws.transport.soft_volume import (
     muon_range_km,
     stochastic_muon_range_km,
     truncated_muon_range_km,
+    two_medium_range_ratio,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
@@ -248,6 +249,16 @@ ARCA_N_BLOCKS = 2
 # Depth of the instrumented volume's centre below the sea surface [km]. Seabed
 # at 3500 m at the Capo Passero site, with the instrumented span standing on it.
 ARCA_DEPTH_KM = 3.5 - 0.5 * ARCA_BLOCK_HEIGHT_KM
+
+#: Optical medium below the centre of the instrumented body, along the
+#: vertical, in the water-equivalent units the ranges here are in: IceCube has
+#: 370 m of ice under its deepest module and half the array above that, at
+#: 0.918 g cm^-3; ARCA's lowest storey sits 80 m above the seabed under a 632 m
+#: block. Rock lies beneath both, and the two-medium range of
+#: :func:`softpaws.transport.soft_volume.two_medium_range_ratio` shortens every
+#: upgoing entering term by 14 to 20% for it.
+IC_ICE_BELOW_KM = (0.370 + 0.5 * IC_HEIGHT_KM) * 0.918
+ARCA_WATER_BELOW_KM = 0.080 + 0.5 * ARCA_BLOCK_HEIGHT_KM
 # Longest sea-water path a near-horizontal muon can have [km]. Only a cap on the
 # 1/cos(theta) divergence; it exceeds every muon range in the problem.
 ARCA_MAX_SEA_PATH_KM = 100.0
@@ -434,6 +445,7 @@ def icecube_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:
 
     ladders: dict[str, tuple[np.ndarray, ...]] = {}
     for flavour in ("mu", "tau"):
+        muon_fraction = (1.0 - MEAN_INELASTICITY) * (1.0 if flavour == "mu" else MEAN_Z)
         energies = np.empty((IC_LOG10_E.size, IC_N_RUNG))
         weights = np.empty((IC_LOG10_E.size, IC_N_RUNG))
         weights_cos = np.empty((IC_LOG10_E.size, IC_N_RUNG))
@@ -443,13 +455,25 @@ def icecube_ladders() -> dict[str, tuple[np.ndarray, np.ndarray]]:
                 10.0**log10_e, columns, CROSS_SECTION, flavour=flavour,
                 n_grid=IC_N_RUNG, decades=4.0,
             )
+            # The rock below the ice shortens the entering term, which the two
+            # geometry weights multiply and the instrumented term does not. The
+            # ratio is read at the default threshold and kernel scale; it moves
+            # by under 2% across the fitted range of either, so the ladders
+            # stay parameter independent.
+            rock = np.array([
+                two_medium_range_ratio(
+                    float(muon_fraction * e), DEFAULT_MUON_THRESHOLD_GEV, -cos_theta,
+                    IC_ICE_BELOW_KM,
+                )
+                for e in rung_energy
+            ])
             energies[i] = rung_energy
             weights[i] = np.average(rung_weight, axis=1, weights=solid_angle)
             weights_cos[i] = np.average(
-                rung_weight * cos_theta[None, :], axis=1, weights=solid_angle
+                rung_weight * rock * cos_theta[None, :], axis=1, weights=solid_angle
             )
             weights_sin[i] = np.average(
-                rung_weight * sin_theta[None, :], axis=1, weights=solid_angle
+                rung_weight * rock * sin_theta[None, :], axis=1, weights=solid_angle
             )
         ladders[flavour] = (energies, weights, weights_cos, weights_sin)
     return ladders
@@ -541,7 +565,8 @@ def arca_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
 
 def arca_ladders(
     neutrino_column: np.ndarray,
-) -> dict[str, tuple[np.ndarray, np.ndarray]]:
+    water_below_km: float = ARCA_WATER_BELOW_KM,
+) -> dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]]:
     """Per-zenith transmission ladders for ARCA, one per flavour.
 
     Unlike IceCube's, these are *not* averaged over direction: the muon's
@@ -552,18 +577,27 @@ def arca_ladders(
     ----------
     neutrino_column : np.ndarray, shape (ARCA_N_ZENITH,)
         Column traversed before reaching the detector [g cm^-2].
+    water_below_km : float, optional
+        Water between the centre of the instrumented body and the sea floor,
+        along the vertical [km]. Defaults to :data:`ARCA_WATER_BELOW_KM`.
 
     Returns
     -------
     ladders : dict
-        ``"mu"`` and ``"tau"`` -> ``(energies, weights)`` with ``energies`` of
-        shape ``(n_energy, ARCA_N_RUNG)`` [GeV] and ``weights`` of shape
-        ``(n_energy, ARCA_N_RUNG, ARCA_N_ZENITH)``.
+        ``"mu"`` and ``"tau"`` -> ``(energies, weights, rock)`` with
+        ``energies`` of shape ``(n_energy, ARCA_N_RUNG)`` [GeV], ``weights`` of
+        shape ``(n_energy, ARCA_N_RUNG, ARCA_N_ZENITH)``, and ``rock`` the
+        two-medium range ratio of the same shape, 1 above the horizon and
+        0.80 to 0.86 below it, read at the default threshold and kernel scale.
     """
-    ladders: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    theta_deg, _ = arca_zenith_grid()
+    cos_theta = np.cos(np.deg2rad(theta_deg))
+    ladders: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
     for flavour in ("mu", "tau"):
+        muon_fraction = (1.0 - MEAN_INELASTICITY) * (1.0 if flavour == "mu" else MEAN_Z)
         energies = np.empty((ARCA_LOG10_E.size, ARCA_N_RUNG))
         weights = np.empty((ARCA_LOG10_E.size, ARCA_N_RUNG, ARCA_N_ZENITH))
+        rock = np.ones_like(weights)
         for i, log10_e in enumerate(ARCA_LOG10_E):
             rung_energy, rung_weight = flavour_transmission(
                 10.0**log10_e, neutrino_column, CROSS_SECTION, flavour=flavour,
@@ -571,7 +605,14 @@ def arca_ladders(
             )
             energies[i] = rung_energy
             weights[i] = rung_weight
-        ladders[flavour] = (energies, weights)
+            rock[i] = np.array([
+                two_medium_range_ratio(
+                    float(muon_fraction * e), DEFAULT_MUON_THRESHOLD_GEV, cos_theta,
+                    water_below_km,
+                )
+                for e in rung_energy
+            ])
+        ladders[flavour] = (energies, weights, rock)
     return ladders
 
 
@@ -689,15 +730,16 @@ def arca_model(
         ("tau", MEAN_Z * (1.0 - MEAN_INELASTICITY), F_TAU * BR_TAU_TO_MU),
     )
     for flavour, muon_fraction, weight in channels:
-        energies, arrival = ladders[flavour]
-        energies, arrival = energies[nodes], arrival[nodes]
+        energies, arrival, rock = ladders[flavour]
+        energies, arrival, rock = energies[nodes], arrival[nodes], rock[nodes]
         muon_energy = muon_fraction * energies
         # (n_energy, n_rung, n_zenith): each rung's muon under each direction's
         # overburden. The reach follows the muon, so the radius has no zenith
-        # axis, but the projected area it feeds does.
+        # axis, but the projected area it feeds does. Upgoing directions carry
+        # the rock below the sea floor through the ladder's range ratio.
         length = truncated_muon_range_km(
             muon_energy[:, :, None], muon_column_km[None, None, :], threshold, b_scale
-        )
+        ) * rock
         radius = light_reach_radius_km(
             ARCA_BLOCK_RADIUS_KM, muon_energy, reach_km, REACH_PIVOT_GEV
         )

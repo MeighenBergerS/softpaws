@@ -176,8 +176,10 @@ TAU_DECAY_X = np.linspace(0.025, 0.975, 20)
 _FC_VERSION = 5
 
 #: Example 45's fitted configuration.
-FITTED_ATTENUATION_M = 42.0
-FITTED_NORMALIZATION = 0.755
+#: Example 45's IceCube pair, nu_mu only, with rock below the ice
+#: (2026-09-02); the all-water kernel gave 42 m and 0.755.
+FITTED_ATTENUATION_M = 33.7
+FITTED_NORMALIZATION = 0.956
 
 
 def load_example(stem: str, name: str):

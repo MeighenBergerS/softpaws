@@ -125,6 +125,7 @@ from softpaws.transport.soft_volume import (
     light_reach_radius_km,
     prism_projected_area_km2,
     truncated_muon_range_km,
+    two_medium_range_ratio,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
@@ -391,6 +392,10 @@ class Site:
     n_blocks: int = 1
     linestyle: str = "-"
     n_sides: int = 6
+    #: Optical medium between the bottom of the instrumented volume and the
+    #: rock beneath it [km]. An upgoing muon crosses only this and half the
+    #: height before it is seen, and is in rock for the rest of its range.
+    below_km: float = 0.0
 
     def projected_area_km2(
         self,
@@ -525,6 +530,7 @@ def build_sites() -> list[Site]:
             radius_km=float(np.sqrt(ICECUBE_VOLUME_KM3 / (np.pi * ICECUBE_HEIGHT_KM))),
             color="k",
             height_km=ICECUBE_HEIGHT_KM,
+            below_km=0.37,
         ),
         Site(
             name="ARCA230",
@@ -536,6 +542,7 @@ def build_sites() -> list[Site]:
             color="C0",
             height_km=ARCA_BLOCK_HEIGHT_KM,
             n_blocks=ARCA_N_BLOCKS,
+            below_km=0.08,
         ),
         Site(
             name="TRIDENT",
@@ -546,6 +553,7 @@ def build_sites() -> list[Site]:
             radius_km=TRIDENT_RADIUS_KM,
             color="C1",
             height_km=TRIDENT_HEIGHT_KM,
+            below_km=0.1,
         ),
         Site(
             name="P-ONE",
@@ -643,13 +651,21 @@ def directional_aeff_cm2(
                 decades=RUNG_DECADES,
             )
             muon_energy = muon_fraction * rung_energy
-            # (n_rung, n_dir): each rung's muon under each direction's column.
+            # (n_rung, n_dir): each rung's muon under each direction's column,
+            # shortened below the horizon by the rock beneath the optical medium.
+            rock = np.array([
+                two_medium_range_ratio(
+                    float(e), threshold_gev, cos_theta,
+                    site.below_km + 0.5 * site.height_km, site.density_g_cm3,
+                )
+                for e in muon_energy
+            ])
             length = truncated_muon_range_km(
                 muon_energy[:, None],
                 muon_column_km[None, :],
                 threshold_gev,
                 site.density_g_cm3,
-            )
+            ) * rock
             radius = (
                 np.full(muon_energy.shape, site.radius_km)
                 if reach_km is None

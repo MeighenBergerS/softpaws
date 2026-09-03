@@ -60,8 +60,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
-from softpaws.transport.loss_distribution import loss_density, loss_density_gaussian
+from softpaws.transport.coefficients import (
+    diffusion_coefficient,
+    drift_coefficient,
+    third_moment_coefficient,
+)
+from softpaws.transport.loss_distribution import (
+    loss_density,
+    loss_density_gaussian,
+    loss_density_three_moment,
+)
 from softpaws.transport.source import mean_inelasticity
 from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
@@ -107,6 +115,11 @@ W_GRID = np.linspace(0.0, 24.0, 4801)
 X_MAX_KM = 30.0
 N_X = 120
 N_K = 2**13
+#: Loss-family calibration behind the "exact" potential density: 3 uses the
+#: three-moment family of Eq. (7), whose hard edge matches PROPOSAL's tail
+#: (Appendix D); 2 is the digamma two-moment family, 8% low on ``Phi'(0)``
+#: and so 8% long on the renewal plateau ``1 / Phi'(0)`` (Appendix C).
+KERNEL_MOMENTS = 3
 
 #: Muon energy below which the bright-track selection does not count a muon
 #: [GeV]; only enters the normalization of the arrival density.
@@ -174,12 +187,15 @@ def potential_density(kind: str) -> np.ndarray:
     """
     b = float(np.squeeze(drift_coefficient(KERNEL_ENERGY_GEV)))
     d = float(np.squeeze(diffusion_coefficient(KERNEL_ENERGY_GEV)))
+    t = float(np.squeeze(third_moment_coefficient(KERNEL_ENERGY_GEV)))
     if kind == "csda":
         return np.full(W_GRID.size, 1.0 / b)
     x_grid = np.linspace(0.0, X_MAX_KM, N_X + 1)[1:]
     u = np.zeros(W_GRID.size)
     for x in x_grid:
-        if kind == "exact":
+        if kind == "exact" and KERNEL_MOMENTS == 3:
+            u += loss_density_three_moment(W_GRID, float(x), b, d, t, n_k=N_K)
+        elif kind == "exact":
             u += loss_density(W_GRID, float(x), b, d, n_k=N_K)
         else:
             u += loss_density_gaussian(W_GRID, float(x), b, d)

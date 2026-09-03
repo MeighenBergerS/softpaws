@@ -95,8 +95,11 @@ _KM3NET_ANGLE_CSV = (_HERE.parent / "src" / "softpaws" / "data" / "km3net"
 #: these, so figures here are the *fitted* model of example 45 taken to the
 #: angular axis it was never fitted on. ``--first-principles`` drops the
 #: override and keeps each site's derived wavelength-resolved optics.
-FITTED_ATTENUATION_M = {"IceCube": 42.0, "ARCA230": 47.0}
-FITTED_NORMALIZATION = {"IceCube": 0.755, "ARCA230": 0.720}
+#: Example 45's fitted pair per site, nu_mu only, with rock below the ice or
+#: the sea floor (2026-09-02). The all-water kernel gave 42 / 47 m and
+#: 0.755 / 0.720.
+FITTED_ATTENUATION_M = {"IceCube": 33.7, "ARCA230": 41.6}
+FITTED_NORMALIZATION = {"IceCube": 0.956, "ARCA230": 0.817}
 
 #: Fraction of the reach-dilated halo the selection accepts. Example 45
 #: carries no halo blend, so its fitted configuration corresponds to 1; the
@@ -430,7 +433,7 @@ def main() -> None:
     efficiency = {site.name: args.efficiency_arca for site in sites}
     efficiency["IceCube"] = args.efficiency_icecube
     mode = ("first principles" if args.first_principles
-            else "fitted Lambda 42 m (IceCube) / 47 m (ARCA230)")
+            else "fitted Lambda 33.7 m (IceCube) / 41.6 m (ARCA230)")
     print(f"  N = {min_modules:g} modules, halo weight {args.halo_weight:g}, {mode},")
     print(f"  normalization {args.efficiency_icecube:g} (IceCube) / "
           f"{args.efficiency_arca:g} (ARCA230),")

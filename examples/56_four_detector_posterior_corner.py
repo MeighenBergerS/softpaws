@@ -122,6 +122,9 @@ class WaterSite:
     f_tau: float
     #: Neutral-current regeneration in the Earth; False for pure absorption.
     regeneration: bool
+    #: Water between the bottom of the instrumented volume and the sea floor
+    #: [km]; rock lies beneath, and shortens every upgoing entering term.
+    below_km: float
 
 
 def water_columns(site: WaterSite):
@@ -139,15 +142,22 @@ def water_columns(site: WaterSite):
 
 def water_ladders(site: WaterSite, neutrino_column):
     """Transmission ladders; a one-rung ``nu_mu`` ladder when regeneration is off."""
+    below_centre_km = site.below_km + 0.5 * site.height_km
     if site.regeneration:
-        return _EX33.arca_ladders(neutrino_column)
+        return _EX33.arca_ladders(neutrino_column, below_centre_km)
     grid = _EX33.ARCA_LOG10_E
+    theta_deg, _ = _EX33.arca_zenith_grid()
+    cos_theta = np.cos(np.deg2rad(theta_deg))
     energies = np.empty((grid.size, 1))
     weights = np.empty((grid.size, 1, neutrino_column.size))
+    rock = np.ones_like(weights)
     for i, log10_e in enumerate(grid):
         energies[i], weights[i] = regenerated_transmission(
             10.0**log10_e, neutrino_column, _EX33.CROSS_SECTION, n_levels=1)
-    return {"mu": (energies, weights), "tau": (energies, np.zeros_like(weights))}
+        rock[i] = _EX33.two_medium_range_ratio(
+            float((1.0 - _EX33.MEAN_INELASTICITY) * energies[i, 0]),
+            _EX33.DEFAULT_MUON_THRESHOLD_GEV, cos_theta, below_centre_km)[None, :]
+    return {"mu": (energies, weights, rock), "tau": (energies, np.zeros_like(weights), rock)}
 
 
 def water_projected_area_km2(site: WaterSite, theta_deg, radius_km):
@@ -172,11 +182,11 @@ def water_model(theta, site: WaterSite, ladders, zenith_weights, muon_column_km,
     for flavour, muon_fraction, weight in channels:
         if weight == 0.0:
             continue
-        energies, arrival = ladders[flavour]
-        energies, arrival = energies[nodes], arrival[nodes]
+        energies, arrival, rock = ladders[flavour]
+        energies, arrival, rock = energies[nodes], arrival[nodes], rock[nodes]
         muon_energy = muon_fraction * energies
         length = ex.truncated_muon_range_km(
-            muon_energy[:, :, None], muon_column_km[None, None, :], threshold, b_scale)
+            muon_energy[:, :, None], muon_column_km[None, None, :], threshold, b_scale) * rock
         radius = ex.light_reach_radius_km(site.radius_km, muon_energy, reach_km,
                                           ex.REACH_PIVOT_GEV)
         area_km2 = water_projected_area_km2(site, theta_deg[None, None, :], radius[:, :, None])
@@ -220,11 +230,14 @@ def water_sites() -> list[WaterSite]:
     ex35 = load_example("35_point_source_effective_area.py", "_example_35")
     geometry = {s.name: s for s in ex35.build_sites()}
     pone, trident = geometry["P-ONE"], geometry["TRIDENT"]
+    # P-ONE's strings stand on the Cascadia Basin floor; TRIDENT's block sits
+    # about 100 m above the South China Sea bed at its 3.5 km site.
     return [
         WaterSite("P-ONE", pone.radius_km, pone.height_km, pone.n_blocks, pone.depth_km,
-                  "trigger", DIGITIZED_FIT_BAND, (-0.05, 0.40), 0.0, False),
+                  "trigger", DIGITIZED_FIT_BAND, (-0.05, 0.40), 0.0, False, 0.0),
         WaterSite("TRIDENT", trident.radius_km, trident.height_km, trident.n_blocks,
-                  trident.depth_km, "6 deg cut", DIGITIZED_FIT_BAND, (-0.05, 0.40), 0.0, False),
+                  trident.depth_km, "6 deg cut", DIGITIZED_FIT_BAND, (-0.05, 0.40), 0.0, False,
+                  0.1),
     ]
 
 

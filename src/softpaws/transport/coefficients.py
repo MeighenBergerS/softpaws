@@ -19,6 +19,14 @@ Two sources are available, selected by the ``source`` argument:
     ``10^2`` to ``10^10`` GeV, summing bremsstrahlung, ``e+e-`` pair production
     and the photonuclear channel. Built by :func:`build_proposal_table` and
     shipped under ``src/softpaws/data/coefficients/``.
+``"proposal_rock"``
+    The same table in PROPOSAL's standard rock (``Z = 11``, ``A = 22``,
+    ``rho = 2.65``), stored per km of *water-equivalent* column so it compares
+    with the water table at equal column depth. Its ``Z^2/A`` puts ``b_mu``
+    and the log-loss moments 26-30% above water at ``10^4`` to ``10^6`` GeV
+    and 20-24% above at ``10^7`` to ``10^9``. An upgoing muon at IceCube or
+    ARCA spends most of its range below the ice or the sea floor, which is
+    what this source is for.
 
 The two differ by more than the clipping: PROPOSAL puts ``b_mu`` about 7-8%
 above Table 1 at *both* of its anchor energies and ``d_mu`` 13-20% above, and
@@ -60,19 +68,34 @@ _TABLE1_N_MOMENTS = 2
 # PROPOSAL-computed table, shipped with the package.
 # ---------------------------------------------------------------------------
 
-PROPOSAL_TABLE_PATH = (
-    pathlib.Path(__file__).parents[1] / "data" / "coefficients" / "proposal_muon_water.csv"
-)
+_COEFFICIENT_DIR = pathlib.Path(__file__).parents[1] / "data" / "coefficients"
+PROPOSAL_TABLE_PATH = _COEFFICIENT_DIR / "proposal_muon_water.csv"
+PROPOSAL_ROCK_TABLE_PATH = _COEFFICIENT_DIR / "proposal_muon_rock.csv"
 
 TABLE1_SOURCE = "table1"
 PROPOSAL_SOURCE = "proposal"
+PROPOSAL_ROCK_SOURCE = "proposal_rock"
 DEFAULT_SOURCE = PROPOSAL_SOURCE
 
-_proposal_table: tuple[np.ndarray, ...] | None = None
+#: PROPOSAL-built sources, the medium each is computed in (a ``proposal.medium``
+#: class name) and the shipped table. Every table is stored per km of
+#: water-equivalent column, so the sources compare at equal column depth and
+#: differ only through the medium's ``Z``, ``A`` and composition.
+_PROPOSAL_SOURCES = {
+    PROPOSAL_SOURCE: ("Water", PROPOSAL_TABLE_PATH),
+    PROPOSAL_ROCK_SOURCE: ("StandardRock", PROPOSAL_ROCK_TABLE_PATH),
+}
+
+_proposal_tables: dict[str, tuple[np.ndarray, ...]] = {}
 
 
-def _load_proposal_table() -> tuple[np.ndarray, ...]:
-    """Read and cache the shipped PROPOSAL coefficient table.
+def _load_proposal_table(source: str = PROPOSAL_SOURCE) -> tuple[np.ndarray, ...]:
+    """Read and cache a shipped PROPOSAL coefficient table.
+
+    Parameters
+    ----------
+    source : {"proposal", "proposal_rock"}, optional
+        Which table; see :data:`_PROPOSAL_SOURCES`. Defaults to water.
 
     Returns
     -------
@@ -87,17 +110,17 @@ def _load_proposal_table() -> tuple[np.ndarray, ...]:
         Raised if the table is missing; rebuild it with
         :func:`build_proposal_table`.
     """
-    global _proposal_table
-    if _proposal_table is None:
-        if not PROPOSAL_TABLE_PATH.exists():
+    if source not in _proposal_tables:
+        medium, path = _PROPOSAL_SOURCES[source]
+        if not path.exists():
             raise FileNotFoundError(
-                f"PROPOSAL coefficient table not found at {PROPOSAL_TABLE_PATH}; "
-                f"rebuild it with build_proposal_table() (requires the 'proposal' package), "
-                f"or pass source='{TABLE1_SOURCE}'."
+                f"PROPOSAL coefficient table not found at {path}; rebuild it with "
+                f"build_proposal_table(medium={medium!r}) (requires the 'proposal' "
+                f"package), or pass source='{TABLE1_SOURCE}'."
             )
-        table = np.loadtxt(PROPOSAL_TABLE_PATH, delimiter=",")
-        _proposal_table = (np.log10(table[:, 0]), *table[:, 1:].T)
-    return _proposal_table
+        table = np.loadtxt(path, delimiter=",")
+        _proposal_tables[source] = (np.log10(table[:, 0]), *table[:, 1:].T)
+    return _proposal_tables[source]
 
 
 def _interpolate(
@@ -114,18 +137,19 @@ def _interpolate(
                 f"moment needs source={PROPOSAL_SOURCE!r}."
             )
         reference = (_REF_LOG10_E, (_REF_B_MU, _REF_D_MU)[column])
-    elif source == PROPOSAL_SOURCE:
-        grid = _load_proposal_table()
+    elif source in _PROPOSAL_SOURCES:
+        grid = _load_proposal_table(source)
         if column + 1 >= len(grid):
             raise ValueError(
-                f"the PROPOSAL table at {PROPOSAL_TABLE_PATH} has only "
+                f"the PROPOSAL table at {_PROPOSAL_SOURCES[source][1]} has only "
                 f"{len(grid) - 1} moment column(s); rebuild it with "
                 "build_proposal_table() to add the third moment."
             )
         reference = (grid[0], grid[column + 1])
     else:
         raise ValueError(
-            f"source must be {TABLE1_SOURCE!r} or {PROPOSAL_SOURCE!r}, got {source!r}."
+            f"source must be {TABLE1_SOURCE!r}, {PROPOSAL_SOURCE!r} or "
+            f"{PROPOSAL_ROCK_SOURCE!r}, got {source!r}."
         )
     return np.interp(log10_e, *reference)
 
@@ -189,14 +213,17 @@ def loss_spectrum_y_grid(
     return np.unique(np.concatenate([soft, hard]))
 
 
-def proposal_loss_spectrum(energy_gev: float, y: np.ndarray) -> dict[str, np.ndarray]:
+def proposal_loss_spectrum(
+    energy_gev: float, y: np.ndarray, medium: str = "Water"
+) -> dict[str, np.ndarray]:
     """PROPOSAL's differential loss rate ``dGamma/dy``, per channel.
 
     PROPOSAL's ``differential_crosssection`` is per unit column density, per
     component, so the rate per unit length is the mass-fraction-weighted sum over
     components times the mass density. The result is rescaled to
     :data:`~softpaws.utils.constants.RHO_WATER_G_CM3`, matching the convention of
-    the shipped table.
+    the shipped tables: a rate per km of water-equivalent column, whatever the
+    medium, so that media compare at equal column depth.
 
     This is the spectrum whose moments :func:`build_proposal_table` tabulates and
     which the calibrated families of :mod:`softpaws.transport.eigenvalue`
@@ -208,6 +235,10 @@ def proposal_loss_spectrum(energy_gev: float, y: np.ndarray) -> dict[str, np.nda
         Muon energy [GeV].
     y : np.ndarray
         Fractional energy losses in ``(0, 1)``; see :func:`loss_spectrum_y_grid`.
+    medium : str, optional
+        A ``proposal.medium`` class name, ``"Water"`` (the default), ``"Ice"``
+        or ``"StandardRock"``. Ice and water coincide per unit column; standard
+        rock sits 20 to 30% above them through its ``Z^2/A``.
 
     Returns
     -------
@@ -218,7 +249,7 @@ def proposal_loss_spectrum(energy_gev: float, y: np.ndarray) -> dict[str, np.nda
     import proposal as pp
 
     particle = pp.particle.MuMinusDef()
-    medium = pp.medium.Water()
+    medium = getattr(pp.medium, medium)()
     energy_mev = energy_gev * 1.0e3
 
     # PROPOSAL's atomic_number is the atomic mass, so these are mass fractions.
@@ -244,10 +275,11 @@ def proposal_loss_spectrum(energy_gev: float, y: np.ndarray) -> dict[str, np.nda
 
 
 def build_proposal_table(
-    path: str | pathlib.Path = PROPOSAL_TABLE_PATH,
+    path: str | pathlib.Path | None = None,
     log10_e_min: float = 2.0,
     log10_e_max: float = 10.0,
     points_per_decade: int = 8,
+    medium: str = "Water",
 ) -> np.ndarray:
     """Tabulate the first three ``y``-moments with PROPOSAL and write them to disk.
 
@@ -268,12 +300,17 @@ def build_proposal_table(
     Parameters
     ----------
     path : str or pathlib.Path, optional
-        Destination CSV. Defaults to :data:`PROPOSAL_TABLE_PATH`.
+        Destination CSV. Defaults to the shipped table for ``medium``,
+        :data:`PROPOSAL_TABLE_PATH` for water and
+        :data:`PROPOSAL_ROCK_TABLE_PATH` for standard rock.
     log10_e_min, log10_e_max : float, optional
         Range of the table in ``log10(E / GeV)``. The default upper limit stays
         below the energy where PROPOSAL's own interpolation tables break down.
     points_per_decade : int, optional
         Sampling density.
+    medium : str, optional
+        A ``proposal.medium`` class name; see :func:`proposal_loss_spectrum`.
+        Defaults to ``"Water"``.
 
     Returns
     -------
@@ -291,8 +328,11 @@ def build_proposal_table(
     """
     import proposal as pp
 
+    if path is None:
+        path = {name: table for name, table in _PROPOSAL_SOURCES.values()}[medium]
+    medium_name = medium
     particle = pp.particle.MuMinusDef()
-    medium = pp.medium.Water()
+    medium = getattr(pp.medium, medium_name)()
     # v_cut = 1 puts every loss in the continuous part; the third flag switches
     # on the second moment (dE2dx), which is zero without it.
     cuts = pp.EnergyCutSettings(np.inf, 1, True)
@@ -303,9 +343,12 @@ def build_proposal_table(
 
     n_points = int(round((log10_e_max - log10_e_min) * points_per_decade)) + 1
     energy_gev = np.logspace(log10_e_min, log10_e_max, n_points)
-    # PROPOSAL works in MeV and cm; the table is stored at the project's water
-    # density, matching Table 1's convention.
-    scale = CM_PER_KM * RHO_WATER_G_CM3 / medium.mass_density
+    # PROPOSAL works in MeV, and ``calculate_dEdx`` and ``calculate_dE2dx`` are
+    # per unit column density (MeV cm^2 g^-1), not per cm, so no medium density
+    # enters: the table is stored per km of water-equivalent column whatever the
+    # medium, matching Table 1's convention. Dividing by the medium density here
+    # was invisible for water and wrong by 2.65 for standard rock.
+    scale = CM_PER_KM * RHO_WATER_G_CM3
     b_mu = np.array(
         [sum(c.calculate_dEdx(e * 1.0e3) for c in cross_sections) / (e * 1.0e3) for e in energy_gev]
     ) * scale
@@ -321,10 +364,13 @@ def build_proposal_table(
     t_mu = np.empty_like(energy_gev)
     phi_moments = np.empty((energy_gev.size, 3))
     for i, energy in enumerate(energy_gev):
-        spectrum = proposal_loss_spectrum(energy, y)["total"]
+        spectrum = proposal_loss_spectrum(energy, y, medium_name)["total"]
         for order, reference in ((1, b_mu[i]), (2, d_mu[i])):
             quadrature = np.trapezoid(y**order * spectrum, y)
-            if abs(quadrature / reference - 1.0) > 0.01:
+            # 0.1% with PROPOSAL's shipped interpolation tables; freshly generated
+            # ones (written to /tmp on first use) sit 2% from the quadrature in
+            # water and rock alike, so the guard admits that.
+            if abs(quadrature / reference - 1.0) > 0.025:
                 raise RuntimeError(
                     f"dGamma/dy quadrature disagrees with PROPOSAL's moment {order} "
                     f"at E = {energy:.3g} GeV: {quadrature:.6g} vs {reference:.6g}."
@@ -341,8 +387,9 @@ def build_proposal_table(
         table,
         delimiter=",",
         header=(
-            "Muon transport coefficients from PROPOSAL, water at "
-            f"rho = {RHO_WATER_G_CM3} g/cm^3.\n"
+            f"Muon transport coefficients from PROPOSAL in {medium_name} "
+            f"(rho = {medium.mass_density} g/cm^3), per km of water-equivalent "
+            f"column at rho = {RHO_WATER_G_CM3} g/cm^3.\n"
             "Bremsstrahlung + e+e- pair production (Kelner-Kokoulin-Petrukhin) + "
             "photonuclear (ALLM97, Butkevich-Mikheyev shadowing); no ionization.\n"
             "b_mu = <y>, d_mu = <y^2>, t_mu = <y^3> per unit length.\n"

@@ -143,6 +143,7 @@ from softpaws.transport.soft_volume import (
     eroded_prism_target_km2,
     stochastic_muon_range_km,
     truncated_muon_range_km,
+    two_medium_range_ratio,
 )
 from softpaws.transport.source import mean_inelasticity, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
@@ -1098,6 +1099,57 @@ def column_profile(
     return column, energy, total
 
 
+#: Medium below the optical one, entered through the two-medium first passage
+#: of :func:`softpaws.transport.soft_volume.two_medium_muon_range_km` for every
+#: upgoing direction: PROPOSAL's standard rock, whose ``Phi'(0)`` per unit
+#: column sits 27% above water at 1 PeV. An upgoing muon is born below the
+#: bedrock or the sea floor and crosses only the near column of ice or water
+#: before it is seen, so most of its range is in this medium. ``None`` keeps the
+#: water kernel for the whole range, which every number before 2026-09-02
+#: carried; the difference is a factor 0.80 to 0.86 on the entering term over
+#: the upgoing sky beyond ~6 degrees of the horizon, and none inside it.
+FAR_MEDIUM_SOURCE = "proposal_rock"
+
+
+def rock_range_ratio(
+    production_gev: float, threshold_gev: float, cos_theta: np.ndarray, site: Site,
+    height_km: float, density_g_cm3: float,
+) -> np.ndarray:
+    """Two-medium range over the single-medium one, per arrival direction.
+
+    The near column is the optical medium between the far medium and the
+    centre of the instrumented body, ``(headroom below + h/2) / |cos theta|``,
+    in the same geometric units as every other length here, so the ratio
+    multiplies the column-depth lengths of the entering term directly. It is
+    1 above the horizon, where the overburden is the optical medium throughout,
+    and 1 everywhere when :data:`FAR_MEDIUM_SOURCE` is ``None``.
+
+    Parameters
+    ----------
+    production_gev : float
+        Muon energy at production [GeV].
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    cos_theta : np.ndarray
+        Cosine of the arrival zenith; ``+1`` is overhead.
+    site : Site
+        Detector site, for the headroom below the instrumented volume.
+    height_km : float
+        Instrumented height [km].
+    density_g_cm3 : float
+        Density of the optical medium [g cm^-3], the unit the lengths are in.
+
+    Returns
+    -------
+    ratio : np.ndarray
+        Range ratio, one entry per direction, in ``(0, 1]``.
+    """
+    vertical_km = site.headroom_below_m / M_PER_KM + 0.5 * height_km
+    return two_medium_range_ratio(
+        production_gev, threshold_gev, cos_theta, vertical_km, density_g_cm3,
+        far_source=FAR_MEDIUM_SOURCE)
+
+
 # ---------------------------------------------------------------------------
 # IceCube
 # ---------------------------------------------------------------------------
@@ -1145,12 +1197,18 @@ def ic_column_volume_km3(
     if profile is None:
         return zeros
     column, energy, total = profile
+    # Below the ice the muon is in rock, which shortens every upgoing column.
+    # ``ic_upgoing_columns`` hands back ``|cos theta_z| = sin(dec)`` for a
+    # hemisphere that is upgoing by construction, so the sign is restored here.
+    ratio = rock_range_ratio(
+        production_gev, threshold_gev, -np.abs(np.asarray(cos_theta, dtype=float)),
+        site, ex32.IC_HEIGHT_KM, RHO_ICE_G_CM3)
 
     if min_modules is None:
         area, volume = eroded_prism_target_km2(
             cos_theta, ex32.IC_RADIUS_KM, ex32.IC_HEIGHT_KM, site.min_track_km,
             ex32.IC_N_SIDES)
-        return area * total + volume
+        return area * total * ratio + volume
 
     radius, height, weight = effective_body_km(
         ex32.IC_RADIUS_KM, ex32.IC_HEIGHT_KM, energy, site, min_modules,
@@ -1161,7 +1219,7 @@ def ic_column_volume_km3(
     )
     # The instrumented term belongs to a vertex inside the body, which the muon
     # leaves at essentially its production energy, so it is taken at ``energy[0]``.
-    return (np.trapezoid(weight[:, None] * area, column, axis=0)
+    return (np.trapezoid(weight[:, None] * area, column[:, None] * ratio[None, :], axis=0)
             + weight[0] * volume[0])
 
 
@@ -1280,6 +1338,11 @@ def arca_column_volume_km3(
     truncated = np.atleast_1d(truncated_muon_range_km(
         production_gev, available_km, threshold_gev, kernel_evaluation="running"))
     truncated = np.clip(truncated, 0.0, None)
+    # Below the sea floor the muon is in rock, which shortens every upgoing
+    # column; the overburden above is water throughout and is untouched.
+    ratio = rock_range_ratio(production_gev, threshold_gev, cos_theta, site,
+                             height_km, RHO_WATER_G_CM3)
+    truncated = truncated * ratio
 
     if min_modules is None:
         area, volume = eroded_prism_target_km2(
@@ -1297,7 +1360,7 @@ def arca_column_volume_km3(
         cos_theta[None, :], radius[:, None], height[:, None], site.min_track_km,
         None, n_blocks)
     area = weight[:, None] * area
-    clipped = np.minimum(column[:, None], available_km[None, :])
+    clipped = np.minimum(column[:, None] * ratio[None, :], available_km[None, :])
     span = clipped[-1]
     mean_area = np.where(
         span > 0.0, np.trapezoid(area, clipped, axis=0) / np.where(span > 0.0, span, 1.0),
@@ -1677,9 +1740,10 @@ def summarize(ic_curves, ic_band, ic_fit, arca_curves, arca_band, arca_fit,
     substitution and not the medium, and quoting it invited a comparison the
     model cannot support.
     """
-    print("\n  Free normalization the fitted curve needs:")
-    for site, (_, norm) in ((icecube_site, ic_fit), (arca_site, arca_fit)):
-        print(f"    {site.name:16s} {norm:.3f}")
+    print("\n  Free normalization the fitted curve needs, and the flat attenuation")
+    print("  length the shape fit lands on (the calibrated pair examples 46 and 47 carry):")
+    for site, (length_m, norm) in ((icecube_site, ic_fit), (arca_site, arca_fit)):
+        print(f"    {site.name:16s} {norm:.3f}   Lambda {length_m:5.1f} m")
 
     ic_mean, ic_shape = residuals(ic_curves["Published"], ic_curves["First principles"], ic_band)
     arca_mean, arca_shape = residuals(

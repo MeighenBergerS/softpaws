@@ -53,6 +53,8 @@ is an apples-to-oranges comparison; see ``examples/20_effective_area_soft_vs_irf
 
 from __future__ import annotations
 
+import functools
+
 import numpy as np
 from scipy.special import gammainc, polygamma
 
@@ -1073,6 +1075,204 @@ def stochastic_muon_range_km(
         cdf = log_loss_cdf(np.log(eps / stochastic_floor), ell, float(b_mu[i]), float(d_mu[i]))
         out[i] = float(np.trapezoid(cdf, ell)) + float(offset_km[i])
     return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
+
+
+def two_medium_muon_range_km(
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    near_column_km: float = 0.0,
+    near_source: str = DEFAULT_SOURCE,
+    far_source: str = "proposal_rock",
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    **range_kwargs,
+) -> np.ndarray:
+    """Range to threshold through a far medium first and a near one last.
+
+    An upgoing muon at IceCube or ARCA is born in the bedrock or the sea floor
+    and only enters the ice or the water for the last stretch before the
+    array, so the kernel it descends through is rock for most of its range.
+    Because the log-loss subordinator only moves down, the descent splits at
+    one energy: the muon enters the near medium at the ``E_1`` for which the
+    near medium's own range to threshold equals the near column,
+
+    .. math:: L_\\mathrm{near}(E_1 \\to E_\\mathrm{thr}) = X_\\mathrm{near},
+
+    and the total range is the far-medium first passage from the production
+    energy down to that level plus the near column,
+
+    .. math:: L(\\varepsilon) = L_\\mathrm{far}(\\varepsilon \\to E_1)
+        + X_\\mathrm{near}, \\qquad \\varepsilon > E_1 .
+
+    A muon whose whole near-medium range fits inside ``X_near`` never sees the
+    far medium and gets :func:`stochastic_muon_range_km` in the near medium
+    alone. ``E_1`` depends on the near column and the threshold and not on the
+    production energy, so it is solved once per arrival direction.
+
+    Every column here is water equivalent, as everywhere in the model, so a
+    near column of ice at density 0.918 enters as its water-equivalent length.
+    The ionization coefficient is taken from the near medium throughout; the
+    far-medium value is ~15% lower in standard rock, which is worth a few
+    percent of the last kilometre and nothing elsewhere.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    near_column_km : float, optional
+        Column of the near medium between the far medium and the detector,
+        along the arrival direction [km w.e.]. Zero (the default) puts the
+        whole range in the far medium.
+    near_source : str, optional
+        Coefficient source for the near medium; see
+        :mod:`softpaws.transport.coefficients`. Defaults to water.
+    far_source : str, optional
+        Coefficient source for the far medium. Defaults to
+        ``"proposal_rock"``, PROPOSAL's standard rock.
+    density_g_cm3 : float, optional
+        Reference density [g cm^-3]; cancels, as every length is a column.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient, applied to both
+        media. Defaults to 1.
+    **range_kwargs
+        Passed to :func:`stochastic_muon_range_km` for both segments
+        (``include_ionization``, ``match_energy_gev``, ``kernel_evaluation``,
+        ``log_loss_source``, ``running_nodes_per_decade``).
+
+    Returns
+    -------
+    range_km : np.ndarray
+        Expected range [km w.e.], zero for muons born below threshold.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    near = float(near_column_km)
+    range_items = tuple(sorted(range_kwargs.items()))
+
+    if near <= 0.0:
+        out = stochastic_muon_range_km(
+            energy, threshold_gev, density_g_cm3, b_scale, far_source, **range_kwargs
+        )
+        return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
+
+    within_near = stochastic_muon_range_km(
+        energy, threshold_gev, density_g_cm3, b_scale, near_source, **range_kwargs
+    )
+    if float(np.max(within_near)) <= near:
+        # Even the most energetic muon asked for stops inside the near column.
+        return within_near.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else within_near
+
+    entry_gev = _near_entry_energy_gev(
+        near, float(threshold_gev), float(density_g_cm3), float(b_scale), near_source,
+        range_items,
+    )
+    beyond = stochastic_muon_range_km(
+        energy, entry_gev, density_g_cm3, b_scale, far_source, **range_kwargs
+    )
+    out = np.where(energy > entry_gev, near + beyond, within_near)
+    return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
+
+
+def two_medium_range_ratio(
+    production_gev: float,
+    threshold_gev: float,
+    cos_theta: float | np.ndarray,
+    near_vertical_km: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    far_source: str | None = "proposal_rock",
+    near_source: str = DEFAULT_SOURCE,
+    **range_kwargs,
+) -> np.ndarray:
+    """Two-medium range over the single-medium one, per arrival direction.
+
+    The factor by which the rock below an array shortens the entering term of
+    an upgoing effective area. The near column is the optical medium between
+    the far medium and the point the muon is seen at,
+    ``near_vertical_km / |cos theta|``, in the same units as every other
+    length here, so the ratio multiplies a column-depth length directly. It
+    is 1 above the horizon, where the overburden is the optical medium
+    throughout, and 1 everywhere when ``far_source`` is ``None``.
+
+    Parameters
+    ----------
+    production_gev : float
+        Muon energy at production [GeV].
+    threshold_gev : float
+        Muon energy below which the track is not selected [GeV].
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith; ``+1`` is overhead, ``-1`` the nadir.
+    near_vertical_km : float
+        Vertical extent of the optical medium below the point the muon is
+        seen at [km], typically the headroom below the instrumented volume
+        plus half its height.
+    density_g_cm3 : float, optional
+        Density of the optical medium [g cm^-3], the unit the lengths are in.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient, applied to both
+        media. Defaults to 1.
+    far_source : str or None, optional
+        Coefficient source for the far medium. Defaults to
+        ``"proposal_rock"``; ``None`` disables the correction.
+    near_source : str, optional
+        Coefficient source for the near medium. Defaults to water.
+    **range_kwargs
+        Passed to :func:`stochastic_muon_range_km` for both media.
+
+    Returns
+    -------
+    ratio : np.ndarray
+        Range ratio, one entry per direction, in ``(0, 1]``.
+    """
+    cos_theta = np.atleast_1d(np.asarray(cos_theta, dtype=float))
+    ratio = np.ones_like(cos_theta)
+    upgoing = cos_theta < 0.0
+    if far_source is None or not upgoing.any():
+        return ratio
+    single = float(np.squeeze(stochastic_muon_range_km(
+        production_gev, threshold_gev, density_g_cm3, b_scale, near_source, **range_kwargs
+    )))
+    if not np.isfinite(single) or single <= 0.0:
+        return ratio
+    for i in np.flatnonzero(upgoing):
+        near_km = near_vertical_km / max(-float(cos_theta[i]), 1.0e-3)
+        two = float(np.squeeze(two_medium_muon_range_km(
+            production_gev, threshold_gev, near_km, near_source, far_source,
+            density_g_cm3, b_scale, **range_kwargs
+        )))
+        ratio[i] = two / single
+    return ratio
+
+
+@functools.lru_cache(maxsize=8192)
+def _near_entry_energy_gev(
+    near_column_km: float,
+    threshold_gev: float,
+    density_g_cm3: float,
+    b_scale: float,
+    near_source: str,
+    range_items: tuple,
+) -> float:
+    """The energy at which the near medium's range to threshold equals the near column.
+
+    Cached, because the entry energy depends on the arrival direction and the
+    threshold and not on the production energy, so a sky-resolved effective
+    area asks for the same few hundred values many thousand times.
+    """
+    from scipy.optimize import brentq
+
+    range_kwargs = dict(range_items)
+
+    def shortfall(log10_e):
+        return float(np.squeeze(stochastic_muon_range_km(
+            10.0**log10_e, threshold_gev, density_g_cm3, b_scale, near_source, **range_kwargs
+        ))) - near_column_km
+
+    # The caller has checked that some energy below its own maximum reaches the
+    # column, and the coefficient tables stop at 10^10 GeV, so the bracket is safe.
+    return 10.0**brentq(shortfall, np.log10(threshold_gev) + 1.0e-6, 12.0)
 
 
 def _running_variance_rate_km2(
