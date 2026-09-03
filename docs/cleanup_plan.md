@@ -75,27 +75,30 @@ Nothing in the library plots. Figure code stays in `examples/` and `scripts/`.
 
 ## 3. Phases
 
-### Phase 0. Freeze and baseline (half a day)
+### Phase 0. Freeze and baseline (done 2026-09-03)
 
 Nothing gets refactored until the current outputs are pinned.
 
-1. Commit the working tree as it is (13 modified files, examples 77 to 83, the
-   two untracked CSVs). Tag it `pre-cleanup`.
-2. Done 2026-09-03: the manuscript moved out of `docs/` into `/paper/`, which
-   `.gitignore` now excludes whole. `docs/` becomes the docs-site source.
-3. Delete root junk: `pdflatex.tmp`, `texput.log`, `results.json`,
-   `docs/pdflatex.tmp`, `src/softpaws.egg-info/`, `examples/__pycache__/`,
-   `examples/mceq_tmp.py`, `examples/energy_grid.txt`, `examples/upgoing.txt`,
-   the two scratch notebooks, and the nine `*.pre-*` backups.
-4. Write `tests/regression/baseline.json`: the paper's quoted numbers pulled
-   from `docs/run_logs/` and `docs/numbers.json` (the 564.5 ± 109 vs 526 event
-   count, the 2.75 to 2.77 sigma tension, the four-site instrument numbers of
-   Table E.1, the per-band residuals of Section IV B, the Phi(A) values of
-   Table D.1, the KM3 event energy medians). Every later phase runs against
-   this file.
-5. Copy the current `examples/output/*.npz` and `*.json` caches to
-   `scripts/2026_muon_transport/cache/` (gitignored). They stay the reference
-   until the library reproduces them.
+1. Done. The snapshot commit is `6bffc38`, tagged `pre-cleanup`.
+2. Done. The manuscript moved out of `docs/` into `/paper/`, which
+   `.gitignore` excludes whole. `docs/` becomes the docs-site source.
+3. Done. Root and `examples/` scratch files removed. The `*.pre-*` backups
+   went to `/paper/` with the manuscript; `src/softpaws.egg-info/` stays
+   because the editable install uses it, and git ignores it.
+4. Done. `tests/regression/baseline.json` holds 25 blocks, each with a
+   source and a tolerance, and `test_baseline.py` checks the kernel
+   moments, Table D.1, Table D.2 and the Table C.1 rows. Two findings came
+   out of writing it, both stale paper numbers, not library bugs:
+   - Table C.1's range rows were generated at commit `0ce30cb` (2026-08-07),
+     before the running-kernel range. The current library sits about 0.6 km
+     away at every energy. The test pins today's library values; the table
+     is regenerated from the library before submission.
+   - The water Phi'(0) values in Tables C.1 and E.2 are 0.7 to 1.0% below the
+     current water table (0.424 vs 0.428 at 10 TeV, 0.484 vs 0.487 at 1 PeV).
+     The rock values match, so the water table was regenerated after they
+     were typed. Same fix.
+5. Done. The `examples/output/*.npz` and `*.json` caches are copied to
+   `scripts/2026_muon_transport/cache/` (gitignored, 72 MB).
 
 ### Phase 1. Lift the hub examples into the library (the main work, 4 to 6 days)
 
