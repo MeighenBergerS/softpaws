@@ -129,13 +129,14 @@ Usage
 import argparse
 import importlib.util
 import pathlib
-from dataclasses import dataclass, replace
+from dataclasses import replace
 
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import brentq, minimize_scalar
 from scipy.special import gammainc
 
+from softpaws.detectors import ANCHOR_NM, ARCA_OPTICS, ICECUBE_OPTICS, Optics
 from softpaws.transport.coefficients import drift_coefficient
 from softpaws.transport.cross_section import CrossSection, bgr18_cross_section
 from softpaws.transport.soft_volume import (
@@ -165,7 +166,6 @@ WAVELENGTH_NM = np.linspace(280.0, 680.0, 201)
 #: sites' published absorption and scattering lengths are near-peak values, and
 #: the tabulated shapes below are normalized here so those numbers keep their
 #: meaning.
-ANCHOR_NM = 400.0
 
 #: Charged track length in an electromagnetic shower [m GeV^-1], at water
 #: density. Paired with the water-density ``b_mu`` below, so the product that
@@ -209,7 +209,6 @@ DEFAULT_MIN_MODULES = 8.0
 #: ``ARCA_SITE`` carries zero. Imposing 230 m on it instead drives the model 20%
 #: *below* the trigger curve near 10^4.8, which a trigger-level comparison may
 #: not do.
-DEFAULT_MIN_TRACK_KM = 0.23
 
 #: Band the models are compared over at each site, matching example 32.
 IC_BAND = (5.0, 7.8)
@@ -331,157 +330,11 @@ MODELS = ("First principles", "Fitted")
 DETECTOR_STYLE = {"IceCube": "-", "KM3NeT/ARCA230": "--"}
 
 
-@dataclass(frozen=True)
-class Site:
-    """Optical medium and optical module of one detector.
-
-    Every field is a published instrument or medium property. None of them is
-    adjusted against an effective-area curve.
-
-    Attributes
-    ----------
-    name : str
-        Detector name.
-    refractive_index : float
-        Phase refractive index of the medium near 400 nm.
-    absorption_m : float
-        Photon absorption length [m].
-    scattering_m : float
-        Effective photon scattering length [m].
-    cathode_area_m2 : float
-        Total photocathode area of one optical module [m^2].
-    quantum_efficiency : float
-        Photon detection efficiency of the photocathode.
-    density_g_cm3 : float
-        Density of the medium [g cm^-3].
-    headroom_above_m : float
-        Depth of optical medium between the top of the instrumented volume and
-        the upper boundary of the medium [m].
-    headroom_below_m : float
-        Depth of optical medium between the bottom of the instrumented volume
-        and the lower boundary of the medium [m].
-    min_track_km : float
-        Minimum path a track must have inside the instrumented volume to enter
-        this detector's published response [km]. It belongs to the *selection*
-        the curve was made at and not to the optics, so it is per detector; see
-        :data:`DEFAULT_MIN_TRACK_KM`.
-    module_density_per_km3 : float
-        Optical modules per cubic kilometre of instrumented volume.
-    efficiency_nm, efficiency : tuple of float
-        Photon detection efficiency against wavelength [nm]: quantum efficiency
-        times the transmission of the pressure sphere and the gel.
-    absorption_nm, absorption_shape : tuple of float
-        Relative absorption length against wavelength [nm], normalized at
-        :data:`ANCHOR_NM` so that ``absorption_m`` sets the scale.
-    scattering_nm, scattering_shape : tuple of float
-        Relative effective scattering length against wavelength [nm], normalized
-        the same way against ``scattering_m``.
-    attenuation_override_m : float or None, optional
-        Attenuation length [m] to use in place of the one the absorption and
-        scattering lengths imply. Set by the fit, unset everywhere else.
-    illuminated_pmts : int or None, optional
-        Photomultipliers of one module that see a distant track, for a
-        multi-PMT module whose local coincidence is internal: KM3NeT's L1 is
-        any two PMTs of one module, and a track's light reaches roughly the
-        facing hemisphere, ~12 of ARCA's 31. ``None`` (the default) is a
-        single-PMT module whose coincidence partners are its string
-        neighbours, as in IceCube's HLC. See :func:`hit_probability`.
-    """
-
-    name: str
-    refractive_index: float
-    absorption_m: float
-    scattering_m: float
-    cathode_area_m2: float
-    quantum_efficiency: float
-    density_g_cm3: float
-    headroom_above_m: float
-    headroom_below_m: float
-    min_track_km: float
-    module_density_per_km3: float
-    efficiency_nm: tuple[float, ...]
-    efficiency: tuple[float, ...]
-    absorption_nm: tuple[float, ...]
-    absorption_shape: tuple[float, ...]
-    scattering_nm: tuple[float, ...]
-    scattering_shape: tuple[float, ...]
-    attenuation_override_m: float | None = None
-    illuminated_pmts: int | None = None
-
-
-#: Photon detection efficiency against wavelength [nm]: photocathode quantum
-#: efficiency times pressure-sphere and gel transmission. **These are smooth
-#: parameterizations of the published shapes, not digitized vendor curves**, and
-#: swapping in the collaborations' own tables is a drop-in improvement. They
-#: carry the two features that matter: a peak near 0.22-0.27 in the near
-#: ultraviolet, and a band ~120 nm wide inside the nominal 300 nm, cut below by
-#: the housing glass and above by the bialkali cathode. IceCube's sphere cuts
-#: near 330 nm, KM3NeT's a little lower, and its smaller tubes reach a slightly
-#: higher peak.
-IC_EFFICIENCY_NM = (280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0,
-                    450.0, 500.0, 550.0, 600.0, 650.0)
-IC_EFFICIENCY = (0.0, 0.003, 0.035, 0.115, 0.180, 0.212, 0.220, 0.212,
-                 0.180, 0.118, 0.058, 0.018, 0.0)
-ARCA_EFFICIENCY_NM = (280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0,
-                      450.0, 500.0, 550.0, 600.0, 650.0)
-ARCA_EFFICIENCY = (0.0, 0.020, 0.125, 0.205, 0.250, 0.268, 0.262, 0.242,
-                   0.200, 0.130, 0.062, 0.020, 0.0)
-
-#: Relative absorption and effective-scattering lengths against wavelength [nm],
-#: normalized at :data:`ANCHOR_NM` so each site's published length sets the
-#: scale. Also parameterizations of the published shapes. Deep ice is clearest
-#: near 400 nm and its absorption collapses beyond 500 nm as the intrinsic
-#: absorption of water takes over, which is why the red half of the nominal band
-#: contributes almost nothing at any interesting distance; the dust that
-#: dominates below 350 nm closes the other end. Scattering in ice falls smoothly
-#: with wavelength, roughly as ``lambda^0.9``.
-ICE_ABSORPTION_NM = (280.0, 320.0, 360.0, 400.0, 440.0, 480.0, 520.0, 560.0,
-                     600.0, 650.0)
-ICE_ABSORPTION_SHAPE = (0.28, 0.55, 0.85, 1.00, 0.98, 0.82, 0.52, 0.27,
-                        0.11, 0.04)
-ICE_SCATTERING_NM = (280.0, 400.0, 600.0)
-ICE_SCATTERING_SHAPE = (0.72, 1.00, 1.43)
-
-#: The same for Capo Passero sea water, whose clarity peaks in the blue near
-#: 450-470 nm rather than in the near ultraviolet, and whose scattering is
-#: Rayleigh-like and so falls steeply with wavelength.
-SEA_ABSORPTION_NM = (280.0, 320.0, 360.0, 400.0, 440.0, 470.0, 500.0, 550.0,
-                     600.0, 650.0)
-SEA_ABSORPTION_SHAPE = (0.22, 0.50, 0.78, 1.00, 1.18, 1.21, 0.98, 0.44,
-                        0.14, 0.05)
-SEA_SCATTERING_NM = (280.0, 400.0, 600.0)
-SEA_SCATTERING_SHAPE = (0.42, 1.00, 2.25)
-
-#: Deep South Pole ice below the dust layer, and the IceCube digital optical
-#: module: one downward-facing 10-inch photomultiplier of 324 cm^2 photocathode.
-#: The array is instrumented from 1450 to 2450 m and the ice sheet is ~2820 m
-#: thick at the Pole, so the reach has 370 m of ice below the deepest module and
-#: bedrock after that. The headroom above is nominally 1450 m and never binds at
-#: these reaches; the dust layer near 2000 m makes it optically worse than the
-#: single attenuation length here says, which is a reason not to lean on it.
-ICECUBE_SITE = Site(
-    "IceCube", 1.33, 175.0, 60.0, 0.0324, 0.25, 0.92, 1450.0, 370.0,
-    DEFAULT_MIN_TRACK_KM,
-    module_density_per_km3=5160.0,
-    efficiency_nm=IC_EFFICIENCY_NM, efficiency=IC_EFFICIENCY,
-    absorption_nm=ICE_ABSORPTION_NM, absorption_shape=ICE_ABSORPTION_SHAPE,
-    scattering_nm=ICE_SCATTERING_NM, scattering_shape=ICE_SCATTERING_SHAPE,
-)
-
-#: The Capo Passero site, and the KM3NeT multi-photomultiplier module: 31
-#: 3-inch photomultipliers covering the full sphere, 1260 cm^2 in total. Sea
-#: water scatters weakly, so its attenuation is absorption limited. The lowest
-#: storey sits ~80 m above a 3500 m seabed, which is what the downward reach has
-#: to work with; above the highest storey there are ~2800 m of water.
-ARCA_SITE = Site(
-    "KM3NeT/ARCA230", 1.35, 68.0, 265.0, 0.126, 0.25, 1.04, 2810.0, 80.0,
-    0.0,
-    module_density_per_km3=3902.0,
-    efficiency_nm=ARCA_EFFICIENCY_NM, efficiency=ARCA_EFFICIENCY,
-    absorption_nm=SEA_ABSORPTION_NM, absorption_shape=SEA_ABSORPTION_SHAPE,
-    scattering_nm=SEA_SCATTERING_NM, scattering_shape=SEA_SCATTERING_SHAPE,
-    illuminated_pmts=12,
-)
+# The optical media and modules live in :mod:`softpaws.detectors.optics`;
+# the names below are kept for the scripts that load this one.
+Site = Optics
+ICECUBE_SITE = ICECUBE_OPTICS
+ARCA_SITE = ARCA_OPTICS
 
 #: Fraction of its photocathode area a module presents to an arriving photon.
 #: A sphere uniformly covered with photocathode of area ``A`` presents ``A / 4``

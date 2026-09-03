@@ -50,8 +50,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import brentq
 
+from softpaws.data.icecube import (
+    irf_season as canonical_irf_season,
+)
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 from softpaws.data.schema import SEASONS
+from softpaws.detectors import ARCA230, ICECUBE, MAX_UPSTREAM_KM
 from softpaws.transport.attenuation import (
     flavour_transmission,
     prem_column,
@@ -82,22 +86,22 @@ CROSS_SECTION = bgr18_cross_section()
 # IceCube as an upright hexagonal prism: ~1 km^2 of footprint by 1 km of
 # instrumented height, giving V_det = 1.00 km^3 exactly. IC_RADIUS_KM is the
 # area-equivalent radius of the hexagon, so pi R^2 is the footprint.
-IC_FOOTPRINT_KM2 = 1.0
-IC_HEIGHT_KM = 1.0
-IC_N_SIDES = 6
-IC_RADIUS_KM = float(np.sqrt(IC_FOOTPRINT_KM2 / np.pi))  # ~0.564 km
+IC_HEIGHT_KM = ICECUBE.height_km
+IC_N_SIDES = ICECUBE.n_sides
+IC_RADIUS_KM = ICECUBE.radius_km  # ~0.564 km
+IC_FOOTPRINT_KM2 = float(np.pi * IC_RADIUS_KM**2)
 IC_LOG10_E = np.linspace(3.0, 8.0, 26)
 IC_FIT_BAND = (5.0, 7.8)  # band the reach law is calibrated over
 N_DEC = 60
 
 # --- ARCA230, example 30's numbers ------------------------------------------
-ARCA230_RADIUS_KM = 0.517
-BLOCK_HEIGHT_KM = 0.632
-N_BLOCKS_FULL = 2
-ARCA_DEPTH_KM = 3.5 - 0.5 * BLOCK_HEIGHT_KM
+ARCA230_RADIUS_KM = ARCA230.radius_km
+BLOCK_HEIGHT_KM = ARCA230.height_km
+N_BLOCKS_FULL = ARCA230.n_blocks
+ARCA_DEPTH_KM = ARCA230.depth_km
 ARCA_LOG10_E = np.arange(4.0, 10.01, 0.2)
 ARCA_FIT_BAND = (4.0, 7.5)  # digitized trigger curve saturates past the top
-MAX_SEA_PATH_KM = 100.0
+MAX_SEA_PATH_KM = MAX_UPSTREAM_KM
 RHO_SEA_G_CM3 = RHO_WATER_G_CM3
 N_ZENITH = 90
 
@@ -165,10 +169,6 @@ def fit_reach_law(
 # ---------------------------------------------------------------------------
 
 
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
-
-
 def icecube_published(data_dir: pathlib.Path) -> np.ndarray:
     """Livetime-weighted published IceCube effective area, upgoing sky [cm^2]."""
     irf_dir = data_dir / "irfs"
@@ -177,7 +177,7 @@ def icecube_published(data_dir: pathlib.Path) -> np.ndarray:
     total_livetime_s = 0.0
     aeff_cache: dict[str, object] = {}
     for season in SEASONS:
-        irf_season = _canonical_irf_season(season)
+        irf_season = canonical_irf_season(season)
         if irf_season not in aeff_cache:
             raw = np.genfromtxt(irf_dir / f"{irf_season}_effectiveArea.csv", comments="#")
             aeff_cache[irf_season] = parse_aeff(raw)

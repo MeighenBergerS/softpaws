@@ -99,8 +99,10 @@ from softpaws.comparison.likelihood import (
     atmospheric_template,
     poisson_log_likelihood,
 )
-from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
-from softpaws.data.schema import SEASONS
+from softpaws.data.icecube import (
+    livetime_weighted_effective_area,
+)
+from softpaws.detectors import ARCA21, ARCA230, ICECUBE, MAX_UPSTREAM_KM
 from softpaws.response.soft_volume import power_law_flux
 from softpaws.transport.attenuation import (
     flavour_transmission,
@@ -149,10 +151,10 @@ CROSS_SECTION = bgr18_cross_section()
 # IceCube as an upright hexagonal prism: ~1 km^2 of footprint by 1 km of
 # instrumented height, which gives V_det = 1.00 km^3 exactly. IC_RADIUS_KM is the
 # area-equivalent radius of the hexagon, so pi R^2 is the footprint.
-IC_FOOTPRINT_KM2 = 1.0
-IC_HEIGHT_KM = 1.0
-IC_N_SIDES = 6
-IC_RADIUS_KM = float(np.sqrt(IC_FOOTPRINT_KM2 / np.pi))  # ~0.564 km
+IC_HEIGHT_KM = ICECUBE.height_km
+IC_N_SIDES = ICECUBE.n_sides
+IC_RADIUS_KM = ICECUBE.radius_km  # ~0.564 km
+IC_FOOTPRINT_KM2 = float(np.pi * IC_RADIUS_KM**2)
 IC_SOLID_ANGLE_SR = 2.0 * np.pi  # upgoing hemisphere only
 IC_AEFF_LOG10_E = np.linspace(3.0, 8.0, 26)
 IC_STATS_LOG10_E = (5.0, 7.8)  # band example 28 calibrated the reach law over
@@ -162,16 +164,16 @@ BKG_FRACTION = 0.3
 # ARCA21: the 21-line detector that recorded KM3-230213A. The published
 # bright-track table is the response used for inference; the geometry below only
 # feeds the trigger-level contrast curve.
-ARCA21_RADIUS_KM = 0.221
-ARCA230_RADIUS_KM = 0.517
-BLOCK_HEIGHT_KM = 0.632
-ARCA_DEPTH_KM = 3.5 - 0.5 * BLOCK_HEIGHT_KM
-N_BLOCKS_FULL = 2
+ARCA21_RADIUS_KM = ARCA21.radius_km
+ARCA230_RADIUS_KM = ARCA230.radius_km
+BLOCK_HEIGHT_KM = ARCA230.height_km
+ARCA_DEPTH_KM = ARCA230.depth_km
+N_BLOCKS_FULL = ARCA230.n_blocks
 KM_LIVETIME_S = 335.0 * 86400.0  # actual ARCA21 bright-track exposure
 KM_SOLID_ANGLE_SR = 4.0 * np.pi  # the released table is sky-averaged, not upgoing
 ARCA_AEFF_LOG10_E = np.arange(4.0, 10.01, 0.2)
 ARCA_FIT_TOP_LOG10_E = 7.5  # digitized trigger curve saturates past this
-MAX_SEA_PATH_KM = 100.0
+MAX_SEA_PATH_KM = MAX_UPSTREAM_KM
 RHO_SEA_G_CM3 = RHO_WATER_G_CM3
 N_ZENITH = 90
 N_ELL = 401
@@ -243,39 +245,13 @@ def parse_args() -> argparse.Namespace:
 # ---------------------------------------------------------------------------
 
 
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
+def icecube_upgoing(data_dir: pathlib.Path):
+    """Livetime-weighted DR2 effective area over the upgoing sky [cm^2].
 
-
-def icecube_upgoing(data_dir: pathlib.Path) -> tuple[np.ndarray, float]:
-    """Livetime-weighted published IceCube effective area, upgoing sky.
-
-    Returns
-    -------
-    aeff : np.ndarray
-        Livetime-weighted effective area [cm^2] on ``IC_AEFF_LOG10_E``.
-    livetime_s : float
-        Total DR2 good-run livetime summed over all seasons [s].
+    Delegates to :func:`softpaws.data.icecube.livetime_weighted_effective_area`
+    on ``IC_AEFF_LOG10_E``.
     """
-    irf_dir = data_dir / "irfs"
-    uptime_dir = data_dir / "uptime"
-    total = np.zeros_like(IC_AEFF_LOG10_E)
-    total_livetime_s = 0.0
-    aeff_cache: dict[str, object] = {}
-    for season in SEASONS:
-        irf_season = _canonical_irf_season(season)
-        if irf_season not in aeff_cache:
-            raw = np.genfromtxt(irf_dir / f"{irf_season}_effectiveArea.csv", comments="#")
-            aeff_cache[irf_season] = parse_aeff(raw)
-        aeff = aeff_cache[irf_season]
-        livetime_s = compute_livetime_s(load_uptime(uptime_dir / f"{season}_exp.csv"))
-        upgoing = aeff.sin_dec_centers > 0.0
-        curve = np.average(
-            aeff.values[:, upgoing], axis=1, weights=np.diff(aeff.sin_dec_edges)[upgoing]
-        )
-        total += livetime_s * np.interp(IC_AEFF_LOG10_E, aeff.log10_energy_centers, curve)
-        total_livetime_s += livetime_s
-    return total / total_livetime_s, total_livetime_s
+    return livetime_weighted_effective_area(data_dir, IC_AEFF_LOG10_E)
 
 
 def ic_upgoing_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:

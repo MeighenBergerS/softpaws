@@ -40,6 +40,8 @@ TAU_LIFETIME_S = 2.903e-13
 
 RHO_WATER_G_CM3 = 1.02
 RHO_ICE_G_CM3 = 0.92
+#: Fresh water, for Lake Baikal [g cm^-3].
+RHO_LAKE_G_CM3 = 1.00
 
 # ---------------------------------------------------------------------------
 # Earth

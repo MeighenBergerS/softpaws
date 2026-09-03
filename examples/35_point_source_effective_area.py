@@ -111,25 +111,24 @@ Writes four standalone figures, ``35a``-``35d``, in the order described above.
 
 import argparse
 import pathlib
-from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
 from softpaws.data.schema import SEASONS
-from softpaws.transport.attenuation import flavour_transmission, prem_column
+from softpaws.detectors import ARCA230, GVD, ICECUBE, PONE, TRIDENT, Site
+from softpaws.transport.attenuation import flavour_transmission
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
     light_reach_radius_km,
-    prism_projected_area_km2,
     truncated_muon_range_km,
     two_medium_range_ratio,
 )
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM, RHO_ICE_G_CM3, RHO_WATER_G_CM3
+from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -183,7 +182,6 @@ RUNG_DECADES = 4.0
 
 # Longest path a near-horizontal muon can have in the detector medium [km].
 # Only a cap on the 1/cos(theta) divergence; it exceeds every muon range here.
-MAX_UPSTREAM_KM = 100.0
 
 # Feldman-Cousins 90% CL upper limit on the signal for zero observed background.
 N_EVENTS_LIMIT = 2.44
@@ -242,40 +240,16 @@ REACH_PIVOT_GEV = 10.0**9.67
 # Sites
 # ---------------------------------------------------------------------------
 
-# IceCube, the one site with a published declination-resolved table to check
-# against: 1 km^3 of ice taken as an upright hexagonal prism, ~1 km^2 of
-# footprint by the 1 km of instrumented height the strings span, at the
-# geographic South Pole. The array runs roughly 1.45-2.45 km deep.
-ICECUBE_VOLUME_KM3 = 1.0
-ICECUBE_HEIGHT_KM = 1.0
-ICECUBE_DEPTH_KM = 1.95
-ICECUBE_LATITUDE_DEG = -90.0
-
-# The four below are as in example 34; see its site block for provenance. All
-# are the as-built or design instrumented footprint and nothing else.
-ARCA_BLOCK_RADIUS_KM = 0.517
-ARCA_BLOCK_HEIGHT_KM = 0.632
-ARCA_N_BLOCKS = 2
-ARCA_LATITUDE_DEG = 36.27
-ARCA_DEPTH_KM = 3.5 - 0.5 * ARCA_BLOCK_HEIGHT_KM
-
-TRIDENT_RADIUS_KM = 2.0
-TRIDENT_HEIGHT_KM = 0.570
-TRIDENT_LATITUDE_DEG = 17.4
-TRIDENT_DEPTH_KM = 0.5 * (2.800 + 3.400)
-
-PONE_BLOCK_RADIUS_KM = 0.120
-PONE_BLOCK_HEIGHT_KM = 1.0
-PONE_N_BLOCKS = 7
-PONE_LATITUDE_DEG = 47.75
-PONE_DEPTH_KM = 2.66 - 0.5 * PONE_BLOCK_HEIGHT_KM
-
-GVD_BLOCK_RADIUS_KM = 0.060
-GVD_BLOCK_HEIGHT_KM = 0.525
-GVD_N_BLOCKS = 14
-GVD_LATITUDE_DEG = 51.77
-GVD_DEPTH_KM = 0.5 * (0.750 + 1.275)
-RHO_LAKE_G_CM3 = 1.0
+# The site geometries live in :mod:`softpaws.detectors`; this script only
+# adds the figure styling for each.
+SITE_COLORS = {
+    "IceCube": "k",
+    "ARCA230": "C0",
+    "TRIDENT": "C1",
+    "P-ONE": "C2",
+    "Baikal-GVD": "C3",
+}
+SITE_LINESTYLES = {name: "-" for name in SITE_COLORS}
 
 # ---------------------------------------------------------------------------
 # Reference declinations
@@ -352,232 +326,21 @@ def parse_args() -> argparse.Namespace:
 # ---------------------------------------------------------------------------
 
 
-@dataclass
-class Site:
-    """One detector: its geometry, its medium, and where on Earth it sits.
-
-    Attributes
-    ----------
-    name : str
-        Label used in the figure and the printed tables.
-    shape : {"sphere", "cylinder", "prism"}
-        Body used for the projected area and the instrumented volume. A prism
-        is a cylinder whose cross-section is a regular ``n_sides``-gon of the
-        same area, which lengthens the perimeter and so the side projection.
-    latitude_deg : float
-        Geographic latitude [deg]. Sets how a declination maps to a zenith.
-    depth_km : float
-        Depth of the instrumented centre below the surface of the medium [km].
-        This is the column a downgoing muon has to be born in.
-    density_g_cm3 : float
-        Density of the detector medium [g cm^-3].
-    radius_km : float
-        Instrumented radius, per block for a cylinder [km].
-    color : str
-        Matplotlib color.
-    height_km : float, optional
-        Instrumented height of one cylinder [km]. Ignored for a sphere.
-    n_blocks : int, optional
-        Number of identical blocks. Ignored for a sphere.
-    """
-
-    name: str
-    shape: str
-    latitude_deg: float
-    depth_km: float
-    density_g_cm3: float
-    radius_km: float
-    color: str
-    height_km: float = 0.0
-    n_blocks: int = 1
-    linestyle: str = "-"
-    n_sides: int = 6
-    #: Optical medium between the bottom of the instrumented volume and the
-    #: rock beneath it [km]. An upgoing muon crosses only this and half the
-    #: height before it is seen, and is in rock for the rest of its range.
-    below_km: float = 0.0
-
-    def projected_area_km2(
-        self,
-        cos_theta: np.ndarray,
-        radius_km: float | np.ndarray,
-        height_km: float | np.ndarray | None = None,
-    ) -> np.ndarray:
-        """Projected area presented to a given arrival zenith [km^2].
-
-        A sphere presents ``pi R^2`` from every direction. An upright cylinder
-        presents ``pi R^2`` overhead and ``2 R h`` at the horizon, and the
-        convex-body projection interpolates between them. A prism replaces the
-        ``2 R h`` by ``(P / pi) h`` for the perimeter ``P`` of its regular
-        cross-section, 5% larger than the circle of equal area for a hexagon.
-        The two terms add, so the oblique projection exceeds both face-on
-        values.
-
-        Parameters
-        ----------
-        cos_theta : np.ndarray
-            Cosine of the arrival zenith; ``+1`` is overhead.
-        radius_km : float or np.ndarray
-            Effective radius [km], broadcast against ``cos_theta``.
-        height_km : float or np.ndarray, optional
-            Effective height [km]. ``None`` (the default) uses the instrumented
-            one; a light reach that dilates the body vertically as well as
-            radially passes its own.
-
-        Returns
-        -------
-        area : np.ndarray
-            Projected area [km^2].
-        """
-        radius = np.asarray(radius_km, dtype=float)
-        cos_theta = np.asarray(cos_theta, dtype=float)
-        if self.shape == "sphere":
-            return np.pi * radius**2 * np.ones_like(cos_theta)
-        return prism_projected_area_km2(
-            cos_theta,
-            radius,
-            self.height_km if height_km is None else height_km,
-            n_sides=self.n_sides if self.shape == "prism" else None,
-            n_blocks=self.n_blocks,
-        )
-
-    def detector_volume_km3(
-        self, radius_km: float | np.ndarray, height_km: float | np.ndarray | None = None
-    ) -> np.ndarray:
-        """Volume of the instrumented body itself [km^3].
-
-        Parameters
-        ----------
-        radius_km : float or np.ndarray
-            Effective radius [km].
-        height_km : float or np.ndarray, optional
-            Effective height [km]; see :meth:`projected_area_km2`.
-
-        Returns
-        -------
-        volume : np.ndarray
-            Instrumented volume [km^3].
-        """
-        radius = np.asarray(radius_km, dtype=float)
-        if self.shape == "sphere":
-            return 4.0 / 3.0 * np.pi * radius**3
-        height = self.height_km if height_km is None else np.asarray(height_km, dtype=float)
-        return self.n_blocks * np.pi * radius**2 * height
-
-    def columns(self, cos_theta: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        """Neutrino column and available muon column for each arrival direction.
-
-        A source above the horizon sends its neutrino down through the
-        overburden only, which is negligible except within a degree of the
-        horizon, and confines the muon to that same overburden. A source below
-        the horizon sends its neutrino through the layered-PREM Earth chord and
-        gives the muon effectively unlimited rock upstream.
-
-        Parameters
-        ----------
-        cos_theta : np.ndarray
-            Cosine of the arrival zenith; ``+1`` is overhead, ``-1`` the nadir.
-
-        Returns
-        -------
-        neutrino_column : np.ndarray
-            Column traversed before reaching the detector [g cm^-2].
-        muon_column_km : np.ndarray
-            Column available upstream of the detector, as a length of the
-            detector medium [km].
-        """
-        cos_theta = np.asarray(cos_theta, dtype=float)
-        above = cos_theta > 0.0
-        with np.errstate(divide="ignore", invalid="ignore"):
-            overburden_km = np.where(
-                above, self.depth_km / np.maximum(cos_theta, 1.0e-6), np.inf
-            )
-        overburden_km = np.minimum(overburden_km, MAX_UPSTREAM_KM)
-
-        theta_deg = np.rad2deg(np.arccos(np.clip(cos_theta, -1.0, 1.0)))
-        earth = np.array(
-            [prem_column(float(t) - 90.0) if t > 90.0 else 0.0 for t in np.atleast_1d(theta_deg)]
-        ).reshape(np.shape(theta_deg))
-        water = overburden_km * CM_PER_KM * self.density_g_cm3
-        neutrino_column = np.where(above, water, earth)
-        # Below the horizon the muon is born in rock, which never runs out.
-        muon_column_km = np.where(above, overburden_km, MAX_UPSTREAM_KM)
-        return neutrino_column, muon_column_km
-
-
 def build_sites() -> list[Site]:
     """The five detectors figure (c) compares.
 
     IceCube is first because it is the only one with a published
     declination-resolved effective area, so it is the site figures (a) and (b)
     validate the model against. The other four are the instrumented footprint
-    and nothing else.
+    and nothing else. The geometries are the published layouts of
+    :mod:`softpaws.detectors`.
 
     Returns
     -------
     sites : list of Site
         Detector definitions, IceCube first.
     """
-    return [
-        Site(
-            name="IceCube",
-            shape="prism",
-            latitude_deg=ICECUBE_LATITUDE_DEG,
-            depth_km=ICECUBE_DEPTH_KM,
-            density_g_cm3=RHO_ICE_G_CM3,
-            # 1 km^2 of hexagonal footprint by 1 km of instrumented height,
-            # which reproduces ICECUBE_VOLUME_KM3 exactly.
-            radius_km=float(np.sqrt(ICECUBE_VOLUME_KM3 / (np.pi * ICECUBE_HEIGHT_KM))),
-            color="k",
-            height_km=ICECUBE_HEIGHT_KM,
-            below_km=0.37,
-        ),
-        Site(
-            name="ARCA230",
-            shape="cylinder",
-            latitude_deg=ARCA_LATITUDE_DEG,
-            depth_km=ARCA_DEPTH_KM,
-            density_g_cm3=RHO_WATER_G_CM3,
-            radius_km=ARCA_BLOCK_RADIUS_KM,
-            color="C0",
-            height_km=ARCA_BLOCK_HEIGHT_KM,
-            n_blocks=ARCA_N_BLOCKS,
-            below_km=0.08,
-        ),
-        Site(
-            name="TRIDENT",
-            shape="cylinder",
-            latitude_deg=TRIDENT_LATITUDE_DEG,
-            depth_km=TRIDENT_DEPTH_KM,
-            density_g_cm3=RHO_WATER_G_CM3,
-            radius_km=TRIDENT_RADIUS_KM,
-            color="C1",
-            height_km=TRIDENT_HEIGHT_KM,
-            below_km=0.1,
-        ),
-        Site(
-            name="P-ONE",
-            shape="cylinder",
-            latitude_deg=PONE_LATITUDE_DEG,
-            depth_km=PONE_DEPTH_KM,
-            density_g_cm3=RHO_WATER_G_CM3,
-            radius_km=PONE_BLOCK_RADIUS_KM,
-            color="C2",
-            height_km=PONE_BLOCK_HEIGHT_KM,
-            n_blocks=PONE_N_BLOCKS,
-        ),
-        Site(
-            name="Baikal-GVD",
-            shape="cylinder",
-            latitude_deg=GVD_LATITUDE_DEG,
-            depth_km=GVD_DEPTH_KM,
-            density_g_cm3=RHO_LAKE_G_CM3,
-            radius_km=GVD_BLOCK_RADIUS_KM,
-            color="C3",
-            height_km=GVD_BLOCK_HEIGHT_KM,
-            n_blocks=GVD_N_BLOCKS,
-        ),
-    ]
+    return [ICECUBE, ARCA230, TRIDENT, PONE, GVD]
 
 
 # ---------------------------------------------------------------------------
@@ -1320,9 +1083,9 @@ def figure_site_ceiling(
             ax.plot(
                 dec_grid,
                 sensitivity[site.name],
-                color=site.color,
+                color=SITE_COLORS[site.name],
                 lw=1.2,
-                ls=site.linestyle,
+                ls=SITE_LINESTYLES[site.name],
                 label=site.name,
             )
         ax.set_yscale("log")

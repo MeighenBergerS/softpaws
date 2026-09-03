@@ -77,6 +77,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import brentq
 
+from softpaws.detectors import ARCA21, ARCA230, MAX_UPSTREAM_KM
 from softpaws.transport.attenuation import (
     flavour_transmission,
     prem_column,
@@ -117,24 +118,24 @@ _DEFAULT_OUT_DIR = _HERE / "output"
 #
 # The LoI (arXiv:1601.07459) quotes R = 500 m and z = 612 m for 0.48 km^3 per
 # block; the as-built array is slightly wider and taller than that.
-BLOCK_RADIUS_KM = 0.517
-BLOCK_HEIGHT_KM = 0.632
-N_BLOCKS_FULL = 2
+BLOCK_RADIUS_KM = ARCA230.radius_km
+BLOCK_HEIGHT_KM = ARCA230.height_km
+N_BLOCKS_FULL = ARCA230.n_blocks
 
 # ARCA21: the equivalent radius of the measured convex hull above. Close to the
 # 214 m that scaling a full block by sqrt(21/115) would give, so the 21 units
 # were already deployed as a compact cluster rather than spread over the full
 # footprint.
-ARCA21_RADIUS_KM = 0.221
+ARCA21_RADIUS_KM = ARCA21.radius_km
 
 # Depth of the instrumented volume's centre below the sea surface [km]. Seabed
 # at 3500 m at the Capo Passero site, with the instrumented span standing on it.
-DETECTOR_DEPTH_KM = 3.5 - 0.5 * BLOCK_HEIGHT_KM
+DETECTOR_DEPTH_KM = ARCA230.depth_km
 
 # Longest sea-water path a near-horizontal muon can have [km]. Only a cap on the
 # 1/cos(theta) divergence; it exceeds every muon range in the problem, so the
 # result is insensitive to it.
-MAX_SEA_PATH_KM = 100.0
+MAX_SEA_PATH_KM = MAX_UPSTREAM_KM
 
 # Sea water at the site, used to turn the geometric path length into a column.
 RHO_SEA_G_CM3 = RHO_WATER_G_CM3

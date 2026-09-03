@@ -104,17 +104,16 @@ Usage
 
 import argparse
 import pathlib
-from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.transport.attenuation import flavour_transmission, prem_column
+from softpaws.detectors import ARCA230, GEN2, GVD, PONE, TRIDENT, Site
+from softpaws.transport.attenuation import flavour_transmission
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.eigenvalue import phi_eigenvalue
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
-    prism_projected_area_km2,
     truncated_muon_range_km,
 )
 from softpaws.transport.source import (
@@ -123,7 +122,7 @@ from softpaws.transport.source import (
     nucleon_number_density,
 )
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM, RHO_ICE_G_CM3, RHO_WATER_G_CM3
+from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -182,55 +181,12 @@ EW_ISOSPIN = 0.5
 # prism of that volume, at the geographic South Pole. Gen2 extends the footprint
 # and not the depth, so the height is the same 1 km of instrumented string that
 # IceCube spans and the footprint carries the whole of the volume increase.
-GEN2_VOLUME_KM3 = 8.0
-GEN2_HEIGHT_KM = 1.0
-GEN2_LATITUDE_DEG = -90.0
-# Depth of the instrumented volume's centre below the ice surface [km]. The
-# in-ice array spans roughly 1.45-2.45 km; Gen2 extends the footprint rather
-# than the depth. This is the column a downgoing muon has to be born in.
-GEN2_DEPTH_KM = 1.95
+# The site geometries live in :mod:`softpaws.detectors`. Gen2 is the 7.9 km^3
+# prism of the technical design report unless --volume-km3 says otherwise.
+GEN2_VOLUME_KM3 = float(GEN2.detector_volume_km3())
+SITE_COLORS = {"IceCube-Gen2": "C0", "ARCA230": "C1", "TRIDENT": "C2", "P-ONE": "C3",
+               "Baikal-GVD": "C4"}
 
-# ARCA230: two building blocks, as-built footprint radius and instrumented
-# height measured from the KM3-230213A geometry release; see example 30.
-ARCA_BLOCK_RADIUS_KM = 0.517
-ARCA_BLOCK_HEIGHT_KM = 0.632
-ARCA_N_BLOCKS = 2
-ARCA_LATITUDE_DEG = 36.27
-ARCA_DEPTH_KM = 3.5 - 0.5 * ARCA_BLOCK_HEIGHT_KM
-
-# P-ONE, Cascadia Basin off Vancouver Island. Seven clusters of ten 1 km
-# mooring lines at 80 m spacing, 400 m between cluster centres (ICRC2023
-# reference geometry, PoS(ICRC2023)1175), so each cluster is a cylinder of
-# radius ~120 m; seafloor at 2660 m (arXiv:2005.09493, arXiv:2108.04961).
-PONE_BLOCK_RADIUS_KM = 0.120
-PONE_BLOCK_HEIGHT_KM = 1.0
-PONE_N_BLOCKS = 7
-PONE_LATITUDE_DEG = 47.75
-PONE_DEPTH_KM = 2.66 - 0.5 * PONE_BLOCK_HEIGHT_KM
-
-# Baikal-GVD, Lake Baikal. Clusters of eight strings on a 60 m radius, optical
-# modules between 750 and 1275 m depth, so 525 m instrumented. Fourteen clusters
-# is roughly the deployed array. Fresh water, hence the density below.
-GVD_BLOCK_RADIUS_KM = 0.060
-GVD_BLOCK_HEIGHT_KM = 0.525
-GVD_N_BLOCKS = 14
-GVD_LATITUDE_DEG = 51.77
-GVD_DEPTH_KM = 0.5 * (0.750 + 1.275)
-RHO_LAKE_G_CM3 = 1.0
-
-# TRIDENT, South China Sea. One dense array rather than separate blocks: ~1200
-# strings over a ~4 km diameter footprint, optical modules from 2800 to 3400 m.
-# The resulting geometric volume, 7.2 km^3, matches the 7.5 km^3 the design
-# quotes, which is the check that this single-cylinder treatment is fair.
-TRIDENT_RADIUS_KM = 2.0
-TRIDENT_HEIGHT_KM = 0.570
-TRIDENT_N_BLOCKS = 1
-TRIDENT_LATITUDE_DEG = 17.4
-TRIDENT_DEPTH_KM = 0.5 * (2.800 + 3.400)
-
-# Longest path a near-horizontal muon can have in the detector medium [km].
-# Only a cap on the 1/cos(theta) divergence; it exceeds every muon range here.
-MAX_UPSTREAM_KM = 100.0
 
 # ---------------------------------------------------------------------------
 # Grids
@@ -610,156 +566,13 @@ def zenith_exposure(
 # ---------------------------------------------------------------------------
 
 
-@dataclass
-class Site:
-    """One detector: its geometry, its medium, and where on Earth it sits."""
-
-    name: str
-    shape: str
-    latitude_deg: float
-    depth_km: float
-    density_g_cm3: float
-    radius_km: float
-    color: str
-    # Cylinders and prisms only; ignored for a sphere.
-    height_km: float = 0.0
-    n_blocks: int = 1
-    n_sides: int = 6
-
-    def projected_area_km2(
-        self,
-        theta_deg: np.ndarray,
-        radius_km: float | np.ndarray,
-    ) -> np.ndarray:
-        """Projected area presented to a given arrival zenith [km^2].
-
-        A sphere presents ``pi R^2`` from every direction. An upright cylinder
-        presents ``pi R^2`` overhead and ``2 R h`` at the horizon, and the
-        convex-body projection interpolates between them. A prism replaces the
-        ``2 R h`` by ``(P / pi) h`` for the perimeter ``P`` of its regular
-        cross-section. The two terms add, so the oblique projection exceeds
-        both face-on values.
-        """
-        radius = np.asarray(radius_km)
-        if self.shape == "sphere":
-            return np.pi * radius**2 * np.ones_like(np.asarray(theta_deg, dtype=float))
-        return prism_projected_area_km2(
-            np.cos(np.deg2rad(theta_deg)),
-            radius,
-            self.height_km,
-            n_sides=self.n_sides if self.shape == "prism" else None,
-            n_blocks=self.n_blocks,
-        )
-
-    def detector_volume_km3(self, radius_km: float | np.ndarray) -> np.ndarray:
-        """Volume of the instrumented body itself [km^3]."""
-        radius = np.asarray(radius_km)
-        if self.shape == "sphere":
-            return 4.0 / 3.0 * np.pi * radius**3
-        return self.n_blocks * np.pi * radius**2 * self.height_km
-
-    def columns(self, cos_theta: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        """Neutrino column and available muon column for each arrival band.
-
-        A source above the horizon sends its neutrino down through the
-        overburden only, which is negligible except within a degree of the
-        horizon, and confines the muon to that same overburden. A source below
-        the horizon sends its neutrino through the layered-PREM Earth chord and
-        gives the muon effectively unlimited rock upstream.
-
-        Parameters
-        ----------
-        cos_theta : np.ndarray
-            Band centres in ``cos(theta_z)``; see :func:`zenith_exposure`.
-
-        Returns
-        -------
-        neutrino_column : np.ndarray
-            Column traversed before reaching the detector [g cm^-2].
-        muon_column_km : np.ndarray
-            Column available upstream of the detector, as a length of the
-            detector medium [km].
-        """
-        cos_theta = np.asarray(cos_theta, dtype=float)
-        theta_deg = np.rad2deg(np.arccos(np.clip(cos_theta, -1.0, 1.0)))
-        with np.errstate(divide="ignore", invalid="ignore"):
-            overburden_km = np.where(
-                cos_theta > 0.0, self.depth_km / np.maximum(cos_theta, 1.0e-6), np.inf
-            )
-        overburden_km = np.minimum(overburden_km, MAX_UPSTREAM_KM)
-
-        above = cos_theta > 0.0
-        water = overburden_km * CM_PER_KM * self.density_g_cm3
-        earth = np.array(
-            [prem_column(float(t) - 90.0) if t > 90.0 else 0.0 for t in theta_deg]
-        )
-        neutrino_column = np.where(above, water, earth)
-        # Below the horizon the muon is born in rock, which never runs out.
-        muon_column_km = np.where(above, overburden_km, MAX_UPSTREAM_KM)
-        return neutrino_column, muon_column_km
-
-
 def build_sites(volume_km3: float) -> list[Site]:
-    """The two detectors this example compares."""
-    return [
-        Site(
-            name="IceCube-Gen2",
-            shape="prism",
-            latitude_deg=GEN2_LATITUDE_DEG,
-            depth_km=GEN2_DEPTH_KM,
-            density_g_cm3=RHO_ICE_G_CM3,
-            radius_km=float(np.sqrt(volume_km3 / (np.pi * GEN2_HEIGHT_KM))),
-            color="C0",
-            height_km=GEN2_HEIGHT_KM,
-        ),
-        Site(
-            name="ARCA230",
-            shape="cylinder",
-            latitude_deg=ARCA_LATITUDE_DEG,
-            depth_km=ARCA_DEPTH_KM,
-            density_g_cm3=RHO_WATER_G_CM3,
-            radius_km=ARCA_BLOCK_RADIUS_KM,
-            color="C1",
-            height_km=ARCA_BLOCK_HEIGHT_KM,
-            n_blocks=ARCA_N_BLOCKS,
-        ),
-        # The three below have no published effective area of their own, so
-        # they are the instrumented footprint and nothing else -- which is all
-        # any site gets here, since the reach is not applied.
-        Site(
-            name="TRIDENT",
-            shape="cylinder",
-            latitude_deg=TRIDENT_LATITUDE_DEG,
-            depth_km=TRIDENT_DEPTH_KM,
-            density_g_cm3=RHO_WATER_G_CM3,
-            radius_km=TRIDENT_RADIUS_KM,
-            color="C2",
-            height_km=TRIDENT_HEIGHT_KM,
-            n_blocks=TRIDENT_N_BLOCKS,
-        ),
-        Site(
-            name="P-ONE",
-            shape="cylinder",
-            latitude_deg=PONE_LATITUDE_DEG,
-            depth_km=PONE_DEPTH_KM,
-            density_g_cm3=RHO_WATER_G_CM3,
-            radius_km=PONE_BLOCK_RADIUS_KM,
-            color="C3",
-            height_km=PONE_BLOCK_HEIGHT_KM,
-            n_blocks=PONE_N_BLOCKS,
-        ),
-        Site(
-            name="Baikal-GVD",
-            shape="cylinder",
-            latitude_deg=GVD_LATITUDE_DEG,
-            depth_km=GVD_DEPTH_KM,
-            density_g_cm3=RHO_LAKE_G_CM3,
-            radius_km=GVD_BLOCK_RADIUS_KM,
-            color="C4",
-            height_km=GVD_BLOCK_HEIGHT_KM,
-            n_blocks=GVD_N_BLOCKS,
-        ),
-    ]
+    """The detectors this example compares, from :mod:`softpaws.detectors`."""
+    gen2 = GEN2.replace(radius_km=float(np.sqrt(volume_km3 / (np.pi * GEN2.height_km))))
+    # The three water sites below TRIDENT have no published effective area of
+    # their own, so they are the instrumented footprint and nothing else --
+    # which is all any site gets here, since the reach is not applied.
+    return [gen2, ARCA230, TRIDENT, PONE, GVD]
 
 
 # ---------------------------------------------------------------------------
@@ -995,7 +808,7 @@ def make_figure(
     out_path : pathlib.Path
         Destination; both PDF and PNG are written.
     """
-    colors = {site.name: site.color for site in sites}
+    colors = SITE_COLORS
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.6, 3.6))
 

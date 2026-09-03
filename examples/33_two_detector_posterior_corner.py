@@ -83,8 +83,10 @@ import numpy as np
 from scipy.stats import chi2, gaussian_kde
 
 from softpaws.comparison.likelihood import B_SCALE_MEAN, B_SCALE_STD
-from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
-from softpaws.data.schema import SEASONS
+from softpaws.data.icecube import (
+    livetime_weighted_effective_area,
+)
+from softpaws.detectors import ARCA230, ICECUBE, MAX_UPSTREAM_KM
 from softpaws.transport.attenuation import flavour_transmission, prem_column
 from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
 from softpaws.transport.cross_section import bgr18_cross_section
@@ -229,10 +231,10 @@ IC_FIT_BAND = (5.0, 7.8)
 # instrumented height, giving V_det = 1.00 km^3 exactly. IC_RADIUS_KM is the
 # area-equivalent radius of the hexagon and IC_SIDE_COEFF the prism perimeter
 # divided by pi R, the coefficient of the side-projection term.
-IC_FOOTPRINT_KM2 = 1.0
-IC_HEIGHT_KM = 1.0
-IC_N_SIDES = 6
-IC_RADIUS_KM = float(np.sqrt(IC_FOOTPRINT_KM2 / np.pi))
+IC_HEIGHT_KM = ICECUBE.height_km
+IC_N_SIDES = ICECUBE.n_sides
+IC_RADIUS_KM = ICECUBE.radius_km
+IC_FOOTPRINT_KM2 = float(np.pi * IC_RADIUS_KM**2)
 IC_SIDE_COEFF = float(2.0 * np.sqrt(np.pi * IC_N_SIDES * np.tan(np.pi / IC_N_SIDES)) / np.pi)
 IC_N_DEC = 40
 IC_N_RUNG = 80
@@ -243,12 +245,12 @@ IC_N_RUNG = 80
 
 # Building-block footprint radius [km] and instrumented height [km], measured
 # from the as-built ARCA21 geometry and scaled to a full block; see example 30.
-ARCA_BLOCK_RADIUS_KM = 0.517
-ARCA_BLOCK_HEIGHT_KM = 0.632
-ARCA_N_BLOCKS = 2
+ARCA_BLOCK_RADIUS_KM = ARCA230.radius_km
+ARCA_BLOCK_HEIGHT_KM = ARCA230.height_km
+ARCA_N_BLOCKS = ARCA230.n_blocks
 # Depth of the instrumented volume's centre below the sea surface [km]. Seabed
 # at 3500 m at the Capo Passero site, with the instrumented span standing on it.
-ARCA_DEPTH_KM = 3.5 - 0.5 * ARCA_BLOCK_HEIGHT_KM
+ARCA_DEPTH_KM = ARCA230.depth_km
 
 #: Optical medium below the centre of the instrumented body, along the
 #: vertical, in the water-equivalent units the ranges here are in: IceCube has
@@ -257,11 +259,11 @@ ARCA_DEPTH_KM = 3.5 - 0.5 * ARCA_BLOCK_HEIGHT_KM
 #: block. Rock lies beneath both, and the two-medium range of
 #: :func:`softpaws.transport.soft_volume.two_medium_range_ratio` shortens every
 #: upgoing entering term by 14 to 20% for it.
-IC_ICE_BELOW_KM = (0.370 + 0.5 * IC_HEIGHT_KM) * 0.918
-ARCA_WATER_BELOW_KM = 0.080 + 0.5 * ARCA_BLOCK_HEIGHT_KM
+IC_ICE_BELOW_KM = (ICECUBE.below_km + 0.5 * IC_HEIGHT_KM) * 0.918
+ARCA_WATER_BELOW_KM = ARCA230.below_km + 0.5 * ARCA_BLOCK_HEIGHT_KM
 # Longest sea-water path a near-horizontal muon can have [km]. Only a cap on the
 # 1/cos(theta) divergence; it exceeds every muon range in the problem.
-ARCA_MAX_SEA_PATH_KM = 100.0
+ARCA_MAX_SEA_PATH_KM = MAX_UPSTREAM_KM
 
 ARCA_LOG10_E = np.arange(4.0, 8.01, 0.2)
 # The digitized trigger curve saturates at the edge of the published figure in
@@ -300,7 +302,6 @@ def parse_args() -> argparse.Namespace:
         "integral of example 30 and exit. Slow: seconds per energy.",
     )
     return parser.parse_args()
-
 
 
 def check_truncation() -> None:
@@ -342,46 +343,18 @@ def check_truncation() -> None:
 # ---------------------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------------------
 # Published references
 # ---------------------------------------------------------------------------
 
 
-def _canonical_irf_season(season: str) -> str:
-    return "IC86" if season.startswith("IC86") else season
+def icecube_upgoing(data_dir: pathlib.Path):
+    """Livetime-weighted DR2 effective area over the upgoing sky [cm^2].
 
-
-def icecube_upgoing(data_dir: pathlib.Path) -> np.ndarray:
-    """Livetime-weighted IceCube effective area over the upgoing sky.
-
-    Parameters
-    ----------
-    data_dir : pathlib.Path
-        Root of the DR2 data directory.
-
-    Returns
-    -------
-    aeff : np.ndarray, shape (IC_LOG10_E.size,)
-        Effective area [cm^2].
+    Delegates to :func:`softpaws.data.icecube.livetime_weighted_effective_area`
+    on ``IC_LOG10_E``.
     """
-    total = np.zeros_like(IC_LOG10_E)
-    total_livetime_s = 0.0
-    cache: dict[str, object] = {}
-    for season in SEASONS:
-        key = _canonical_irf_season(season)
-        if key not in cache:
-            raw = np.genfromtxt(data_dir / "irfs" / f"{key}_effectiveArea.csv", comments="#")
-            cache[key] = parse_aeff(raw)
-        aeff = cache[key]
-        livetime_s = compute_livetime_s(load_uptime(data_dir / "uptime" / f"{season}_exp.csv"))
-        upgoing = aeff.sin_dec_centers > 0.0
-        curve = np.average(
-            aeff.values[:, upgoing], axis=1, weights=np.diff(aeff.sin_dec_edges)[upgoing]
-        )
-        total += livetime_s * np.interp(IC_LOG10_E, aeff.log10_energy_centers, curve)
-        total_livetime_s += livetime_s
-    return total / total_livetime_s
+    return livetime_weighted_effective_area(data_dir, IC_LOG10_E)[0]
 
 
 def arca230_trigger() -> np.ndarray:

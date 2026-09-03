@@ -57,6 +57,7 @@ from scipy.optimize import minimize
 
 from softpaws.data.loader import compute_livetime_s, load_uptime
 from softpaws.data.schema import SEASONS
+from softpaws.detectors import GEN2
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -102,8 +103,8 @@ EFFICIENCY_WATER = 0.720 * 0.82
 
 #: IceCube-Gen2: 120 further strings on a 240 m grid, ~7.9 km^3 instrumented,
 #: modelled as an IceCube-optics prism of that volume.
-GEN2_RADIUS_KM = float(np.sqrt(7.9 / (np.pi * 1.25)))
-GEN2_HEIGHT_KM = 1.25
+GEN2_RADIUS_KM = GEN2.radius_km
+GEN2_HEIGHT_KM = GEN2.height_km
 
 #: Detectors whose wedges the triangle figure draws; the profile figure keeps
 #: the full roster. The wedge fills take the style palette's pink and purple.

@@ -844,6 +844,7 @@
       "mean_z_mu": 0.3,
       "mean_z_nu": 0.4,
       "table_density_g_cm3": 1.02
-    }
+    },
+    "note": "proj_area_range_km2 lower ends for ARCA230 (1.33) and ARCA21 (0.19) were read off a coarse zenith grid; the true horizon minima are 1.307 and 0.153 km^2. Upper ends and means match the library to 0.2%."
   }
 }
