@@ -19,17 +19,17 @@ beyond, or hasn't yet caught up to the paper.
 
 | Paper | Code |
 |---|---|
-| `Φ(s) = ∫₀¹ dy dΓ/dy [1-(1-y)^s]` (Eq. 5) | [`eigenvalue.py:101-137`](../src/softpaws/transport/eigenvalue.py#L101-L137) `phi_symbol`, [`:243-279`](../src/softpaws/transport/eigenvalue.py#L243-L279) `phi_eigenvalue_quadrature` |
-| `A ≡ γ - λ - 1` (Eq. 7) | [`eigenvalue.py:42-63`](../src/softpaws/transport/eigenvalue.py#L42-L63) `spectral_index`, [`soft_volume.py:60-93`](../src/softpaws/transport/soft_volume.py#L60-L93) `spectral_penalty` |
-| `S(ε) = n_N I(A) σ_νN(ε) φ_ν^⊕(ε)`, `I(A)=⟨(1-y_w)^A⟩` (Eqs. 6, 8) | [`source.py:56-89`](../src/softpaws/transport/source.py#L56-L89) `inelasticity_factor` |
-| `φ(x,E) = S(E)(1-e^{-xΦ(A)})/Φ(A)` (Eq. 9) | [`soft_volume.py:393-468`](../src/softpaws/transport/soft_volume.py#L393-L468) `soft_volume_exact`, [`:357-390`](../src/softpaws/transport/soft_volume.py#L357-L390) `saturation_factor` |
-| `dN/(dt dE dΩ) = I(A) n_N σ_νN φ_ν^⊕ [V_det + A_proj/Φ(A)(1-e^{-xΦ(A)})]` (Eq. 10) | [`response/soft_volume.py`](../src/softpaws/response/soft_volume.py) `SoftVolumeResponse` with `method="exact"` |
-| Fokker-Planck as Taylor expansion, `Φ(A)=Ab_μ - A(A-1)/2 d_μ + ...` (Eq. 13) | [`eigenvalue.py:211-240`](../src/softpaws/transport/eigenvalue.py#L211-L240) `phi_fokker_planck`, `phi_drift` |
+| `Φ(s) = ∫₀¹ dy dΓ/dy [1-(1-y)^s]` (Eq. 5) | [`eigenvalue.py:101-137`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L101-L137) `phi_symbol`, [`:243-279`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L243-L279) `phi_eigenvalue_quadrature` |
+| `A ≡ γ - λ - 1` (Eq. 7) | [`eigenvalue.py:42-63`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L42-L63) `spectral_index`, [`soft_volume.py:60-93`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/soft_volume.py#L60-L93) `spectral_penalty` |
+| `S(ε) = n_N I(A) σ_νN(ε) φ_ν^⊕(ε)`, `I(A)=⟨(1-y_w)^A⟩` (Eqs. 6, 8) | [`source.py:56-89`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/source.py#L56-L89) `inelasticity_factor` |
+| `φ(x,E) = S(E)(1-e^{-xΦ(A)})/Φ(A)` (Eq. 9) | [`soft_volume.py:393-468`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/soft_volume.py#L393-L468) `soft_volume_exact`, [`:357-390`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/soft_volume.py#L357-L390) `saturation_factor` |
+| `dN/(dt dE dΩ) = I(A) n_N σ_νN φ_ν^⊕ [V_det + A_proj/Φ(A)(1-e^{-xΦ(A)})]` (Eq. 10) | [`response/soft_volume.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/response/soft_volume.py) `SoftVolumeResponse` with `method="exact"` |
+| Fokker-Planck as Taylor expansion, `Φ(A)=Ab_μ - A(A-1)/2 d_μ + ...` (Eq. 13) | [`eigenvalue.py:211-240`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L211-L240) `phi_fokker_planck`, `phi_drift` |
 | Exactness identities `Φ(1)=b_μ`, `Φ(2)=2b_μ-d_μ` (Eqs. 14-15) | Same functions; docstrings assert these, and Table E.1's numbers reproduce to 5 digits (`exact_soft_volume_notes.md` §8.3) |
-| Two-moment calibrated kernel, `Φ(s)=κ[ψ(s+p+1)-ψ(p+1)]` (App. E.1-E.2) | [`eigenvalue.py:66-98`](../src/softpaws/transport/eigenvalue.py#L66-L98) `two_moment_loss_spectrum`, [`:101-137`](../src/softpaws/transport/eigenvalue.py#L101-L137) `phi_symbol` |
-| Subordinator / characteristic-function inversion of the log-loss law (App. B, Eq. B1) | [`loss_distribution.py`](../src/softpaws/transport/loss_distribution.py) `loss_density` (inverts `e^{-ℓΦ(-ik)}` on a `k`-grid) |
-| Tau composite symbol `I(s,ℓ) = (e^{-ℓ/ℓ̃τ}-e^{-ℓΦμ})/(Φμ-1/ℓ̃τ)` (App. D, Eq. D1) | [`tau.py:248-343`](../src/softpaws/transport/tau.py#L248-L343) `tau_loss_density`, using exactly this closed form with the L'Hopital limit at the removable pole |
-| `⟨z^s⟩` tau-decay moment, used the same way as App. D's decay moment `M(A)` | [`tau.py:112-161`](../src/softpaws/transport/tau.py#L112-L161) `z_symbol`/`z_moment` |
+| Two-moment calibrated kernel, `Φ(s)=κ[ψ(s+p+1)-ψ(p+1)]` (App. E.1-E.2) | [`eigenvalue.py:66-98`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L66-L98) `two_moment_loss_spectrum`, [`:101-137`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L101-L137) `phi_symbol` |
+| Subordinator / characteristic-function inversion of the log-loss law (App. B, Eq. B1) | [`loss_distribution.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/loss_distribution.py) `loss_density` (inverts `e^{-ℓΦ(-ik)}` on a `k`-grid) |
+| Tau composite symbol `I(s,ℓ) = (e^{-ℓ/ℓ̃τ}-e^{-ℓΦμ})/(Φμ-1/ℓ̃τ)` (App. D, Eq. D1) | [`tau.py:248-343`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/tau.py#L248-L343) `tau_loss_density`, using exactly this closed form with the L'Hopital limit at the removable pole |
+| `⟨z^s⟩` tau-decay moment, used the same way as App. D's decay moment `M(A)` | [`tau.py:112-161`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/tau.py#L112-L161) `z_symbol`/`z_moment` |
 
 The exact-eigenvalue core (Secs. III-IV, App. A-C, E) is implemented faithfully
 and is the best-covered part of the paper.
@@ -50,10 +50,10 @@ the paper verbatim."
 ### 2.1 Parent-neutrino attenuation — Eq. (11), implemented as Form C
 
 `R_ν(x,A) = (e^{-x/Λ_ν} - e^{-xΦ(A)}) / (Φ(A) - 1/Λ_ν)` is now implemented
-literally: [`attenuation.py`](../src/softpaws/transport/attenuation.py)
+literally: [`attenuation.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/attenuation.py)
 `neutrino_interaction_length_km` gives `Λ_ν` in the same km^-1 convention
 `Φ(A)` uses, and
-[`soft_volume.py`](../src/softpaws/transport/soft_volume.py)
+[`soft_volume.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/soft_volume.py)
 `saturation_factor` was generalized with an optional `inv_lambda_per_km`
 argument (default `0`, so every existing caller is unaffected) to compute
 `R_ν` directly, including the L'Hopital limit at the removable singularity
@@ -74,9 +74,9 @@ upgoing). Forms A/B compute them as two independent numbers; Form C uses one.
 
 ### 2.2 Scale-breaking (App. F) — implemented as Eq. F4's leading-order running index, not the full Eq. F3 series
 
-[`eigenvalue.py`](../src/softpaws/transport/eigenvalue.py)
+[`eigenvalue.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py)
 `phi_eigenvalue_derivative` and
-[`soft_volume.py`](../src/softpaws/transport/soft_volume.py)
+[`soft_volume.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/soft_volume.py)
 `scale_breaking_saturation_factor` implement Eq. F4's first-order-in-`β`
 running spectral index, `s(ℓ) ≈ A + βℓΦ(A)`, substituted into the propagator
 and Taylor-expanded to give a Gaussian-modified exponent (evaluated by
@@ -96,7 +96,7 @@ exponent.
 
 ### 2.3 Cutoff sources (App. H) — implemented via real-space convolution, not the literal Cahen-Mellin series
 
-[`cutoff_source.py`](../src/softpaws/transport/cutoff_source.py) and
+[`cutoff_source.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/cutoff_source.py) and
 `SoftVolumeResponse.differential_rate_with_cutoff` implement Sec. VII.C's
 recommended mitigation for the `A<0` blowup.
 
@@ -110,7 +110,7 @@ can bring them back down; a truncated real-axis series is not numerically
 stable there. The shipped implementation instead evaluates the *same*
 physical convolution directly in energy space, via App. B's already-exact,
 already-tested log-loss density
-([`loss_distribution.py`](../src/softpaws/transport/loss_distribution.py)
+([`loss_distribution.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/loss_distribution.py)
 `loss_density`, which is a proper bounded probability density with no
 exponentially large intermediates anywhere), integrated over the upstream
 production depth. Verified to stay finite, positive, and monotonic at

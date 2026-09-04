@@ -1,0 +1,25 @@
+name: publish
+
+# Uploads a tagged release to PyPI through trusted publishing. Nothing is
+# published until the project is registered there and a `v*` tag is pushed.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Build and publish to PyPI
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check dist/*
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -6,7 +6,7 @@ replaces the paper's Fokker–Planck (drift–diffusion) expansion with an *exac
 eigenvalue treatment of the QED collision operator. It is the intended physics
 core for the `transport/` → `response/` path.
 
-Read alongside [`soft_volume_notes.md`](soft_volume_notes.md), which distills
+Read alongside [`soft_volume_notes.md`](soft_volume.md), which distills
 the **paper's** approach (Palmisano et al.,
 [arXiv:2607.13143](https://arxiv.org/abs/2607.13143)). The paper's Fokker–Planck
 result is recovered here as the first two terms of an exact series — see

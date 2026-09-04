@@ -1,0 +1,66 @@
+site_name: softpaws
+site_description: A first-principles forward model for ultra-high-energy neutrino telescopes.
+site_url: https://meighenbergers.github.io/softpaws/
+repo_url: https://github.com/MeighenBergerS/softpaws
+site_author: Stephan Meighen-Berger
+copyright: © softpaws
+theme:
+  name: readthedocs
+nav:
+  - Documentation:
+      - 'Getting started': './index.md'
+      - 'Installation': './installation.md'
+      - 'Quickstart': './quickstart.md'
+      - 'Data': './data.md'
+      - 'Examples': './examples.md'
+      - 'Reproducing the paper': './reproduce.md'
+      - 'Theory notes':
+          - 'The soft volume': './theory/soft_volume.md'
+          - 'The exact solution': './theory/exact_soft_volume.md'
+          - 'The range to threshold': './theory/first_passage_range.md'
+          - 'Paper to code': './theory/paper_to_code.md'
+      - 'Citation': './citation.md'
+extra_css:
+  - css/custom_rules.css
+extra_javascript:
+  - js/popper.min.js
+  - js/tippy-bundle.umd.js
+  - js/clipboard.js
+  - js/extra.js
+# The cleanup plan is a development document, not part of the site.
+exclude_docs: |
+  cleanup_plan.md
+
+markdown_extensions:
+  - admonition
+plugins:
+  - search
+  - api-autonav:
+      modules: ['src/softpaws']
+      exclude_private: true
+      show_full_namespace: false
+      api_root_uri: "api-reference"
+      nav_item_prefix: ''
+      module_options:
+        ".*":
+          heading_level: 1
+          show_symbol_type_heading: false
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_options:
+              ignore_init_summary: true
+            docstring_style: numpy
+            docstring_section_style: list
+            filters: ["!^_"]
+            heading_level: 1
+            merge_init_into_class: true
+            parameter_headings: false
+            separate_signature: true
+            show_source: true
+            show_root_heading: true
+            show_signature_annotations: true
+            summary: true

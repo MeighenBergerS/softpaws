@@ -12,6 +12,27 @@ authors = [
 license = "GPL-3.0-or-later"
 readme = "README.md"
 requires-python = ">=3.11"
+keywords = [
+    "neutrino",
+    "neutrino telescope",
+    "muon transport",
+    "effective area",
+    "IceCube",
+    "KM3NeT",
+    "astroparticle physics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
 dependencies = [
     "numpy>=1.26",
     "scipy>=1.12",
@@ -22,11 +43,25 @@ dependencies = [
     "corner>=2.2",
 ]
 
+[project.urls]
+Homepage = "https://github.com/MeighenBergerS/softpaws"
+Documentation = "https://meighenbergers.github.io/softpaws/"
+Repository = "https://github.com/MeighenBergerS/softpaws"
+Issues = "https://github.com/MeighenBergerS/softpaws/issues"
+
 [project.optional-dependencies]
 dev = [
     "ruff>=0.4",
     "pytest>=8",
     "pre-commit>=3",
+    "build>=1.0",
+    "twine>=5.0",
+]
+# The documentation site; see docs/requirements.txt for the pinned build.
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-api-autonav>=0.4",
+    "mkdocstrings[python]>=0.25",
 ]
 # Atmospheric-neutrino background, used by examples/22 to tabulate the flux.
 atm = [

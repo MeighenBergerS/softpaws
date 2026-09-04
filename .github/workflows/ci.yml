@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install ruff
+      - run: ruff check .
+
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -e ".[dev]"
+      # The IceCube releases are not in the repository, so the tests that need
+      # them skip themselves. Everything else runs, including the numbers the
+      # paper quotes.
+      - run: pytest -q --run-slow -m "not network"
+
+  package:
+    name: Build the distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check dist/*
+      # The shipped tables must survive the build; without them an installed
+      # wheel cannot compute anything.
+      - name: Check the wheel carries the data tables
+        run: |
+          python - <<'PY'
+          import glob, zipfile
+          names = zipfile.ZipFile(glob.glob("dist/*.whl")[0]).namelist()
+          tables = [n for n in names if "/data/" in n and not n.endswith(".py")]
+          assert len(tables) > 50, f"only {len(tables)} data files in the wheel"
+          assert not any("dataverse" in n for n in names), "a release leaked into the wheel"
+          print(f"{len(tables)} data files")
+          PY
