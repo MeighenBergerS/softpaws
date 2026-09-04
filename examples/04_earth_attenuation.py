@@ -109,7 +109,7 @@ def main() -> None:
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
     report()
-    make_figure(args.out_dir / "t04_earth_attenuation")
+    make_figure(args.out_dir / "04_earth_attenuation")
 
 
 if __name__ == "__main__":

@@ -145,7 +145,7 @@ def main() -> None:
         published = None
 
     report(curves, published)
-    make_figure(curves, published, args.out_dir / "t05_effective_area")
+    make_figure(curves, published, args.out_dir / "05_effective_area")
 
 
 if __name__ == "__main__":

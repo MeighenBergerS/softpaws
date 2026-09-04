@@ -123,7 +123,7 @@ def main() -> None:
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
     report(args.energy_gev)
-    make_figure(args.energy_gev, args.out_dir / "t02_transport_exponent")
+    make_figure(args.energy_gev, args.out_dir / "02_transport_exponent")
 
 
 if __name__ == "__main__":

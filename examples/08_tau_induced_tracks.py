@@ -113,7 +113,7 @@ def main() -> None:
     report_tau_properties()
     curves = build(args.threshold_gev)
     share = report_share(curves)
-    make_figure(share, args.out_dir / "t08_tau_induced_tracks")
+    make_figure(share, args.out_dir / "08_tau_induced_tracks")
 
 
 if __name__ == "__main__":

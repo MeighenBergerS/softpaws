@@ -108,7 +108,7 @@ def main() -> None:
     args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
     report(args.data_dir)
-    make_figure(args.data_dir, args.out_dir / "t01_load_the_release")
+    make_figure(args.data_dir, args.out_dir / "01_load_the_release")
 
 
 if __name__ == "__main__":

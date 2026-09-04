@@ -144,7 +144,7 @@ def main() -> None:
     ) @ weights
 
     report(flux, aeff)
-    make_figure(flux, args.out_dir / "t10_atmospheric_background")
+    make_figure(flux, args.out_dir / "10_atmospheric_background")
 
 
 if __name__ == "__main__":

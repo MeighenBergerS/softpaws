@@ -134,7 +134,7 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     report_range(args.threshold_gev)
     families = report_loss_law(args.energy_gev, args.distance_km)
-    make_figure(families, args.out_dir / "t03_range_and_loss_law")
+    make_figure(families, args.out_dir / "03_range_and_loss_law")
 
 
 if __name__ == "__main__":

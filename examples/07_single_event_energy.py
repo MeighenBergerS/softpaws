@@ -137,7 +137,7 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     results = posteriors()
     report(results)
-    make_figure(results, args.out_dir / "t07_single_event_energy")
+    make_figure(results, args.out_dir / "07_single_event_energy")
 
 
 if __name__ == "__main__":

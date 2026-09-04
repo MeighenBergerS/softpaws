@@ -144,7 +144,7 @@ def main() -> None:
         axes[1].set_title("IceCube DR2, upgoing")
         axes[1].legend(frameon=False, fontsize=7, loc="upper left")
         fig.tight_layout()
-        out_path = args.out_dir / "t09_fitting_the_light_reach"
+        out_path = args.out_dir / "09_fitting_the_light_reach"
         for suffix in (".pdf", ".png"):
             fig.savefig(out_path.with_suffix(suffix))
             print(f"Figure saved to: {out_path.with_suffix(suffix)}")

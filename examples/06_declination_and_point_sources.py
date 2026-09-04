@@ -144,7 +144,7 @@ def main() -> None:
     )
 
     report(sin_dec, published, models)
-    make_figures(sin_dec, published, models, args.out_dir / "t06_declination")
+    make_figures(sin_dec, published, models, args.out_dir / "06_declination")
 
 
 if __name__ == "__main__":

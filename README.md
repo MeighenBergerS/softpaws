@@ -80,7 +80,10 @@ src/softpaws/
 ├── comparison/    Likelihoods, posteriors, the event benchmark, event energies
 ├── data/          Loaders for the IceCube release and the published curves
 └── utils/         Constants and unit conversions
-examples/          Runnable scripts; output in examples/output/
+examples/          Ten tutorials, 01 to 10; output in examples/output/
+scripts/
+├── 2026_muon_transport/   One script per paper figure, table and number
+└── future_bsm/            Searches that belong to a later paper
 tests/             Unit tests and the regression fixture the paper is pinned to
 docs/              The documentation site
 ```
