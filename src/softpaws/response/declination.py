@@ -43,6 +43,7 @@ from ..utils.constants import CM_PER_KM
 from .effective_area import default_cross_section
 from .first_principles import column_profile, rock_range_ratio
 from .light_reach import effective_body_km
+from .sensitivity import N_EVENTS_LIMIT, PIVOT_ENERGY_GEV, power_law_sensitivity
 
 __all__ = [
     "COMMON_LOG10_E",
@@ -53,7 +54,9 @@ __all__ = [
     "N_RUNG",
     "N_SUB_BAND",
     "PIVOT_ENERGY_GEV",
+    "REACH_FRACTIONS",
     "REACH_PIVOT_GEV",
+    "REACH_REFERENCE_GEV",
     "RUNG_DECADES",
     "band_averaged_effective_area_cm2",
     "band_statistics",
@@ -62,6 +65,7 @@ __all__ = [
     "derived_band_averaged_effective_area_cm2",
     "derived_directional_effective_area_cm2",
     "directional_effective_area_cm2",
+    "fit_light_reach",
     "point_source_sensitivity",
     "polar_band_directions",
     "zenith_band_weights",
@@ -82,13 +86,6 @@ N_HOUR_ANGLE = 192
 #: Rungs of the neutral-current regeneration ladder, and the decades it spans.
 N_RUNG = 32
 RUNG_DECADES = 4.0
-
-#: Events a background-free search excludes at 90% confidence (Feldman-Cousins,
-#: zero observed on zero background).
-N_EVENTS_LIMIT = 2.44
-
-#: Pivot energy of the quoted point-source flux [GeV].
-PIVOT_ENERGY_GEV = 1.0e5
 
 #: Bottom of the analysis window [GeV]. This is what decides whether a
 #: sensitivity carries declination information: raise it and the Earth-absorbed
@@ -206,6 +203,97 @@ def directional_effective_area_cm2(
             )
             total[i] += branching * np.sum(rung_weight * rate, axis=0)
     return total
+
+
+#: Effective radius at :data:`REACH_REFERENCE_GEV` that :func:`fit_light_reach`
+#: scans, as a fraction of the instrumented footprint radius. The range covers
+#: a detector that responds to two thirds of its footprint at 1 PeV and one
+#: that already responds past it.
+REACH_FRACTIONS = np.linspace(0.6, 1.2, 13)
+
+#: Energy the scanned fraction is quoted at [GeV].
+REACH_REFERENCE_GEV = 1.0e6
+
+
+def fit_light_reach(
+    site: Site,
+    cos_theta: np.ndarray,
+    weights: np.ndarray,
+    published_aeff_cm2: np.ndarray,
+    threshold_gev: float,
+    log10_e: np.ndarray = COMMON_LOG10_E,
+    fractions: np.ndarray = REACH_FRACTIONS,
+    reference_gev: float = REACH_REFERENCE_GEV,
+    pivot_gev: float = REACH_PIVOT_GEV,
+    channels: str = "both",
+) -> tuple[float, np.ndarray, np.ndarray]:
+    """Scan the one instrument number against a published effective area.
+
+    The reach enters as ``Lambda`` per e-fold about a pivot, and the pivot sits
+    far above the band any table covers, so a scan in ``Lambda`` is a scan with
+    a lever arm of some eight e-folds on it. Two metres per e-fold then move a
+    120 m footprint as far as twenty move a 2 km one, and no single grid serves
+    both. Scanning the effective radius at ``reference_gev`` instead, in units
+    of the footprint the site already has, puts every detector on one grid.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry and medium.
+    cos_theta : np.ndarray, shape (n_dir,)
+        Arrival directions the published average runs over.
+    weights : np.ndarray, shape (n_dir,)
+        Weight of each direction in that average; sums to one.
+    published_aeff_cm2 : np.ndarray, shape (log10_e.size,)
+        The published curve on the same energy grid [cm^2]. Nodes that are not
+        positive and finite are skipped.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    log10_e : np.ndarray, optional
+        Neutrino energies the comparison runs on [log10 GeV].
+    fractions : np.ndarray, optional
+        Effective radius at ``reference_gev``, as a fraction of the footprint
+        radius. See :data:`REACH_FRACTIONS`.
+    reference_gev : float, optional
+        Energy the fraction is quoted at [GeV]. See :data:`REACH_REFERENCE_GEV`.
+    pivot_gev : float, optional
+        Energy at which the reach vanishes [GeV].
+    channels : {"both", "mu"}, optional
+        Channels summed; see :func:`directional_effective_area_cm2`.
+
+    Returns
+    -------
+    reach_km : float
+        Reach per e-fold [km] of the scanned point that fits best.
+    residual_dex : np.ndarray, shape (fractions.size,)
+        Root-mean-square of ``log10(published / model)`` at each scanned point,
+        infinite where the reach empties the detector.
+    models : np.ndarray, shape (fractions.size, log10_e.size)
+        The averaged model at each scanned point [cm^2].
+    """
+    published = np.asarray(published_aeff_cm2, dtype=float)
+    usable = np.isfinite(published) & (published > 0.0)
+    if not np.any(usable):
+        raise ValueError("The published curve has no positive node to fit against.")
+    # Below the pivot the reach is negative, so a fraction under one is a
+    # positive Lambda: the array responds to less than its own footprint.
+    lever = np.log(reference_gev / pivot_gev)
+    reaches = site.radius_km * (np.asarray(fractions, dtype=float) - 1.0) / lever
+
+    models = np.empty((reaches.size, np.size(log10_e)))
+    residual = np.full(reaches.size, np.inf)
+    for i, reach_km in enumerate(reaches):
+        models[i] = (
+            directional_effective_area_cm2(
+                site, cos_theta, threshold_gev, reach_km=float(reach_km),
+                pivot_gev=pivot_gev, channels=channels, log10_e=log10_e,
+            )
+            @ np.asarray(weights, dtype=float)
+        )
+        if np.all(np.isfinite(models[i][usable]) & (models[i][usable] > 0.0)):
+            ratio = np.log10(published[usable] / models[i][usable])
+            residual[i] = float(np.sqrt(np.mean(ratio**2)))
+    return float(reaches[int(np.argmin(residual))]), residual, models
 
 
 def polar_band_directions(
@@ -380,14 +468,15 @@ def point_source_sensitivity(
     -------
     e2_flux : np.ndarray
         ``E^2 phi`` at ``pivot_gev`` [GeV cm^-2 s^-1].
+
+    See Also
+    --------
+    softpaws.response.sensitivity.power_law_sensitivity : The same limit for a
+        diffuse flux as well, and the implementation this calls.
     """
-    energy = 10.0 ** np.asarray(log10_e, dtype=float)
-    window = energy >= emin_gev
-    weight = (energy / pivot_gev) ** (-gamma)
-    shape = (-1,) + (1,) * (np.ndim(aeff_cm2) - 1)
-    integral = np.trapezoid((aeff_cm2 * weight.reshape(shape))[window], energy[window], axis=0)
-    phi_0 = n_events / (livetime_s * integral)
-    return pivot_gev**2 * phi_0
+    return power_law_sensitivity(
+        aeff_cm2, livetime_s, gamma, log10_e, emin_gev, pivot_gev, n_events
+    )
 
 
 def central_energy_range(

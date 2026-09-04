@@ -1,8 +1,9 @@
 """Tests for the drift-limit soft-volume model.
 
-These lock in the reproduction of the reference numbers in arXiv:2607.13143:
-Table 1 transport coefficients in water, and the soft-volume figures of merit
-for IceCube (~4x) and KM3NeT (~7.5x) from Section 2.3.
+These lock in the reproduction of the reference numbers in Palmisano et al.
+(arXiv:2607.13143): the Table 1 transport coefficients in water, and the
+soft-volume figures of merit for IceCube (~4x) and KM3NeT (~7.5x) from their
+Section 2.3.
 """
 
 import numpy as np
@@ -44,7 +45,7 @@ GAMMA_IC = 2.38  # IceCube 9.5 yr diffuse-flux best fit (Eq. 1.3)
 
 
 # ---------------------------------------------------------------------------
-# Transport coefficients (water). The Table 1 values are the paper's, so those
+# Transport coefficients (water). The Table 1 values are theirs, so those
 # tests pin source="table1" explicitly; the default is the PROPOSAL tabulation.
 # ---------------------------------------------------------------------------
 
@@ -128,14 +129,14 @@ def test_sphere_radius_from_volume():
 
 
 def test_volume_ratio_icecube_about_four():
-    # The paper's figure of merit, so on the paper's coefficients.
+    # Their figure of merit, so on their coefficients.
     r_ic = sphere_radius_from_volume(1.0)
     ratio = volume_ratio_drift(r_ic, E_1PEV, GAMMA_IC, source=TABLE1)[0]
     assert ratio == pytest.approx(4.5, abs=0.2)
 
 
 def test_volume_ratio_km3net_about_seven_and_half():
-    # KM3NeT is smaller; the paper quotes ~7.5 for R ~ 0.33 km.
+    # KM3NeT is smaller; they quote ~7.5 for R ~ 0.33 km.
     ratio = volume_ratio_drift(0.33, E_1PEV, GAMMA_IC, source=TABLE1)[0]
     assert ratio == pytest.approx(7.5, abs=0.3)
 
@@ -327,7 +328,7 @@ def test_dm_line_target_volume_diverges_from_range_volume_at_large_depth():
 
 
 # ---------------------------------------------------------------------------
-# Dynamic (energy-growing) projected area -- not part of the paper, a
+# Dynamic (energy-growing) projected area -- not part of Palmisano et al., a
 # phenomenological detector-response term (examples/26).
 # ---------------------------------------------------------------------------
 

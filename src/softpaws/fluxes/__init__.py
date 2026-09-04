@@ -27,6 +27,7 @@ from .atmospheric import (
     AtmosphericFlux,
     build_mceq_table,
     load_mceq_table,
+    table_declination_deg,
 )
 
 __all__ = [
@@ -49,4 +50,5 @@ __all__ = [
     "build_mceq_table",
     "load_mceq_table",
     "power_law_flux",
+    "table_declination_deg",
 ]

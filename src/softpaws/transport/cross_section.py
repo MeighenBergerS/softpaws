@@ -1,8 +1,8 @@
 """Neutrino-nucleon cross-section models.
 
-:mod:`softpaws.transport.source` provides the paper's analytic cross section, a
-single power law ``sigma_CC = sigma0 (E / E0)^lambda`` anchored at 10 PeV
-(arXiv:2607.13143, Eq. 2.5). That form is what makes the soft-volume closed
+:mod:`softpaws.transport.source` provides the analytic cross section of
+Palmisano et al., a single power law ``sigma_CC = sigma0 (E / E0)^lambda``
+anchored at 10 PeV (arXiv:2607.13143, Eq. 2.5). That form is what makes the closed
 form work -- a power-law flux times a power-law cross section excites exactly
 one Mellin mode ``A = gamma - lambda - 1`` -- and it is also what
 :func:`softpaws.comparison.likelihood.required_lambda` treats as the quantity
@@ -98,7 +98,7 @@ class CrossSection(ABC):
 
 
 class PowerLawCrossSection(CrossSection):
-    """The paper's single power law ``sigma_CC = sigma0 (E / E0)^lambda``.
+    """The single power law ``sigma_CC = sigma0 (E / E0)^lambda`` of Palmisano et al.
 
     Parameters
     ----------

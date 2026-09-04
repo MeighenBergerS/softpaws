@@ -1,12 +1,13 @@
-"""Exact eigenvalue of the QED collision operator.
+"""The transport exponent: eigenvalue of the QED collision operator.
 
 Where :mod:`softpaws.transport.coefficients` provides the drift ``b_mu`` and
-diffusion ``d_mu`` of the paper's Fokker-Planck expansion, this module provides
-the *exact* attenuation constant that supersedes them.
+diffusion ``d_mu`` of the earlier Fokker-Planck expansion (Palmisano et al.,
+arXiv:2607.13143), this module provides the attenuation constant that
+supersedes them, with every loss moment kept.
 
 The QED energy-loss operator is scale-invariant, so power laws ``phi ~ E^-1-s``
-are its eigenfunctions with eigenvalue (``docs/exact_soft_volume_notes.md``, and
-``docs/2026_softvolume.pdf`` Part 2)
+are its eigenfunctions with eigenvalue (``docs/theory/exact_soft_volume.md``, and
+``paper/main.tex`` Part 2)
 
 .. math:: \\Phi(s) = \\int_0^1 dy\\, \\frac{d\\Gamma}{dy}
     \\bigl[\\,1 - (1 - y)^s\\,\\bigr].
@@ -19,7 +20,7 @@ binomial expansion, ``Phi(A) = A b_mu - A(A-1)/2 d_mu + ...`` (Part 10.1), and t
 series terminates at integer ``A``, giving the exactness identities
 ``Phi(1) = b_mu`` and ``Phi(2) = 2 b_mu - d_mu`` (Part 10.2).
 
-Table 1 of the paper fixes only ``b_mu`` and ``d_mu``, so the primary evaluation
+Table 1 of Palmisano et al. fixes only ``b_mu`` and ``d_mu``, so the primary evaluation
 here calibrates a two-parameter loss spectrum to those two moments and evaluates
 ``Phi(A)`` in closed form. It is exact at ``A = 1, 2`` by construction and degrades
 for ``A >~ 3`` (higher moments); the definitive version is a direct quadrature of
@@ -45,7 +46,7 @@ def spectral_index(gamma: float, lam: float = DEFAULT_LAMBDA) -> float:
     Unlike :func:`softpaws.transport.soft_volume.spectral_penalty`, this does not
     require ``A > 0``: the exact treatment stays finite for ``A <= 0`` through the
     saturation factor, so the sign is left for the caller to interpret (``A < 0``
-    signals the cross-section pole, ``docs/2026_softvolume.pdf`` Part 11.2).
+    signals the cross-section pole, ``paper/main.tex`` Part 11.2).
 
     Parameters
     ----------
@@ -70,7 +71,7 @@ def two_moment_loss_spectrum(
     """Calibrate the two-parameter loss spectrum ``dGamma/dy = kappa (1-y)^p / y``.
 
     The family is fixed by matching its first two ``y``-moments to the drift and
-    diffusion coefficients (``docs/2026_softvolume.pdf`` Part 10.4):
+    diffusion coefficients (``paper/main.tex`` Part 10.4):
 
     .. math:: b_\\mu = \\frac{\\kappa}{p+1}, \\qquad
         d_\\mu = \\frac{\\kappa}{(p+1)(p+2)}
@@ -553,7 +554,7 @@ def phi_eigenvalue_derivative(
     Bernstein-function property (``Phi' > 0``, ``Phi'' < 0``) refers to, and
     what :func:`softpaws.transport.soft_volume.
     scale_breaking_saturation_factor` needs for the App. F running-index
-    correction (Eq. F4 of ``docs/2026_softvolume.pdf``).
+    correction (Eq. F4 of ``paper/main.tex``).
 
     Parameters
     ----------
@@ -612,8 +613,8 @@ def phi_fokker_planck(
 ) -> np.ndarray:
     """Second-order (Fokker-Planck) eigenvalue ``A b_mu - A(A-1)/2 d_mu``.
 
-    The paper's truncation of ``Phi(A)`` (Part 10.1), kept here for head-to-head
-    comparison with the exact :func:`phi_eigenvalue`. It agrees with the exact
+    The truncation of ``Phi(A)`` used by Palmisano et al., kept here for
+    head-to-head comparison with :func:`phi_eigenvalue`. It agrees with the exact
     value to well under a percent near ``A = 1`` (where the IceCube spectrum sits)
     and diverges from it for ``A >~ 3``.
 

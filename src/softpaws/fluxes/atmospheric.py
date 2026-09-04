@@ -26,6 +26,7 @@ __all__ = [
     "AtmosphericFlux",
     "build_mceq_table",
     "load_mceq_table",
+    "table_declination_deg",
 ]
 
 logger = logging.getLogger(__name__)
@@ -160,6 +161,42 @@ def load_mceq_table(path: str | pathlib.Path, recompute: bool = False) -> dict[s
             table["dec_deg"].size,
         )
     return table
+
+
+def table_declination_deg(cos_theta: float | np.ndarray) -> np.ndarray:
+    """Table declination an arrival direction is read at [deg].
+
+    The table axis is named for a declination at the South Pole, but what it
+    indexes is the production zenith, ``90 deg`` minus that declination. A
+    neutrino arriving with zenith cosine ``cos_theta`` was produced in a
+    column of the same slant depth whichever side of the Earth it came from,
+    so the atmosphere it crossed is set by ``|cos_theta|`` alone. The vertical
+    directions, overhead and nadir, both read the ``90 deg`` end of the table
+    and the horizon reads ``0``.
+
+    That folding is what lets one polar table serve every arrival direction,
+    and every site. What it does not carry is the atmosphere itself: the
+    table shipped here is the South Pole in January, so a mid-latitude site
+    gets the right zenith dependence on the wrong profile.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith; ``+1`` is vertically downgoing and
+        ``-1`` the nadir, as in :mod:`softpaws.transport.earth`.
+
+    Returns
+    -------
+    dec_deg : np.ndarray
+        Declination to read the table at [deg], in ``[0, 90]``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> table_declination_deg(np.array([-1.0, 0.0, 1.0]))
+    array([90.,  0., 90.])
+    """
+    return np.rad2deg(np.arcsin(np.clip(np.abs(np.asarray(cos_theta, dtype=float)), 0.0, 1.0)))
 
 
 class AtmosphericFlux:

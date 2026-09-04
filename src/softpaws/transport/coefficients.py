@@ -1,8 +1,8 @@
 """Muon drift and diffusion transport coefficients.
 
 The soft expansion of the QED collision operator reduces muon energy loss to a
-drift-diffusion process governed by two coefficients (arXiv:2607.13143,
-Eq. 2.8): the drift ``b_mu`` [km^-1], the mean fractional energy loss per unit
+drift-diffusion process governed by two coefficients (Palmisano et al.,
+arXiv:2607.13143, Eq. 2.8): the drift ``b_mu`` [km^-1], the mean fractional energy loss per unit
 length (so the muon range is ``1/b_mu``), and the diffusion ``d_mu`` [km^-1],
 the variance of that loss. In the eigenvalue language of
 :mod:`softpaws.transport.eigenvalue` they are the first two ``y``-moments of the
@@ -11,9 +11,9 @@ loss spectrum, ``b_mu = <y>`` and ``d_mu = <y^2>`` per unit length.
 Two sources are available, selected by the ``source`` argument:
 
 ``"table1"``
-    The paper's Table 1: two reference values in water, at 1 PeV and 100 PeV,
-    log-energy interpolated and clipped outside. This is what reproduces the
-    paper.
+    Table 1 of Palmisano et al.: two reference values in water, at 1 PeV and
+    100 PeV, log-energy interpolated and clipped outside. This is what
+    reproduces their numbers.
 ``"proposal"`` (the default)
     A table computed with PROPOSAL (Koehne et al., arXiv:1809.07740) over
     ``10^2`` to ``10^10`` GeV, summing bremsstrahlung, ``e+e-`` pair production
@@ -55,7 +55,7 @@ import numpy as np
 from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 # ---------------------------------------------------------------------------
-# Table 1 of arXiv:2607.13143: total QED coefficients for muons in water
+# Table 1 of Palmisano et al. (arXiv:2607.13143): total QED coefficients for muons in water
 # (rho = 1.02 g/cm^3), at two reference energies.
 # ---------------------------------------------------------------------------
 

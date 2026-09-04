@@ -4,15 +4,16 @@ This is the soft-volume counterpart to the IRF path in :mod:`softpaws.response.i
 Both map an incident neutrino flux to a predicted track rate; keeping them
 interchangeable is what enables the head-to-head comparison.
 
-In the drift limit with the Section 2.3 approximations, the master formula
-(arXiv:2607.13143, Eq. 2.20) factorizes: the differential track rate at observed
-muon energy ``E`` is the target volume times the local weak-rate density,
+In the drift limit with the approximations of Palmisano et al.
+(arXiv:2607.13143, Section 2.3), their master formula (Eq. 2.20) factorizes: the
+differential track rate at observed muon energy ``E`` is the target volume times
+the local weak-rate density,
 
 .. math:: \\frac{dN}{dt\\,dE\\,d\\Omega}
     = \\bigl[V_\\mathrm{det} + V_\\mathrm{soft}(E)\\bigr]\\,
       n_N\\,\\sigma_\\mathrm{CC}(E)\\,\\phi_\\nu(E),
 
-where the soft volume ``V_soft`` carries the muon-transport enhancement (Eq. 2.23)
+where the soft volume ``V_soft`` carries the muon-transport enhancement (their Eq. 2.23)
 and ``V_det`` is the instrumented sphere. The drift closed form assumes a
 power-law neutrino flux, so this model is parametrized directly by ``(phi0, gamma)``.
 A tabulated, direction-dependent flux (an atmospheric model, say) goes through
@@ -20,13 +21,13 @@ A tabulated, direction-dependent flux (an atmospheric model, say) goes through
 spectral index off the flux's local slope.
 
 Two transport methods are available (``method`` argument of
-:class:`SoftVolumeResponse`): ``"drift"`` is the paper's leading form above, and
-``"exact"`` uses the exact eigenvalue ``Phi(A)`` with the ``I(A)`` normalization and
-a finite upstream column depth (``docs/exact_soft_volume_notes.md``). In the exact
+:class:`SoftVolumeResponse`): ``"drift"`` is their leading form above, and
+``"exact"`` uses the transport exponent ``Phi(A)`` with the ``I(A)`` normalization and
+a finite upstream column depth (``docs/theory/exact_soft_volume.md``). In the exact
 master formula ``I(A)`` multiplies both populations, so both the inside and soft
 target volumes carry it.
 
-Earth attenuation of the parent neutrino (``D_nu``, Eq. 2.4;
+Earth attenuation of the parent neutrino (``D_nu``, their Eq. 2.4;
 :mod:`softpaws.transport.attenuation`) is off by default (``D_nu = 1``, valid
 downgoing). Three ways to apply it, in increasing physical fidelity:
 
@@ -38,7 +39,7 @@ downgoing). Three ways to apply it, in increasing physical fidelity:
   multiplicative ``D_nu(E)`` but with a declination-dependent column;
 - **Form C**, :meth:`SoftVolumeResponse.expected_counts_coupled_attenuation`,
   which folds the attenuation directly into the soft-volume propagator
-  (Eq. 11, App. C.2-C.3 of ``docs/2026_softvolume.pdf``;
+  (Eq. 11, App. C.2-C.3 of ``paper/main.tex``;
   :func:`softpaws.transport.soft_volume.soft_volume_attenuated_exact`)
   instead of applying it as a separate factor. Forms A/B are valid
   approximations wherever ``D_nu`` varies slowly over the soft volume's own
@@ -114,11 +115,11 @@ class SoftVolumeResponse:
         Target-medium density [g cm^-3]. Defaults to water.
     method : {"drift", "diffusion", "exact"}, optional
         Transport treatment for the soft volume. ``"drift"`` (default) uses the
-        paper's leading form ``V_soft = A_proj / (b_mu A)`` (Eq. 2.23).
-        ``"diffusion"`` applies the paper's diffusion correction
-        ``1 - d_mu/(2 b_mu)`` (Eq. 2.25). ``"exact"`` uses the exact eigenvalue
+        leading form of Palmisano et al., ``V_soft = A_proj / (b_mu A)``
+        (their Eq. 2.23). ``"diffusion"`` applies their diffusion correction
+        ``1 - d_mu/(2 b_mu)`` (their Eq. 2.25). ``"exact"`` uses the transport exponent
         ``Phi(A)`` with the ``I(A)`` normalization and the finite-column
-        saturation factor (``docs/exact_soft_volume_notes.md``).
+        saturation factor (``docs/theory/exact_soft_volume.md``).
     column_depth_km : float or None, optional
         Available upstream column depth ``x`` [km] for the exact method. ``None``
         (the default) uses the infinite-column limit, which requires
@@ -133,12 +134,12 @@ class SoftVolumeResponse:
         :meth:`expected_counts_attenuated` instead.
     b_scale, d_scale : float, optional
         Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
-        used as transport nuisance parameters in the data fits (Section 3).
+        used as transport nuisance parameters in the data fits.
         Default to 1 (the theoretical values).
     cross_section : softpaws.transport.cross_section.CrossSection, optional
         Cross-section model. ``None`` (the default) uses the analytic power law
         of :func:`~softpaws.transport.source.cc_cross_section` with the ``lam``
-        passed to each method, which is what reproduces the paper. Supplying a
+        passed to each method, which is what reproduces Palmisano et al. Supplying a
         :class:`~softpaws.transport.cross_section.TabulatedCrossSection` swaps
         in a tabulated calculation *and* makes the spectral index energy
         dependent, ``A(E) = gamma - lambda_eff(E) - 1``, since a tabulated cross
@@ -150,12 +151,12 @@ class SoftVolumeResponse:
     coefficient_source : {"proposal", "table1"}, optional
         Which tabulation of ``b_mu`` and ``d_mu`` to use; see
         :mod:`softpaws.transport.coefficients`. Defaults to the PROPOSAL table;
-        pass ``"table1"`` to reproduce the paper.
+        pass ``"table1"`` to reproduce Palmisano et al.
     light_yield_length_km : float or None, optional
         If set, replaces the static projected area ``pi R_det^2`` with the
         energy-growing :func:`~softpaws.transport.soft_volume.
         dynamic_projected_area_km2` in every target-volume calculation
-        (not part of arXiv:2607.13143; see that function's docstring for the
+        (not part of Palmisano et al.; see that function's docstring for the
         physical motivation and ``examples/26_dynamic_response_effective_area.py``
         for a calibrated value). ``None`` (the default) preserves the
         static-radius behaviour used everywhere else in the package.
@@ -739,7 +740,7 @@ class SoftVolumeResponse:
 
         Integrates the differential rate over each energy bin and over the given
         solid angle and livetime. Angular acceptance, attenuation, and detector
-        efficiency are not modelled (see ``docs/soft_volume_notes.md``); the
+        efficiency are not modelled (see ``docs/theory/soft_volume.md``); the
         result is a geometric through-going estimate.
 
         Parameters
@@ -867,7 +868,7 @@ class SoftVolumeResponse:
         soft volume by a decoupled survival probability ``D_nu(E)``, this folds
         the parent neutrino's Earth attenuation directly into the same depth
         integral that produces the soft volume (Eq. 11, App. C.2-C.3 of
-        ``docs/2026_softvolume.pdf``; :func:`softpaws.transport.soft_volume.
+        ``paper/main.tex``; :func:`softpaws.transport.soft_volume.
         soft_volume_attenuated_exact`). The two agree wherever ``D_nu`` varies
         slowly over the ~few-``Phi(A)^-1`` km-w.e. range the soft volume is
         produced in, and diverge for strongly-absorbed upgoing UHE tracks,

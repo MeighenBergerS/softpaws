@@ -16,6 +16,7 @@ from .icecube import (
     livetime_weighted_effective_area,
     load_effective_area,
     load_events,
+    load_psf_table,
     season_livetime_s,
     total_livetime_s,
 )
@@ -70,6 +71,7 @@ __all__ = [
     "livetime_weighted_effective_area",
     "load_effective_area",
     "load_events",
+    "load_psf_table",
     "load_all_seasons",
     "load_irfs",
     "load_season",

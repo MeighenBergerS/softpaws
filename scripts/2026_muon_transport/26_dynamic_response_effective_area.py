@@ -3,7 +3,7 @@
 Same comparison as ``20_effective_area_soft_vs_irf.py``, extended with the
 energy-dependent projected area
 :func:`~softpaws.transport.soft_volume.dynamic_projected_area_km2` (not part
-of arXiv:2607.13143 -- see that function's docstring for the physical
+of Palmisano et al., arXiv:2607.13143 -- see that function's docstring for the physical
 motivation and the discussion this example follows up on).
 
 Example 20's own numbers motivate the addition: the implied selection

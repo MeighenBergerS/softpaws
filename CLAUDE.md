@@ -5,20 +5,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 `softpaws` is a first-principles forward model for ultra-high-energy neutrino
-telescopes. It implements the **soft-volume** drift-diffusion muon-transport
-approach of Palmisano, *The soft volume of ultra-high energy neutrinos
-experiments* ([arXiv:2607.13143](https://arxiv.org/abs/2607.13143)), and
-benchmarks it against the published IceCube instrument response functions
-(effective area + smearing matrix) on real IceCube data
-(IceTracks-DR2, DOI [10.7910/DVN/MMIIZA](https://doi.org/10.7910/DVN/MMIIZA)).
+telescopes. It implements the analytic muon transport of Meighen-Berger,
+*Analytical High-Energy Muon Transport for Neutrino Telescopes* (2026), the
+method paper drafted in `paper/main.tex`. That calculation diagonalizes the
+locally scale-invariant collision operator with power laws, so the whole loss
+history collapses to a single transport exponent `Phi(s)`, and it uses that
+exponent as a first-passage generator for the range of a muon and for the
+detector response built on it.
 
-The project has three parts, in order: (1) implement the soft-volume forward
-model, (2) reimplement the published IceCube IRF forward model for comparison,
-(3) validate both against actual IceCube event data.
+The repo builds three things on that exponent: effective areas for IceCube,
+KM3NeT/ARCA, P-ONE, TRIDENT and Baikal-GVD from two instrument numbers per
+site, event rates against the IceCube IceTracks-DR2 release (DOI
+[10.7910/DVN/MMIIZA](https://doi.org/10.7910/DVN/MMIIZA)), and the energy of a
+single track.
 
-The repo is currently a scaffold: subpackages exist with module-level
-docstrings describing their intended contents, but `tests/`, `examples/`, and
-`docs/` are still empty placeholders (`.gitkeep` only).
+An earlier analytic calculation, Palmisano, Redigolo, Tammaro and Tesi,
+*The soft volume of ultra-high energy neutrinos experiments*
+([arXiv:2607.13143](https://arxiv.org/abs/2607.13143)) and its companion
+[arXiv:2507.10665](https://arxiv.org/abs/2507.10665), expands the same
+collision operator to second order in the energy each collision removes. That
+approach was implemented here first, as a check, and it is kept as the drift
+limit of the transport exponent and as a cross-check of it. It is prior work,
+never "the paper": refer to it by author and arXiv number so the two are never
+confused.
 
 ## Commands
 
@@ -34,6 +43,9 @@ ruff check .
 pytest
 pytest -m "not network"          # skip tests requiring network access
 pytest tests/test_foo.py::test_bar   # single test
+
+# Docs
+mkdocs serve
 ```
 
 ## Architecture
@@ -41,33 +53,40 @@ pytest tests/test_foo.py::test_bar   # single test
 Data flows one direction through the subpackages of `src/softpaws/`:
 
 ```
-data/  →  transport/  →  response/  →  comparison/
+data/  +  detectors/  +  fluxes/  →  transport/  →  response/  →  comparison/
 ```
 
-- **`data/`** — loads the IceCube IceTracks-DR2 release: reconstructed
-  muon-track events, binned effective areas, and smearing matrices. The raw
-  release files are never committed to this repo (`.gitignore` blocks
-  `*.fits`, `*.h5`, `dataverse_files/`, etc.). The user downloads them and
-  places them under `src/softpaws/data/dataverse_files/{events,irfs,uptime}/`,
-  or sets `SOFTPAWS_DATA_DIR`; see `softpaws.data.paths`.
-- **`transport/`** — the soft-volume drift-diffusion muon transport itself:
-  a second-order expansion of the Boltzmann collision operator where soft
-  energy losses dominate propagation and rare hard scatters are handled
-  perturbatively. This is the physics core from arXiv:2607.13143.
-- **`response/`** — two interchangeable forward-model paths, both mapping a
-  neutrino flux to a predicted event rate: one built on `transport/` (soft
-  volume), the other reproducing the published IceCube IRF path (effective
-  area convolved with energy/angular smearing matrices). Keeping these
-  interchangeable is what makes the head-to-head comparison possible.
-- **`comparison/`** — places the two `response/` predictions side by side and
-  validates both against the observed DR2 event distributions.
+- **`data/`** — loaders for the IceCube releases and for the published curves
+  of the other detectors. The tabulated inputs that ship with the package (the
+  loss coefficients, the BGR18 cross section, the ARCA, P-ONE and TRIDENT
+  effective areas) live here. The IceCube releases are large and are never
+  committed (`.gitignore` blocks `*.fits`, `*.h5`, `dataverse_files/`); the
+  user downloads them and places them under the package's `data` directory or
+  sets `SOFTPAWS_DATA_DIR`; see `softpaws.data.paths`.
+- **`detectors/`** — published geometry, medium and optics for each site.
+- **`fluxes/`** — power laws, the published IceCube fits, and the atmospheric
+  background through MCEq.
+- **`transport/`** — the physics core: the loss kernel, the transport exponent
+  `Phi(s)` and its eigenvalue treatment (`eigenvalue`), the range to threshold
+  and its first-passage moments, the log-loss law, Earth geometry and
+  attenuation, and the tau channel. The drift-diffusion coefficients
+  (`coefficients`) and the drift-limit soft volume (`soft_volume`) are the
+  prior-work limit, kept as a cross-check.
+- **`response/`** — effective areas and track rates: from the light reach,
+  from the published optics, and resolved by declination. It also holds the
+  published-IRF path, so a prediction can be put next to IceCube's own
+  effective area and smearing matrix on the same footing.
+- **`comparison/`** — likelihoods, posterior statistics, the no-fit event
+  benchmark against DR2, and single-track energy reconstruction.
 - **`utils/`** — physical constants, unit conversions, shared helpers used
   across the other subpackages.
 
-`examples/` holds numbered, runnable scripts; their output is written to
-`examples/output/` (gitignored except for `.gitkeep`). `styles/` holds a
-shared matplotlib style (`beacom_conformal.mplstyle`) for figures produced by
-examples and comparison plots.
+`examples/` holds twelve numbered tutorials, `01` to `12`, writing to
+`examples/output/` (gitignored except for `.gitkeep`).
+`scripts/2026_muon_transport/` holds one script per paper figure, table and
+number, and `scripts/future_bsm/` holds searches that belong to a later paper.
+`styles/` holds the shared matplotlib style (`beacom_conformal.mplstyle`) used
+for every figure.
 
 ## Conventions
 

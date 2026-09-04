@@ -1,6 +1,7 @@
 """Example 31 -- IceCube vs KM3NeT flux constraints, effective-area convention.
 
-Redoes example 10's Fig. 7 (arXiv:2607.13143) -- the ``(phi0, gamma)`` regions
+Redoes example 10's Fig. 7 (Palmisano et al., arXiv:2607.13143) -- the
+``(phi0, gamma)`` regions
 from IceCube through-going muons against the single KM3NeT UHE event
 KM3-230213A, and the tension between them -- on top of the effective-area
 machinery examples 28 and 30 built and validated, instead of example 10's

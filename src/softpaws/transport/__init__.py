@@ -1,18 +1,23 @@
-"""Soft-volume muon transport.
+"""High-energy muon transport.
 
-Two treatments of the QED collision operator from Palmisano, *The soft volume of
-ultra-high energy neutrinos experiments* (arXiv:2607.13143):
+Two treatments of the QED collision operator:
 
-- the paper's second-order **drift-diffusion** expansion (``coefficients``,
+- the **eigenvalue** treatment (``eigenvalue``, ``soft_volume_exact``), which
+  diagonalizes the collision operator with power laws under the assumption
+  that the loss kernel is locally scale invariant. It gives the transport
+  exponent ``Phi(s)`` with every loss moment kept, and with no small-``y``
+  expansion and no energy cutoff. This is the physics core, described in
+  Meighen-Berger, *Analytical High-Energy Muon Transport for Neutrino
+  Telescopes* (2026); see ``docs/theory/exact_soft_volume.md``.
+- the second-order **drift-diffusion** expansion (``coefficients``,
   ``soft_volume`` drift form), where soft energy losses dominate and rare hard
-  scatters are perturbative; and
-- the **exact eigenvalue** treatment (``eigenvalue``, ``soft_volume_exact``),
-  which diagonalises the exact collision operator with power laws, giving the
-  attenuation constant ``Phi(A)`` without any small-``y`` expansion or energy
-  cutoff. See ``docs/exact_soft_volume_notes.md``.
+  scatters are perturbative. It is the earlier treatment of Palmisano,
+  Redigolo, Tammaro and Tesi (arXiv:2607.13143), recovered here as the first
+  two terms of ``Phi(s)`` and kept as a cross-check; see
+  ``docs/theory/soft_volume.md``.
 
-Both feed the same soft-volume master formula and are exposed through
-interchangeable :mod:`softpaws.response` predictors.
+Both feed the same master formula and are exposed through interchangeable
+:mod:`softpaws.response` predictors.
 """
 
 from . import (

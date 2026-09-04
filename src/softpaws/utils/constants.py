@@ -3,7 +3,7 @@
 All energies are in GeV, lengths in km unless stated otherwise. Values are
 collected here so the transport and response subpackages share a single source
 of truth. Medium densities and the reference muon transport coefficients follow
-Palmisano et al., arXiv:2607.13143 (see ``docs/soft_volume_notes.md``).
+the calibration in ``docs/theory/soft_volume.md``.
 """
 
 from __future__ import annotations
@@ -35,8 +35,8 @@ TAU_LIFETIME_S = 2.903e-13
 # ---------------------------------------------------------------------------
 # Medium densities [g cm^-3]
 # ---------------------------------------------------------------------------
-# The paper calibrates the muon transport coefficients in pure water; South
-# Pole ice is provided for later reuse. See ``docs/soft_volume_notes.md``.
+# The muon transport coefficients are calibrated in pure water; South
+# Pole ice is provided for later reuse. See ``docs/theory/soft_volume.md``.
 
 RHO_WATER_G_CM3 = 1.02
 RHO_ICE_G_CM3 = 0.92

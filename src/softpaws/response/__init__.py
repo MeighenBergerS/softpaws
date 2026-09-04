@@ -10,6 +10,8 @@ Provides two interchangeable paths for comparison:
 the paper's comparisons run on. :mod:`softpaws.response.site_models` holds the
 five-parameter forward model of each published table, and
 :mod:`softpaws.response.reduced` the two-instrument-number fit built on it.
+:mod:`softpaws.response.sensitivity` runs any of them backwards, from a
+response to the flux an injected signal needs before a search sees it.
 
 The energy grids of the two paths carry the same names, so
 ``ARCA_FIT_BAND``, ``ARCA_LOG10_E``, ``IC_FIT_BAND`` and ``IC_LOG10_E`` are

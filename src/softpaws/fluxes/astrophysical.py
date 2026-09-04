@@ -208,9 +208,11 @@ class BrokenPowerLawFit:
         )
 
 
-#: The reference single power law of Palmisano (arXiv:2607.13143, Eq. 1.3),
+#: The reference single power law of Palmisano et al. (arXiv:2607.13143, Eq. 1.3),
 #: IceCube's 9.5-year diffuse best fit as that paper quotes it.
-REFERENCE_SPL = PowerLawFit("reference", 0.63, 2.38, reference="arXiv:2607.13143 Eq. 1.3")
+REFERENCE_SPL = PowerLawFit(
+    "reference", 0.63, 2.38, reference="Palmisano et al., arXiv:2607.13143, Eq. 1.3"
+)
 
 #: IceCube's 9.5-year northern-tracks fit. The fit includes ``tau -> mu`` at
 #: 1:1:1; the collaboration's own with/without test puts that assumption at

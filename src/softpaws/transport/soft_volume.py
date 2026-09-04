@@ -2,30 +2,32 @@
 
 The soft volume is the effective target region for through-going muon tracks: a
 muon produced outside the instrumented volume can still drift into it, so the
-target is larger than the detector itself (arXiv:2607.13143, Section 2.3).
+target is larger than the detector itself. The drift-limit form below is the
+earlier treatment of Palmisano et al. (arXiv:2607.13143, Section 2.3), kept as
+a limit and a cross-check of the transport exponent.
 
 In the drift limit (``d_mu -> 0``, deterministic continuous slowing down) and
-with the simplifying assumptions of Section 2.3 -- a spherical perfectly
+with their simplifying assumptions -- a spherical perfectly
 absorbing detector, a power-law neutrino flux ``phi ~ E^-gamma``, a power-law CC
 cross section ``sigma ~ E^lambda``, and a constant near-detector medium -- the
-soft volume has the closed form (Eq. 2.23)
+soft volume has the closed form (their Eq. 2.23)
 
 .. math:: V_\\mathrm{soft}(E) = \\frac{\\pi R_\\mathrm{det}^2}{b_\\mu(E)\\,A},
     \\qquad A \\equiv \\gamma - \\lambda - 1 > 0.
 
 The muon range ``1/b_mu`` is further weighted by the spectral penalty ``1/A``
 for producing a higher-energy parent neutrino. This module implements that
-formula and the associated figure of merit (Eq. 2.24).
+formula and the associated figure of merit (their Eq. 2.24).
 
 It also provides the *exact* soft volume (:func:`soft_volume_exact`,
-``docs/exact_soft_volume_notes.md``), which replaces the drift range ``1/(b_mu A)``
+``docs/theory/exact_soft_volume.md``), which replaces the drift range ``1/(b_mu A)``
 by ``I(A) (1 - e^{-Phi(A) x}) / Phi(A)`` with the exact eigenvalue ``Phi(A)`` and a
 finite upstream column depth ``x``. The saturation factor keeps the result finite
 where the drift form diverges (``A -> 0``) or goes negative (``A < 0``, the
 cross-section pole).
 
 :func:`soft_volume_attenuated_exact` (Eq. 11, App. C.2-C.3 of
-``docs/2026_softvolume.pdf``) is the further generalization that folds parent-
+``paper/main.tex``) is the further generalization that folds parent-
 neutrino Earth attenuation directly into that same depth integral, rather than
 applying a decoupled multiplicative survival probability
 (:mod:`softpaws.transport.attenuation`) on top of it -- see
@@ -136,8 +138,8 @@ def dynamic_projected_radius_km(
 ) -> np.ndarray:
     """Energy-growing lateral trigger radius from stochastic light yield.
 
-    Not part of arXiv:2607.13143: the paper's soft volume uses a fixed
-    projected area ``pi R_det^2``, which is only right if a muon's ability to
+    Not part of Palmisano et al. (arXiv:2607.13143), whose soft volume uses a
+    fixed projected area ``pi R_det^2``. That is only right if a muon's ability to
     trigger the detector from a given lateral distance doesn't depend on its
     energy. Above the critical energy ``E_c`` (:func:`critical_energy_gev`)
     radiative losses -- bremsstrahlung, pair production, photonuclear --
@@ -553,16 +555,16 @@ def soft_volume_diffusion(
     source: str = DEFAULT_SOURCE,
     light_yield_length_km: float | None = None,
 ) -> np.ndarray:
-    """Diffusion-corrected soft volume (Eq. 2.25).
+    """Diffusion-corrected soft volume (Palmisano et al., Eq. 2.25).
 
-    The paper's drift-diffusion model multiplies the drift soft volume by the
+    Their drift-diffusion model multiplies the drift soft volume by the
     leading diffusion correction ``1 - d_mu / (2 b_mu)``,
 
     .. math:: V_\\mathrm{soft}^\\mathrm{diff}(E) = V_\\mathrm{soft}^\\mathrm{drift}(E)
         \\left(1 - \\frac{d_\\mu}{2 b_\\mu}\\right),
 
     an ``O(d_mu/2 b_mu) ~ 10%`` reduction. This is the ``method="diffusion"``
-    forward model used to reproduce the diffusion contours of the paper's Fig. 6.
+    forward model used to reproduce the diffusion contours of their Fig. 6.
 
     Parameters
     ----------
@@ -1573,7 +1575,7 @@ def range_target_volume_km3(
         :func:`dynamic_projected_area_km2` (see
         :func:`dynamic_projected_radius_km`'s docstring for the motivation:
         stochastic light yield above the critical energy letting a track
-        trigger from beyond ``R_det``, not part of the paper). Only the
+        trigger from beyond ``R_det``, not part of Palmisano et al.). Only the
         lateral projected area grows; the instrumented sphere ``V_det``
         below is left untouched. ``None`` (the default) preserves the
         static-radius behaviour.
@@ -1609,7 +1611,7 @@ def dm_line_target_volume_km3(radius_km: float, column_depth_km: float) -> float
 
     A delta-function line at ``E_nu = m_chi`` has no continuum spectral index
     to average over, so it excites the ``s = 0`` mode of the same eigenvalue
-    formalism the rest of the package uses (``docs/2026_softvolume_vs_implementation.md``
+    formalism the rest of the package uses (``docs/theory/paper_to_code.md``
     S:2.4). At ``s = 0``, ``Phi(0) = 0`` identically
     (:func:`softpaws.transport.eigenvalue.phi_eigenvalue`) and
     ``I(0) = 1`` (:func:`softpaws.transport.source.inelasticity_factor`), so
@@ -1660,11 +1662,11 @@ def volume_ratio_drift(
     density_g_cm3: float = RHO_WATER_G_CM3,
     source: str = DEFAULT_SOURCE,
 ) -> np.ndarray:
-    """Total-to-detector volume ratio in the drift limit (Eq. 2.24).
+    """Total-to-detector volume ratio in the drift limit (Palmisano et al., Eq. 2.24).
 
     The total target volume is the instrumented sphere plus its soft volume,
     ``V_tot / V_det = 1 + 3 / (4 R_det b_mu A)``. For the IceCube diffuse flux
-    (``A ~ 1``) this recovers the paper's figure of merit
+    (``A ~ 1``) this recovers their figure of merit
     ``1 + 3 / (4 R_det b_mu)``.
 
     Parameters
@@ -1700,7 +1702,7 @@ def saturation_factor(
     With ``inv_lambda_per_km = 0`` (the default) this is the plain transparent-
     Earth factor ``(1 - e^{-Phi x}) / Phi`` that turns the infinite-column range
     ``1/Phi`` into the value delivered by an upstream column of depth ``x``
-    (``docs/exact_soft_volume_notes.md`` Part 7). It is finite for every sign of
+    (``docs/theory/exact_soft_volume.md`` Part 7). It is finite for every sign of
     ``Phi``: as ``Phi -> 0`` it tends to ``x`` (no losses, the whole column
     accumulates), and for ``Phi < 0`` it continues to
     ``(e^{|Phi| x} - 1) / |Phi|``, curing the drift-form divergence at and beyond
@@ -1708,7 +1710,7 @@ def saturation_factor(
 
     With a nonzero ``inv_lambda_per_km = 1/Lambda_nu``, this is instead the
     paper's coupled ``R_nu(x, A)`` (Eq. 11, App. C.2-C.3 of
-    ``docs/2026_softvolume.pdf``),
+    ``paper/main.tex``),
 
     .. math:: R_\\nu(x, A) = \\frac{e^{-x/\\Lambda_\\nu} - e^{-x\\Phi(A)}}
         {\\Phi(A) - 1/\\Lambda_\\nu},
@@ -1764,7 +1766,7 @@ def scale_breaking_saturation_factor(
 
     App. F treats a scale-breaking loss rate ``dGamma/dy = E^beta kappa(y)``
     as a shift operator on the Mellin index, whose leading-order (first
-    order in ``beta``) consequence (Eq. F4 of ``docs/2026_softvolume.pdf``)
+    order in ``beta``) consequence (Eq. F4 of ``paper/main.tex``)
     is that the *effective* spectral index runs with propagated distance
     ``ell``,
 
@@ -1841,7 +1843,7 @@ def soft_volume_exact(
 ) -> np.ndarray:
     """Exact soft volume with the eigenvalue ``Phi(A)`` and a finite column.
 
-    Implements ``docs/exact_soft_volume_notes.md`` Part 7:
+    Implements ``docs/theory/exact_soft_volume.md`` Part 7:
 
     .. math:: V_\\mathrm{soft}(E) = \\pi R_\\mathrm{det}^2\\,
         \\mathcal{I}(A)\\,\\frac{1 - e^{-\\Phi(A) x}}{\\Phi(A)},
@@ -1946,7 +1948,7 @@ def soft_volume_attenuated_exact(
 
     Generalizes :func:`soft_volume_exact` by folding the parent neutrino's own
     Earth attenuation into the same depth integral that produces the soft
-    volume (App. C.2-C.3 of ``docs/2026_softvolume.pdf``), instead of applying
+    volume (App. C.2-C.3 of ``paper/main.tex``), instead of applying
     a decoupled multiplicative survival probability
     (:mod:`softpaws.transport.attenuation`) on top of it.
 

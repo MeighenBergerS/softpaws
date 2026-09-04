@@ -4,7 +4,7 @@ Cover the building blocks that reproduce the paper's Section 4 figures: the
 Poisson likelihood and priors, linearity of the signal in the flux
 normalization, the atmospheric background template, a fast MCMC smoke run, and
 the Eq. (4.6) cross-section solver -- including the pole behaviour that separates
-the FP and exact treatments (docs/exact_soft_volume_notes.md Part 11).
+the FP and exact treatments (docs/theory/exact_soft_volume.md Part 11).
 """
 
 import numpy as np

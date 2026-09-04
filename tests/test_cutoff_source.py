@@ -5,7 +5,7 @@ cutoff_source`) and its wiring into ``SoftVolumeResponse``: the
 ``e0 -> inf`` reduction to the plain (uncut) treatment, cutoff suppression at
 high energy, and -- the whole point of App. H -- that it stays finite and
 positive in the ``A < 0``, large-column regime where the plain treatment's
-saturation factor blows up (``docs/2026_softvolume_vs_implementation.md``
+saturation factor blows up (``docs/theory/paper_to_code.md``
 S:2.3).
 """
 

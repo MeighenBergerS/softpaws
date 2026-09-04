@@ -1,18 +1,30 @@
-# Exact soft-volume forward model — physics notes
+# The transport exponent — physics notes
 
-Distilled reference for the **exact** soft-volume solution derived in
-`docs/2026_softvolume.pdf`. This is a first-principles re-derivation that
-replaces the paper's Fokker–Planck (drift–diffusion) expansion with an *exact*
-eigenvalue treatment of the QED collision operator. It is the intended physics
-core for the `transport/` → `response/` path.
+Distilled reference for the eigenvalue solution softpaws is built on, derived
+in the method paper, Meighen-Berger, *Analytical High-Energy Muon Transport for
+Neutrino Telescopes* (2026), drafted in `paper/main.tex`. It replaces the
+earlier Fokker–Planck (drift–diffusion) expansion with an eigenvalue treatment
+of the QED collision operator, keeping every loss moment. This is the physics
+core of the `transport/` → `response/` path.
 
-Read alongside [`soft_volume_notes.md`](soft_volume.md), which distills
-the **paper's** approach (Palmisano et al.,
-[arXiv:2607.13143](https://arxiv.org/abs/2607.13143)). The paper's Fokker–Planck
-result is recovered here as the first two terms of an exact series — see
-[§8, Contrast](#8-contrast-with-the-paper-and-with-soft_volume_notesmd).
+Read alongside [Prior work: the drift–diffusion soft volume](soft_volume.md),
+which distills the earlier approach of Palmisano, Redigolo, Tammaro and Tesi
+([arXiv:2607.13143](https://arxiv.org/abs/2607.13143)). Their Fokker–Planck
+result is recovered here as the first two terms of the series — see
+[§8, Contrast](#8-contrast-with-the-drift-diffusion-path).
 
-Part numbers below refer to `docs/2026_softvolume.pdf`.
+**Naming convention on this page.** Because this page is a point-by-point
+contrast against the earlier calculation, "the paper" below always means
+Palmisano et al., arXiv:2607.13143. The method paper is named as such.
+
+Part numbers below refer to an earlier draft of `paper/main.tex`, whose
+sections are now numbered in Roman numerals with lettered appendices; the
+numeric content still checks out, only the cross-references are stale.
+
+!!! note
+    `paper/` holds the working draft and is not distributed with the public
+    repository. The arXiv number replaces these path references once the
+    paper is posted.
 
 ---
 
@@ -259,13 +271,13 @@ elsewhere, which would be inconsistent but avoids the sign flip.)
 
 ---
 
-## 8. Contrast with the paper (and with `soft_volume_notes.md`)
+## 8. Contrast with the drift-diffusion path
 
-`soft_volume_notes.md` documents the **paper's Fokker–Planck path**; this file
+`docs/theory/soft_volume.md` documents the **paper's Fokker–Planck path**; this file
 documents the **exact eigenvalue path**. They describe the same physics; the exact
 version *contains* the paper's as a truncation.
 
-| Aspect                | Paper / `soft_volume_notes.md` (Fokker–Planck)                  | This derivation (exact eigenvalue)                              |
+| Aspect                | Paper / [prior work](soft_volume.md) (Fokker–Planck)            | This derivation (exact eigenvalue)                              |
 |-----------------------|-----------------------------------------------------------------|-----------------------------------------------------------------|
 | Collision operator    | Expanded in small `y` → drift `b_μ` + diffusion `d_μ`           | Kept exact; diagonalised by power laws                          |
 | Governing solution    | Drift–diffusion PDE in energy (Eq. 2.9)                          | ODE in depth per Mellin mode; single mode `s = A`               |
@@ -396,7 +408,7 @@ spectral index, not a universal propagation constant.
 
 ## 11. Mapping to `softpaws`
 
-The exact path simplifies the numerical recipe in `soft_volume_notes.md` §8:
+The exact path simplifies the numerical recipe in [prior work](soft_volume.md) §8:
 
 - **`transport/coefficients`** — instead of just `b_μ, d_μ`, provide `Φ(A)`:
   either the closed-form two-moment digamma family (§9a) or a tabulated 1D

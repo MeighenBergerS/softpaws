@@ -29,18 +29,76 @@ from .schema import SEASONS
 
 __all__ = [
     "IC86_SEASONS",
+    "PSF_TABLE_KEYS",
     "banded_effective_area",
     "hemisphere_average",
     "irf_season",
     "livetime_weighted_effective_area",
     "load_effective_area",
     "load_events",
+    "load_psf_table",
     "season_livetime_s",
     "total_livetime_s",
 ]
 
 #: The eleven IC86 seasons, which share one instrument response.
 IC86_SEASONS = tuple(s for s in SEASONS if s.startswith("IC86"))
+
+#: Arrays a cached point-spread table holds.
+PSF_TABLE_KEYS = ("log10_e", "dec_deg", "containment_deg", "quantile")
+
+
+def load_psf_table(
+    path: str | pathlib.Path,
+    data_dir: str | pathlib.Path | None = None,
+    season: str = "IC86_II",
+    quantile: float = 0.68,
+    recompute: bool = False,
+) -> dict[str, np.ndarray]:
+    """Point-spread containment against energy and declination, cached.
+
+    The released smearing file is 570 MB and takes half a minute to parse, and
+    what a point-source background needs out of it is a small table, so the
+    quantile is taken once and written to an ``.npz`` beside the other caches.
+    See :meth:`~softpaws.response.irfs.SmearingMatrix.psf_containment_deg`.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Cache file.
+    data_dir : str or pathlib.Path or None, optional
+        Root of the release. ``None`` uses
+        :func:`softpaws.data.paths.dr2_dir`.
+    season : str, optional
+        Season whose smearing table is read.
+    quantile : float, optional
+        Containment to tabulate.
+    recompute : bool, optional
+        Rebuild even if ``path`` exists.
+
+    Returns
+    -------
+    table : dict of np.ndarray
+        ``log10_e`` (n_e,) and ``dec_deg`` (n_dec,) bin centres, the
+        ``containment_deg`` grid (n_e, n_dec), and the ``quantile`` taken.
+    """
+    from .loader import load_irfs
+
+    path = pathlib.Path(path)
+    if not recompute and path.exists():
+        with np.load(path) as data:
+            return {key: np.asarray(data[key]) for key in PSF_TABLE_KEYS}
+
+    smearing = load_irfs(_root(data_dir) / "irfs", season)["smearing"]
+    table = {
+        "log10_e": smearing.log10_enu_centers,
+        "dec_deg": smearing.dec_centers,
+        "containment_deg": smearing.psf_containment_deg(quantile),
+        "quantile": np.asarray(quantile),
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(path, **table)
+    return table
 
 
 def _root(data_dir: str | pathlib.Path | None) -> pathlib.Path:

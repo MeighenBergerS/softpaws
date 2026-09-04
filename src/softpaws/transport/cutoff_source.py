@@ -2,7 +2,7 @@
 
 A pure power-law source excites exactly one Mellin mode, ``s = A``
 (:mod:`softpaws.transport.eigenvalue`), which is what makes the closed-form
-soft volume (Eq. 9) possible. Sec. VII.C of ``docs/2026_softvolume.pdf`` notes
+soft volume (Eq. 9) possible. Sec. VII.C of ``paper/main.tex`` notes
 that this breaks down for ``A < 0`` (the cross-section pole,
 :func:`softpaws.transport.soft_volume.spectral_penalty`): the effective range
 scales as ``exp(x |Phi(A)|)``, which for a realistic Earth-crossing column

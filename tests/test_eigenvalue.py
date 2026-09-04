@@ -1,7 +1,7 @@
 """Tests for the exact collision eigenvalue and the exact soft volume.
 
-These lock in the properties derived in ``docs/exact_soft_volume_notes.md``
-(and ``docs/2026_softvolume.pdf``): the exactness identities ``Phi(1) = b_mu``
+These lock in the properties derived in ``docs/theory/exact_soft_volume.md``
+(and ``paper/main.tex``): the exactness identities ``Phi(1) = b_mu``
 and ``Phi(2) = 2 b_mu - d_mu``, agreement of the closed form with a direct
 quadrature, monotonic growth of ``Phi`` where the Fokker-Planck truncation turns
 over, and the finite-column saturation factor that cures the drift-form

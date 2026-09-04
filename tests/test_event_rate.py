@@ -3,7 +3,8 @@
 Cover the weak-source ingredients and the ``SoftVolumeResponse`` forward model:
 its factorization into target volume times weak-rate density, and the
 order-of-magnitude physics (an SM through-going rate at 100 PeV well below one
-event for IceCube's exposure -- the KM3NeT tension of arXiv:2607.13143).
+event for IceCube's exposure -- the KM3NeT tension of Palmisano et al.,
+arXiv:2607.13143).
 """
 
 import numpy as np

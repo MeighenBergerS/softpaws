@@ -1,17 +1,27 @@
-# `2026_softvolume.pdf` vs. the `softpaws` implementation
+# The method paper vs. the `softpaws` implementation
 
-Line-by-line comparison of the equations in the current `docs/2026_softvolume.pdf`
-("Exact Analytic Solutions for Neutrino-Induced Lepton Transport") against what
-`src/softpaws/` actually computes. Section/appendix labels below (`Sec. II`,
-`App. D`, ...) are the ones printed in the current PDF.
+Line-by-line comparison of the equations in the method paper, Meighen-Berger,
+*Analytical High-Energy Muon Transport for Neutrino Telescopes* (2026), drafted
+in `paper/main.tex`, against what `src/softpaws/` actually computes.
+Section/appendix labels below (`Sec. II`, `App. D`, ...) come from an earlier
+draft, so some no longer match the current numbering; the equations they name
+are unchanged.
 
-Read alongside `docs/exact_soft_volume_notes.md`, which distills the physics of
-this paper in detail but cites it by an older "Part N" numbering that no longer
-matches the PDF's Roman-numeral sections and lettered appendices — its numeric
-content (Table E.1 in particular) checks out against the current PDF, only its
+Read alongside [The transport exponent](exact_soft_volume.md), which distills
+the physics of the method paper in detail but cites it by an older "Part N"
+numbering — its numeric content (Table E.1 in particular) checks out, only its
 cross-references are stale. This document instead maps each equation directly
 to file:line in the code, and calls out where the code diverges from, extends
 beyond, or hasn't yet caught up to the paper.
+
+Throughout, "the paper" means the method paper. The earlier drift-diffusion
+calculation of Palmisano et al. (arXiv:2607.13143) is covered separately in
+[Prior work: the drift–diffusion soft volume](soft_volume.md).
+
+!!! note
+    `paper/` holds the working draft and is not distributed with the public
+    repository. The arXiv number replaces these path references once the
+    paper is posted.
 
 ---
 
@@ -25,7 +35,7 @@ beyond, or hasn't yet caught up to the paper.
 | `φ(x,E) = S(E)(1-e^{-xΦ(A)})/Φ(A)` (Eq. 9) | [`soft_volume.py:393-468`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/soft_volume.py#L393-L468) `soft_volume_exact`, [`:357-390`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/soft_volume.py#L357-L390) `saturation_factor` |
 | `dN/(dt dE dΩ) = I(A) n_N σ_νN φ_ν^⊕ [V_det + A_proj/Φ(A)(1-e^{-xΦ(A)})]` (Eq. 10) | [`response/soft_volume.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/response/soft_volume.py) `SoftVolumeResponse` with `method="exact"` |
 | Fokker-Planck as Taylor expansion, `Φ(A)=Ab_μ - A(A-1)/2 d_μ + ...` (Eq. 13) | [`eigenvalue.py:211-240`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L211-L240) `phi_fokker_planck`, `phi_drift` |
-| Exactness identities `Φ(1)=b_μ`, `Φ(2)=2b_μ-d_μ` (Eqs. 14-15) | Same functions; docstrings assert these, and Table E.1's numbers reproduce to 5 digits (`exact_soft_volume_notes.md` §8.3) |
+| Exactness identities `Φ(1)=b_μ`, `Φ(2)=2b_μ-d_μ` (Eqs. 14-15) | Same functions; docstrings assert these, and Table E.1's numbers reproduce to 5 digits ([the transport-exponent notes](exact_soft_volume.md) §8.3) |
 | Two-moment calibrated kernel, `Φ(s)=κ[ψ(s+p+1)-ψ(p+1)]` (App. E.1-E.2) | [`eigenvalue.py:66-98`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L66-L98) `two_moment_loss_spectrum`, [`:101-137`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/eigenvalue.py#L101-L137) `phi_symbol` |
 | Subordinator / characteristic-function inversion of the log-loss law (App. B, Eq. B1) | [`loss_distribution.py`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/loss_distribution.py) `loss_density` (inverts `e^{-ℓΦ(-ik)}` on a `k`-grid) |
 | Tau composite symbol `I(s,ℓ) = (e^{-ℓ/ℓ̃τ}-e^{-ℓΦμ})/(Φμ-1/ℓ̃τ)` (App. D, Eq. D1) | [`tau.py:248-343`](https://github.com/MeighenBergerS/softpaws/blob/main/src/softpaws/transport/tau.py#L248-L343) `tau_loss_density`, using exactly this closed form with the L'Hopital limit at the removable pole |
@@ -68,7 +78,7 @@ substitution — the closest of the four to "implemented as printed."
 
 **Key realization along the way:** the column depth `x` used by the muon-
 transport saturation factor and the column depth feeding `D_ν` were always
-meant to be the same declination-dependent quantity (`exact_soft_volume_notes.md`
+meant to be the same declination-dependent quantity ([the transport-exponent notes](exact_soft_volume.md)
 §5-6: "IceCube sits ~1.95 km deep" for downgoing; the full Earth chord for
 upgoing). Forms A/B compute them as two independent numbers; Form C uses one.
 
@@ -184,7 +194,7 @@ they aren't mistaken for implementing a paper equation that doesn't exist:
 | Sec. IV.B, App. C.2-C.3 (parent-ν attenuation folded into `R_ν(x,A)`, Eq. 11) | Implemented as printed ("Form C", §2.1) |
 | Sec. V, App. D (tau-induced tracks) | Implemented (`tau.py`) |
 | Sec. VI, App. E (Fokker-Planck as truncation, exactness identities, calibrated kernel) | Implemented |
-| Sec. VII (data-analysis implications: IceCube robustness, KM3NeT pole) | Reproduced numerically (see `exact_soft_volume_notes.md` §6-8), not separate code but a direct consequence of §1's formulas |
+| Sec. VII (data-analysis implications: IceCube robustness, KM3NeT pole) | Reproduced numerically (see [the transport-exponent notes](exact_soft_volume.md) §6-8), not separate code but a direct consequence of §1's formulas |
 | Sec. VIII, App. F-G (scale breaking, LPM shift operator) | Eq. F4 leading-order running index implemented; full Eq. F3 series not (ambiguous source term, §2.2) |
 | App. H (cutoff sources, Cahen-Mellin) | Implemented via real-space convolution; literal pole series overflows in the regime it's meant to fix, so not used (§2.3) |
 | App. I (dark matter lines) | Eq. I.2 implemented and checked; `s=0` limit equals the pre-existing J-factor calculation; detector-side `s=0` volume offered as a comparison, not App. I's own topic (§2.4) |

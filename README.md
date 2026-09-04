@@ -80,7 +80,7 @@ src/softpaws/
 ├── comparison/    Likelihoods, posteriors, the event benchmark, event energies
 ├── data/          Loaders for the IceCube release and the published curves
 └── utils/         Constants and unit conversions
-examples/          Ten tutorials, 01 to 10; output in examples/output/
+examples/          Twelve tutorials, 01 to 12; output in examples/output/
 scripts/
 ├── 2026_muon_transport/   One script per paper figure, table and number
 └── future_bsm/            Searches that belong to a later paper
@@ -102,8 +102,8 @@ inputs your analysis relies on; the list is in the
 }
 ```
 
-The approach follows Palmisano, *The soft volume of ultra-high energy
-neutrinos experiments* ([arXiv:2607.13143](https://arxiv.org/abs/2607.13143)).
+The entry is updated with the arXiv number and the journal reference once
+they exist.
 
 ## Contributing
 

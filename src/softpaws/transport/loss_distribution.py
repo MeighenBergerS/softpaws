@@ -9,7 +9,7 @@ propagating a column ``ell`` has accumulated a log-energy loss
 
 which, under the scale-invariant QED loss rates, is a *subordinator* (a
 non-decreasing Levy jump process) whose Laplace exponent is exactly the Mellin
-symbol of the collision operator (``docs/exact_soft_volume_notes.md``):
+symbol of the collision operator (``docs/theory/exact_soft_volume.md``):
 
 .. math:: \\mathbb{E}\\bigl[e^{-s\\,w(\\ell)}\\bigr] = e^{-\\ell\\,\\Phi(s)}.
 
@@ -17,7 +17,7 @@ A power-law flux ``phi ~ E^{-1-A}`` averages over ``w`` and so only ever sees th
 one number ``Phi(A)`` -- the regime of examples 05-08 and 12. A **single** event
 (such as KM3-230213A) instead samples ``P(w)`` once, and the heavy tail of that
 law -- the chance the parent neutrino was far more energetic than the observed
-muon -- is what the paper's Fokker-Planck Gaussian throws away.
+muon -- is what the Fokker-Planck Gaussian of Palmisano et al. throws away.
 
 This module inverts ``e^{-ell Phi(-i k)}`` to recover ``P(w)`` exactly
 (:func:`loss_density`), alongside the Fokker-Planck Gaussian reference
@@ -226,7 +226,7 @@ def loss_density_gaussian(
 ) -> np.ndarray:
     """Fokker-Planck (Gaussian) reference density for the log-loss.
 
-    The paper's drift-diffusion truncation makes ``w`` normal with the same first
+    The drift-diffusion truncation of Palmisano et al. makes ``w`` normal with the same first
     two moments as the exact process: mean ``M ell`` and variance ``d_mu ell``,
     where ``M = b_mu + d_mu / 2``. This is the density that :func:`loss_density`
     supersedes; it matches the exact law near the peak but decays far too fast in

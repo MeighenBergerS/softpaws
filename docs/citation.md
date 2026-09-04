@@ -18,9 +18,14 @@ they exist.
 The results depend on several inputs that carry their own references. Cite
 the ones your analysis uses.
 
-**The soft-volume approach.** Palmisano, *The soft volume of ultra-high
-energy neutrinos experiments*,
-[arXiv:2607.13143](https://arxiv.org/abs/2607.13143).
+**The earlier analytic treatment.** softpaws keeps the drift-diffusion
+expansion of the same collision operator as a limit and a cross-check of the
+transport exponent. If you use that path, cite Palmisano, Redigolo, Tammaro
+and Tesi, *The soft volume of ultra-high energy neutrinos experiments*,
+[arXiv:2607.13143](https://arxiv.org/abs/2607.13143), and its companion,
+*Exploring ultra-high energy neutrino experiments through the lens of the
+transport equation*, JHEP 03 (2026) 223,
+[arXiv:2507.10665](https://arxiv.org/abs/2507.10665).
 
 **The loss coefficients.** PROPOSAL supplies the bremsstrahlung, pair
 production and photonuclear parametrizations the kernel is calibrated to:

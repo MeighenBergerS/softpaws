@@ -1,25 +1,28 @@
 """Bayesian inference layer for the diffuse-flux and cross-section fits.
 
-Builds the binned Poisson likelihood of arXiv:2607.13143 Eq. (4.2) on top of the
-soft-volume forward model (:class:`softpaws.response.soft_volume.SoftVolumeResponse`)
-and drives it with an ``emcee`` sampler. This is what reproduces the paper's
-Section 4 figures:
+Builds the binned Poisson likelihood of Palmisano et al. (arXiv:2607.13143)
+Eq. (4.2) on top of the soft-volume forward model
+(:class:`softpaws.response.soft_volume.SoftVolumeResponse`) and drives it with
+an ``emcee`` sampler. This is what reproduces the Section 4 figures of that
+earlier work, which softpaws keeps as a cross-check:
 
 - **Fig. 6 / 7** — posteriors of the diffuse-flux parameters ``(phi0, gamma)`` and
   the transport nuisances ``(b_mu, d_mu)``, for the ``drift``, ``diffusion``, and
   the new ``exact`` forward models.
 - **Fig. 8** — the cross-section slope ``lambda`` required for one muon event at
   ``100 PeV`` (Eq. 4.6), via :func:`required_lambda`. Here the FP drift form
-  diverges at the pole ``lambda = gamma - 1`` while the exact form stays finite
-  (see ``docs/exact_soft_volume_notes.md`` Part 11).
+  diverges at the pole ``lambda = gamma - 1`` while the eigenvalue form stays
+  finite (see ``docs/theory/exact_soft_volume.md``).
 
-Data caveats (this is a DR2-based *proxy*, not the paper's Ref. [28] dataset):
+Data caveats (this is a DR2-based *proxy*, not the Ref. [28] dataset of
+Palmisano et al.):
 
 - The IceCube counts come from the in-repo IceTracks-DR2 downgoing events.
 - The atmospheric background is a floated power-law template
-  (:func:`atmospheric_template`), not the paper's fixed per-bin background.
+  (:func:`atmospheric_template`), not their fixed per-bin background.
 
-The transport-nuisance priors follow the MC calibration of Section 3 (Eq. 3.10):
+The transport-nuisance priors follow the MC calibration of their Section 3
+(Eq. 3.10):
 ``b_mu`` rescaled by ``b_scale ~ N(0.94, 0.15)`` and ``d_mu`` by a log-normal
 ``d_scale`` matching ``1.5 (+1.6 / -0.8)``.
 """
@@ -60,8 +63,8 @@ def asimov_dataset(config: "FitConfig", phi0: float = PHI0_TRUTH, gamma: float =
 
     The Asimov dataset is the noise-free expectation at a chosen truth; fitting it
     recovers that truth, so it is the standard way to show a pipeline reproduces
-    the expected posteriors. Here the IceCube figures inject the paper's best-fit
-    flux through the forward model rather than fitting the atmospheric-muon-swamped
+    the expected posteriors. Here the IceCube figures inject the best-fit flux of
+    Palmisano et al. through the forward model rather than fitting the atmospheric-muon-swamped
     DR2 downgoing sample (which lies outside the neutrino soft-volume model's
     validity).
 
@@ -70,7 +73,8 @@ def asimov_dataset(config: "FitConfig", phi0: float = PHI0_TRUTH, gamma: float =
     config : FitConfig
         Fit configuration whose forward model generates the signal.
     phi0, gamma : float, optional
-        Injected diffuse-flux truth. Default to the paper's diffusion best fit.
+        Injected diffuse-flux truth. Default to the diffusion best fit of
+        Palmisano et al.
     b_scale, d_scale : float, optional
         Injected transport-coefficient truth. Default to the theoretical values.
     bkg_total : float, optional
@@ -147,7 +151,8 @@ class FitConfig:
 def atmospheric_template(log10_e_edges: np.ndarray, slope: float = 3.7) -> np.ndarray:
     """Unit-sum background shape ``propto integral E^-slope dE`` per bin.
 
-    A pragmatic stand-in for the paper's fixed per-bin atmospheric background
+    A pragmatic stand-in for the fixed per-bin atmospheric background of
+    Palmisano et al.
     (which is not available for the DR2 release). Scaled by a free ``bkg_norm``
     nuisance in the fit, so ``bkg_norm`` is the total expected background count.
 

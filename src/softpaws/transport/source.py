@@ -1,8 +1,9 @@
 """Weak source ingredients: neutrino CC cross section and target density.
 
 These feed the weak collisional term that sources muons in the transport
-equation (arXiv:2607.13143, Eq. 2.2). In the reduced drift-limit picture of
-Section 2.3 the weak-rate density at observed muon energy ``E`` is
+equation. In the reduced drift-limit picture of Palmisano et al.
+(arXiv:2607.13143, Sections 2.2 and 2.3) the weak-rate density at observed muon
+energy ``E`` is
 ``n_N * sigma_CC(E) * phi_nu(E)``, which multiplies the target volume to give
 the event rate.
 """
@@ -14,7 +15,7 @@ import numpy as np
 from ..utils.constants import AVOGADRO_PER_MOL, RHO_WATER_G_CM3
 
 # UHE CC cross-section power law, sigma_CC = sigma0 (E / E0)^lambda
-# (arXiv:2607.13143, Eq. 2.5). sigma0 matches the MadGraph result at E0 = 10 PeV
+# (Palmisano et al., arXiv:2607.13143, Eq. 2.5). sigma0 matches the MadGraph result at E0 = 10 PeV
 # with the default LHAPDF set; lambda ~ 0.4 follows the small-x PDF behaviour.
 SIGMA0_CM2 = 1.48e-33
 E0_CROSS_GEV = 1.0e7  # 10 PeV
@@ -114,9 +115,9 @@ def inelasticity_factor(
 
     The muon is born with only a fraction ``1 - y_w`` of the neutrino energy, so
     the source picks up the spectrum-weighted average
-    ``I(A) = <(1 - y_w)^A>_P`` (arXiv:2607.13143 companion derivation,
-    ``docs/exact_soft_volume_notes.md`` Part 5). This factor multiplies both the
-    inside and the soft contributions in the exact master formula.
+    ``I(A) = <(1 - y_w)^A>_P`` (``paper/main.tex`` Sec. II C,
+    ``docs/theory/exact_soft_volume.md``). This factor multiplies both the
+    inside and the soft contributions in the master formula.
 
     Parameters
     ----------
@@ -135,7 +136,7 @@ def inelasticity_factor(
     With only the mean ``<y_w>`` available, the inelasticity distribution
     ``P(y_w)`` is modelled as a delta at its mean, giving
     ``I(A) = (1 - <y_w>)^A``. This is exact at ``A = 1`` (``I(1) = 1 - <y_w>``,
-    the only value the paper actually uses) and a mild approximation elsewhere;
+    the only value Palmisano et al. use) and a mild approximation elsewhere;
     supply a full ``P(y_w)`` average to improve it away from ``A = 1``.
     """
     a = np.asarray(spectral_index_value, dtype=float)

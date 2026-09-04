@@ -15,10 +15,10 @@ nav:
       - 'Examples': './examples.md'
       - 'Reproducing the paper': './reproduce.md'
       - 'Theory notes':
-          - 'The soft volume': './theory/soft_volume.md'
-          - 'The exact solution': './theory/exact_soft_volume.md'
+          - 'The transport exponent': './theory/exact_soft_volume.md'
           - 'The range to threshold': './theory/first_passage_range.md'
           - 'Paper to code': './theory/paper_to_code.md'
+          - 'Prior work: the soft volume': './theory/soft_volume.md'
       - 'Citation': './citation.md'
 extra_css:
   - css/custom_rules.css

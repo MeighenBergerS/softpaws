@@ -50,7 +50,7 @@ from typing import Callable
 
 import numpy as np
 
-from softpaws.detectors import ARCA230, ICECUBE, MAX_UPSTREAM_KM, PONE, TRIDENT
+from softpaws.detectors import ARCA230, ICECUBE, MAX_UPSTREAM_KM, PONE, TRIDENT, Site
 from softpaws.transport.attenuation import (
     flavour_transmission,
     prem_column,
@@ -106,6 +106,7 @@ __all__ = [
     "PARAM_NAMES",
     "PHYSICS_PARAMS",
     "PRIORS",
+    "PUBLISHED_SKY",
     "REACH_EXAMPLE28_KM",
     "REACH_PIVOT_GEV",
     "SMEARING_LOG10_E_THR",
@@ -130,6 +131,7 @@ __all__ = [
     "on_arca_grid",
     "pone_allsky_cm2",
     "published_curve",
+    "published_effective_area_cm2",
     "tilted_cc",
     "trident_allsky_cm2",
     "truncation_table",
@@ -474,6 +476,60 @@ published_curve: dict[str, Callable[[], np.ndarray]] = {
     "P-ONE": pone_allsky_cm2,
     "TRIDENT": trident_allsky_cm2,
 }
+
+
+#: Sky each published curve is averaged over, as a ``cos(theta)`` range. The
+#: DR2 table is quoted over the upgoing sky and every water table over the
+#: whole of it, which is the average a model has to be compared in.
+PUBLISHED_SKY: dict[str, tuple[float, float]] = {
+    "IceCube": (-1.0, 0.0),
+    "ARCA230": (-1.0, 1.0),
+    "P-ONE": (-1.0, 1.0),
+    "TRIDENT": (-1.0, 1.0),
+}
+
+
+def published_effective_area_cm2(
+    site: Site, log10_e: np.ndarray, data_dir: pathlib.Path | None = None
+) -> tuple[np.ndarray, tuple[float, float]]:
+    """One site's published effective area, on a grid, with the sky it covers.
+
+    Parameters
+    ----------
+    site : Site
+        The detector. One of the four in :data:`PUBLISHED_SKY`.
+    log10_e : np.ndarray
+        Neutrino energies to evaluate at [log10 GeV].
+    data_dir : pathlib.Path or None, optional
+        Root of the IceTracks-DR2 release, read for IceCube alone. ``None``
+        uses :func:`softpaws.data.paths.dr2_dir`.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray, shape (log10_e.size,)
+        Published effective area [cm^2], ``NaN`` outside the published range.
+    cos_range : tuple of float
+        The ``cos(theta)`` band the curve is averaged over.
+
+    Raises
+    ------
+    KeyError
+        Raised for a site with no published curve here.
+    """
+    from softpaws.data.published import interpolate_aeff
+
+    if site.name not in PUBLISHED_SKY:
+        raise KeyError(f"No published effective area ships for {site.name!r}.")
+    if site.name == "IceCube":
+        from softpaws.data.paths import dr2_dir
+
+        grid, aeff = IC_LOG10_E, icecube_upgoing(dr2_dir() if data_dir is None else data_dir)
+    elif site.name == "ARCA230":
+        grid, aeff = ARCA_LOG10_E, arca230_trigger()
+    else:
+        grid, aeff = ARCA_LOG10_E, published_curve[site.name]()
+    good = np.isfinite(aeff) & (aeff > 0.0)
+    return interpolate_aeff(log10_e, grid[good], aeff[good]), PUBLISHED_SKY[site.name]
 
 
 # ---------------------------------------------------------------------------

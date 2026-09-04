@@ -1,7 +1,8 @@
 """Earth attenuation of the neutrino flux before it reaches the detector.
 
 The soft-volume forward model (:mod:`softpaws.response.soft_volume`) assumes an
-unattenuated flux (``D_nu = 1``, arXiv:2607.13143 Eq. 2.4), which is only valid
+unattenuated flux (``D_nu = 1``, Palmisano et al., arXiv:2607.13143, Eq. 2.4),
+which is only valid
 for the downgoing hemisphere. Upgoing neutrinos traverse the Earth, and above
 ~100 TeV the neutrino-nucleon cross section grows enough that the Earth becomes
 opaque -- the dominant effect shaping the upgoing UHE spectrum.
@@ -46,7 +47,7 @@ for the strongly-absorbed upgoing UHE regime where Forms A/B are an
 uncontrolled approximation.
 
 Geometry follows the South Pole detector convention (see
-``docs/soft_volume_notes.md``): a source at declination ``dec`` arrives at
+``docs/theory/soft_volume.md``): a source at declination ``dec`` arrives at
 zenith ``90 deg + dec``, so the upgoing hemisphere is ``dec > 0``. The Earth
 chord for a (near-)surface detector is ``L(dec) = 2 R_Earth sin(dec)``: it
 vanishes at the horizon (``dec = 0``) and reaches the full diameter for
@@ -162,11 +163,11 @@ def neutrino_interaction_length_km(
 
     ``Lambda_nu = 1 / (N_A sigma_tot(E) rho)``, expressed in km at the given
     reference density (water by default, giving the km-water-equivalent
-    convention arXiv:2607.13143 quotes: ``Lambda_nu ~ O(10^3) km.w.e.``). This
+    convention Palmisano et al. quote: ``Lambda_nu ~ O(10^3) km.w.e.``). This
     matches the km^-1 units :func:`softpaws.transport.eigenvalue.phi_eigenvalue`
     already uses for ``Phi(A)``, so the two combine directly in
     :func:`softpaws.transport.soft_volume.saturation_factor`'s coupled form
-    (Eq. 11 of ``docs/2026_softvolume.pdf``).
+    (Eq. 11 of ``paper/main.tex``).
 
     Parameters
     ----------

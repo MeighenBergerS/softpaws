@@ -7,7 +7,7 @@ event histogram: the IRF path is migrated from true neutrino energy to
 reconstructed energy via the smearing matrix's :meth:`~softpaws.response.irfs.
 SmearingMatrix.energy_response_matrix`, and the soft-volume path already
 predicts *muon energy at the detector*, which is used directly as the
-reconstructed-energy proxy (arXiv:2607.13143, Section 2.1).
+reconstructed-energy proxy (Palmisano et al., arXiv:2607.13143, Section 2.1).
 
 Notes
 -----
@@ -18,7 +18,7 @@ hemisphere. The published effective area, by contrast, already has Earth
 attenuation baked in for every direction. Comparisons here should therefore be
 restricted to the downgoing hemisphere (``dec < 0`` at IceCube) until the
 transport path grows an explicit attenuation model; see
-``docs/soft_volume_notes.md``.
+``docs/theory/soft_volume.md``.
 """
 
 from __future__ import annotations
@@ -289,8 +289,8 @@ def fit_scale_factor(
         Bin edges in ``log10(E/GeV)``, used only to select the fit range.
     log10_e_min_fit : float, optional
         Lower edge of the fit range in ``log10(E/GeV)``. Defaults to 10 TeV,
-        matching the IceCube diffuse-flux analysis (arXiv:2607.13143,
-        Section 4.1).
+        matching the IceCube diffuse-flux analysis (Palmisano et al.,
+        arXiv:2607.13143, Section 4.1).
 
     Returns
     -------
@@ -482,7 +482,8 @@ def implied_efficiency(
     the idealized soft-volume detector needs, relative to what the
     efficiency-and-acceptance-aware IRF path needs, to describe the same data.
     This is the data-driven analogue of the efficiency factor
-    ``eps_IC-TG = phi0 / phi0_IceCube`` defined in arXiv:2607.13143, Eq. 1.4.
+    ``eps_IC-TG = phi0 / phi0_IceCube`` defined in Palmisano et al.,
+    arXiv:2607.13143, Eq. 1.4.
 
     Parameters
     ----------

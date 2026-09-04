@@ -1,6 +1,6 @@
 # Examples
 
-Ten numbered tutorials in `examples/` work through the package from the
+Twelve numbered tutorials in `examples/` work through the package from the
 transport up. Each calls only the public API, prints the numbers it computes,
 and writes one figure to `examples/output/`. The printed output is the
 result; the figure illustrates it.
@@ -28,6 +28,8 @@ Every script takes `--out-dir`, and the ones that read a release take
 | 08 | `tau_induced_tracks` | What the tau channel contributes to the track rate, and where it takes over | — |
 | 09 | `fitting_the_light_reach` | Scanning the one instrument number that closes the gap in tutorial 05 | DR2 |
 | 10 | `atmospheric_background` | The MCEq background against the astrophysical flux, and where they cross | cached table or the `atm` extra |
+| 11 | `diffuse_signal` | The flux a new diffuse signal needs before each telescope sees it, as a single event, a line and a power law | DR2 for IceCube |
+| 12 | `point_source_signal` | The same three injections for a point source, against declination and site latitude | DR2 for IceCube |
 
 Tutorials 02, 03, 07 and 08 need no downloaded data at all: everything they
 use ships with the package.
@@ -44,6 +46,8 @@ quick check that an installation is sound.
 - Tutorials 05 and 09 give the level of 0.75 that the instrumented footprint
   alone leaves against the published DR2 table, and show the one number that
   closes it.
+- Tutorials 11 and 12 fit that same number at all four sites, to between 0.02
+  and 0.08 dex, and carry it into a sensitivity.
 
 ## The older scripts
 

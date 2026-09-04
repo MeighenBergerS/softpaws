@@ -363,6 +363,48 @@ class SmearingMatrix:
         """Declination bin centres [deg], shape (n_dec,)."""
         return 0.5 * (self._dec_min + self._dec_max)
 
+    def psf_containment_deg(self, quantile: float = 0.68) -> np.ndarray:
+        """Containment radius of the point spread, per true-energy and declination bin.
+
+        The released table carries a ``PSF_angle`` bin with every row, so the
+        angular resolution is a weighted quantile of that column inside each
+        group. It is the number a point-source search needs and an effective
+        area does not: how much sky has to be looked through to keep a source,
+        which falls as the energy rises and the track leaves more light.
+
+        Parameters
+        ----------
+        quantile : float, optional
+            Containment to return. See
+            :data:`~softpaws.response.sensitivity.OPTIMAL_CONTAINMENT` for why
+            68% is the one a counting bin wants.
+
+        Returns
+        -------
+        containment_deg : np.ndarray, shape (n_enu, n_dec)
+            Angle containing ``quantile`` of the reconstructed events [deg].
+            ``NaN`` in bins the release leaves empty.
+        """
+        angle = 0.5 * (self._data[:, :, :, 2] + self._data[:, :, :, 3])
+        weight = self._data[:, :, :, 6]
+        order = np.argsort(angle, axis=2)
+        angle = np.take_along_axis(angle, order, axis=2)
+        cumulative = np.cumsum(np.take_along_axis(weight, order, axis=2), axis=2)
+
+        total = cumulative[:, :, -1]
+        with np.errstate(divide="ignore", invalid="ignore"):
+            cdf = cumulative / total[:, :, None]
+        # The first node at or past the quantile, and the one before it, so the
+        # answer is interpolated rather than rounded to a bin edge.
+        upper = np.argmax(cdf >= quantile, axis=2)
+        lower = np.maximum(upper - 1, 0)
+        take = lambda a, i: np.take_along_axis(a, i[:, :, None], axis=2)[:, :, 0]  # noqa: E731
+        cdf_lo, cdf_hi = take(cdf, lower), take(cdf, upper)
+        angle_lo, angle_hi = take(angle, lower), take(angle, upper)
+        span = np.where(cdf_hi > cdf_lo, cdf_hi - cdf_lo, 1.0)
+        result = angle_lo + (angle_hi - angle_lo) * (quantile - cdf_lo) / span
+        return np.where(total > 0.0, result, np.nan)
+
     def energy_response_matrix(self, log10_reco_edges: np.ndarray) -> np.ndarray:
         """Marginal energy migration P(E_reco_bin | E_nu_bin, dec_bin).
 
