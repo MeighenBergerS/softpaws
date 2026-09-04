@@ -41,7 +41,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import chi2
 
-from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
+from softpaws.comparison.events import (
+    ASTRO_GAMMA,
+    ASTRO_PHI,
+    combine_band,
+    predict,
+    published_response,
+)
+from softpaws.data.loader import compute_livetime_s, load_uptime
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -56,18 +63,9 @@ def _load_example(stem: str, name: str):
     return module
 
 
-#: Example 51, for the smearing marginal, the banded responses, the
-#: atmospheric fluxes, the event binning, and the tracks-fit constants.
+#: Example 51, for the cached fit inputs, the atmospheric fluxes, the event
+#: binning and the fit grids.
 _EX51 = _load_example("51_dr2_flavor_fit.py", "_example_51")
-
-#: The externally pinned astrophysical flux: IceCube's 9.5-year tracks fit,
-#: per flavour at the 100 TeV pivot (arXiv:2111.10299), applied to the
-#: ``nu_mu`` and ``nu_tau`` channels alike (1:1:1).
-ASTRO_PHI, ASTRO_PHI_ERR = _EX51.TRACKS_PHI_MU
-ASTRO_GAMMA, ASTRO_GAMMA_ERR = _EX51.TRACKS_GAMMA
-
-#: Hadronic-model spread carried as the atmospheric normalization error.
-ATM_ERR = 0.25
 
 #: Reconstructed energy [log10 GeV] above which the astrophysical component
 #: is expected to compete with the atmosphere; the declination figure's
@@ -100,160 +98,6 @@ def load_inputs(data_dir: pathlib.Path, rebuild: bool):
     ex45 = _load_example("45_first_principles_reach.py", "_example_45")
     ex46 = _load_example("46_declination_resolved_reach.py", "_example_46")
     return _EX51.fit_inputs(ex35, ex45, ex46, data_dir, rebuild)
-
-
-def true_counts(response, flux, enu_edges, d_omega, livetime_s):
-    """Expected counts per (true-energy bin, declination band).
-
-    Mirrors :meth:`RecoLikelihood._true_counts` for a standalone response and
-    flux grid, both on ``LOG10_E_GRID`` x bands.
-
-    Parameters
-    ----------
-    response : np.ndarray
-        Channel response [cm^2].
-    flux : np.ndarray
-        Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].
-    enu_edges : np.ndarray
-        True-energy bin edges of the smearing table [log10 GeV].
-    d_omega : np.ndarray
-        Solid angle per declination band [sr].
-    livetime_s : float
-        Summed IC86 livetime [s].
-    """
-    energy = 10.0**_EX51.LOG10_E_GRID
-    integrand = response * flux
-    counts = np.zeros((enu_edges.size - 1, d_omega.size))
-    for i in range(enu_edges.size - 1):
-        sel = ((_EX51.LOG10_E_GRID >= enu_edges[i])
-               & (_EX51.LOG10_E_GRID <= enu_edges[i + 1]))
-        if sel.sum() < 2:
-            continue
-        counts[i] = np.trapezoid(integrand[sel], energy[sel], axis=0)
-    return livetime_s * counts * d_omega[None, :]
-
-
-def published_response(data_dir: pathlib.Path, enu_edges, dec_edges):
-    """IceCube's own DR2 effective area on example 51's response grid.
-
-    The baseline the model has to beat: the released ``IC86_effectiveArea.csv``
-    is an average over each (true energy, true declination) bin, so it is
-    broadcast piecewise-constant onto ``LOG10_E_GRID`` inside each smearing bin
-    and taken at the band's own declination. The table is a ``nu_mu`` area, so
-    the tau channel is zero in this response.
-
-    Parameters
-    ----------
-    data_dir : pathlib.Path
-        Root of the DR2 release.
-    enu_edges : np.ndarray
-        True-energy bin edges of the smearing table [log10 GeV].
-    dec_edges : np.ndarray
-        Upgoing declination bin edges [deg].
-
-    Returns
-    -------
-    responses : dict of str -> np.ndarray
-        ``"mu"`` on (``LOG10_E_GRID``, bands) [cm^2], and ``"tau"`` of zeros.
-    """
-    raw = np.genfromtxt(data_dir / "irfs" / "IC86_effectiveArea.csv", comments="#")
-    aeff = parse_aeff(raw)
-    dec_centers = 0.5 * (dec_edges[:-1] + dec_edges[1:])
-    log10_e = np.clip(_EX51.LOG10_E_GRID, enu_edges[0] + 1.0e-9, enu_edges[-1] - 1.0e-9)
-    i_enu = np.searchsorted(enu_edges, log10_e, side="right") - 1
-    table_e_centers = aeff.log10_energy_centers
-    table_sin_edges = aeff.sin_dec_edges
-    i_table_e = np.searchsorted(table_e_centers, 0.5 * (enu_edges[i_enu] + enu_edges[i_enu + 1]))
-    i_table_e = np.clip(i_table_e - 1, 0, table_e_centers.size - 1)
-    i_table_d = np.clip(np.searchsorted(table_sin_edges, np.sin(np.deg2rad(dec_centers)),
-                                        side="right") - 1, 0, table_sin_edges.size - 2)
-    mu = aeff.values[np.ix_(i_table_e, i_table_d)]
-    return {"mu": mu, "tau": np.zeros_like(mu)}
-
-
-def astro_flux(gamma):
-    """Per-flavour tracks-fit power law on the fine grid [GeV^-1 cm^-2 s^-1 sr^-1]."""
-    energy = 10.0**_EX51.LOG10_E_GRID
-    return ASTRO_PHI * (energy[:, None] / 1.0e5) ** (-gamma)
-
-
-def predict(responses, atmos, enu_edges, dec_edges, marginal, livetime_s):
-    """Reconstructed-space components on the full reco grid, per band.
-
-    Returns
-    -------
-    components : dict of str -> np.ndarray
-        ``"conv"``, ``"prompt"``, ``"astro_mu"``, ``"astro_tau"`` on
-        (reco bins, declination bands).
-    errors : dict of str -> np.ndarray or tuple
-        Signed one-sigma grids per external input, same shape, each fully
-        correlated across bins; combine with :func:`combine_band`.
-    """
-    d_omega = 2.0 * np.pi * np.diff(np.sin(np.deg2rad(dec_edges)))
-    marginal_tau = _EX51.RecoLikelihood._shifted_marginal(enu_edges, marginal)
-
-    def fold(true, tau=False):
-        return np.einsum("ij,ijk->kj", true, marginal_tau if tau else marginal)
-
-    ones = np.ones((1, d_omega.size))
-    flux = astro_flux(ASTRO_GAMMA) * ones
-    components = {
-        "conv": fold(true_counts(responses["mu"], atmos["conv"], enu_edges,
-                                 d_omega, livetime_s)),
-        "prompt": fold(true_counts(responses["mu"], atmos["prompt"], enu_edges,
-                                   d_omega, livetime_s)),
-        "astro_mu": fold(true_counts(responses["mu"], flux, enu_edges,
-                                     d_omega, livetime_s)),
-        "astro_tau": fold(true_counts(responses["tau"], flux, enu_edges,
-                                      d_omega, livetime_s), tau=True),
-    }
-
-    astro = components["astro_mu"] + components["astro_tau"]
-    spread = []
-    for gamma in (ASTRO_GAMMA - ASTRO_GAMMA_ERR, ASTRO_GAMMA + ASTRO_GAMMA_ERR):
-        flux_g = astro_flux(gamma) * ones
-        varied = (fold(true_counts(responses["mu"], flux_g, enu_edges,
-                                   d_omega, livetime_s))
-                  + fold(true_counts(responses["tau"], flux_g, enu_edges,
-                                     d_omega, livetime_s), tau=True))
-        spread.append(varied - astro)
-    errors = {
-        "conv": ATM_ERR * components["conv"],
-        "prompt": ATM_ERR * components["prompt"],
-        "astro_norm": ASTRO_PHI_ERR / ASTRO_PHI * astro,
-        "astro_gamma": (spread[0], spread[1]),
-    }
-    return components, errors
-
-
-def combine_band(errors, reduce):
-    """One-sigma external-input band after summing bins with ``reduce``.
-
-    Every entry of ``errors`` is one normalization or index error, so it is
-    fully correlated across bins and its grid adds linearly under ``reduce``;
-    the sources then add in quadrature. Adding the per-bin grids in
-    quadrature across bins instead would shrink a 25% normalization error
-    by roughly the square root of the number of bins.
-
-    Parameters
-    ----------
-    errors : dict of str -> np.ndarray or tuple
-        Signed one-sigma grids per source, as returned by :func:`predict`.
-        ``"astro_gamma"`` holds the two signed index variations, which
-        change sign across the pivot and so must be reduced before taking
-        their magnitude.
-    reduce : callable
-        Maps a (reco bins, declination bands) grid to the sum wanted, for
-        example ``lambda g: g[window].sum()`` or ``lambda g: g.sum(axis=1)``.
-    """
-    terms = []
-    for key, grid in errors.items():
-        if key == "astro_gamma":
-            lo, hi = grid
-            terms.append(0.5 * (np.abs(reduce(lo)) + np.abs(reduce(hi))))
-        else:
-            terms.append(reduce(grid))
-    return np.sqrt(sum(term**2 for term in terms))
 
 
 def report(components, errors, data, baseline=None):

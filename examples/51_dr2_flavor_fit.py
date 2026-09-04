@@ -96,20 +96,13 @@ from dataclasses import replace
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import minimize
 
+from softpaws.comparison import reco_likelihood as _reco
 from softpaws.comparison.feldman_cousins import cached_toys, profile_interval
 from softpaws.data.icecube import (
     IC86_SEASONS,
 )
-from softpaws.data.loader import compute_livetime_s, load_season, load_uptime
-from softpaws.fluxes import (
-    FLUX_UNIT,
-    ICECUBE_COMBINED_2023,
-    ICECUBE_TRACKS_2022,
-    AtmosphericFlux,
-    load_mceq_table,
-)
+from softpaws.data.loader import compute_livetime_s, load_uptime
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -125,48 +118,37 @@ _GEN2_CACHE = _DEFAULT_OUT_DIR / "51_gen2_responses.npz"
 #: Atmospheric flux cache from example 22.
 _MCEQ_CACHE = _HERE / "output" / "22_mceq_atmospheric_flux.npz"
 
-#: Seasons entering the fit: the IC86 configurations share one IRF set.
+#: The fit's grids, priors, anchors and likelihood now live in
+#: :mod:`softpaws.comparison.reco_likelihood`. They are bound here under
+#: their old names because examples 52, 53, 54, 59, 61, 62 and 76 load this
+#: file and read them from it.
+PIVOT_PHI0 = _reco.PIVOT_PHI0
+PIVOT_GAMMA = _reco.PIVOT_GAMMA
+RECO_EDGES = _reco.RECO_EDGES
+FIT_RECO = _reco.FIT_RECO
+MODEL_SYS = _reco.MODEL_SYS
+CONV_PRIOR = _reco.CONV_PRIOR
+PROMPT_PRIOR = _reco.PROMPT_PRIOR
+GAMMA_BOUNDS = _reco.GAMMA_BOUNDS
+LOG10_E_GRID = _reco.LOG10_E_GRID
+GAMMA_GRID = _reco.GAMMA_GRID
+TAU_DECAY_X = _reco.TAU_DECAY_X
+R_GRID = _reco.R_GRID
+FC_R_TRUE = _reco.FC_R_TRUE
+FC_R_SCAN = _reco.FC_R_SCAN
+PHI_MU_GRID = _reco.PHI_MU_GRID
+PHI_TAU_GRID = _reco.PHI_TAU_GRID
+N_MU_GRID = _reco.N_MU_GRID
+N_TAU_GRID = _reco.N_TAU_GRID
+PHI_TAU_SCAN = _reco.PHI_TAU_SCAN
+TRACKS_GAMMA = _reco.TRACKS_GAMMA
+TRACKS_PHI_MU = _reco.TRACKS_PHI_MU
+ANCHORS = _reco.ANCHORS
+RecoLikelihood = _reco.RecoLikelihood
 
-#: Astrophysical pivot: the per-flavour normalization unit and the index seed,
-#: from the combined fit (arXiv:2308.00191). ``N = 1`` in the fit means this
-#: flux.
-PIVOT_PHI0 = ICECUBE_COMBINED_2023.phi0 * FLUX_UNIT
-PIVOT_GAMMA = ICECUBE_COMBINED_2023.gamma
-
-#: Reconstructed-energy grid the fold projects onto, and the window the fit
-#: uses. The grid is wider than the window so the fold conserves counts.
-RECO_EDGES = np.arange(1.0, 8.51, 0.25)
-FIT_RECO = (4.25, 7.5)
-
-#: Fractional model-shape systematic per bin. The percent-level residuals of
-#: the folded model would otherwise dominate the likelihood through the
-#: highest-statistics atmospheric bins; each bin's deviance is scaled by
-#: ``1 + (MODEL_SYS^2) mu``, which de-weights exactly those bins and leaves
-#: the Poisson-limited tail untouched.
-MODEL_SYS = 0.10
-
-#: Gaussian priors on the atmospheric normalizations, the standard breakers
-#: of the prompt-astro degeneracy: hadronic-model spread on both. An earlier
-#: order-one prompt prior let the prompt normalization run to 1.6 and swallow
-#: the astrophysical ``nu_mu`` (its norm fell to 0.5); at 0.25, the
-#: perturbative-QCD spread, the astrophysical normalization comes back to
-#: 0.9 x the combined fit.
-CONV_PRIOR = (1.0, 0.25)
-PROMPT_PRIOR = (1.0, 0.25)
-
-#: Physical bounds on the astrophysical spectral index, without which the
-#: astro component can degenerate into a shape patch for the atmospheric
-#: window edge (a first fit ran to gamma = 15 with the normalization at
-#: zero).
-GAMMA_BOUNDS = (1.5, 4.0)
-
-#: Fine true-energy grid of the model responses.
-LOG10_E_GRID = np.linspace(3.0, 8.5, 111)
-
-#: Spectral-index grid the astrophysical folds are cached on; the profile
-#: interpolates between its nodes, which is what makes the pseudo-experiment
-#: calibration affordable.
-GAMMA_GRID = np.linspace(GAMMA_BOUNDS[0], GAMMA_BOUNDS[1], 51)
+#: Upper limit of the tau-flux axis in figure 51d [combined-fit units]. The
+#: scan reaches the unconstrained minimum, which lies far above the axis.
+PHI_TAU_PLOT_MAX = 2.0
 
 #: Cached toy distributions of the profile statistic.
 _FC_CACHE = _DEFAULT_OUT_DIR / "51_fc_calibration.npz"
@@ -174,11 +156,6 @@ _FC_CACHE = _DEFAULT_OUT_DIR / "51_fc_calibration.npz"
 #: Reconstructed energy [log10 GeV] above which the tail jackknife removes
 #: single events; the bins there hold at most one event each.
 JACKKNIFE_LOG10_E = 5.5
-
-#: Quadrature nodes on the muon energy fraction ``x`` of ``tau -> mu nu nu``
-#: (unpolarized spectrum ``f(x) = 5/3 - 3x^2 + 4x^3/3``, mean 0.35), used to
-#: shift the ``nu_mu``-simulation smearing onto the tau channel.
-TAU_DECAY_X = np.linspace(0.025, 0.975, 20)
 
 #: Cache-format version of the toy distributions; bump on any change to the
 #: folded model so stale calibrations rebuild.
@@ -202,20 +179,19 @@ def load_example(stem: str, name: str):
 def physical_r_range(ex50) -> tuple[float, float]:
     """Earth flavour-ratio range standard oscillations allow.
 
-    The Earth fractions are linear in the source composition, so the
-    linear-fractional ratio ``f_tau / (f_mu + f_tau)`` is extremal at a
-    vertex of the source simplex; the three pure-flavour sources are enough.
+    See :func:`softpaws.comparison.reco_likelihood.physical_r_range`.
+
+    Parameters
+    ----------
+    ex50 : ModuleType
+        Example 50, for its oscillation matrix.
 
     Returns
     -------
     r_min, r_max : float
         Band of the ratio over all source compositions.
     """
-    ratios = []
-    for source in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)):
-        _, f_mu, f_tau = ex50.earth_composition(source)
-        ratios.append(f_tau / (f_mu + f_tau))
-    return min(ratios), max(ratios)
+    return _reco.physical_r_range(ex50.earth_composition)
 
 
 #: Example 50, for the triangle frame and the oscillation matrix.
@@ -223,48 +199,6 @@ _EX50 = load_example("50_flavor_triangle.py", "_example_50")
 
 #: Standard-oscillation band of the Earth ratio, drawn on every figure.
 R_MIN_STD, R_MAX = physical_r_range(_EX50)
-
-#: Flavour-ratio scan grid. The full range is safe only because the
-#: ``nu_mu`` flux is anchored: without the anchor, tracks cannot tell the
-#: two channel templates apart by shape and the fit relabels the whole
-#: astrophysical excess as tau at several times the measured flux for free.
-R_GRID = np.linspace(0.0, 1.0, 41)
-
-#: Feldman-Cousins calibration: truth points the toy distributions are built
-#: at, and the ratio grid each toy's global minimum is scanned on. Truths
-#: stop at 0.9: they carry the anchored ``nu_mu`` flux, so the tau flux
-#: diverges at ``r = 1``; the last threshold is held beyond.
-FC_R_TRUE = np.linspace(0.0, 0.9, 10)
-FC_R_SCAN = np.linspace(0.0, 1.0, 11)
-
-#: Flux plane of figure 51d [combined-fit per-flavour flux units]. The scan
-#: reaches the unconstrained minimum; the figure shows the physical range and
-#: points at the rest.
-PHI_MU_GRID = np.linspace(0.0, 1.6, 33)
-PHI_TAU_GRID = np.linspace(0.0, 8.0, 33)
-PHI_TAU_PLOT_MAX = 2.0
-
-#: Count plane of figure 51e: expected astrophysical tracks in the fit window
-#: from each channel, the shape profiled.
-N_MU_GRID = np.linspace(0.0, 160.0, 33)
-N_TAU_GRID = np.linspace(0.0, 100.0, 33)
-
-#: IceCube's 9.5-year northern-tracks fit (arXiv:2111.10299): the index and
-#: the ``nu_mu`` normalization [GeV^-1 cm^-2 s^-1 sr^-1 at 100 TeV], the
-#: anchors of the whole analysis. Their fit includes ``tau -> mu`` at 1:1:1,
-#: and their own with/without test (Aartsen et al. 2016) puts that
-#: assumption at 5% on the normalization and nothing on the index; the 5%
-#: is added to the normalization width in quadrature.
-TRACKS_GAMMA = (ICECUBE_TRACKS_2022.gamma, ICECUBE_TRACKS_2022.gamma_err)
-TRACKS_PHI_MU = (ICECUBE_TRACKS_2022.phi0 * FLUX_UNIT,
-                 float(np.hypot(ICECUBE_TRACKS_2022.phi0_err, 0.05 * ICECUBE_TRACKS_2022.phi0))
-                 * FLUX_UNIT)
-
-#: Tau-flux scan at the anchored ``nu_mu`` flux [combined-fit units].
-#: The anchors in combined-fit units, as the likelihood takes them.
-PHI_TAU_SCAN = np.linspace(0.0, 6.0, 61)
-ANCHORS = {"gamma": TRACKS_GAMMA,
-           "phi_mu": (TRACKS_PHI_MU[0] / PIVOT_PHI0, TRACKS_PHI_MU[1] / PIVOT_PHI0)}
 
 
 def parse_args() -> argparse.Namespace:
@@ -287,58 +221,16 @@ def parse_args() -> argparse.Namespace:
 
 
 # ---------------------------------------------------------------------------
-# Inputs: smearing marginal, banded responses, events
+# Inputs: banded responses, atmosphere, events
 # ---------------------------------------------------------------------------
-
-
-def smearing_marginal(data_dir: pathlib.Path):
-    """Energy marginal of the IC86 smearing table on the common reco grid.
-
-    Sums the released fractional counts over the point-spread and
-    angular-error axes and projects each reconstructed-energy interval onto
-    :data:`RECO_EDGES`, uniform density assumed inside an interval.
-
-    Parameters
-    ----------
-    data_dir : pathlib.Path
-        Root of the DR2 release.
-
-    Returns
-    -------
-    enu_edges : np.ndarray, shape (n_enu + 1,)
-        True-energy bin edges [log10 GeV].
-    dec_edges : np.ndarray, shape (n_dec + 1,)
-        Upgoing declination bin edges [deg].
-    marginal : np.ndarray, shape (n_enu, n_dec, n_reco)
-        ``P(reco bin | true bin)``; sums over reco to one where the released
-        intervals lie inside the grid.
-    """
-    raw = np.genfromtxt(data_dir / "irfs" / "IC86_smearing.csv", comments="#")
-    raw = raw[raw[:, 10] > 0.0]
-    enu_lows = np.unique(raw[:, 0])
-    enu_edges = np.append(enu_lows, raw[:, 1].max())
-    dec_lows_all = np.unique(raw[:, 2])
-    upgoing = dec_lows_all >= -1.0e-9
-    dec_lows = dec_lows_all[upgoing]
-    keep = raw[:, 2] >= dec_lows[0] - 1.0e-9
-    rows = raw[keep]
-    dec_edges = np.append(dec_lows, rows[:, 3].max())
-
-    i_enu = np.searchsorted(enu_lows, rows[:, 0] + 1.0e-9) - 1
-    i_dec = np.searchsorted(dec_lows, rows[:, 2] + 1.0e-9) - 1
-    lo, hi, weight = rows[:, 4], rows[:, 5], rows[:, 10]
-    width = np.maximum(hi - lo, 1.0e-12)
-
-    marginal = np.zeros((enu_lows.size, dec_lows.size, RECO_EDGES.size - 1))
-    for k in range(RECO_EDGES.size - 1):
-        overlap = np.clip(np.minimum(hi, RECO_EDGES[k + 1])
-                          - np.maximum(lo, RECO_EDGES[k]), 0.0, None)
-        np.add.at(marginal, (i_enu, i_dec, k), weight * overlap / width)
-    return enu_edges, dec_edges, marginal
 
 
 def banded_responses(ex35, ex45, ex46, dec_edges_deg, site=None):
     """Model channel responses on the smearing declination bands [cm^2].
+
+    Wraps :func:`softpaws.comparison.reco_likelihood.banded_responses` with
+    example 46's band-averaged effective area, evaluated in example 45's
+    fitted configuration.
 
     Parameters
     ----------
@@ -356,54 +248,39 @@ def banded_responses(ex35, ex45, ex46, dec_edges_deg, site=None):
     """
     site = ex35.build_sites()[0] if site is None else site
     site45 = replace(ex45.ICECUBE_SITE, attenuation_override_m=FITTED_ATTENUATION_M)
-    sin_dec_edges = np.sin(np.deg2rad(dec_edges_deg))
-    coarse = ex35.COMMON_LOG10_E
-    out = {}
-    for channel in ("mu", "tau"):
+
+    def banded_aeff(channel, sin_dec_edges):
         print(f"  building banded response, {channel} channel ...")
-        banded = ex46.model_banded(ex35, ex45, site, site45, sin_dec_edges, 8.0,
-                                   (channel,), efficiency=FITTED_NORMALIZATION)
-        fine = np.empty((LOG10_E_GRID.size, banded.shape[1]))
-        with np.errstate(divide="ignore"):
-            log_a = np.log10(np.clip(banded, 1.0e-30, None))
-        for j in range(banded.shape[1]):
-            fine[:, j] = 10.0 ** np.interp(LOG10_E_GRID, coarse, log_a[:, j],
-                                           left=-30.0, right=log_a[-1, j])
-        out[channel] = fine
-    return out
+        return ex46.model_banded(ex35, ex45, site, site45, sin_dec_edges, 8.0,
+                                 (channel,), efficiency=FITTED_NORMALIZATION)
+
+    return _reco.banded_responses(banded_aeff, dec_edges_deg, ex35.COMMON_LOG10_E)
 
 
 def fit_inputs(ex35, ex45, ex46, data_dir: pathlib.Path, rebuild: bool):
     """Smearing marginal and banded responses, cached across runs."""
-    if _CACHE.exists() and not rebuild:
-        cache = np.load(_CACHE)
-        if np.array_equal(cache["reco_edges"], RECO_EDGES):
-            print(f"  cached fit inputs from {_CACHE.name}")
-            return (cache["enu_edges"], cache["dec_edges"], cache["marginal"],
-                    {"mu": cache["response_mu"], "tau": cache["response_tau"]})
+    cached = None if rebuild else _reco.cached_fit_inputs(_CACHE)
+    if cached is not None:
+        print(f"  cached fit inputs from {_CACHE.name}")
+        return cached
     print("  marginalizing the IC86 smearing table ...")
-    enu_edges, dec_edges, marginal = smearing_marginal(data_dir)
-    responses = banded_responses(ex35, ex45, ex46, dec_edges)
-    _CACHE.parent.mkdir(parents=True, exist_ok=True)
-    np.savez(_CACHE, reco_edges=RECO_EDGES, enu_edges=enu_edges,
-             dec_edges=dec_edges, marginal=marginal,
-             response_mu=responses["mu"], response_tau=responses["tau"])
-    return enu_edges, dec_edges, marginal, responses
+    return _reco.fit_inputs(
+        data_dir, _CACHE,
+        lambda dec_edges: banded_responses(ex35, ex45, ex46, dec_edges),
+        rebuild=True)
 
 
 def gen2_responses(ex35, ex45, ex46, dec_edges, rebuild: bool):
     """IceCube-Gen2 banded responses, example 50's geometry, cached."""
-    if _GEN2_CACHE.exists() and not rebuild:
-        cache = np.load(_GEN2_CACHE)
-        if np.array_equal(cache["dec_edges"], dec_edges):
-            print(f"  cached Gen2 responses from {_GEN2_CACHE.name}")
-            return {"mu": cache["response_mu"], "tau": cache["response_tau"]}
+    cached = None if rebuild else _reco.load_banded_responses(_GEN2_CACHE, dec_edges)
+    if cached is not None:
+        print(f"  cached Gen2 responses from {_GEN2_CACHE.name}")
+        return cached
     sites = {s.name: s for s in ex35.build_sites()}
     gen2 = replace(sites["IceCube"], name="IceCube-Gen2",
                    radius_km=_EX50.GEN2_RADIUS_KM, height_km=_EX50.GEN2_HEIGHT_KM)
     responses = banded_responses(ex35, ex45, ex46, dec_edges, site=gen2)
-    np.savez(_GEN2_CACHE, dec_edges=dec_edges, response_mu=responses["mu"],
-             response_tau=responses["tau"])
+    _reco.save_banded_responses(_GEN2_CACHE, dec_edges, responses)
     return responses
 
 
@@ -418,312 +295,15 @@ def atmospheric_fluxes(dec_edges_deg):
     FileNotFoundError
         Raised if example 22's cache is missing.
     """
-    if not _MCEQ_CACHE.exists():
-        raise FileNotFoundError(
-            f"{_MCEQ_CACHE} not found; run example 22 once to tabulate the "
-            "atmospheric flux.")
-    flux = AtmosphericFlux(load_mceq_table(_MCEQ_CACHE))
-    centers = 0.5 * (dec_edges_deg[:-1] + dec_edges_deg[1:])
-    energy = 10.0**LOG10_E_GRID
-    return {c: flux.component_on_grid(c, energy, centers) for c in ("conv", "prompt")}
+    return _reco.atmospheric_fluxes(_MCEQ_CACHE, dec_edges_deg)
 
 
 def binned_events(data_dir: pathlib.Path, dec_edges_deg):
     """IC86 upgoing events histogrammed on (reco grid, declination bands)."""
-    counts = np.zeros((RECO_EDGES.size - 1, dec_edges_deg.size - 1))
-    total = 0
-    for season in IC86_SEASONS:
-        events = load_season(data_dir / "events" / f"{season}_exp.csv")
-        sel = events["dec"] >= dec_edges_deg[0]
-        total += int(sel.sum())
-        hist, _, _ = np.histogram2d(events["log10_energy"][sel],
-                                    events["dec"][sel],
-                                    bins=(RECO_EDGES, dec_edges_deg))
-        counts += hist
+    counts, total = _reco.binned_events(data_dir, dec_edges_deg)
     print(f"  {total:,} upgoing IC86 events, "
           f"{counts.sum():,.0f} inside the reco grid")
     return counts
-
-
-# ---------------------------------------------------------------------------
-# The likelihood in reconstructed space
-# ---------------------------------------------------------------------------
-
-
-class RecoLikelihood:
-    """Poisson likelihood over (reco energy, declination band) bins.
-
-    Attributes
-    ----------
-    data : np.ndarray
-        Observed counts on the fit window.
-    """
-
-    def __init__(self, enu_edges, marginal, responses, atmos, dec_edges_deg,
-                 livetime_s, data_counts, anchors=None):
-        self._anchors = dict(anchors or {})
-        self._enu_edges = enu_edges
-        self._marginal = marginal
-        self._responses = responses
-        self._livetime_s = livetime_s
-        self._d_omega = 2.0 * np.pi * np.diff(np.sin(np.deg2rad(dec_edges_deg)))
-        self._window = ((RECO_EDGES[:-1] >= FIT_RECO[0] - 1.0e-9)
-                        & (RECO_EDGES[1:] <= FIT_RECO[1] + 1.0e-9))
-        self.data = data_counts[self._window]
-        self._marginal_tau = self._shifted_marginal(enu_edges, marginal)
-        self._folded_conv = self._fold(self._true_counts("mu", atmos["conv"]))
-        self._folded_prompt = self._fold(self._true_counts("mu", atmos["prompt"]))
-        self._astro_cache = {
-            channel: np.stack([self._astro_direct(channel, gamma)
-                               for gamma in GAMMA_GRID])
-            for channel in ("mu", "tau")
-        }
-
-    def _true_counts(self, channel, flux):
-        """Counts per (true bin, band) for one channel and flux grid."""
-        energy = 10.0**LOG10_E_GRID
-        integrand = self._responses[channel] * flux
-        counts = np.zeros((self._enu_edges.size - 1, self._d_omega.size))
-        for i in range(self._enu_edges.size - 1):
-            sel = ((LOG10_E_GRID >= self._enu_edges[i])
-                   & (LOG10_E_GRID <= self._enu_edges[i + 1]))
-            if sel.sum() < 2:
-                continue
-            counts[i] = np.trapezoid(integrand[sel], energy[sel], axis=0)
-        return self._livetime_s * counts * self._d_omega[None, :]
-
-    @staticmethod
-    def _shifted_marginal(enu_edges, marginal):
-        """Tau-channel smearing: the ``nu_mu`` marginal at shifted energy.
-
-        The released table is ``nu_mu`` CC simulation, whose muon carries the
-        full ``(1 - y)`` share of the neutrino energy; in the tau chain the
-        muon keeps only the decay fraction ``x`` of that share. A tau event
-        at ``E_nu`` therefore reconstructs like a ``nu_mu`` event at
-        ``x E_nu``, so each tau true-energy bin takes the reco distribution
-        of the ``nu_mu`` bin containing ``x E_nu``, averaged over the decay
-        spectrum on :data:`TAU_DECAY_X` and clipped at the table edge.
-        """
-        centers = 0.5 * (enu_edges[:-1] + enu_edges[1:])
-        f = 5.0 / 3.0 - 3.0 * TAU_DECAY_X**2 + 4.0 * TAU_DECAY_X**3 / 3.0
-        weights = f / f.sum()
-        shifted = np.zeros_like(marginal)
-        for i, center in enumerate(centers):
-            for x, w in zip(TAU_DECAY_X, weights):
-                j = int(np.clip(
-                    np.searchsorted(enu_edges, center + np.log10(x)) - 1,
-                    0, centers.size - 1))
-                shifted[i] += w * marginal[j]
-        return shifted
-
-    def _fold(self, true_counts, channel="mu"):
-        """True-space counts through the smearing marginal, window applied."""
-        marginal = self._marginal_tau if channel == "tau" else self._marginal
-        reco = np.einsum("ij,ijk->kj", true_counts, marginal)
-        return reco[self._window]
-
-    def _astro_direct(self, channel, gamma):
-        energy = 10.0**LOG10_E_GRID
-        flux = 2.0 * PIVOT_PHI0 * (energy[:, None] / 1.0e5) ** (-gamma)
-        return self._fold(self._true_counts(
-            channel, flux * np.ones((1, self._d_omega.size))), channel)
-
-    def _astro(self, channel, gamma):
-        """Folded astrophysical counts, interpolated on :data:`GAMMA_GRID`."""
-        i = int(np.clip(np.searchsorted(GAMMA_GRID, gamma) - 1, 0,
-                        GAMMA_GRID.size - 2))
-        weight = ((gamma - GAMMA_GRID[i])
-                  / (GAMMA_GRID[i + 1] - GAMMA_GRID[i]))
-        cache = self._astro_cache[channel]
-        return (1.0 - weight) * cache[i] + weight * cache[i + 1]
-
-    def expectation(self, r, norm, gamma, a_conv, a_prompt):
-        """Expected counts on the fit window at one parameter point."""
-        astro = norm * ((1.0 - r) * self._astro("mu", gamma)
-                        + r * self._astro("tau", gamma))
-        return a_conv * self._folded_conv + a_prompt * self._folded_prompt + astro
-
-    def _deviance(self, mu, phi_mu, gamma, a_conv, a_prompt, data):
-        """Scaled deviance plus the prior penalties for one expectation.
-
-        ``phi_mu`` [combined-fit units] and ``gamma`` enter only through the
-        external anchors, when the likelihood carries them.
-        """
-        mu = np.clip(mu, 1.0e-12, None)
-        with np.errstate(divide="ignore", invalid="ignore"):
-            deviance = 2.0 * (mu - data + np.where(
-                data > 0.0, data * np.log(data / mu), 0.0))
-        scaled = deviance / (1.0 + MODEL_SYS**2 * mu)
-        penalty = (((a_conv - CONV_PRIOR[0]) / CONV_PRIOR[1]) ** 2
-                   + ((a_prompt - PROMPT_PRIOR[0]) / PROMPT_PRIOR[1]) ** 2)
-        for name, value in (("gamma", gamma), ("phi_mu", phi_mu)):
-            if name in self._anchors:
-                center, width = self._anchors[name]
-                penalty += ((value - center) / width) ** 2
-        return float(np.sum(scaled)) + penalty
-
-    @staticmethod
-    def _out_of_bounds(gamma, a_conv, a_prompt) -> bool:
-        return (a_conv <= 0.0 or a_prompt < 0.0
-                or not GAMMA_BOUNDS[0] <= gamma <= GAMMA_BOUNDS[1])
-
-    def _objective(self, r, norm, gamma, a_conv, a_prompt, data):
-        """Objective at one flavour-ratio parameter point."""
-        if norm < 0.0 or self._out_of_bounds(gamma, a_conv, a_prompt):
-            return 1.0e12
-        return self._deviance(self.expectation(r, norm, gamma, a_conv, a_prompt),
-                              2.0 * norm * (1.0 - r), gamma, a_conv, a_prompt,
-                              data)
-
-    def _objective_counts(self, n_mu, n_tau, gamma, a_conv, a_prompt, data):
-        """Objective with each channel's astrophysical track count fixed.
-
-        The shape still follows the index; only the window totals are held,
-        so the count plane asks what the data say about *how many* tracks
-        each channel contributes.
-        """
-        if self._out_of_bounds(gamma, a_conv, a_prompt):
-            return 1.0e12
-        a_mu, a_tau = self._astro("mu", gamma), self._astro("tau", gamma)
-        astro = n_mu * a_mu / a_mu.sum() + n_tau * a_tau / a_tau.sum()
-        mu = a_conv * self._folded_conv + a_prompt * self._folded_prompt + astro
-        return self._deviance(mu, 2.0 * n_mu / a_mu.sum(), gamma, a_conv,
-                              a_prompt, data)
-
-    def channel_yield_ratio(self, gamma) -> float:
-        """Tracks per unit flux, tau channel over ``nu_mu`` channel."""
-        return float(self._astro("tau", gamma).sum()
-                     / self._astro("mu", gamma).sum())
-
-    @staticmethod
-    def _minimize(function, starts):
-        """Best Nelder-Mead result over a list of simplex seeds."""
-        best = None
-        for x0 in starts:
-            trial = minimize(function, x0=np.asarray(x0, dtype=float),
-                             method="Nelder-Mead",
-                             options={"xatol": 1.0e-4, "fatol": 1.0e-6,
-                                      "maxiter": 6000})
-            if best is None or trial.fun < best.fun:
-                best = trial
-        return best.fun, best.x
-
-    def delta_ll(self, r, data=None, warm_start=None,
-                 use_default_start=True) -> tuple[float, np.ndarray]:
-        """Profiled objective at one flavour ratio, and the nuisances.
-
-        Parameters
-        ----------
-        r : float
-            Flavour ratio the fit is conditioned on.
-        data : np.ndarray, optional
-            Counts on the fit window; the observed counts when omitted.
-        warm_start : np.ndarray, optional
-            Extra simplex seed, typically a neighbouring fit's nuisances.
-        use_default_start : bool, optional
-            Also seed from the global default point; toys switch this off
-            once warm-started.
-        """
-        data = self.data if data is None else data
-        starts = [(1.0, PIVOT_GAMMA, 1.0, 1.0)] if use_default_start else []
-        if warm_start is not None:
-            starts.append(warm_start)
-        return self._minimize(
-            lambda p: self._objective(r, p[0], p[1], p[2], p[3], data), starts)
-
-    def delta_ll_fluxes(self, phi_mu, phi_tau, warm_start=None):
-        """Profiled objective at fixed per-flavour fluxes.
-
-        ``phi_mu`` and ``phi_tau`` are in units of the combined-fit
-        per-flavour flux; the index and the atmospheric normalizations are
-        profiled. The point maps onto :meth:`expectation` through
-        ``norm = (phi_mu + phi_tau) / 2`` and
-        ``r = phi_tau / (phi_mu + phi_tau)``.
-        """
-        total = phi_mu + phi_tau
-        r, norm = (0.0, 0.0) if total <= 0.0 else (phi_tau / total, 0.5 * total)
-        starts = [(PIVOT_GAMMA, 1.0, 1.0)]
-        if warm_start is not None:
-            starts.append(warm_start)
-        return self._minimize(
-            lambda p: self._objective(r, norm, p[0], p[1], p[2], self.data),
-            starts)
-
-    def delta_ll_counts(self, n_mu, n_tau, warm_start=None):
-        """Profiled objective at fixed per-channel track counts."""
-        starts = [(PIVOT_GAMMA, 1.0, 1.0)]
-        if warm_start is not None:
-            starts.append(warm_start)
-        return self._minimize(
-            lambda p: self._objective_counts(n_mu, n_tau, p[0], p[1], p[2],
-                                             self.data), starts)
-
-    def delta_ll_tau(self, phi_tau, warm_start=None):
-        """Profiled objective at a fixed tau flux, the ``nu_mu`` flux free.
-
-        With the anchors carried, this is the tau-flux profile at IceCube's
-        measured ``nu_mu`` flux and index.
-        """
-        def objective(p):
-            phi_mu, gamma, a_conv, a_prompt = p
-            if phi_mu < 0.0:
-                return 1.0e12
-            total = phi_mu + phi_tau
-            r, norm = ((0.0, 0.0) if total <= 0.0
-                       else (phi_tau / total, 0.5 * total))
-            return self._objective(r, norm, gamma, a_conv, a_prompt, self.data)
-
-        starts = [(0.8, PIVOT_GAMMA, 1.0, 1.0)]
-        if warm_start is not None:
-            starts.append(warm_start)
-        return self._minimize(objective, starts)
-
-    def tau_profile(self):
-        """``2 Delta ln L`` on :data:`PHI_TAU_SCAN`, floored at its minimum."""
-        curve, warm = [], None
-        for phi_tau in PHI_TAU_SCAN:
-            value, warm = self.delta_ll_tau(phi_tau, warm)
-            curve.append(value)
-        curve = np.array(curve)
-        return curve - curve.min()
-
-    def _plane(self, x_grid, y_grid, fit):
-        grid = np.empty((x_grid.size, y_grid.size))
-        warm = None
-        for i, x in enumerate(x_grid):
-            for j, y in enumerate(y_grid):
-                grid[i, j], warm = fit(x, y, warm)
-        return grid - grid.min()
-
-    def flux_plane(self):
-        """``2 Delta ln L`` on (:data:`PHI_MU_GRID`, :data:`PHI_TAU_GRID`).
-
-        Floored at its minimum over the whole plane, physical or not, so the
-        valley the ratio scan walks along is visible in full.
-        """
-        return self._plane(PHI_MU_GRID, PHI_TAU_GRID, self.delta_ll_fluxes)
-
-    def count_plane(self):
-        """``2 Delta ln L`` on (:data:`N_MU_GRID`, :data:`N_TAU_GRID`)."""
-        return self._plane(N_MU_GRID, N_TAU_GRID, self.delta_ll_counts)
-
-    def profile(self, data=None):
-        """``2 Delta ln L`` on :data:`R_GRID` with the per-point nuisances.
-
-        Parameters
-        ----------
-        data : np.ndarray, optional
-            Counts on the fit window; the observed counts when omitted.
-        """
-        curves, nuisances = [], []
-        warm = None
-        for r in R_GRID:
-            value, params = self.delta_ll(r, data=data, warm_start=warm)
-            curves.append(value)
-            nuisances.append(params)
-            warm = params
-        curve = np.array(curves)
-        return curve - curve.min(), np.array(nuisances)
 
 
 def interval(curve, level):
