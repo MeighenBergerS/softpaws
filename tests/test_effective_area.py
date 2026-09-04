@@ -701,13 +701,14 @@ def test_first_passage_length_table():
         10.0 ** np.array(r["table_log10_e"]), r["threshold"], n_ell=r["n_ell"]
     )
     assert ell.size == r["n_ell"]
-    close(ell[-1], r["ell_last"])
-    close(cumulative[:, -1], r["cumulative_last"])
-    close(cumulative[:, 50], r["cumulative_mid"])
+    close(ell[-1], r["ell_last"], rtol=QUADRATURE_RTOL)
+    close(cumulative[:, -1], r["cumulative_last"], rtol=QUADRATURE_RTOL)
+    close(cumulative[:, 50], r["cumulative_mid"], rtol=QUADRATURE_RTOL)
     energy = np.array(REF["truncated_range_km"]["energy_mu"])
     column = np.array(REF["truncated_range_km"]["column"][:3])
     grid = np.array(r["table_log10_e"])
-    close(ea.truncated_range_from_table_km(energy, column, grid, ell, cumulative), r["lookup"])
+    close(ea.truncated_range_from_table_km(energy, column, grid, ell, cumulative),
+          r["lookup"], rtol=QUADRATURE_RTOL)
 
 
 def test_ic_upgoing_columns():
@@ -833,9 +834,10 @@ def test_arca_effective_area_example_31_table_range():
         truncated_range=lambda e, x: ea.truncated_range_from_table_km(e, x, grid, ell, cumulative),
     )
     args = (r["threshold_gev"], r["depth_km"])
-    close(ea.arca_effective_area(0.517, 2, *args, "mu", **kw), r31["mu"])
+    close(ea.arca_effective_area(0.517, 2, *args, "mu", **kw), r31["mu"],
+          rtol=QUADRATURE_RTOL)
     close(ea.arca_effective_area(0.221, 1, *args, "tau", reach_km=0.035, pivot_gev=1.0e6, **kw),
-          r31["tau_reach"])
+          r31["tau_reach"], rtol=QUADRATURE_RTOL)
 
 
 test_arca_effective_area_example_31_table_range = pytest.mark.slow(

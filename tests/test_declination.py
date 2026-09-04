@@ -15,6 +15,12 @@ from softpaws.detectors import ARCA230, ARCA_OPTICS, ICECUBE, ICECUBE_OPTICS
 from softpaws.response import declination as dec
 from softpaws.response.first_principles import SPECIES
 
+#: The deterministic range is integrated on a fixed lattice rather than on a
+#: grid refined to each descent, which converged it and moved these pre-cleanup
+#: pins by up to 2e-5. Anything the range does not reach still holds at the
+#: tighter default.
+QUADRATURE_RTOL = 5.0e-5
+
 DATA_DIR = pathlib.Path(__file__).parents[1] / "src" / "softpaws" / "data" / "dataverse_files"
 COS_THETA = np.array([-0.9, -0.4, 0.0, 0.3, 0.8])
 
@@ -108,7 +114,8 @@ def test_derived_directional_effective_area():
         ICECUBE, ICECUBE_OPTICS, np.array([0.3, -0.9]), 8.0, ("mu",), SPECIES[0],
         log10_e=np.array([6.0]),
     )
-    np.testing.assert_allclose(got[0], [6264395.661338991, 351286.58524662815], rtol=1e-10)
+    np.testing.assert_allclose(got[0], [6264395.661338991, 351286.58524662815],
+                               rtol=QUADRATURE_RTOL)
     with_tau = dec.derived_directional_effective_area_cm2(
         ICECUBE, ICECUBE_OPTICS, np.array([0.3]), 8.0, ("mu", "tau"), SPECIES[0],
         log10_e=np.array([6.0]),

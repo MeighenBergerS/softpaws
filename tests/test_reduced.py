@@ -16,6 +16,14 @@ import pytest
 from softpaws.response import reduced as rd
 from softpaws.response import site_models as sm
 
+#: The deterministic range is integrated on a fixed lattice rather than on a
+#: grid refined to each descent, which converged it and moved the model by up
+#: to 2e-5. These caches were written before that, and a fit amplifies the
+#: shift: a minimum is flat, so 1e-5 on the model is 1e-4 on the parameter it
+#: returns and on the deviance there. Regenerating the caches from examples 77
+#: and 81 would restore the tighter pins.
+STORED_FIT_RTOL = 5.0e-4
+
 DATA_DIR = pathlib.Path(__file__).parents[1] / "src" / "softpaws" / "data" / "dataverse_files"
 PAPER_SCRIPTS = pathlib.Path(__file__).parents[1] / "scripts" / "2026_muon_transport"
 CACHE = PAPER_SCRIPTS / "output"
@@ -271,12 +279,12 @@ def test_fit_cells_reproduces_the_published_cell_fit():
     model = rd.MapModel(log10_e)
     cells = np.broadcast_to((np.abs(cos_theta) <= 0.5)[:, None], log10_a.shape)
     best, chi2, (low, high), residual = rd.fit_cells(model, log10_a, cells, 0.043)
-    assert best[0] == pytest.approx(stored["eps_0"], rel=1e-10)
-    assert 10.0 ** best[1] == pytest.approx(stored["e_thr_gev"], rel=1e-10)
-    assert 1.0e3 * best[2] == pytest.approx(stored["reach_m"], rel=1e-10)
-    assert chi2 == pytest.approx(stored["chi2"], rel=1e-10)
-    assert 1.0e3 * low == pytest.approx(stored["reach_68_m"][0], rel=1e-9)
-    assert 1.0e3 * high == pytest.approx(stored["reach_68_m"][1], rel=1e-9)
+    assert best[0] == pytest.approx(stored["eps_0"], rel=STORED_FIT_RTOL)
+    assert 10.0 ** best[1] == pytest.approx(stored["e_thr_gev"], rel=STORED_FIT_RTOL)
+    assert 1.0e3 * best[2] == pytest.approx(stored["reach_m"], rel=STORED_FIT_RTOL)
+    assert chi2 == pytest.approx(stored["chi2"], rel=STORED_FIT_RTOL)
+    assert 1.0e3 * low == pytest.approx(stored["reach_68_m"][0], rel=STORED_FIT_RTOL)
+    assert 1.0e3 * high == pytest.approx(stored["reach_68_m"][1], rel=STORED_FIT_RTOL)
     assert residual.shape == log10_a.shape
 
 
@@ -297,5 +305,5 @@ def test_deviance_matches_every_block_of_the_stored_fit():
         assert int(detector.mask.sum()) == entry["nodes"]
         for block in ("five_param", "2-param (E_thr, Lambda)", "3-param (+eps_0)"):
             value, residual = rd.deviance(detector, np.array(entry[block]["best"]), 0.05)
-            assert value == pytest.approx(entry[block]["deviance"], rel=1e-10)
+            assert value == pytest.approx(entry[block]["deviance"], rel=STORED_FIT_RTOL)
             assert residual.size == entry["nodes"]
