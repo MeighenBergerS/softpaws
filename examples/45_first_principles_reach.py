@@ -118,6 +118,15 @@ requires degrading three decades through interactions that are neutral current
 only 30% of the time. The tau cascade can, since its charged current is not
 terminal. See :data:`DEFAULT_FLAVOURS`.
 
+Where the physics lives
+-----------------------
+The optics chain is :mod:`softpaws.response.light_reach` and the effective-area
+assembly is :mod:`softpaws.response.first_principles`. This script imports both
+and re-exports their names, so the scripts that load it by path keep working:
+``ex45.hit_count``, ``ex45.build_model`` and the rest resolve here with the
+signatures they always had. What stays in the script is the reporting, the
+multiplicity scan and the two figures.
+
 Usage
 -----
     python examples/45_first_principles_reach.py
@@ -133,186 +142,115 @@ from dataclasses import replace
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import brentq, minimize_scalar
-from scipy.special import gammainc
 
-from softpaws.detectors import ANCHOR_NM, ARCA_OPTICS, ICECUBE_OPTICS, Optics
-from softpaws.transport.coefficients import drift_coefficient
-from softpaws.transport.cross_section import CrossSection, bgr18_cross_section
-from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
-    eroded_prism_target_km2,
-    stochastic_muon_range_km,
-    truncated_muon_range_km,
-    two_medium_range_ratio,
+from softpaws.detectors import (
+    ANCHOR_NM,
+    ARCA_OPTICS,
+    DEFAULT_MIN_TRACK_KM,
+    ICECUBE_OPTICS,
+    Optics,
 )
-from softpaws.transport.source import mean_inelasticity, nucleon_number_density
-from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM, M_PER_KM, RHO_ICE_G_CM3, RHO_WATER_G_CM3
+from softpaws.response import first_principles as _fp
+from softpaws.response.first_principles import (
+    ANCHORS,
+    ARCA_BAND,
+    CROSS_SECTION,
+    CSMS_LOG10_E,
+    CSMS_PB,
+    DEFAULT_FLAVOURS,
+    FAR_MEDIUM_SOURCE,
+    IC_BAND,
+    SPECIES,
+    IsoscalarCrossSection,
+    column_profile,
+    residuals,
+    rock_range_ratio,
+)
+from softpaws.response.light_reach import (
+    DEFAULT_MIN_MODULES,
+    EM_TRACK_LENGTH_M_PER_GEV,
+    FINE_STRUCTURE,
+    HLC_PARTNERS,
+    PROJECTED_FRACTION,
+    WAVELENGTH_NM,
+    attenuation_length_m,
+    attenuation_spectrum_m,
+    brightness_factor,
+    cherenkov_spectrum_per_m_per_nm,
+    detection_efficiency,
+    effective_body_km,
+    hit_count,
+    hit_probability,
+    hit_radius_m,
+    instrumented_chord_km,
+    module_area_m2,
+    module_charge_pe,
+    muon_threshold_gev,
+    reach_offset_m,
+)
+from softpaws.transport.soft_volume import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
+from softpaws.utils.constants import M_PER_KM
+
+#: Names the scripts that load this one by path reach for. Listing them keeps
+#: the re-exports explicit; the definitions live in the library.
+__all__ = [
+    "ANCHORS",
+    "ANCHOR_NM",
+    "ARCA_BAND",
+    "ARCA_SITE",
+    "CROSS_SECTION",
+    "CSMS_LOG10_E",
+    "CSMS_PB",
+    "DEFAULT_FLAVOURS",
+    "DEFAULT_MIN_MODULES",
+    "DEFAULT_MIN_TRACK_KM",
+    "DEFAULT_MUON_THRESHOLD_GEV",
+    "EM_TRACK_LENGTH_M_PER_GEV",
+    "FAR_MEDIUM_SOURCE",
+    "FINE_STRUCTURE",
+    "HLC_PARTNERS",
+    "ICECUBE_SITE",
+    "IC_BAND",
+    "IsoscalarCrossSection",
+    "PROJECTED_FRACTION",
+    "SPECIES",
+    "Site",
+    "WAVELENGTH_NM",
+    "arca_column_volume_km3",
+    "arca_effective_area_cm2",
+    "attenuation_length_m",
+    "attenuation_spectrum_m",
+    "brightness_factor",
+    "build_model",
+    "cherenkov_spectrum_per_m_per_nm",
+    "column_profile",
+    "detection_efficiency",
+    "detector_curves",
+    "effective_body_km",
+    "fit_reach",
+    "hit_count",
+    "hit_probability",
+    "hit_radius_m",
+    "ic_column_volume_km3",
+    "ic_effective_area_cm2",
+    "instrumented_chord_km",
+    "load_example_32",
+    "module_area_m2",
+    "module_charge_pe",
+    "muon_threshold_gev",
+    "reach_offset_m",
+    "residuals",
+    "rock_range_ratio",
+    "stochastic_muon_range_km",
+]
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_OUT_DIR = _HERE / "output"
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
 
-#: Fine-structure constant, for the Frank-Tamm yield.
-FINE_STRUCTURE = 7.2973525693e-3
-
-#: Wavelengths every optical integral runs over [nm]. Wide enough that the
-#: photocathode and the medium, not the grid, decide where the band ends.
-WAVELENGTH_NM = np.linspace(280.0, 680.0, 201)
-
-#: Wavelength the media's quoted attenuation lengths are anchored at [nm]. Both
-#: sites' published absorption and scattering lengths are near-peak values, and
-#: the tabulated shapes below are normalized here so those numbers keep their
-#: meaning.
-
-#: Charged track length in an electromagnetic shower [m GeV^-1], at water
-#: density. Paired with the water-density ``b_mu`` below, so the product that
-#: enters the yield is density independent.
-EM_TRACK_LENGTH_M_PER_GEV = 4.0
-
-#: Coincidence partners of a single-PMT module: IceCube's HLC accepts the
-#: nearest or next-to-nearest neighbour on the same string, up or down. Part of
-#: the trigger definition, and a count, so it is not a tunable.
-HLC_PARTNERS = 4
-
-#: Modules that must register a coincident hit for the track to count. This
-#: replaces the earlier "charge on the nearest module", which needed a number
-#: of photoelectrons that could not be argued for and was set against the
-#: published curves. A hit is a *local coincidence* -- an HLC pair at IceCube,
-#: two photomultipliers of one module at KM3NeT -- with each receiver firing on
-#: one photoelectron at Poisson probability (:func:`hit_probability`); what a
-#: trigger then demands is a *multiplicity*, and IceCube's simple-majority
-#: trigger asks for eight. Everything else the condition needs is a published
-#: instrument number: the module density, the photocathode area, the efficiency
-#: curve and the medium's optics. See :func:`hit_count`.
-DEFAULT_MIN_MODULES = 8.0
-
-#: Minimum path a track must have inside the instrumented volume to be
-#: reconstructed [km]. A published response is built from *reconstructed* tracks,
-#: and a track that clips a corner of the array leaves again before it has a
-#: lever arm. Imposing the requirement erodes the target body
-#: (:func:`~softpaws.transport.soft_volume.eroded_prism_target_km2`), most
-#: strongly at oblique incidence, which is exactly where the intact prism's cap
-#: and side terms add and where a published declination dependence carries no
-#: such enhancement. The default takes the direction-averaged projected area down
-#: by 1.156 at IceCube and the instrumented volume by 1.43. It is 1.8 horizontal
-#: string spacings, which is the scale on which the array resolves a direction at
-#: all.
-#:
-#: **It is per detector, because it belongs to the selection and not to the
-#: optics**, and the two published curves are not at the same selection level.
-#: The DR2 table is an analysis-level response built from reconstructed tracks,
-#: so the requirement applies. The ARCA230 curve is at **trigger** level, where
-#: nothing has been reconstructed yet and a track only has to fire the array, so
-#: ``ARCA_SITE`` carries zero. Imposing 230 m on it instead drives the model 20%
-#: *below* the trigger curve near 10^4.8, which a trigger-level comparison may
-#: not do.
-
-#: Band the models are compared over at each site, matching example 32.
-IC_BAND = (5.0, 7.8)
-ARCA_BAND = (4.0, 7.5)
-
 #: Energy range both figures are drawn over, ``log10(E_nu / GeV)``.
 PLOT_BAND = (4.0, 9.0)
-
-#: Energies the ratio is tabulated at, ``log10(E_nu / GeV)``.
-ANCHORS = (5.0, 6.0, 7.0)
-
-#: Channels summed. The DR2 readme calls the released table an average over
-#: "simulated muon neutrino events", which reads as a ``nu_mu`` response, but the
-#: table's own deepest declination bands rule that out: at ``sin(dec) = 0.98`` it
-#: stays flat at 2-3e5 cm^2 from 10^5.6 to 10^8.6, and a ``nu_mu``-only model
-#: falls to 8.9e1 cm^2 there. Nothing about the neutral-current treatment can
-#: close that. A 10^8 GeV neutrino crossing 1.02e10 g/cm^2 must degrade to
-#: ~10^5 GeV to escape, which takes ~24 successive scatters, and each interaction
-#: is neutral current only 30% of the time -- a suppression of order 0.30^24. For
-#: ``nu_tau`` the charged current is not terminal, since the tau decays back to a
-#: ``nu_tau`` at ~0.4 of the energy, so that cascade alone survives the full
-#: Earth diameter. The deep bands therefore require the tau channel, and the
-#: smearing matrix rules out their being noise (~1600 simulated events per bin).
-DEFAULT_FLAVOURS = ("mu", "tau")
-
-#: CSMS isoscalar cross sections [pb] (Cooper-Sarkar, Mertsch and Sarkar,
-#: arXiv:1106.3723, Tables 1 and 2), on ``CSMS_LOG10_E``. The shipped BGR18
-#: tables are ``nu-p`` used as per-nucleon, which under-counts an isoscalar
-#: target by 17% at 10^5 GeV falling to ~11% at 10^7 -- the valence-quark
-#: difference between protons and neutrons, largest where valence still
-#: matters. :class:`IsoscalarCrossSection` pins each channel to these values.
-CSMS_LOG10_E = np.array([4.0, np.log10(5.0e4), 5.0, np.log10(2.0e5),
-                         np.log10(5.0e5), 6.0, np.log10(2.0e6), np.log10(5.0e6),
-                         7.0, np.log10(2.0e7), np.log10(5.0e7), 8.0])
-CSMS_PB = {
-    "nu": {"cc": (47.0, 140.0, 210.0, 310.0, 490.0, 690.0, 950.0, 1400.0,
-                  1900.0, 2600.0, 3700.0, 4800.0),
-           "nc": (15.0, 49.0, 75.0, 110.0, 180.0, 260.0, 360.0, 540.0,
-                  730.0, 980.0, 1400.0, 1900.0)},
-    "nubar": {"cc": (31.0, 110.0, 180.0, 270.0, 460.0, 660.0, 920.0, 1400.0,
-                     1900.0, 2500.0, 3700.0, 4800.0),
-              "nc": (11.0, 39.0, 64.0, 99.0, 170.0, 240.0, 350.0, 530.0,
-                     730.0, 980.0, 1400.0, 1900.0)},
-}
-
-
-class IsoscalarCrossSection(CrossSection):
-    """A shipped ``nu-p`` table pinned to the CSMS isoscalar values.
-
-    Scales the base model's charged- and neutral-current channels by the ratio
-    of the CSMS isoscalar value to the base value at the CSMS energies,
-    interpolated in ``log E`` and held at the ends. Both channels scale, so the
-    Earth attenuation the total sets stays consistent with the interaction
-    rate.
-
-    Parameters
-    ----------
-    base : softpaws.transport.cross_section.CrossSection
-        The shipped table to correct.
-    species : {"nu", "nubar"}
-        Which CSMS column to pin to.
-
-    Notes
-    -----
-    ``local_slope`` delegates to the base model: the correction drifts by ~0.2
-    in ``ln sigma`` over nine e-folds of energy, a slope shift of ~0.02,
-    below the smoothing spline's own uncertainty.
-    """
-
-    def __init__(self, base, species: str):
-        self._base = base
-        self._log_ratio = {}
-        for channel in ("cc", "nc"):
-            target = np.asarray(CSMS_PB[species][channel], dtype=float) * 1.0e-36
-            ours = np.array([
-                float(np.atleast_1d(getattr(base, channel)(10.0**log_e))[0])
-                for log_e in CSMS_LOG10_E
-            ])
-            self._log_ratio[channel] = np.log(target / ours)
-
-    def _scale(self, channel: str, energy_gev) -> np.ndarray:
-        log_e = np.log10(np.asarray(energy_gev, dtype=float))
-        return np.exp(np.interp(log_e, CSMS_LOG10_E, self._log_ratio[channel]))
-
-    def cc(self, energy_gev):
-        """Charged-current cross section [cm^2], pinned to CSMS."""
-        return self._base.cc(energy_gev) * self._scale("cc", energy_gev)
-
-    def nc(self, energy_gev):
-        """Neutral-current cross section [cm^2], pinned to CSMS."""
-        return self._base.nc(energy_gev) * self._scale("nc", energy_gev)
-
-    def local_slope(self, energy_gev):
-        """Local slope of the base model; see the class notes."""
-        return self._base.local_slope(energy_gev)
-
-
-#: Both published tables are neutrino/antineutrino averages: KM3NeT writes
-#: ``A_eff(nu_i + nubar_i) / 2`` and the DR2 companion paper (arXiv:2605.19040)
-#: states the area is "averaged assuming an equal number of neutrinos and
-#: antineutrinos". The comparand therefore needs both species, each carrying
-#: its own Earth absorption, and each pinned to its own CSMS isoscalar column.
-SPECIES = (IsoscalarCrossSection(bgr18_cross_section(), "nu"),
-           IsoscalarCrossSection(bgr18_cross_section("BGR18_nubar"), "nubar"))
 
 #: Colour carries which curve it is and line style carries which detector, so
 #: the two legends factorize. Shared with example 32.
@@ -336,15 +274,9 @@ Site = Optics
 ICECUBE_SITE = ICECUBE_OPTICS
 ARCA_SITE = ARCA_OPTICS
 
-#: Fraction of its photocathode area a module presents to an arriving photon.
-#: A sphere uniformly covered with photocathode of area ``A`` presents ``A / 4``
-#: from every direction; a single flat photomultiplier facing one hemisphere
-#: with cosine acceptance averages to the same quarter over the full sky.
-PROJECTED_FRACTION = 0.25
-
 
 def load_example_32():
-    """Import example 32, whose published curves and geometry this reuses."""
+    """Import example 32, whose published curves this reuses."""
     spec = importlib.util.spec_from_file_location(
         "_example_32", _HERE / "32_effective_area_comparison.py"
     )
@@ -378,1046 +310,82 @@ def parse_args() -> argparse.Namespace:
 
 
 # ---------------------------------------------------------------------------
-# The light-yield model, resolved in wavelength
+# The effective-area builders, with the signature the loading scripts use
 # ---------------------------------------------------------------------------
+#
+# These used to take example 32 as their first argument, for its geometry,
+# columns and transmission. All of that now lives in the library, so the
+# argument is accepted and not read; the loading scripts pass it unchanged.
 
 
-def cherenkov_spectrum_per_m_per_nm(site: Site) -> np.ndarray:
-    """Frank-Tamm photon yield of a bare relativistic track [m^-1 nm^-1].
+def ic_column_volume_km3(ex32, production_gev, threshold_gev, cos_theta, site, min_modules,
+                         n_energy):
+    """IceCube target volume [km^3].
 
-    .. math:: \\frac{{\\rm d}^2N_\\gamma}{{\\rm d}x\\,{\\rm d}\\lambda}
-        = \\frac{2\\pi\\alpha}{\\lambda^2}\\left(1 - n^{-2}\\right),
-
-    on :data:`WAVELENGTH_NM`. Integrating it over 300-600 nm returns the ~3.3e4
-    photons per metre that a single-number treatment starts from, but the
-    ``1 / lambda^2`` is what decides *which* photons those are, and neither the
-    photocathode nor the medium treats them alike.
-
-    Parameters
-    ----------
-    site : Site
-        Detector site, for its refractive index.
-
-    Returns
-    -------
-    spectrum : np.ndarray
-        Photons per metre of track per nanometre, on :data:`WAVELENGTH_NM`.
+    See :func:`softpaws.response.first_principles.ic_column_volume_km3`.
     """
-    lam_m = WAVELENGTH_NM * 1.0e-9
-    per_m_per_m = (2.0 * np.pi * FINE_STRUCTURE / lam_m**2
-                   * (1.0 - site.refractive_index**-2))
-    return per_m_per_m * 1.0e-9
+    return _fp.ic_column_volume_km3(production_gev, threshold_gev, cos_theta, site,
+                                    min_modules, n_energy)
 
 
-def detection_efficiency(site: Site) -> np.ndarray:
-    """Probability that a photon reaching the module makes a photoelectron.
+def ic_effective_area_cm2(ex32, site, threshold_gev, min_modules, n_energy,
+                          flavours=DEFAULT_FLAVOURS, cross_section=None):
+    """IceCube effective area [cm^2].
 
-    The photocathode's quantum efficiency times the transmission of the pressure
-    sphere and the optical gel, tabulated together on :data:`WAVELENGTH_NM`.
-    Taking it flat at its peak across the whole band, which is what a single
-    ``quantum_efficiency`` does, counts photons the module cannot convert: the
-    response is a bump ~120 nm wide sitting inside a 300 nm band, cut off below
-    by the glass and above by the cathode.
-
-    Parameters
-    ----------
-    site : Site
-        Detector site, for its tabulated efficiency curve.
-
-    Returns
-    -------
-    efficiency : np.ndarray
-        Photon detection efficiency on :data:`WAVELENGTH_NM`.
+    See :func:`softpaws.response.first_principles.ic_effective_area_cm2`.
     """
-    grid, values = np.asarray(site.efficiency_nm), np.asarray(site.efficiency)
-    return np.interp(WAVELENGTH_NM, grid, values, left=0.0, right=0.0)
+    return _fp.ic_effective_area_cm2(site, threshold_gev, min_modules, n_energy, flavours,
+                                     cross_section)
 
 
-def attenuation_spectrum_m(site: Site) -> np.ndarray:
-    """Effective photon attenuation length of the medium, per wavelength [m].
+def arca_column_volume_km3(ex32, production_gev, threshold_gev, theta_deg, available_km, site,
+                           min_modules, n_energy):
+    """ARCA230 column volume [km^3].
 
-    Where scattering is short against absorption the transport is diffusive and
-    the flux falls on ``sqrt(lambda_abs lambda_scat / 3)``; where it is not, the
-    light travels ballistically and the length is ``lambda_abs``. The shorter of
-    the two selects the applicable limit at each wavelength.
-
-    Both lengths are the site's own single-wavelength values carried by a
-    tabulated *shape*, normalized at :data:`ANCHOR_NM`, so ``absorption_m`` and
-    ``scattering_m`` keep their published meaning and only the wavelength
-    dependence is added. That dependence is not a detail: deep ice is clearest
-    near 400 nm and opaque by 600 nm, so the red half of the nominal band is
-    gone long before the reach is interesting, and the light that survives to
-    large distance is a narrow window near the clarity peak.
-
-    Parameters
-    ----------
-    site : Site
-        Detector site.
-
-    Returns
-    -------
-    length_m : np.ndarray
-        Attenuation length [m] on :data:`WAVELENGTH_NM`, or a flat
-        ``attenuation_override_m`` when the fit has set one.
+    See :func:`softpaws.response.first_principles.arca_column_volume_km3`.
     """
-    if site.attenuation_override_m is not None:
-        return np.full_like(WAVELENGTH_NM, float(site.attenuation_override_m))
-    shape_abs = np.interp(WAVELENGTH_NM, np.asarray(site.absorption_nm),
-                          np.asarray(site.absorption_shape))
-    shape_scat = np.interp(WAVELENGTH_NM, np.asarray(site.scattering_nm),
-                           np.asarray(site.scattering_shape))
-    anchor_abs = np.interp(ANCHOR_NM, np.asarray(site.absorption_nm),
-                           np.asarray(site.absorption_shape))
-    anchor_scat = np.interp(ANCHOR_NM, np.asarray(site.scattering_nm),
-                            np.asarray(site.scattering_shape))
-    absorption = site.absorption_m * shape_abs / anchor_abs
-    scattering = site.scattering_m * shape_scat / anchor_scat
-    diffusive = np.sqrt(absorption * scattering / 3.0)
-    return np.minimum(diffusive, absorption)
+    return _fp.arca_column_volume_km3(production_gev, threshold_gev, theta_deg, available_km,
+                                      site, min_modules, n_energy)
 
 
-def attenuation_length_m(site: Site) -> float:
-    """Attenuation length at the clarity peak [m], for reporting only.
+def arca_effective_area_cm2(ex32, site, threshold_gev, min_modules, n_energy,
+                            flavours=DEFAULT_FLAVOURS, cross_section=None):
+    """ARCA230 effective area [cm^2].
 
-    The model integrates :func:`attenuation_spectrum_m` and never uses a single
-    number; this is the value at :data:`ANCHOR_NM`, which is what a data sheet
-    quotes and what the fitted length is comparable against.
+    See :func:`softpaws.response.first_principles.arca_effective_area_cm2`.
     """
-    if site.attenuation_override_m is not None:
-        return float(site.attenuation_override_m)
-    return float(np.interp(ANCHOR_NM, WAVELENGTH_NM, attenuation_spectrum_m(site)))
+    return _fp.arca_effective_area_cm2(site, threshold_gev, min_modules, n_energy, flavours,
+                                       cross_section)
 
 
-def module_area_m2(site: Site) -> float:
-    """Geometric photocathode area a module presents to an arriving photon [m^2].
+def build_model(ex32, which, site, min_modules, n_energy, flavours=DEFAULT_FLAVOURS):
+    """The full model for one detector [cm^2].
 
-    The photocathode area times :data:`PROJECTED_FRACTION`. Unlike the earlier
-    form this carries **no** efficiency: the conversion probability is inside the
-    wavelength integral, where it belongs, since it is the one thing in the chain
-    that varies fastest across the band.
+    See :func:`softpaws.response.first_principles.build_model`.
     """
-    return site.cathode_area_m2 * PROJECTED_FRACTION
-
-
-def brightness_factor(energy_gev: float | np.ndarray) -> np.ndarray:
-    """Track brightness relative to a minimum-ionizing muon.
-
-    ``1 + L_em b_mu E``: the bare track plus the electromagnetic showers of the
-    radiative loss, which carry ``L_em`` metres of charged track per GeV. The
-    shower light has the same Cherenkov spectrum as the bare track, so this
-    factors out of every wavelength integral below.
-    """
-    energy = np.asarray(energy_gev, dtype=float)
-    b_water = drift_coefficient(energy, RHO_WATER_G_CM3) / M_PER_KM
-    return 1.0 + EM_TRACK_LENGTH_M_PER_GEV * b_water * energy
-
-
-def module_charge_pe(
-    distance_m: float | np.ndarray, energy_gev: float | np.ndarray, site: Site
-) -> np.ndarray:
-    """Photoelectrons a module collects from a track passing at a distance.
-
-    Light leaves a long track cylindrically, so the fluence at perpendicular
-    distance ``d`` is the yield per metre spread over ``2 pi d`` and attenuated
-    on the medium's length. Summing over the band,
-
-    .. math:: Q(d, E) = \\frac{A_{\\rm mod}}{2\\pi d}\\, Y(E) \\int {\\rm d}\\lambda\\;
-        \\frac{{\\rm d}^2N_\\gamma}{{\\rm d}x\\,{\\rm d}\\lambda}\\,
-        \\eta(\\lambda)\\, {\\rm e}^{-d / \\Lambda(\\lambda)},
-
-    with ``Y`` the brightness of :func:`brightness_factor`. The wavelength
-    integral is where the single-number treatment loses: ``eta`` and ``Lambda``
-    peak in the same narrow window, and the exponential narrows it further with
-    distance, so the *effective* band shrinks as the reach grows.
-
-    Parameters
-    ----------
-    distance_m : float or np.ndarray
-        Perpendicular distance from the track [m].
-    energy_gev : float or np.ndarray
-        Muon energy [GeV], broadcast against ``distance_m``.
-    site : Site
-        Detector site.
-
-    Returns
-    -------
-    charge_pe : np.ndarray
-        Collected charge [photoelectrons].
-    """
-    distance = np.atleast_1d(np.asarray(distance_m, dtype=float))
-    weight = (cherenkov_spectrum_per_m_per_nm(site) * detection_efficiency(site))
-    exponent = -distance[..., None] / attenuation_spectrum_m(site)
-    collected = np.trapezoid(weight * np.exp(exponent), WAVELENGTH_NM, axis=-1)
-    geometry = module_area_m2(site) / (2.0 * np.pi * np.maximum(distance, 1.0e-6))
-    return geometry * collected * brightness_factor(energy_gev)
-
-
-#: Distances the one-photoelectron radius is tabulated on [m], log spaced so the
-#: inversion stays accurate over the four decades of brightness in play.
-_HIT_DISTANCE_M = np.logspace(-1.0, 3.2, 400)
-
-
-def hit_radius_m(energy_gev: float | np.ndarray, site: Site) -> np.ndarray:
-    """Distance at which a module still collects one photoelectron [m].
-
-    A reporting scale only: the counting that enters the model is Poisson over
-    :func:`hit_probability`, with no step at any radius. This is the distance
-    at which the *mean* charge falls to one photoelectron, which is what a
-    single-number summary of the optics can be compared against.
-
-    Parameters
-    ----------
-    energy_gev : float or np.ndarray
-        Muon energy [GeV].
-    site : Site
-        Detector site.
-
-    Returns
-    -------
-    radius_m : np.ndarray
-        Radius of the one-photoelectron cylinder [m]. Zero where even a module
-        on the track does not reach one photoelectron.
-    """
-    charge = module_charge_pe(_HIT_DISTANCE_M, np.atleast_1d(energy_gev)[..., None], site)
-    # Q falls monotonically with distance, so the crossing is unique. Locate it
-    # with one argmax per row and interpolate in log(charge) against
-    # log(distance), where both are close to straight.
-    log_d = np.log(_HIT_DISTANCE_M)
-    with np.errstate(divide="ignore"):
-        log_q = np.log(np.clip(charge, 1.0e-300, None))
-    faint = charge < 1.0
-    crossed = faint.any(axis=-1)
-    hi = np.argmax(faint, axis=-1)
-    lo = np.clip(hi - 1, 0, None)
-    span = np.take_along_axis(log_q, lo[..., None], -1)[..., 0] - \
-        np.take_along_axis(log_q, hi[..., None], -1)[..., 0]
-    start = np.take_along_axis(log_q, lo[..., None], -1)[..., 0]
-    with np.errstate(divide="ignore", invalid="ignore"):
-        frac = np.where(span > 0.0, start / span, 0.0)
-    radius = np.exp(log_d[lo] + frac * (log_d[hi] - log_d[lo]))
-    radius = np.where(hi == 0, 0.0, radius)
-    return np.where(crossed, radius, _HIT_DISTANCE_M[-1])
-
-
-def instrumented_chord_km(radius_km: float, height_km: float, n_sides: int | None) -> float:
-    """Mean chord of the instrumented body [km].
-
-    ``<c> = 4V / S`` for any convex body, so this needs no new number. It is the
-    length of track the array has to work with, and therefore the length over
-    which :func:`hit_count` counts modules.
-    """
-    volume = np.pi * radius_km**2 * height_km
-    if n_sides is None:
-        perimeter = 2.0 * np.pi * radius_km
-    else:
-        perimeter = 2.0 * radius_km * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
-    surface = 2.0 * np.pi * radius_km**2 + perimeter * height_km
-    return float(4.0 * volume / surface)
-
-
-def hit_probability(
-    distance_m: float | np.ndarray, energy_gev: float | np.ndarray, site: Site
-) -> np.ndarray:
-    """Probability that a module at a distance registers a *hit*.
-
-    A hit is a local coincidence, because that is what both instruments count:
-    IceCube's simple-majority trigger counts HLC hits, and KM3NeT's L1 is two
-    photomultipliers of one module within ~10 ns -- in sea water a single
-    photoelectron is indistinguishable from potassium-40 decay. Each receiver
-    converts its mean charge into at least one photoelectron with Poisson
-    probability ``p = 1 - e^{-Q}``, and the coincidence admits **every
-    partner** the definition allows:
-
-    - A single-PMT module (IceCube) pairs with its nearest or next-to-nearest
-      neighbours on the same string, up or down, so a firing module counts
-      when *any* of :data:`HLC_PARTNERS` partners at essentially the same
-      track distance also fires: ``p (1 - (1 - p)^4)``.
-    - A multi-PMT module (KM3NeT) splits its collected charge over the
-      ``illuminated_pmts`` that face the track, and counts when any two fire:
-      ``1 - (1-p)^m - m p (1-p)^(m-1)`` with ``p = 1 - e^{-Q/m}``.
-
-    Both reduce to the module firing outright when the track is bright. The
-    partner sum matters in the dim limit, where a fixed-pair rule
-    under-counts by the number of partners -- enough to push the IceCube
-    turn-on from 1.8 TeV to 3.7 TeV and visibly suppress the effective area
-    below 100 TeV. The step-function alternative -- every module inside the
-    one-photoelectron radius fires, none outside -- is worse still, putting
-    the threshold at 5.3 TeV where the array demonstrably triggers below
-    1 TeV.
-
-    Parameters
-    ----------
-    distance_m : float or np.ndarray
-        Perpendicular distance from the track [m].
-    energy_gev : float or np.ndarray
-        Muon energy [GeV], broadcast against ``distance_m``.
-    site : Site
-        Detector site.
-
-    Returns
-    -------
-    probability : np.ndarray
-        Probability that the module registers a coincident hit.
-    """
-    charge = module_charge_pe(distance_m, energy_gev, site)
-    if site.illuminated_pmts is None:
-        single = 1.0 - np.exp(-charge)
-        return single * (1.0 - (1.0 - single) ** HLC_PARTNERS)
-    m = float(site.illuminated_pmts)
-    single = 1.0 - np.exp(-charge / m)
-    return 1.0 - (1.0 - single) ** m - m * single * (1.0 - single) ** (m - 1.0)
-
-
-def hit_count(
-    offset_m: float, energy_gev: float | np.ndarray, site: Site, chord_km: float,
-) -> np.ndarray:
-    """Mean number of hit modules, for a track at a signed distance from the boundary.
-
-    Each module hits with :func:`hit_probability`, so the mean count is that
-    probability integrated over the in-array part of the transverse plane. A
-    circle of radius ``d`` around a track at signed offset ``x`` from the
-    boundary keeps the fraction ``arccos(x / d) / pi`` of its circumference
-    inside, hence
-
-    .. math:: \\bar N(x, E) = \\rho_{\\rm mod}\\,\\langle c\\rangle \\int
-        2\\,d\\,\\arccos\\!\\left({\\rm clip}(x / d)\\right) p_{\\rm hit}(d, E)\\,
-        {\\rm d}d,
-
-    with the mean chord as the track length in view. For a step ``p_hit`` this
-    is the circular-segment count the earlier disc treatment used; the Poisson
-    form differs where it matters, in the dim limit, where the count becomes
-    linear in the collected charge.
-
-    Parameters
-    ----------
-    offset_m : float
-        Signed distance of the track from the boundary [m]; positive is outside.
-    energy_gev : float or np.ndarray
-        Muon energy [GeV].
-    site : Site
-        Detector site.
-    chord_km : float
-        Mean chord of the instrumented body [km], from
-        :func:`instrumented_chord_km`.
-
-    Returns
-    -------
-    count : np.ndarray
-        Mean number of modules registering a coincident hit.
-    """
-    probability = hit_probability(
-        _HIT_DISTANCE_M, np.atleast_1d(np.asarray(energy_gev, dtype=float))[..., None],
-        site)
-    wedge = 2.0 * _HIT_DISTANCE_M * np.arccos(
-        np.clip(float(offset_m) / _HIT_DISTANCE_M, -1.0, 1.0))
-    density_per_m3 = site.module_density_per_km3 / M_PER_KM**3
-    count = (probability * _D_TRAPZ) @ wedge
-    return density_per_m3 * count * chord_km * M_PER_KM
-
-
-#: Signed offsets the mean hit count is tabulated on [m], for the inversion in
-#: :func:`reach_offset_m`. The positive end comfortably exceeds any reach in
-#: play; the negative end only has to cover the interpolation edge, since a
-#: track the condition wants *inside* the array is handled by the multiplicity
-#: weight of :func:`effective_body_km` and the offset is clipped at zero.
-_REACH_OFFSET_M = np.linspace(-100.0, 1200.0, 261)
-
-#: The wedge kernel of :func:`hit_count` on that offset grid,
-#: ``2 d arccos(clip(x / d))``, tabulated once: the mean count at every offset
-#: is then one matrix product with the hit probabilities.
-_REACH_KERNEL = 2.0 * _HIT_DISTANCE_M[:, None] * np.arccos(
-    np.clip(_REACH_OFFSET_M[None, :] / _HIT_DISTANCE_M[:, None], -1.0, 1.0))
-
-#: Trapezoid quadrature weights of the distance grid, so the count integrals
-#: reduce to matrix products against :data:`_REACH_KERNEL`.
-_D_STEP = np.diff(_HIT_DISTANCE_M)
-_D_TRAPZ = np.concatenate(
-    [[0.5 * _D_STEP[0]], 0.5 * (_D_STEP[:-1] + _D_STEP[1:]), [0.5 * _D_STEP[-1]]])
-
-
-def _mean_counts(
-    energy_gev: np.ndarray, site: Site, chord_km: float
-) -> tuple[np.ndarray, np.ndarray]:
-    """Mean hit counts on :data:`_REACH_OFFSET_M`, and for a central track.
-
-    One evaluation of the optics serves both: the reach inversion needs the
-    count against the offset, the multiplicity weight needs the count deep
-    inside the array, where the wedge is the full circle.
-
-    Parameters
-    ----------
-    energy_gev : np.ndarray
-        Muon energy [GeV].
-    site : Site
-        Detector site.
-    chord_km : float
-        Mean chord of the instrumented body [km].
-
-    Returns
-    -------
-    counts : np.ndarray, shape (energy, offset)
-        Mean hit count at each tabulated offset.
-    central : np.ndarray, shape (energy,)
-        Mean hit count for a central crossing track.
-    """
-    probability = hit_probability(_HIT_DISTANCE_M, energy_gev[..., None], site)
-    scale = site.module_density_per_km3 / M_PER_KM**3 * chord_km * M_PER_KM
-    weighted = probability * _D_TRAPZ
-    return (scale * (weighted @ _REACH_KERNEL),
-            scale * (weighted @ (2.0 * np.pi * _HIT_DISTANCE_M)))
-
-
-def _invert_reach_m(counts: np.ndarray, min_modules: float) -> np.ndarray:
-    """Offset at which each row of ``counts`` falls to ``min_modules`` [m]."""
-    return np.array([
-        np.interp(min_modules, row[::-1], _REACH_OFFSET_M[::-1],
-                  left=_REACH_OFFSET_M[-1], right=_REACH_OFFSET_M[0])
-        for row in counts
-    ])
-
-
-def reach_offset_m(
-    energy_gev: np.ndarray, site: Site, chord_km: float, min_modules: float
-) -> np.ndarray:
-    """How far outside the boundary a track can be and still make ``min_modules``.
-
-    Inverts the mean count of :func:`hit_count` in the signed offset. The count
-    falls monotonically with the offset, so the crossing is unique and one
-    tabulated count against offset serves every energy at once.
-
-    Parameters
-    ----------
-    energy_gev : np.ndarray
-        Muon energy [GeV].
-    site : Site
-        Detector site.
-    chord_km : float
-        Mean chord of the instrumented body [km].
-    min_modules : float
-        Mean number of hits demanded.
-
-    Returns
-    -------
-    offset_m : np.ndarray
-        Signed distance [m], held at the edges of the tabulated offsets. The
-        negative edge does not need to be deep: below it the acceptance is
-        carried by the multiplicity weight of :func:`effective_body_km`.
-    """
-    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
-    counts, _ = _mean_counts(energy, site, chord_km)
-    return _invert_reach_m(counts, min_modules)
-
-
-def muon_threshold_gev(site: Site, min_modules: float, chord_km: float) -> float:
-    """Muon energy at which a track through the array first fires ``min_modules``.
-
-    Deep inside the array the segment is the whole disc, so the condition is
-    ``rho_mod pi d_1^2 <c> = N_min``: the hit radius has to reach a definite
-    value, and that fixes an energy. This is the threshold the *light* sets,
-    and with Poisson-thinned hits it is the midpoint of a turn-on: the
-    multiplicity weight of :func:`effective_body_km` passes ~55% of central
-    tracks here, more above, fewer below. The range still runs to the nominal
-    threshold; the weight carries the dimming.
-
-    Parameters
-    ----------
-    site : Site
-        Detector site.
-    min_modules : float
-        Modules that must fire.
-    chord_km : float
-        Mean chord of the instrumented body [km].
-
-    Returns
-    -------
-    threshold_gev : float
-        Muon threshold [GeV], held at or above
-        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
-    """
-    def gap(log10_e: float) -> float:
-        deep = -1.0e4
-        count = np.atleast_1d(hit_count(deep, 10.0**log10_e, site, chord_km))
-        return float(count[0]) - min_modules
-
-    if gap(12.0) < 0.0:
-        return float("nan")
-    if gap(0.0) > 0.0:
-        return DEFAULT_MUON_THRESHOLD_GEV
-    return max(10.0 ** brentq(gap, 0.0, 12.0, xtol=1.0e-4), DEFAULT_MUON_THRESHOLD_GEV)
-
-
-def effective_body_km(
-    radius_km: float, height_km: float, energy_gev: float | np.ndarray, site: Site,
-    min_modules: float, n_sides: int | None = 6,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Instrumented body dilated by the derived light reach, and its weight [km].
-
-    The reach is where a track still makes ``min_modules`` mean hits
-    (:func:`reach_offset_m`). It is a distance from a *boundary*, so the same
-    reach moves the body in every direction and not only radially. Vertically
-    it is capped by the medium: both sites are layered, with an upper boundary at
-    the ice or sea surface and a lower one at bedrock or seabed, and a track
-    outside the optical medium is neither radiating into it nor visible through
-    it. The horizontal directions carry no such cap.
-
-    Dim muons are carried by the third return, a multiplicity weight: the hits
-    are Poisson-thinned, so a track whose *mean* count sits below
-    ``min_modules`` still meets the selection with probability
-    ``P(N >= min_modules)``, evaluated for a central crossing. The weight is
-    what makes the threshold a smooth turn-on -- an earlier revision emptied
-    the body below the mean-count threshold instead, and that delta-function
-    condition collapsed the model at low energy where the published response
-    falls smoothly. The weight applies the dimming exactly once: the range
-    keeps its nominal lower limit (see :func:`build_model`), and the offset is
-    clipped at zero because sub-threshold acceptance belongs to the weight.
-
-    Parameters
-    ----------
-    radius_km : float
-        Instrumented footprint radius [km].
-    height_km : float
-        Instrumented height [km].
-    energy_gev : float or np.ndarray
-        Muon energy where the track is seen [GeV].
-    site : Site
-        Detector site.
-    min_modules : float
-        Mean number of hits demanded.
-    n_sides : int or None, optional
-        Cross-section of the instrumented body, for its mean chord.
-
-    Returns
-    -------
-    radius : np.ndarray
-        Effective radius [km].
-    height : np.ndarray
-        Effective height [km], grown at each end cap and held inside the medium.
-    weight : np.ndarray
-        Probability that a central crossing track meets the multiplicity.
-    """
-    chord_km = instrumented_chord_km(radius_km, height_km, n_sides)
-    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
-    counts, central = _mean_counts(energy, site, chord_km)
-    offset_km = np.clip(_invert_reach_m(counts, min_modules) / M_PER_KM, 0.0, None)
-    above_km = np.minimum(offset_km, site.headroom_above_m / M_PER_KM)
-    below_km = np.minimum(offset_km, site.headroom_below_m / M_PER_KM)
-    # P(N >= k) for a Poisson mean is the regularized lower incomplete gamma.
-    weight = gammainc(min_modules, central)
-    return (np.clip(radius_km + offset_km, 0.0, None),
-            np.clip(height_km + above_km + below_km, 0.0, None),
-            weight)
-
-
-# ---------------------------------------------------------------------------
-# The column integral of example 44, with a derived radius
-# ---------------------------------------------------------------------------
-
-
-def column_profile(
-    production_gev: float, threshold_gev: float, n_energy: int,
-    density_g_cm3: float = RHO_WATER_G_CM3,
-) -> tuple[np.ndarray, np.ndarray, float] | None:
-    """Column travelled against the energy the muon has there.
-
-    The column a muon has covered by the time it has fallen to ``E`` is
-    ``L(eps -> E_thr) - L(E -> E_thr)``, exact for the mean first-passage depth
-    by the tower property, so the validated range function is called in its
-    normal convention throughout.
-
-    Parameters
-    ----------
-    production_gev : float
-        Muon energy at production [GeV].
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    n_energy : int
-        Points in the quadrature.
-    density_g_cm3 : float, optional
-        Density of the detector medium [g cm^-3].
-
-    Returns
-    -------
-    profile : tuple or None
-        ``(column [km], arrival energy [GeV], total range [km])``, or ``None``
-        when the muon is born below threshold.
-    """
-    if production_gev <= threshold_gev:
-        return None
-    total = float(np.atleast_1d(
-        stochastic_muon_range_km(production_gev, threshold_gev, density_g_cm3))[0])
-    if not np.isfinite(total) or total <= 0.0:
-        return None
-    energy = np.logspace(np.log10(production_gev), np.log10(threshold_gev), n_energy)
-    column = total - stochastic_muon_range_km(energy, threshold_gev, density_g_cm3)
-    return column, energy, total
-
-
-#: Medium below the optical one, entered through the two-medium first passage
-#: of :func:`softpaws.transport.soft_volume.two_medium_muon_range_km` for every
-#: upgoing direction: PROPOSAL's standard rock, whose ``Phi'(0)`` per unit
-#: column sits 27% above water at 1 PeV. An upgoing muon is born below the
-#: bedrock or the sea floor and crosses only the near column of ice or water
-#: before it is seen, so most of its range is in this medium. ``None`` keeps the
-#: water kernel for the whole range, which every number before 2026-09-02
-#: carried; the difference is a factor 0.80 to 0.86 on the entering term over
-#: the upgoing sky beyond ~6 degrees of the horizon, and none inside it.
-FAR_MEDIUM_SOURCE = "proposal_rock"
-
-
-def rock_range_ratio(
-    production_gev: float, threshold_gev: float, cos_theta: np.ndarray, site: Site,
-    height_km: float, density_g_cm3: float,
-) -> np.ndarray:
-    """Two-medium range over the single-medium one, per arrival direction.
-
-    The near column is the optical medium between the far medium and the
-    centre of the instrumented body, ``(headroom below + h/2) / |cos theta|``,
-    in the same geometric units as every other length here, so the ratio
-    multiplies the column-depth lengths of the entering term directly. It is
-    1 above the horizon, where the overburden is the optical medium throughout,
-    and 1 everywhere when :data:`FAR_MEDIUM_SOURCE` is ``None``.
-
-    Parameters
-    ----------
-    production_gev : float
-        Muon energy at production [GeV].
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    cos_theta : np.ndarray
-        Cosine of the arrival zenith; ``+1`` is overhead.
-    site : Site
-        Detector site, for the headroom below the instrumented volume.
-    height_km : float
-        Instrumented height [km].
-    density_g_cm3 : float
-        Density of the optical medium [g cm^-3], the unit the lengths are in.
-
-    Returns
-    -------
-    ratio : np.ndarray
-        Range ratio, one entry per direction, in ``(0, 1]``.
-    """
-    vertical_km = site.headroom_below_m / M_PER_KM + 0.5 * height_km
-    return two_medium_range_ratio(
-        production_gev, threshold_gev, cos_theta, vertical_km, density_g_cm3,
-        far_source=FAR_MEDIUM_SOURCE)
-
-
-# ---------------------------------------------------------------------------
-# IceCube
-# ---------------------------------------------------------------------------
-
-
-def ic_column_volume_km3(
-    ex32, production_gev: float, threshold_gev: float, cos_theta: np.ndarray,
-    site: Site, min_modules: float | None, n_energy: int,
-) -> np.ndarray:
-    """Target volume for one production energy [km^3].
-
-    The entering term is the silhouette extruded upstream over the column the
-    muon can cover, and the instrumented volume is the same extrusion continued
-    to the back face, so the two add to the volume of the body extruded by
-    ``L``. Both are carried here, since a light reach dilates the body and so
-    moves both of them; returning only the column term and adding a fixed
-    ``V_det`` outside would grow one and hold the other. A muon born below
-    threshold gets neither.
-
-    Parameters
-    ----------
-    ex32 : ModuleType
-        Example 32, for the instrument constants.
-    production_gev : float
-        Muon energy at production [GeV].
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    cos_theta : np.ndarray
-        Arrival directions.
-    site : Site
-        Detector site.
-    min_modules : float or None
-        Modules that must fire. ``None`` holds the
-        body at the instrumented one.
-    n_energy : int
-        Points in the arrival-energy quadrature.
-
-    Returns
-    -------
-    volume : np.ndarray
-        Target volume [km^3], one entry per direction.
-    """
-    zeros = np.zeros_like(np.asarray(cos_theta, dtype=float))
-    profile = column_profile(production_gev, threshold_gev, n_energy, RHO_ICE_G_CM3)
-    if profile is None:
-        return zeros
-    column, energy, total = profile
-    # Below the ice the muon is in rock, which shortens every upgoing column.
-    # ``ic_upgoing_columns`` hands back ``|cos theta_z| = sin(dec)`` for a
-    # hemisphere that is upgoing by construction, so the sign is restored here.
-    ratio = rock_range_ratio(
-        production_gev, threshold_gev, -np.abs(np.asarray(cos_theta, dtype=float)),
-        site, ex32.IC_HEIGHT_KM, RHO_ICE_G_CM3)
-
-    if min_modules is None:
-        area, volume = eroded_prism_target_km2(
-            cos_theta, ex32.IC_RADIUS_KM, ex32.IC_HEIGHT_KM, site.min_track_km,
-            ex32.IC_N_SIDES)
-        return area * total * ratio + volume
-
-    radius, height, weight = effective_body_km(
-        ex32.IC_RADIUS_KM, ex32.IC_HEIGHT_KM, energy, site, min_modules,
-        ex32.IC_N_SIDES)
-    area, volume = eroded_prism_target_km2(
-        np.asarray(cos_theta, dtype=float)[None, :], radius[:, None],
-        height[:, None], site.min_track_km, ex32.IC_N_SIDES,
-    )
-    # The instrumented term belongs to a vertex inside the body, which the muon
-    # leaves at essentially its production energy, so it is taken at ``energy[0]``.
-    return (np.trapezoid(weight[:, None] * area, column[:, None] * ratio[None, :], axis=0)
-            + weight[0] * volume[0])
-
-
-def ic_effective_area_cm2(
-    ex32, site: Site, threshold_gev: float, min_modules: float | None, n_energy: int,
-    flavours: tuple[str, ...] = DEFAULT_FLAVOURS, cross_section=None,
-) -> np.ndarray:
-    """Upgoing-averaged IceCube effective area, both channels [cm^2].
-
-    Parameters
-    ----------
-    ex32 : ModuleType
-        Example 32.
-    site : Site
-        Detector site.
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    min_modules : float or None
-        Modules that must fire, or ``None`` for the instrumented footprint.
-    n_energy : int
-        Points in the arrival-energy quadrature.
-    flavours : tuple of str, optional
-        Parent channels to sum. Defaults to :data:`DEFAULT_FLAVOURS`.
-    cross_section : softpaws.transport.cross_section.CrossSection, optional
-        Cross section of the incident species, used for both the interaction and
-        the Earth absorption. Defaults to example 32's neutrino model.
-
-    Returns
-    -------
-    aeff : np.ndarray
-        Effective area [cm^2] on ``ex32.IC_LOG10_E``.
-    """
-    xsec = ex32.CROSS_SECTION if cross_section is None else cross_section
-    columns, weights, cos_theta = ex32.ic_upgoing_columns()
-    # South Pole ice, not the module-level water default. `n L` is exactly
-    # density-invariant so the entering term does not care, but `V_det` is a
-    # geometric volume and scales with it.
-    n_nucleon = nucleon_number_density(RHO_ICE_G_CM3)
-    out = np.zeros(ex32.IC_LOG10_E.size)
-
-    for i, e_nu in enumerate(10.0**ex32.IC_LOG10_E):
-        for flavour in flavours:
-            if flavour == "mu":
-                rungs, rung_weight = ex32.regenerated_transmission(
-                    float(e_nu), columns, xsec)
-                branching = 1.0
-                muon_gev = (1.0 - mean_inelasticity(rungs)) * rungs
-            else:
-                rungs, rung_weight = ex32.flavour_transmission(
-                    float(e_nu), columns, xsec, flavour="tau")
-                branching = BR_TAU_TO_MU
-                muon_gev = MEAN_Z * (1.0 - mean_inelasticity(rungs)) * rungs
-
-            rate = np.zeros((rungs.size, cos_theta.size))
-            for k, e_mu in enumerate(muon_gev):
-                volume = ic_column_volume_km3(
-                    ex32, float(e_mu), threshold_gev, cos_theta, site,
-                    min_modules, n_energy,
-                )
-                rate[k] = volume * CM_PER_KM**3
-            rate *= n_nucleon * xsec.cc(rungs)[:, None] * branching
-            out[i] += np.average((rung_weight * rate).sum(axis=0), weights=weights)
-    return out
-
-
-# ---------------------------------------------------------------------------
-# KM3NeT/ARCA230
-# ---------------------------------------------------------------------------
-
-
-def arca_column_volume_km3(
-    ex32, production_gev: float, threshold_gev: float, theta_deg: np.ndarray,
-    available_km: np.ndarray, site: Site, min_modules: float | None, n_energy: int,
-) -> np.ndarray:
-    """Column target volume at ARCA230, truncated at the available column [km^3].
-
-    The site supplies a finite upstream column, so the length is the truncated
-    first-passage range ``E[tau ^ X]``. The reach enters as the mean projected
-    area over the part of the column the muon can actually have travelled, which
-    keeps the validated range intact and reduces to example 44's integral where
-    the column is unlimited. As at IceCube, the instrumented volume is carried
-    here rather than added outside, so that the reach dilates both terms of the
-    can and a sub-threshold muon contributes neither.
-
-    Parameters
-    ----------
-    ex32 : ModuleType
-        Example 32, for the ARCA geometry.
-    production_gev : float
-        Muon energy at production [GeV].
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    theta_deg : np.ndarray
-        Zenith samples [deg].
-    available_km : np.ndarray
-        Upstream sea-water column available in each direction [km].
-    site : Site
-        Detector site.
-    min_modules : float or None
-        Modules that must fire, or ``None`` for the instrumented footprint.
-    n_energy : int
-        Points in the arrival-energy quadrature.
-
-    Returns
-    -------
-    volume : np.ndarray
-        Column volume [km^3], one entry per zenith.
-    """
-    radius_km = ex32.ARCA230_RADIUS_KM
-    height_km = ex32.BLOCK_HEIGHT_KM
-    n_blocks = ex32.N_BLOCKS_FULL
-    cos_theta = np.cos(np.deg2rad(np.asarray(theta_deg, dtype=float)))
-    if production_gev <= threshold_gev:
-        return np.zeros_like(theta_deg)
-
-    truncated = np.atleast_1d(truncated_muon_range_km(
-        production_gev, available_km, threshold_gev, kernel_evaluation="running"))
-    truncated = np.clip(truncated, 0.0, None)
-    # Below the sea floor the muon is in rock, which shortens every upgoing
-    # column; the overburden above is water throughout and is untouched.
-    ratio = rock_range_ratio(production_gev, threshold_gev, cos_theta, site,
-                             height_km, RHO_WATER_G_CM3)
-    truncated = truncated * ratio
-
-    if min_modules is None:
-        area, volume = eroded_prism_target_km2(
-            cos_theta, radius_km, height_km, site.min_track_km, None, n_blocks)
-        return area * truncated + volume
-
-    profile = column_profile(production_gev, threshold_gev, n_energy)
-    if profile is None:
-        return np.zeros_like(theta_deg)
-    column, energy, _ = profile
-
-    radius, height, weight = effective_body_km(radius_km, height_km, energy, site,
-                                               min_modules, None)
-    area, volume = eroded_prism_target_km2(
-        cos_theta[None, :], radius[:, None], height[:, None], site.min_track_km,
-        None, n_blocks)
-    area = weight[:, None] * area
-    clipped = np.minimum(column[:, None] * ratio[None, :], available_km[None, :])
-    span = clipped[-1]
-    mean_area = np.where(
-        span > 0.0, np.trapezoid(area, clipped, axis=0) / np.where(span > 0.0, span, 1.0),
-        weight[0] * eroded_prism_target_km2(cos_theta, radius_km, height_km,
-                                            site.min_track_km, None, n_blocks)[0],
-    )
-    return mean_area * truncated + weight[0] * volume[0]
-
-
-def arca_effective_area_cm2(
-    ex32, site: Site, threshold_gev: float, min_modules: float | None, n_energy: int,
-    flavours: tuple[str, ...] = DEFAULT_FLAVOURS, cross_section=None,
-) -> np.ndarray:
-    """Sky-averaged ARCA230 effective area, both channels [cm^2].
-
-    Parameters
-    ----------
-    ex32 : ModuleType
-        Example 32.
-    site : Site
-        Detector site.
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    min_modules : float or None
-        Modules that must fire, or ``None`` for the instrumented footprint.
-    n_energy : int
-        Points in the arrival-energy quadrature.
-    flavours : tuple of str, optional
-        Parent channels to sum. Defaults to :data:`DEFAULT_FLAVOURS`.
-    cross_section : softpaws.transport.cross_section.CrossSection, optional
-        Cross section of the incident species, used for both the interaction and
-        the Earth absorption. Defaults to example 32's neutrino model.
-
-    Returns
-    -------
-    aeff : np.ndarray
-        Effective area [cm^2] on ``ex32.ARCA_LOG10_E``.
-    """
-    xsec = ex32.CROSS_SECTION if cross_section is None else cross_section
-    theta_deg, weights = ex32.zenith_grid()
-    columns = ex32.earth_column_g_cm2(theta_deg, ex32.ARCA_DEPTH_KM)
-    available_km = ex32.upstream_column_km(theta_deg, ex32.ARCA_DEPTH_KM)
-    n_nucleon = nucleon_number_density(ex32.RHO_SEA_G_CM3)
-    out = np.zeros(ex32.ARCA_LOG10_E.size)
-
-    for i, e_nu in enumerate(10.0**ex32.ARCA_LOG10_E):
-        for flavour in flavours:
-            if flavour == "mu":
-                rungs, rung_weight = ex32.regenerated_transmission(
-                    float(e_nu), columns, xsec)
-                branching = 1.0
-                muon_gev = (1.0 - mean_inelasticity(rungs)) * rungs
-            else:
-                rungs, rung_weight = ex32.flavour_transmission(
-                    float(e_nu), columns, xsec, flavour="tau")
-                branching = BR_TAU_TO_MU
-                muon_gev = MEAN_Z * (1.0 - mean_inelasticity(rungs)) * rungs
-
-            rate = np.zeros((rungs.size, theta_deg.size))
-            for k, e_mu in enumerate(muon_gev):
-                volume = arca_column_volume_km3(
-                    ex32, float(e_mu), threshold_gev, theta_deg,
-                    available_km, site, min_modules, n_energy,
-                )
-                rate[k] = volume * CM_PER_KM**3
-            rate *= n_nucleon * xsec.cc(rungs)[:, None] * branching
-            out[i] += np.average((rung_weight * rate).sum(axis=0), weights=weights)
-    return out
-
-
-# ---------------------------------------------------------------------------
-# Assembly
-# ---------------------------------------------------------------------------
-
-
-def build_model(ex32, which: str, site: Site, min_modules: float, n_energy: int,
-                flavours: tuple[str, ...] = DEFAULT_FLAVOURS) -> np.ndarray:
-    """The full model for one detector, threshold and reach both derived [cm^2].
-
-    Averaged over neutrino and antineutrino, each propagated through the Earth
-    with its own cross section, since both published tables are that average.
-
-    The light condition enters once. The range runs to the nominal threshold,
-    and every track segment carries the probability that its Poisson-thinned
-    hits meet the multiplicity -- the weight of :func:`effective_body_km` -- so
-    the threshold is a smooth turn-on and not a cut. Truncating the range at
-    :func:`muon_threshold_gev` as well would suppress the same physics twice.
-
-    Parameters
-    ----------
-    ex32 : ModuleType
-        Example 32.
-    which : {"IceCube", "ARCA"}
-        Which detector to build.
-    site : Site
-        Detector site.
-    min_modules : float
-        Modules that must fire.
-    n_energy : int
-        Points in the arrival-energy quadrature.
-
-    Returns
-    -------
-    aeff : np.ndarray
-        Effective area [cm^2] on that detector's grid.
-    """
-    build = ic_effective_area_cm2 if which == "IceCube" else arca_effective_area_cm2
-    curves = [build(ex32, site, DEFAULT_MUON_THRESHOLD_GEV, min_modules, n_energy,
-                    flavours, xsec)
-              for xsec in SPECIES]
-    return np.mean(curves, axis=0)
+    return _fp.build_model(which, site, min_modules, n_energy, flavours)
 
 
 def fit_reach(ex32, which, site, min_modules, n_energy, published, band, flavours):
-    """Float the attenuation length against one published curve.
+    """Float the attenuation length.
 
-    ``Lambda`` sets how fast the footprint grows per e-fold, which is shape
-    alone, so it is fitted against the scatter about a free normalization. That
-    is the convention example 32 already reports its own residuals in. Fitting
-    it against the level instead drives it to the bound, since no attenuation
-    length can supply a normalization; the level belongs to ``q`` and to
-    whatever else sits in the 1.78, and forcing ``Lambda`` to carry it returns a
-    number no medium has.
-
-    The returned curve carries that free normalization, so it lands on the
-    published one by construction and only its shape is a statement.
-
-    Parameters
-    ----------
-    ex32 : ModuleType
-        Example 32.
-    which : {"IceCube", "ARCA"}
-        Which detector to build.
-    site : Site
-        Detector site, whose derived attenuation length starts the search.
-    min_modules : float
-        Modules that must fire, held at the derived value.
-    n_energy : int
-        Points in the arrival-energy quadrature.
-    published : np.ndarray
-        Published effective area [cm^2].
-    band : np.ndarray
-        Boolean mask of the energies the fit runs over.
-
-    Returns
-    -------
-    length_m : float
-        Fitted attenuation length [m], to compare against the medium's optics.
-    normalization : float
-        Factor the fitted shape needs to reach the published level.
-    curve : np.ndarray
-        Normalized effective area [cm^2].
+    See :func:`softpaws.response.first_principles.fit_reach`.
     """
-    def model_at(log10_lambda: float) -> np.ndarray:
-        trial = replace(site, attenuation_override_m=10.0**log10_lambda)
-        return build_model(ex32, which, trial, min_modules, n_energy, flavours)
-
-    def shape_cost(log10_lambda: float) -> float:
-        return residuals(published, model_at(log10_lambda), band)[1]
-
-    opt = minimize_scalar(shape_cost, bounds=(1.0, 2.5), method="bounded",
-                          options={"xatol": 0.005})
-    curve = model_at(opt.x)
-    normalization = residuals(published, curve, band)[0]
-    return 10.0**opt.x, normalization, curve * normalization
+    return _fp.fit_reach(which, site, min_modules, n_energy, published, band, flavours)
 
 
-def detector_curves(ex32, which: str, site: Site, min_modules: float, n_energy: int,
-                    published: np.ndarray, band: np.ndarray,
-                    flavours: tuple[str, ...] = DEFAULT_FLAVOURS) -> tuple[dict, float]:
-    """Published, first-principles and fitted effective areas for one detector [cm^2].
+def detector_curves(ex32, which, site, min_modules, n_energy, published, band,
+                    flavours=DEFAULT_FLAVOURS):
+    """The three curves of one detector.
 
-    Parameters
-    ----------
-    ex32 : ModuleType
-        Example 32.
-    which : {"IceCube", "ARCA"}
-        Which detector to build.
-    site : Site
-        Detector site.
-    min_modules : float
-        Modules that must fire.
-    n_energy : int
-        Points in the arrival-energy quadrature.
-    published : np.ndarray
-        Published effective area [cm^2] on the detector's grid.
-    band : np.ndarray
-        Boolean mask of the energies the fit runs over.
-
-    Returns
-    -------
-    curves : dict of str -> np.ndarray
-        Keyed as in :data:`MODEL_COLOR`.
-    fit : tuple of float
-        ``(attenuation length [m], normalization)`` from the fit.
+    See :func:`softpaws.response.first_principles.detector_curves`.
     """
-    first_principles = build_model(ex32, which, site, min_modules, n_energy, flavours)
-    length_m, normalization, fitted = fit_reach(
-        ex32, which, site, min_modules, n_energy, published, band, flavours)
-    return {
-        "Published": published,
-        "First principles": first_principles,
-        "Fitted": fitted,
-    }, (length_m, normalization)
+    return _fp.detector_curves(which, site, min_modules, n_energy, published, band, flavours)
+
+
+# ---------------------------------------------------------------------------
+# Reporting
+# ---------------------------------------------------------------------------
 
 
 def report_site(site: Site, min_modules: float, radius_km: float, height_km: float,
@@ -1485,13 +453,6 @@ def report_anchors(ex32, detector: str, curves: dict[str, np.ndarray],
     verdict = "held" if ratio[j] <= 1.0 else "VIOLATED"
     print(f"      ceiling {verdict}: max published/model = {ratio[j]:.3f} "
           f"at log10(E/GeV) = {log10_e[j]:.1f}")
-
-
-def residuals(published: np.ndarray, model: np.ndarray, band: np.ndarray) -> tuple[float, float]:
-    """Geometric-mean ratio and shape scatter of ``published / model`` over a band."""
-    valid = band & np.isfinite(published) & np.isfinite(model) & (model > 0.0)
-    res = np.log10(published[valid] / model[valid])
-    return float(10**np.mean(res)), float(np.std(res))
 
 
 def scan_charge(ex32, which, site, published, band, multiplicities, n_energy, flavours,
