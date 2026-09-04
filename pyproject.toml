@@ -42,6 +42,22 @@ transport = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+# The tabulated inputs the library reads at run time. The DR2 and HESE
+# releases are not package data; see the documentation for where they go.
+softpaws = [
+    "data/bounds/*.csv",
+    "data/coefficients/*.csv",
+    "data/geofiles/*.geo",
+    "data/icecube/*.csv",
+    "data/km3net/*.csv",
+    "data/km3net/uhe_release/**/*.json",
+    "data/km3net/uhe_release/**/*.md",
+    "data/pone/*.csv",
+    "data/trident/*.csv",
+    "data/xsec/**/*.csv",
+]
+
 [tool.ruff]
 line-length = 100
 

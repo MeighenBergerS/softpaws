@@ -53,6 +53,9 @@ dataverse_files/
 # Digitized P-ONE (ICRC2023) and TRIDENT (Nature Astron. 2023) effective areas.
 !src/softpaws/data/pone/*.csv
 !src/softpaws/data/trident/*.csv
+# Published sensitivity curves and the digitized MESE flavour contour.
+!src/softpaws/data/bounds/*.csv
+!src/softpaws/data/icecube/*.csv
 
 # IceCube HESE 7.5-year release: ~90 MB of Monte Carlo json, bulk release data.
 src/softpaws/data/hese/*.json
