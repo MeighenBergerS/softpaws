@@ -16,9 +16,8 @@ from softpaws.fluxes import (
 )
 from softpaws.response.soft_volume import power_law_flux as reexported
 
-MCEQ_TABLE = (
-    pathlib.Path(__file__).parents[1] / "examples" / "output" / "22_mceq_atmospheric_flux.npz"
-)
+PAPER_SCRIPTS = pathlib.Path(__file__).parents[1] / "scripts" / "2026_muon_transport"
+MCEQ_TABLE = PAPER_SCRIPTS / "output" / "22_mceq_atmospheric_flux.npz"
 
 
 def test_power_law_reexport_and_pivot():

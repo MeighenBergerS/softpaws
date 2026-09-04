@@ -21,8 +21,8 @@ from softpaws.data.icecube import IC86_SEASONS, total_livetime_s
 
 REPO = pathlib.Path(__file__).parents[1]
 DATA_DIR = REPO / "src" / "softpaws" / "data" / "dataverse_files"
-FIT_INPUTS = REPO / "examples" / "output" / "51_fit_inputs.npz"
-MCEQ_TABLE = REPO / "examples" / "output" / "22_mceq_atmospheric_flux.npz"
+FIT_INPUTS = REPO / "scripts" / "2026_muon_transport" / "output" / "51_fit_inputs.npz"
+MCEQ_TABLE = REPO / "scripts" / "2026_muon_transport" / "output" / "22_mceq_atmospheric_flux.npz"
 BASELINE = json.loads((REPO / "tests" / "regression" / "baseline.json").read_text())[
     "event_benchmark_ic86"
 ]

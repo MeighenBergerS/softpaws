@@ -17,7 +17,8 @@ from softpaws.response import reduced as rd
 from softpaws.response import site_models as sm
 
 DATA_DIR = pathlib.Path(__file__).parents[1] / "src" / "softpaws" / "data" / "dataverse_files"
-CACHE = pathlib.Path(__file__).parents[1] / "examples" / "output"
+PAPER_SCRIPTS = pathlib.Path(__file__).parents[1] / "scripts" / "2026_muon_transport"
+CACHE = PAPER_SCRIPTS / "output"
 
 needs_dr2 = pytest.mark.skipif(
     not (DATA_DIR / "irfs").exists(), reason="the DR2 release is not on disk"
@@ -27,7 +28,7 @@ needs_dr2 = pytest.mark.skipif(
 def _cached(name: str) -> pathlib.Path:
     path = CACHE / name
     if not path.exists():
-        pytest.skip(f"{name} is not in examples/output")
+        pytest.skip(f"{name} is not in the paper scripts' output")
     return path
 
 

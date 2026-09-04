@@ -14,7 +14,8 @@ from softpaws.transport.coefficients import (
     set_kernel_scaling,
 )
 
-CACHE = pathlib.Path(__file__).parents[1] / "examples" / "output" / "69_ensemble.npz"
+PAPER_SCRIPTS = pathlib.Path(__file__).parents[1] / "scripts" / "2026_muon_transport"
+CACHE = PAPER_SCRIPTS / "output" / "69_ensemble.npz"
 BASELINE = json.loads(
     (pathlib.Path(__file__).parent / "regression" / "baseline.json").read_text()
 )

@@ -18,7 +18,8 @@ from softpaws.response import first_principles as fp
 from softpaws.transport.earth import overburden_km
 from softpaws.utils.constants import RHO_ICE_G_CM3
 
-EXAMPLE_45 = pathlib.Path(__file__).parents[1] / "examples" / "45_first_principles_reach.py"
+PAPER_SCRIPTS = pathlib.Path(__file__).parents[1] / "scripts" / "2026_muon_transport"
+EXAMPLE_45 = PAPER_SCRIPTS / "45_first_principles_reach.py"
 ENERGY = np.array([1.0e4, 1.0e6, 1.0e8])
 THRESHOLD_GEV = 100.0
 N_ENERGY = 8

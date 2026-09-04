@@ -101,3 +101,6 @@ site/
 
 # Paper-reproduction caches (chains, tables) are rebuilt by the scripts.
 scripts/*/cache/
+
+# Generated output of the paper and BSM scripts.
+scripts/*/output/
