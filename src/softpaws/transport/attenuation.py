@@ -64,6 +64,7 @@ from ..utils.constants import (
     CM_PER_KM,
     RHO_WATER_G_CM3,
 )
+from ..utils.constants import TOTAL_TO_CC_RATIO as _TOTAL_TO_CC_RATIO
 from .earth import (  # noqa: F401  (re-exported; these lived here before transport.earth)
     earth_chord_length_km,
     mean_density_column,
@@ -79,7 +80,7 @@ if TYPE_CHECKING:  # avoids a circular import: cross_section imports from source
 # Total-to-CC cross-section ratio. The neutral-current channel adds ~40% to the
 # charged-current cross section at UHE, so sigma_tot ~ 1.4 sigma_CC; the flux is
 # attenuated by both channels while detection uses CC only.
-TOTAL_TO_CC_RATIO = 1.4
+TOTAL_TO_CC_RATIO = _TOTAL_TO_CC_RATIO
 
 
 def total_cross_section(

@@ -61,3 +61,12 @@ CM_PER_KM = 1.0e5
 KM_PER_CM = 1.0e-5
 CM_PER_M = 1.0e2
 M_PER_KM = 1.0e3
+
+# ---------------------------------------------------------------------------
+# Neutrino cross sections
+# ---------------------------------------------------------------------------
+
+#: Total-to-charged-current cross-section ratio, ``(sigma_CC + sigma_NC) / sigma_CC``
+#: (Gandhi et al. 1998; Cooper-Sarkar et al. 2011), constant to a few percent
+#: over the energies here.
+TOTAL_TO_CC_RATIO = 1.4

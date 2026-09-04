@@ -24,6 +24,7 @@ from .loader import (
     load_uptime,
     parse_aeff,
 )
+from .paths import dr2_dir, require
 from .schema import SEASONS
 
 __all__ = [
@@ -39,6 +40,11 @@ __all__ = [
 
 #: The eleven IC86 seasons, which share one instrument response.
 IC86_SEASONS = tuple(s for s in SEASONS if s.startswith("IC86"))
+
+
+def _root(data_dir: str | pathlib.Path | None) -> pathlib.Path:
+    """The release root, defaulting to :func:`softpaws.data.paths.dr2_dir`."""
+    return dr2_dir() if data_dir is None else pathlib.Path(data_dir)
 
 
 def irf_season(season: str) -> str:
@@ -72,7 +78,7 @@ def _cached_effective_area(irf_path: str) -> EffectiveArea:
     return parse_aeff(np.genfromtxt(irf_path, comments="#"))
 
 
-def load_effective_area(data_dir: str | pathlib.Path, season: str) -> EffectiveArea:
+def load_effective_area(data_dir: str | pathlib.Path | None, season: str) -> EffectiveArea:
     """Effective-area table of one season, parsed once and cached.
 
     Only the effective-area file is read. The smearing table of the same
@@ -80,8 +86,9 @@ def load_effective_area(data_dir: str | pathlib.Path, season: str) -> EffectiveA
 
     Parameters
     ----------
-    data_dir : str or pathlib.Path
-        Root of the DR2 release, holding ``irfs/`` and ``uptime/``.
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release, holding ``irfs/`` and ``uptime/``; ``None``
+        uses :func:`softpaws.data.paths.dr2_dir`.
     season : str
         Season label; see :func:`irf_season`.
 
@@ -95,19 +102,18 @@ def load_effective_area(data_dir: str | pathlib.Path, season: str) -> EffectiveA
     FileNotFoundError
         Raised if the season's effective-area file is missing.
     """
-    path = pathlib.Path(data_dir) / "irfs" / f"{irf_season(season)}_effectiveArea.csv"
-    if not path.exists():
-        raise FileNotFoundError(path)
+    path = _root(data_dir) / "irfs" / f"{irf_season(season)}_effectiveArea.csv"
+    require(path, "IceTracks-DR2 release")
     return _cached_effective_area(str(path.resolve()))
 
 
-def season_livetime_s(data_dir: str | pathlib.Path, season: str) -> float:
+def season_livetime_s(data_dir: str | pathlib.Path | None, season: str) -> float:
     """Good-run livetime of one season [s].
 
     Parameters
     ----------
-    data_dir : str or pathlib.Path
-        Root of the DR2 release.
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses :func:`softpaws.data.paths.dr2_dir`.
     season : str
         Season label.
 
@@ -116,18 +122,19 @@ def season_livetime_s(data_dir: str | pathlib.Path, season: str) -> float:
     livetime_s : float
         Livetime summed over the season's good-run windows [s].
     """
-    return compute_livetime_s(load_uptime(pathlib.Path(data_dir) / "uptime" / f"{season}_exp.csv"))
+    path = _root(data_dir) / "uptime" / f"{season}_exp.csv"
+    return compute_livetime_s(load_uptime(require(path, "IceTracks-DR2 release")))
 
 
 def total_livetime_s(
-    data_dir: str | pathlib.Path, seasons: tuple[str, ...] = SEASONS
+    data_dir: str | pathlib.Path | None = None, seasons: tuple[str, ...] = SEASONS
 ) -> float:
     """Good-run livetime summed over several seasons [s].
 
     Parameters
     ----------
-    data_dir : str or pathlib.Path
-        Root of the DR2 release.
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses :func:`softpaws.data.paths.dr2_dir`.
     seasons : tuple of str, optional
         Seasons to sum. Defaults to the whole release.
 
@@ -171,7 +178,7 @@ def hemisphere_average(aeff: EffectiveArea, hemisphere: str = "upgoing") -> np.n
 
 
 def livetime_weighted_effective_area(
-    data_dir: str | pathlib.Path,
+    data_dir: str | pathlib.Path | None,
     log10_e: np.ndarray,
     hemisphere: str = "upgoing",
     seasons: tuple[str, ...] = SEASONS,
@@ -184,8 +191,8 @@ def livetime_weighted_effective_area(
 
     Parameters
     ----------
-    data_dir : str or pathlib.Path
-        Root of the DR2 release.
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses :func:`softpaws.data.paths.dr2_dir`.
     log10_e : np.ndarray
         Neutrino energies the curve is returned on [log10 GeV].
     hemisphere : {"upgoing", "downgoing"}, optional
@@ -213,7 +220,7 @@ def livetime_weighted_effective_area(
 
 
 def load_events(
-    data_dir: str | pathlib.Path,
+    data_dir: str | pathlib.Path | None = None,
     seasons: tuple[str, ...] = IC86_SEASONS,
     within_uptime: bool = False,
 ) -> EventSet:
@@ -221,8 +228,9 @@ def load_events(
 
     Parameters
     ----------
-    data_dir : str or pathlib.Path
-        Root of the DR2 release, holding ``events/`` and ``uptime/``.
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release, holding ``events/`` and ``uptime/``; ``None``
+        uses :func:`softpaws.data.paths.dr2_dir`.
     seasons : tuple of str, optional
         Seasons to load. Defaults to the eleven IC86 seasons, which share one
         response.
@@ -236,7 +244,8 @@ def load_events(
     events : EventSet
         The concatenated events.
     """
-    data_dir = pathlib.Path(data_dir)
+    data_dir = _root(data_dir)
+    require(data_dir / "events", "IceTracks-DR2 release")
     data = np.concatenate([load_season(data_dir / "events" / f"{s}_exp.csv") for s in seasons])
     events = EventSet(data)
     if within_uptime:

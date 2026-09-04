@@ -48,12 +48,13 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy.interpolate import make_smoothing_spline
 
+from ..utils.constants import TOTAL_TO_CC_RATIO
 from .source import DEFAULT_LAMBDA, E0_CROSS_GEV, SIGMA0_CM2
 
 # Neutral-to-charged current ratio of the analytic model. The tabulated BGR18
 # ratio runs 1.41-1.47 over eight decades, so this constant is good to a few
 # percent; see softpaws.transport.attenuation.TOTAL_TO_CC_RATIO.
-DEFAULT_TOTAL_TO_CC = 1.4
+DEFAULT_TOTAL_TO_CC = TOTAL_TO_CC_RATIO
 
 # Reference model shipped with the package.
 DEFAULT_TABLE_MODEL = "BGR18"

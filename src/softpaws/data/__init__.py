@@ -25,6 +25,7 @@ from .loader import (
     load_season,
     load_uptime,
 )
+from .paths import DATA_DIR_VARIABLE, DR2_DOI, data_root, dr2_dir, hese_dir
 from .published import (
     PONE_ZENITH_BANDS_DEG,
     TRIDENT_COS_BANDS,
@@ -42,6 +43,11 @@ from .published import (
 from .schema import EVENTS_DTYPE, SEASONS
 
 __all__ = [
+    "DATA_DIR_VARIABLE",
+    "DR2_DOI",
+    "data_root",
+    "dr2_dir",
+    "hese_dir",
     "EVENTS_DTYPE",
     "IC86_SEASONS",
     "PONE_ZENITH_BANDS_DEG",

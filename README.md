@@ -38,10 +38,12 @@ DOI [10.7910/DVN/MMIIZA](https://doi.org/10.7910/DVN/MMIIZA)
 | Paper: [arXiv:2605.19040](https://arxiv.org/abs/2605.19040)
 
 The release provides reconstructed muon-track events, binned effective areas,
-and smearing matrices. The raw files are not committed here (see
-[.gitignore](.gitignore)); they live in the companion `neutrino_subhalos`
-project under `src/neutrino_subhalos/data/dataverse_files/`
-(`events/`, `irfs/`, `uptime/`).
+and smearing matrices. The raw files are not part of the package (see
+[.gitignore](.gitignore)). Download the release from the DOI above and either
+place it under `src/softpaws/data/dataverse_files/` (with its `events/`,
+`irfs/` and `uptime/` subdirectories) or point the environment variable
+`SOFTPAWS_DATA_DIR` at a directory that holds `dataverse_files/`. The HESE
+7.5-year release goes under `hese/` next to it. See `softpaws.data.paths`.
 
 ## Installation
 

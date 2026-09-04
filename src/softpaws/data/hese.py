@@ -44,7 +44,7 @@ import pathlib
 
 import numpy as np
 
-_DEFAULT_DIR = pathlib.Path(__file__).parent / "hese"
+from .paths import hese_dir, require
 
 #: PDG codes of the neutrino flavours, keyed as the rest of the package keys them.
 FLAVOUR_PDG = {"e": 12, "mu": 14, "tau": 16}
@@ -98,7 +98,8 @@ def load_hese_mc(
     FileNotFoundError
         If the release json is not present.
     """
-    directory = pathlib.Path(data_dir) if data_dir is not None else _DEFAULT_DIR
+    directory = pathlib.Path(data_dir) if data_dir is not None else hese_dir()
+    require(directory, "HESE 7.5-year release")
     cache = directory / "_hese_mc_cache.npz"
 
     if use_cache and cache.is_file():
@@ -220,7 +221,8 @@ def load_hese_data(
         Keyed ``recoDepositedEnergy`` [GeV], ``recoMorphology`` (0 cascade,
         1 track, 2 double cascade), ``recoZenith`` [rad] and ``recoLength`` [m].
     """
-    directory = pathlib.Path(data_dir) if data_dir is not None else _DEFAULT_DIR
+    directory = pathlib.Path(data_dir) if data_dir is not None else hese_dir()
+    require(directory, "HESE 7.5-year release")
     with (directory / "HESE_data.json").open() as handle:
         contents = json.load(handle)
     arrays = {key: np.asarray(value, dtype=float) for key, value in contents.items()}

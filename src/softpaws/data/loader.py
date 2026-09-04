@@ -20,6 +20,7 @@ import re
 import numpy as np
 
 from ..response.irfs import EffectiveArea, SmearingMatrix
+from .paths import dr2_dir, require
 from .schema import CSV_TO_FIELD, EVENTS_DTYPE
 
 _SEASON_FILE_PATTERN = re.compile(r"^(IC\d+(?:_[IVX]+)?)_exp\.csv$")
@@ -39,7 +40,7 @@ BOUNDS_DIR = pathlib.Path(__file__).parent / "bounds"
 # ---------------------------------------------------------------------------
 
 
-def load_all_seasons(data_dir: str | pathlib.Path) -> np.ndarray:
+def load_all_seasons(data_dir: str | pathlib.Path | None = None) -> np.ndarray:
     """Load and concatenate events from all seasons in ``data_dir``.
 
     Parameters
@@ -60,7 +61,9 @@ def load_all_seasons(data_dir: str | pathlib.Path) -> np.ndarray:
         Raised if ``data_dir/events/`` does not exist or contains no
         recognisable season files.
     """
-    events_dir = pathlib.Path(data_dir) / "events"
+    if data_dir is None:
+        data_dir = dr2_dir()
+    events_dir = require(pathlib.Path(data_dir) / "events", "IceTracks-DR2 release")
     if not events_dir.is_dir():
         raise FileNotFoundError(f"Events directory not found: {events_dir}")
 

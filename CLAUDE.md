@@ -47,9 +47,9 @@ data/  →  transport/  →  response/  →  comparison/
 - **`data/`** — loads the IceCube IceTracks-DR2 release: reconstructed
   muon-track events, binned effective areas, and smearing matrices. The raw
   release files are never committed to this repo (`.gitignore` blocks
-  `*.fits`, `*.h5`, `*.csv`, `dataverse_files/`, etc.). They live instead in
-  the companion `neutrino_subhalos` project, under
-  `src/neutrino_subhalos/data/dataverse_files/{events,irfs,uptime}/`.
+  `*.fits`, `*.h5`, `dataverse_files/`, etc.). The user downloads them and
+  places them under `src/softpaws/data/dataverse_files/{events,irfs,uptime}/`,
+  or sets `SOFTPAWS_DATA_DIR`; see `softpaws.data.paths`.
 - **`transport/`** — the soft-volume drift-diffusion muon transport itself:
   a second-order expansion of the Boltzmann collision operator where soft
   energy losses dominate propagation and rare hard scatters are handled
