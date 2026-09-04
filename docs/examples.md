@@ -1,38 +1,53 @@
 # Examples
 
-The `examples/` directory holds runnable scripts. Each one writes its figures
-to `examples/output/` and prints the numbers it computes, so the printed
-output is the result and the figure is the illustration.
+Ten numbered tutorials in `examples/` work through the package from the
+transport up. Each calls only the public API, prints the numbers it computes,
+and writes one figure to `examples/output/`. The printed output is the
+result; the figure illustrates it.
 
 Run one like this:
 
 ```sh
-python examples/05_soft_volume_drift.py
+python examples/02_transport_exponent.py
 ```
 
-Most take `--out-dir` for the figures and `--data-dir` for the IceCube
-release; pass `--help` to see what a script accepts.
+Every script takes `--out-dir`, and the ones that read a release take
+`--data-dir`. Pass `--help` to see the rest.
 
-## What they cover
+## The tutorials
 
-**The transport.** How the loss kernel behaves, what the transport exponent
-is, how far a muon travels before it drops below a threshold, and how the
-closed forms compare with a direct Monte-Carlo propagation.
+| # | Script | What it shows | Needs |
+| --- | --- | --- | --- |
+| 01 | `load_the_release` | The events, effective areas, smearing and uptime of the DR2 release, and how much exposure it carries | DR2 |
+| 02 | `transport_exponent` | `Phi(A)` from the loss kernel, against the drift-only and second-order truncations | — |
+| 03 | `range_and_loss_law` | The first-passage range against the mean-loss range, and why the loss tail is not Gaussian | — |
+| 04 | `earth_attenuation` | The PREM column against arrival direction, the survival it implies, and what regeneration adds back | — |
+| 05 | `effective_area` | Effective areas of four detectors from the instrumented footprint alone, against IceCube's published table | DR2 |
+| 06 | `declination_and_point_sources` | The response band by band, and the flux a background-free search would exclude | DR2 |
+| 07 | `single_event_energy` | The neutrino energy behind KM3-230213A, under three flux priors and three loss families | — |
+| 08 | `tau_induced_tracks` | What the tau channel contributes to the track rate, and where it takes over | — |
+| 09 | `fitting_the_light_reach` | Scanning the one instrument number that closes the gap in tutorial 05 | DR2 |
+| 10 | `atmospheric_background` | The MCEq background against the astrophysical flux, and where they cross | cached table or the `atm` extra |
 
-**The response.** How an effective area is assembled from the transport,
-what the light reach adds, and how the result compares with the published
-tables of IceCube, KM3NeT/ARCA, P-ONE and TRIDENT, band by band in
-declination.
+Tutorials 02, 03, 07 and 08 need no downloaded data at all: everything they
+use ships with the package.
 
-**The measurements.** The event rate of the IceCube through-going sample
-with nothing fitted, the flavour composition it constrains, the energy of a
-single track, and the loss-model error on all of it.
+## What they reproduce
 
-## A note on the current numbering
+Several tutorials land on numbers the method paper quotes, which makes them a
+quick check that an installation is sound.
 
-The scripts are being reorganized. Today they are numbered in the order they
-were written, several are analysis machinery rather than examples, and some
-load one another by file path. The plan is a short set of tutorials numbered
-from `01`, with the paper's figures moved to their own directory; see
-[Reproducing the paper](reproduce.md). The library API those scripts call is
-already stable, and is what this documentation describes.
+- Tutorial 02 reproduces the transport exponent and its truncations exactly.
+- Tutorial 03 reproduces the loss-law survival table and the range rows.
+- Tutorial 07 gives 250 PeV for the median neutrino energy of KM3-230213A
+  under an `E^-2` prior with the exact kernel.
+- Tutorials 05 and 09 give the level of 0.75 that the instrumented footprint
+  alone leaves against the published DR2 table, and show the one number that
+  closes it.
+
+## The older scripts
+
+`examples/` also holds the analysis scripts the method paper was built from,
+numbered in the order they were written. They are being moved to a directory
+of their own, one script per figure; see
+[Reproducing the paper](reproduce.md).
