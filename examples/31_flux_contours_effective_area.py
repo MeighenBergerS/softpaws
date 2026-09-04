@@ -88,8 +88,7 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.integrate import cumulative_trapezoid
-from scipy.optimize import brentq, minimize_scalar
+from scipy.optimize import minimize_scalar
 from scipy.stats import chi2, norm
 
 from softpaws.comparison.likelihood import (
@@ -99,41 +98,28 @@ from softpaws.comparison.likelihood import (
     atmospheric_template,
     poisson_log_likelihood,
 )
-from softpaws.data.icecube import (
-    livetime_weighted_effective_area,
+from softpaws.data.published import (
+    arca21_bright_track_aeff,
+    arca230_trigger_level_aeff,
+    icecube_dr2_aeff,
+    interpolate_aeff,
 )
 from softpaws.detectors import ARCA21, ARCA230, ICECUBE, MAX_UPSTREAM_KM
+from softpaws.response import effective_area as engine
+from softpaws.response.effective_area import default_cross_section, fit_reach_law
 from softpaws.response.soft_volume import power_law_flux
-from softpaws.transport.attenuation import (
-    flavour_transmission,
-    prem_column,
-    regenerated_transmission,
-)
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
-from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
 from softpaws.transport.earth import zenith_grid as earth_zenith_grid
-from softpaws.transport.loss_distribution import log_loss_cdf
-from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
-    light_reach_radius_km,
-    muon_range_km,
-    prism_projected_area_km2,
-    stochastic_muon_range_km,
-)
-from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
-from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
+from softpaws.transport.soft_volume import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
+from softpaws.transport.source import MEAN_INELASTICITY
+from softpaws.utils.constants import RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
-_KM3NET_DIR = _HERE.parent / "src" / "softpaws" / "data" / "km3net"
-_ARCA21_TABLE = _KM3NET_DIR / "arca21_aeff_brighttrack_allflavour_skyavg.csv"
-_ARCA230_TRIGGER_TABLE = _KM3NET_DIR / "arca_trigger_level_eff.csv"
 _DEFAULT_OUT_DIR = _HERE / "output"
 
-CROSS_SECTION = bgr18_cross_section()
+CROSS_SECTION = default_cross_section()
 
 # ---------------------------------------------------------------------------
 # Frozen instrument numbers. IceCube from example 28, ARCA21 from example 30 --
@@ -162,6 +148,7 @@ IC_AEFF_LOG10_E = np.linspace(3.0, 8.0, 26)
 IC_STATS_LOG10_E = (5.0, 7.8)  # band example 28 calibrated the reach law over
 IC_FIT_EDGES = np.arange(5.0, 8.01, 0.5)  # E_nu bins for the flux fit
 BKG_FRACTION = 0.3
+N_DEC = engine.N_DEC
 
 # ARCA21: the 21-line detector that recorded KM3-230213A. The published
 # bright-track table is the response used for inference; the geometry below only
@@ -174,10 +161,10 @@ N_BLOCKS_FULL = ARCA230.n_blocks
 KM_LIVETIME_S = 335.0 * 86400.0  # actual ARCA21 bright-track exposure
 KM_SOLID_ANGLE_SR = 4.0 * np.pi  # the released table is sky-averaged, not upgoing
 ARCA_AEFF_LOG10_E = np.arange(4.0, 10.01, 0.2)
-ARCA_FIT_TOP_LOG10_E = 7.5  # digitized trigger curve saturates past this
+ARCA_FIT_TOP_LOG10_E = engine.ARCA_FIT_BAND[1]  # digitized trigger curve saturates past this
 MAX_SEA_PATH_KM = MAX_UPSTREAM_KM
 RHO_SEA_G_CM3 = RHO_WATER_G_CM3
-N_ZENITH = 90
+N_ZENITH = engine.N_ZENITH
 N_ELL = 401
 
 # KM3-230213A: E_mu ~ 120 PeV, 90% interval [35, 380] PeV, converted to E_nu
@@ -247,25 +234,17 @@ def parse_args() -> argparse.Namespace:
 # ---------------------------------------------------------------------------
 
 
-def icecube_upgoing(data_dir: pathlib.Path):
-    """Livetime-weighted DR2 effective area over the upgoing sky [cm^2].
+def icecube_upgoing(data_dir: pathlib.Path) -> tuple[np.ndarray, float]:
+    """Livetime-weighted DR2 effective area over the upgoing sky [cm^2], and the livetime [s].
 
-    Delegates to :func:`softpaws.data.icecube.livetime_weighted_effective_area`
-    on ``IC_AEFF_LOG10_E``.
+    See :func:`softpaws.data.published.icecube_dr2_aeff` on ``IC_AEFF_LOG10_E``.
     """
-    return livetime_weighted_effective_area(data_dir, IC_AEFF_LOG10_E)
+    return icecube_dr2_aeff(data_dir, IC_AEFF_LOG10_E)
 
 
 def ic_upgoing_columns() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """PREM columns, solid-angle weights and zenith cosines, upgoing hemisphere.
-
-    IceCube sits at the Pole, so a source at declination ``dec`` arrives at
-    ``|cos theta_z| = sin(dec)``, which is the third return value.
-    """
-    dec_deg = np.linspace(0.5, 89.5, 60)
-    columns = np.array([prem_column(float(d)) for d in dec_deg])
-    dec_rad = np.deg2rad(dec_deg)
-    return columns, np.cos(dec_rad), np.sin(dec_rad)
+    """PREM columns, weights and zenith cosines of the upgoing hemisphere; see the engine."""
+    return engine.ic_upgoing_columns(N_DEC)
 
 
 def ic_target_volume_cm3(
@@ -273,76 +252,22 @@ def ic_target_volume_cm3(
     radius_km: float | np.ndarray = IC_RADIUS_KM,
     cos_theta: float | np.ndarray = 0.0,
 ) -> np.ndarray:
-    """Prism target volume, projected column plus detector [cm^3].
-
-    An array ``cos_theta`` is appended as a trailing axis, since the projected
-    area depends on the arrival direction where the instrumented volume does not.
-    """
-    radius = np.asarray(radius_km, dtype=float)
-    length = np.asarray(length_km, dtype=float)
-    zenith = np.asarray(cos_theta, dtype=float)
-    if zenith.ndim:
-        radius = radius[..., None]
-        length = length[..., None]
-    proj_area = prism_projected_area_km2(zenith, radius, IC_HEIGHT_KM, IC_N_SIDES)
-    v_det = np.pi * radius**2 * IC_HEIGHT_KM
-    return (proj_area * length + v_det) * CM_PER_KM**3
+    """Prism target volume [cm^3]; see :func:`engine.ic_target_volume_cm3`."""
+    return engine.ic_target_volume_cm3(length_km, radius_km, cos_theta, IC_HEIGHT_KM, IC_N_SIDES)
 
 
 def ic_mean_target_volume_cm3(
     length_km: np.ndarray, radius_km: float | np.ndarray = IC_RADIUS_KM
 ) -> np.ndarray:
-    """Target volume averaged over the upgoing hemisphere [cm^3]."""
-    _, weights, cos_theta = ic_upgoing_columns()
-    return np.average(
-        ic_target_volume_cm3(length_km, radius_km, cos_theta), axis=-1, weights=weights
+    """Upgoing-averaged target volume [cm^3]; see :func:`engine.ic_mean_target_volume_cm3`."""
+    return engine.ic_mean_target_volume_cm3(
+        length_km, radius_km, N_DEC, IC_HEIGHT_KM, IC_N_SIDES
     )
 
 
 def ic_required_radius_km(ratio: np.ndarray, lengths: np.ndarray) -> np.ndarray:
-    """Footprint radius that would scale the target volume by ``ratio`` at each energy."""
-    out = np.full(np.shape(ratio), np.nan)
-    for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths)):
-        if not np.isfinite(r) or r <= 0.0:
-            continue
-        target = r * float(ic_mean_target_volume_cm3(np.array([length]))[0])
-        out[i] = brentq(
-            lambda x: float(ic_mean_target_volume_cm3(np.array([length]), x)[0]) - target,
-            1.0e-4,
-            50.0,
-        )
-    return out
-
-
-def fit_reach_law(
-    log10_e: np.ndarray, required_radius_km: np.ndarray, radius_km: float
-) -> tuple[float, float]:
-    """Least-squares reach law through the radii a published curve demands.
-
-    Shared between IceCube and ARCA: both invert a required-radius sequence
-    that is close to linear in ``ln E`` for the same
-    :func:`~softpaws.transport.soft_volume.light_reach_radius_km` form.
-
-    Parameters
-    ----------
-    log10_e : np.ndarray
-        ``log10(E_nu / GeV)`` of the points to fit.
-    required_radius_km : np.ndarray
-        Radius each point demands [km]; ``NaN`` entries are dropped.
-    radius_km : float
-        Instrumented radius [km], used to locate the pivot.
-
-    Returns
-    -------
-    reach_km : float
-        Growth of the reach per e-fold of energy [km].
-    pivot_gev : float
-        Energy at which the effective radius equals ``radius_km`` [GeV].
-    """
-    valid = np.isfinite(required_radius_km)
-    ln_e = np.log(10.0 ** np.asarray(log10_e)[valid])
-    slope, intercept = np.polyfit(ln_e, np.asarray(required_radius_km)[valid], 1)
-    return float(slope), float(np.exp((radius_km - intercept) / slope))
+    """Radius scaling the target volume by ``ratio``; see :func:`engine.ic_required_radius_km`."""
+    return engine.ic_required_radius_km(ratio, lengths, N_DEC, IC_HEIGHT_KM, IC_N_SIDES)
 
 
 def ic_effective_area_regenerated(
@@ -351,54 +276,24 @@ def ic_effective_area_regenerated(
     reach_km: float | None = None,
     pivot_gev: float = 1.0e6,
 ) -> np.ndarray:
-    """Direct nu_mu channel, NC regeneration kept, upgoing-averaged [cm^2]."""
-    energy = 10.0**IC_AEFF_LOG10_E
-    columns, weights, cos_theta = ic_upgoing_columns()
-    n_nucleon = nucleon_number_density()
-    out = np.empty(energy.size)
-    for i, e_nu in enumerate(energy):
-        rung_energy, rung_weight = regenerated_transmission(float(e_nu), columns, CROSS_SECTION)
-        rung_length = np.interp(
-            np.log10(rung_energy), IC_AEFF_LOG10_E, length_km, left=0.0, right=length_km[-1]
-        )
-        rung_length[(1.0 - MEAN_INELASTICITY) * rung_energy <= threshold_gev] = 0.0
-        rung_radius = (
-            IC_RADIUS_KM
-            if reach_km is None
-            else light_reach_radius_km(
-                IC_RADIUS_KM, (1.0 - MEAN_INELASTICITY) * rung_energy, reach_km, pivot_gev
-            )
-        )
-        rung_volume = ic_target_volume_cm3(rung_length, rung_radius, cos_theta)
-        rung_rate = n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None] * rung_volume
-        per_dec = (rung_weight * rung_rate).sum(axis=0)
-        out[i] = np.average(per_dec, weights=weights)
-    return out
+    """Direct nu_mu channel [cm^2], example 28's construction.
+
+    See :func:`engine.ic_effective_area_regenerated`. A sub-threshold rung
+    keeps the instrumented volume here (``mask_subthreshold=False``), as the
+    numbers of this example were built.
+    """
+    return engine.ic_effective_area_regenerated(
+        length_km, threshold_gev, reach_km, pivot_gev, IC_AEFF_LOG10_E, CROSS_SECTION, N_DEC,
+        IC_RADIUS_KM, IC_HEIGHT_KM, IC_N_SIDES, mask_subthreshold=False,
+    )
 
 
 def ic_effective_area_tau_channel(length_km: np.ndarray, threshold_gev: float) -> np.ndarray:
-    """nu_tau -> tau -> mu channel, upgoing-averaged, static footprint [cm^2]."""
-    energy = 10.0**IC_AEFF_LOG10_E
-    columns, weights, cos_theta = ic_upgoing_columns()
-    n_nucleon = nucleon_number_density()
-    muon_fraction = MEAN_Z * (1.0 - MEAN_INELASTICITY)
-    out = np.empty(energy.size)
-    for i, e_nu in enumerate(energy):
-        rung_energy, rung_weight = flavour_transmission(
-            float(e_nu), columns, CROSS_SECTION, flavour="tau"
-        )
-        rung_length = np.interp(
-            np.log10(rung_energy * muon_fraction / (1.0 - MEAN_INELASTICITY)),
-            IC_AEFF_LOG10_E, length_km, left=0.0, right=length_km[-1],
-        )
-        rung_length[muon_fraction * rung_energy <= threshold_gev] = 0.0
-        rung_rate = (
-            n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None]
-            * ic_target_volume_cm3(rung_length, IC_RADIUS_KM, cos_theta) * BR_TAU_TO_MU
-        )
-        per_dec = (rung_weight * rung_rate).sum(axis=0)
-        out[i] = np.average(per_dec, weights=weights)
-    return out
+    """nu_tau -> tau -> mu channel [cm^2]; see :func:`engine.ic_effective_area_tau_channel`."""
+    return engine.ic_effective_area_tau_channel(
+        length_km, threshold_gev, IC_AEFF_LOG10_E, CROSS_SECTION, N_DEC,
+        IC_RADIUS_KM, IC_HEIGHT_KM, IC_N_SIDES, mask_subthreshold=False,
+    )
 
 
 def build_icecube_aeff(
@@ -457,21 +352,13 @@ def build_icecube_aeff(
 def arca21_published_aeff() -> tuple[np.ndarray, np.ndarray]:
     """Released ARCA21 bright-track, all-flavour, sky-averaged area [cm^2].
 
-    The selection that recorded KM3-230213A, from the event's own data release
-    (KM3NeT Collaboration, Nature 638 (2025) 376). Its stated convention is
-    ``N = 4 pi T Integral A_eff(E) Phi_per-flavour(E) dE``, which is what
-    :data:`KM_SOLID_ANGLE_SR` and :func:`power_law_flux` implement.
-
-    Returns
-    -------
-    log10_e : np.ndarray
-        ``log10(E_nu / GeV)`` of the tabulated points with positive area.
-    aeff : np.ndarray
-        Effective area [cm^2].
+    The selection that recorded KM3-230213A; see
+    :func:`softpaws.data.published.arca21_bright_track_aeff`. Its stated
+    convention is ``N = 4 pi T Integral A_eff(E) Phi_per-flavour(E) dE``,
+    which is what :data:`KM_SOLID_ANGLE_SR` and :func:`power_law_flux`
+    implement.
     """
-    table = np.genfromtxt(_ARCA21_TABLE, delimiter=",", comments="#")
-    positive = table[:, 1] > 0.0
-    return np.log10(table[positive, 0]), table[positive, 1]
+    return arca21_bright_track_aeff()
 
 
 def zenith_grid(
@@ -484,11 +371,8 @@ def zenith_grid(
 def projected_area_km2(
     theta_deg: np.ndarray, radius_km: float | np.ndarray, n_blocks: int
 ) -> np.ndarray:
-    """Projected area of upright cylindrical building blocks [km^2]."""
-    theta = np.deg2rad(theta_deg)
-    cap = np.pi * np.asarray(radius_km) ** 2 * np.abs(np.cos(theta))
-    side = 2.0 * np.asarray(radius_km) * BLOCK_HEIGHT_KM * np.sin(theta)
-    return n_blocks * (cap + side)
+    """Cylinder projected area [km^2]; see :func:`engine.cylinder_projected_area_km2`."""
+    return engine.cylinder_projected_area_km2(theta_deg, radius_km, n_blocks, BLOCK_HEIGHT_KM)
 
 
 def upstream_column_km(theta_deg: np.ndarray, depth_km: float) -> np.ndarray:
@@ -506,18 +390,12 @@ def earth_column_g_cm2(theta_deg: np.ndarray, depth_km: float) -> np.ndarray:
 def build_length_table(
     energy_mu_gev: np.ndarray, threshold_gev: float
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Cumulative first-passage length against depth, on the muon-energy grid."""
-    deterministic = muon_range_km(energy_mu_gev, threshold_gev)
-    ell_km = np.linspace(0.0, 2.5 * float(np.max(deterministic)), N_ELL)
-    b_mu = np.atleast_1d(drift_coefficient(energy_mu_gev))
-    d_mu = np.atleast_1d(diffusion_coefficient(energy_mu_gev))
-    cumulative = np.zeros((energy_mu_gev.size, N_ELL))
-    for i, eps in enumerate(energy_mu_gev):
-        if eps <= threshold_gev:
-            continue
-        cdf = log_loss_cdf(np.log(eps / threshold_gev), ell_km, float(b_mu[i]), float(d_mu[i]))
-        cumulative[i] = cumulative_trapezoid(cdf, ell_km, initial=0.0)
-    return ell_km, cumulative
+    """Cumulative first-passage length against depth, on the muon-energy grid.
+
+    See :func:`engine.first_passage_length_table`, the frozen two-moment
+    route this example's ceiling curve was built on.
+    """
+    return engine.first_passage_length_table(energy_mu_gev, threshold_gev, N_ELL)
 
 
 def truncated_range_km(
@@ -527,14 +405,10 @@ def truncated_range_km(
     ell_km: np.ndarray,
     cumulative_km: np.ndarray,
 ) -> np.ndarray:
-    """Truncated first-passage range ``E[tau ^ X]``, by table lookup [km]."""
-    x = np.minimum(np.atleast_1d(column_km), ell_km[-1])
-    per_row = np.array([np.interp(x, ell_km, row) for row in cumulative_km])
-    log10_e = np.log10(np.atleast_1d(energy_mu_gev))
-    out = np.empty((log10_e.size, x.size))
-    for j in range(x.size):
-        out[:, j] = np.interp(log10_e, grid_log10_e, per_row[:, j])
-    return np.clip(out, 0.0, None)
+    """Truncated first-passage range by table lookup [km]; see the engine."""
+    return engine.truncated_range_from_table_km(
+        energy_mu_gev, column_km, grid_log10_e, ell_km, cumulative_km
+    )
 
 
 def arca_effective_area(
@@ -549,73 +423,32 @@ def arca_effective_area(
     reach_km: float | None = None,
     pivot_gev: float = 1.0e6,
 ) -> np.ndarray:
-    """Sky-averaged effective area for one parent flavour [cm^2]."""
-    theta_deg, weights = zenith_grid()
-    columns = earth_column_g_cm2(theta_deg, depth_km)
-    available_km = upstream_column_km(theta_deg, depth_km)
-    static_area_km2 = projected_area_km2(theta_deg, radius_km, n_blocks)
-    static_v_det_km3 = n_blocks * np.pi * radius_km**2 * BLOCK_HEIGHT_KM
-    n_nucleon = nucleon_number_density(RHO_SEA_G_CM3)
+    """Sky-averaged effective area for one parent flavour [cm^2].
 
-    muon_fraction = 1.0 - MEAN_INELASTICITY
-    if flavour == "tau":
-        muon_fraction *= MEAN_Z
-
-    out = np.empty(ARCA_AEFF_LOG10_E.size)
-    for i, e_nu in enumerate(10.0**ARCA_AEFF_LOG10_E):
-        if flavour == "tau":
-            rung_energy, rung_weight = flavour_transmission(
-                float(e_nu), columns, CROSS_SECTION, flavour="tau"
-            )
-        else:
-            rung_energy, rung_weight = regenerated_transmission(float(e_nu), columns, CROSS_SECTION)
-        length = truncated_range_km(
-            rung_energy * muon_fraction, available_km, grid_log10_e, ell_km, cumulative_km
-        )
-        length[rung_energy * muon_fraction <= threshold_gev, :] = 0.0
-
-        if reach_km is None:
-            area_km2 = static_area_km2[None, :]
-            v_det_km3 = static_v_det_km3
-        else:
-            r_eff = light_reach_radius_km(
-                radius_km, rung_energy * muon_fraction, reach_km, pivot_gev
-            )[:, None]
-            area_km2 = projected_area_km2(theta_deg[None, :], r_eff, n_blocks)
-            v_det_km3 = n_blocks * np.pi * r_eff**2 * BLOCK_HEIGHT_KM
-
-        volume_km3 = area_km2 * length + v_det_km3
-        rate = n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None] * volume_km3 * CM_PER_KM**3
-        if flavour == "tau":
-            rate = rate * BR_TAU_TO_MU
-        out[i] = np.average((rung_weight * rate).sum(axis=0), weights=weights)
-    return out
+    See :func:`engine.arca_effective_area`, run with the table-lookup range
+    and without the sub-threshold volume mask, as this example was built.
+    """
+    return engine.arca_effective_area(
+        radius_km, n_blocks, threshold_gev, depth_km, flavour, reach_km=reach_km,
+        pivot_gev=pivot_gev, log10_e=ARCA_AEFF_LOG10_E, height_km=BLOCK_HEIGHT_KM,
+        n_zenith=N_ZENITH, mask_subthreshold=False, density_g_cm3=RHO_SEA_G_CM3,
+        max_upstream_km=MAX_SEA_PATH_KM, cross_section=CROSS_SECTION,
+        truncated_range=lambda energy, column: truncated_range_km(
+            energy, column, grid_log10_e, ell_km, cumulative_km
+        ),
+    )
 
 
 def arca230_published_trigger(log10_e: np.ndarray) -> np.ndarray:
     """Digitized full-ARCA nu_mu trigger-level effective area [cm^2]."""
-    table = np.genfromtxt(_ARCA230_TRIGGER_TABLE, delimiter=",", comments="#")
-    table = table[np.argsort(table[:, 0])]
-    log10_table = np.log10(table[:, 0])
-    return 1.0e4 * 10.0 ** np.interp(
-        log10_e, log10_table, np.log10(table[:, 1]), left=np.nan, right=np.nan
-    )
+    return interpolate_aeff(log10_e, *arca230_trigger_level_aeff())
 
 
 def required_footprint_radius_km(ratio: np.ndarray, radius_km: float, n_blocks: int) -> np.ndarray:
-    """Footprint radius that would scale the projected area by ``ratio``."""
-    theta_deg, weights = zenith_grid()
-
-    def mean_area(r: float) -> float:
-        return float(np.average(projected_area_km2(theta_deg, r, n_blocks), weights=weights))
-
-    base = mean_area(radius_km)
-    out = np.full(np.shape(ratio), np.nan)
-    for i, r in enumerate(np.atleast_1d(ratio)):
-        if not np.isfinite(r) or r <= 0.0:
-            continue
-        out[i] = brentq(lambda x: mean_area(x) - r * base, 1.0e-3, 50.0)
-    return out
+    """Footprint radius scaling the projected area by ``ratio``; see the engine."""
+    return engine.required_footprint_radius_km(
+        ratio, radius_km, n_blocks, BLOCK_HEIGHT_KM, N_ZENITH
+    )
 
 
 def build_arca_ceiling_aeff(
