@@ -58,20 +58,13 @@ import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import norm
 
+from softpaws.comparison import event_energy as ee
 from softpaws.fluxes import ICECUBE_BPL_2025, ICECUBE_TRACKS_2022, broken_power_law_shape
 from softpaws.transport.coefficients import (
     diffusion_coefficient,
     drift_coefficient,
-    third_moment_coefficient,
 )
-from softpaws.transport.loss_distribution import (
-    loss_density,
-    loss_density_gaussian,
-    loss_density_three_moment,
-)
-from softpaws.transport.source import mean_inelasticity
 from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
@@ -172,78 +165,30 @@ def parse_args() -> argparse.Namespace:
 
 def sea_path_km(elevation_deg: float = ELEVATION_DEG, depth_km: float = DEPTH_KM) -> float:
     """Path from the detector to the sea surface at a given elevation [km]."""
-    r0 = EARTH_RADIUS_KM - depth_km
-    s = np.sin(np.deg2rad(elevation_deg))
-    return float(-r0 * s + np.sqrt((r0 * s) ** 2 + EARTH_RADIUS_KM**2 - r0**2))
+    return ee.sea_path_km(elevation_deg, depth_km, EARTH_RADIUS_KM)
 
 
 def potential_density(kind: str) -> np.ndarray:
-    """``u(w) = int_0^inf P(w | X) dX`` on :data:`W_GRID` [km per unit w].
-
-    Parameters
-    ----------
-    kind : str
-        ``"exact"`` (the subordinator), ``"gaussian"`` (Fokker-Planck) or
-        ``"csda"`` (mean loss, ``1 / b_mu`` exactly).
-    """
-    b = float(np.squeeze(drift_coefficient(KERNEL_ENERGY_GEV)))
-    d = float(np.squeeze(diffusion_coefficient(KERNEL_ENERGY_GEV)))
-    t = float(np.squeeze(third_moment_coefficient(KERNEL_ENERGY_GEV)))
-    if kind == "csda":
-        return np.full(W_GRID.size, 1.0 / b)
-    x_grid = np.linspace(0.0, X_MAX_KM, N_X + 1)[1:]
-    u = np.zeros(W_GRID.size)
-    for x in x_grid:
-        if kind == "exact" and KERNEL_MOMENTS == 3:
-            u += loss_density_three_moment(W_GRID, float(x), b, d, t, n_k=N_K)
-        elif kind == "exact":
-            u += loss_density(W_GRID, float(x), b, d, n_k=N_K)
-        else:
-            u += loss_density_gaussian(W_GRID, float(x), b, d)
-    u *= x_grid[1] - x_grid[0]
-    # The first slab, X in (0, dX): the loss is small and the density sharply
-    # peaked, so it is taken as its trapezoid end point rather than resolved.
-    return u
+    """``u(w)`` on :data:`W_GRID`; see :func:`ee.potential_density`."""
+    return ee.potential_density(kind, W_GRID, KERNEL_ENERGY_GEV, X_MAX_KM, N_X, N_K, KERNEL_MOMENTS)
 
 
 def muon_measurement(log10_e_mu) -> np.ndarray:
     """Lognormal likelihood of the measured muon energy, density in ``ln E``."""
-    sigma = (np.log(MU_90_PEV[1] / MU_90_PEV[0])) / (2.0 * norm.isf(0.05))
-    return norm.pdf(log10_e_mu * np.log(10.0), loc=np.log(MU_PEV * 1.0e6), scale=sigma)
+    interval = tuple(v * 1.0e6 for v in MU_90_PEV)
+    return ee.lognormal_measurement(log10_e_mu, MU_PEV * 1.0e6, interval)
 
 
 def energy_likelihood(u: np.ndarray, energy_nu, normalize: bool = True) -> np.ndarray:
-    """``l(E_nu) = int dw u(w) L(eps e^-w)``, the event's energy likelihood.
-
-    The integral runs over the log-loss on the kernel's own grid, so the
-    integrable spike of the exact ``u`` at ``w -> 0`` is sampled identically
-    for every ``E_nu``. Integrating over a muon-energy grid instead lets the
-    spike slide across that grid and prints a sawtooth into ``l(E_nu)``.
-
-    With ``normalize`` the result is divided by the muons the selection
-    accepts, ``int u dw`` over ``E_mu >= MU_ACCEPT_GEV``, which makes it the
-    conditional density the *tension* term needs alongside ``A_eff`` (whose
-    effective length is that same integral). The energy *posterior* carries
-    ``sigma_CC`` and not ``A_eff``, so it takes the unnormalized rate
-    ``Phi sigma u(w)``; dividing there would tilt it to low energies.
-    """
-    energy_nu = np.atleast_1d(np.asarray(energy_nu, dtype=float))
-    eps = (1.0 - np.squeeze(mean_inelasticity(energy_nu))) * energy_nu
-    cdf = np.concatenate([[0.0], np.cumsum(0.5 * (u[1:] + u[:-1]) * np.diff(W_GRID))])
-    w_accept = np.log(eps / MU_ACCEPT_GEV)
-    total = np.where(w_accept <= W_GRID[-1], np.interp(w_accept, W_GRID, cdf),
-                     cdf[-1] + (w_accept - W_GRID[-1]) * u[-1])
-    log10_e_mu = (np.log(eps)[:, None] - W_GRID[None, :]) / np.log(10.0)
-    like = muon_measurement(log10_e_mu)
-    value = np.trapezoid(u[None, :] * like, W_GRID, axis=1)
-    return value / np.clip(total, 1.0e-300, None) if normalize else value
+    """The event's energy likelihood; see :func:`ee.energy_likelihood`."""
+    return ee.energy_likelihood(u, W_GRID, energy_nu, muon_measurement,
+                                MU_ACCEPT_GEV if normalize else None)
 
 
 def sea_survival(energy_nu) -> np.ndarray:
     """Survival through the traversed column, :data:`TRAVERSED_COLUMN_KMWE`."""
     column = TRAVERSED_COLUMN_KMWE * CM_PER_KM * RHO_WATER_G_CM3
-    sigma = _EX31.CROSS_SECTION.cc(energy_nu) + _EX31.CROSS_SECTION.nc(energy_nu)
-    return np.exp(-AVOGADRO * sigma * column)
+    return ee.survival_through_column(energy_nu, column, _EX31.CROSS_SECTION)
 
 
 def flux_shape(name: str, energy_gev) -> np.ndarray:
@@ -266,17 +211,13 @@ def bpl_shape(energy_gev, gamma_2):
 def posterior(likelihood: np.ndarray, prior: str) -> np.ndarray:
     """Normalized posterior on :data:`LOG10_ENU` for one flux prior."""
     energy = 10.0**LOG10_ENU
-    weight = flux_shape(prior, energy) * _EX31.CROSS_SECTION.cc(energy) * sea_survival(energy)
-    p = likelihood * weight * energy  # density in log10 E
-    return p / np.trapezoid(p, LOG10_ENU)
+    return ee.energy_posterior(likelihood, LOG10_ENU, lambda e: flux_shape(prior, e),
+                               _EX31.CROSS_SECTION, sea_survival(energy))
 
 
 def summarize_posterior(p: np.ndarray):
     """Mode, median and 90% interval [PeV]."""
-    cdf = np.concatenate([[0.0], np.cumsum(0.5 * (p[1:] + p[:-1]) * np.diff(LOG10_ENU))])
-    lo, med, hi = np.interp([0.05, 0.5, 0.95], cdf, LOG10_ENU)
-    mode = LOG10_ENU[int(np.argmax(p))]
-    return tuple(10.0**v / 1.0e6 for v in (mode, med, lo, hi))
+    return tuple(v / 1.0e6 for v in ee.posterior_summary(p, LOG10_ENU))
 
 
 # ---------------------------------------------------------------------------

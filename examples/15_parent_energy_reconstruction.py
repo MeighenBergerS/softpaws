@@ -45,8 +45,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 
-from softpaws.transport.coefficients import diffusion_coefficient, drift_coefficient
-from softpaws.transport.loss_distribution import loss_density, loss_density_gaussian
+from softpaws.comparison.event_energy import parent_energy_posterior, quantile
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -100,39 +99,13 @@ def parse_args() -> argparse.Namespace:
 
 
 def reconstruct(event: Event, gamma: float) -> dict[str, np.ndarray]:
-    """Reconstructed parent-energy posteriors (exact and FP) for one event.
-
-    Returns the shared log-loss grid ``w``, the parent-energy grid ``eps`` [GeV],
-    and the two posteriors ``p(ln eps) ~ e^{-gamma w} P(w)``, each normalized to
-    unit area in ``w`` (equivalently in ``ln eps``).
-    """
-    b_mu = float(drift_coefficient(event.e_mu_gev)[0])
-    d_mu = float(diffusion_coefficient(event.e_mu_gev)[0])
-
-    mean = (b_mu + d_mu / 2.0) * event.ell_km
-    w = np.linspace(1e-4, mean + 9.0 * np.sqrt(d_mu * event.ell_km), 2400)
-
-    prior = np.exp(-gamma * w)  # power-law flux prior in log-parent-energy
-    post_exact = prior * loss_density(w, event.ell_km, b_mu, d_mu)
-    post_fp = prior * loss_density_gaussian(w, event.ell_km, b_mu, d_mu)
-    post_exact /= np.trapezoid(post_exact, w)
-    post_fp /= np.trapezoid(post_fp, w)
-
-    return {
-        "w": w,
-        "eps": event.e_mu_gev * np.exp(w),
-        "exact": post_exact,
-        "fp": post_fp,
-        "b_mu": b_mu,
-        "d_mu": d_mu,
-    }
+    """Parent-energy posteriors; see :func:`parent_energy_posterior`."""
+    return parent_energy_posterior(event.e_mu_gev, event.ell_km, gamma)
 
 
 def _quantile(w: np.ndarray, density: np.ndarray, q: float) -> float:
-    """The ``q``-quantile of a density tabulated on the ascending grid ``w``."""
-    cdf = np.concatenate([[0.0], np.cumsum(0.5 * (density[1:] + density[:-1]) * np.diff(w))])
-    cdf /= cdf[-1]
-    return float(np.interp(q, cdf, w))
+    """See :func:`softpaws.comparison.event_energy.quantile`."""
+    return quantile(w, density, q)
 
 
 def print_table(event: Event, rec: dict[str, np.ndarray]) -> None:

@@ -120,7 +120,7 @@ library and delete the private copy. Never move two hubs in one commit.
 | 1.8 | `response/reduced.py` | `77`, `78`, `81` (two-number reduced response, optics-predicted reach, TRIDENT 2025 map) | `78` to `83` collapse to plotting |
 | 1.9 | `comparison/mcmc.py`, `comparison/feldman_cousins.py` | `29`, `33`, `51`, `54`, `56`, `72` | `log_probability` x2, `summarize` x5, `fc_calibration` x2, `bayes_factor` x4 |
 | 1.10 | `comparison/events.py` | `51`, `76` (upgoing IC86 window, pinned-flux prediction, published-IRF baseline) | the headline benchmark becomes one function call |
-| 1.11 | `transport/event_energy.py` | `57`, `68`, `71` (potential density, flux-agnostic posterior, tension ladder) | `58`, `67`, `75` |
+| 1.11 done | `comparison/event_energy.py` | `57` (potential density, measurement, energy likelihood, posterior, summary), `68` (two-layer column, survival, unity energy), `15` (parent-energy posterior, quantile); the `TrackEvent` record for KM3-230213A | the three private copies; the tension ladder of `57` Part B stays with `31`'s likelihood engine for step 1.9 |
 
 Not lifted: the BSM scripts `59` to `66` (stau, millicharge). They belong to a
 later paper. They move to `scripts/future_bsm/` untouched and ruff-excluded

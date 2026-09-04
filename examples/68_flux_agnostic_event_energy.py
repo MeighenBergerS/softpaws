@@ -60,6 +60,12 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.comparison.event_energy import (
+    interaction_unity_energy_gev,
+    survival_through_column,
+    two_layer_column_g_cm2,
+)
+
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_OUT_DIR = _HERE / "output"
@@ -110,53 +116,19 @@ def parse_args() -> argparse.Namespace:
 
 
 def column_gcm2(elevation_deg: float, ds_km: float = 0.05) -> tuple:
-    """Matter column from the detector to the sea surface [g/cm^2].
-
-    Two-layer curved Earth: rock below :data:`SEABED_DEPTH_KM`, sea above,
-    the ray leaving the detector at ``elevation_deg`` above the local
-    horizontal (negative = below).
-
-    Returns
-    -------
-    total, water, rock : float
-        Total, water and rock columns [g/cm^2], and the path length [km]
-        as the fourth element.
-    """
-    r0 = _EX57.EARTH_RADIUS_KM - _EX57.DEPTH_KM
-    r_bed = _EX57.EARTH_RADIUS_KM - SEABED_DEPTH_KM
-    sin_a = np.sin(np.deg2rad(elevation_deg))
-    water = rock = 0.0
-    s = 0.0
-    while True:
-        s += ds_km
-        r = np.sqrt(r0**2 + s**2 + 2.0 * r0 * s * sin_a)
-        if r >= _EX57.EARTH_RADIUS_KM:
-            break
-        if r > r_bed:
-            water += ds_km
-        else:
-            rock += ds_km
-        if s > 3.0e3:  # safety: not a chord this example should see
-            break
-    to_gcm2 = 1.0e5
-    return (water * RHO_SEA + rock * RHO_ROCK) * to_gcm2, water, rock, s
+    """Two-layer column to the surface; see :func:`two_layer_column_g_cm2`."""
+    return two_layer_column_g_cm2(elevation_deg, _EX57.DEPTH_KM, SEABED_DEPTH_KM, RHO_SEA, RHO_ROCK,
+                                  ds_km, _EX57.EARTH_RADIUS_KM)
 
 
 def survival(energy_nu, column_g_cm2: float) -> np.ndarray:
     """Survival through ``column_g_cm2`` of isoscalar matter."""
-    sigma = (_EX57._EX31.CROSS_SECTION.cc(energy_nu)
-             + _EX57._EX31.CROSS_SECTION.nc(energy_nu))
-    return np.exp(-_EX57.AVOGADRO * sigma * column_g_cm2)
+    return survival_through_column(energy_nu, column_g_cm2, _EX57._EX31.CROSS_SECTION)
 
 
 def tau_unity_gev(column_g_cm2: float) -> float:
     """Energy at which the column is one interaction length."""
-    target = 1.0 / (_EX57.AVOGADRO * column_g_cm2)
-    grid = np.logspace(6.0, 12.0, 400)
-    sigma = _EX57._EX31.CROSS_SECTION.cc(grid) + _EX57._EX31.CROSS_SECTION.nc(grid)
-    if sigma[-1] < target:
-        return np.inf
-    return float(np.exp(np.interp(np.log(target), np.log(sigma), np.log(grid))))
+    return interaction_unity_energy_gev(column_g_cm2, _EX57._EX31.CROSS_SECTION)
 
 
 def bsm_fold(u: np.ndarray, energy_nu, eps: float, n: float) -> np.ndarray:
