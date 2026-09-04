@@ -215,6 +215,13 @@ class SoftVolumeResponse:
         light_yield_length_km: float | None = None,
         beta: float = 0.0,
     ) -> None:
+        """Build the response. Every argument is described in the class docstring.
+
+        Raises
+        ------
+        ValueError
+            Raised if ``method`` is not one of the three names.
+        """
         if method not in ("drift", "diffusion", "exact"):
             raise ValueError(
                 f"method must be 'drift', 'diffusion', or 'exact', got {method!r}."

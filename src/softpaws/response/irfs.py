@@ -53,6 +53,17 @@ class EffectiveArea:
         sin_dec_edges: np.ndarray,
         values: np.ndarray,
     ) -> None:
+        """Wrap a binned effective-area table.
+
+        Parameters
+        ----------
+        log10_energy_edges : np.ndarray, shape (n_energy + 1,)
+            Neutrino-energy bin edges [log10 GeV].
+        sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+            Declination bin edges in ``sin(dec)``.
+        values : np.ndarray, shape (n_energy, n_dec)
+            Effective area in each bin [cm^2].
+        """
         self._log10_e_edges = np.asarray(log10_energy_edges, dtype=float)
         self._sin_dec_edges = np.asarray(sin_dec_edges, dtype=float)
         self._log10_e_centers = 0.5 * (log10_energy_edges[:-1] + log10_energy_edges[1:])
@@ -136,6 +147,17 @@ class PointSpreadFunction:
         sin_dec_edges: np.ndarray,
         quantiles: np.ndarray,
     ) -> None:
+        """Wrap a binned table of angular-error quantiles.
+
+        Parameters
+        ----------
+        log10_energy_edges : np.ndarray, shape (n_energy + 1,)
+            Neutrino-energy bin edges [log10 GeV].
+        sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+            Declination bin edges in ``sin(dec)``.
+        quantiles : np.ndarray, shape (n_energy, n_dec)
+            Containment angle in each bin [deg].
+        """
         self._log10_e_centers = 0.5 * (log10_energy_edges[:-1] + log10_energy_edges[1:])
         self._sin_dec_centers = 0.5 * (sin_dec_edges[:-1] + sin_dec_edges[1:])
         self._quantiles = np.asarray(quantiles, dtype=float)
@@ -200,6 +222,15 @@ class SmearingMatrix:
     """
 
     def __init__(self, raw: np.ndarray) -> None:
+        """Parse a smearing table into its bin structure and probabilities.
+
+        Parameters
+        ----------
+        raw : np.ndarray, shape (n_rows, 7)
+            Rows of the released smearing file: the true-energy and
+            declination bin edges, the reconstructed-energy and
+            angular-error bin edges, and the fractional counts.
+        """
         # ---- discover bin structure ----------------------------------------
         enu_bins = np.unique(raw[:, :2], axis=0)   # (N_enu, 2)
         dec_bins = np.unique(raw[:, 2:4], axis=0)  # (N_dec, 2)

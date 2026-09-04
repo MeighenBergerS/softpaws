@@ -189,6 +189,7 @@ class AtmosphericFlux:
     """
 
     def __init__(self, table: dict[str, np.ndarray], include_prompt: bool = True) -> None:
+        """Build the interpolator. The arguments are described in the class docstring."""
         self.table = table
         self.energy_gev = np.asarray(table["energy_gev"], dtype=float)
         self.dec_deg = np.asarray(table["dec_deg"], dtype=float)

@@ -34,6 +34,18 @@ class EventSet:
     """
 
     def __init__(self, data: np.ndarray) -> None:
+        """Wrap a structured array of events.
+
+        Parameters
+        ----------
+        data : np.ndarray
+            Structured array with dtype :data:`EVENTS_DTYPE`.
+
+        Raises
+        ------
+        ValueError
+            Raised if the array does not carry that dtype.
+        """
         if data.dtype != EVENTS_DTYPE:
             raise ValueError(f"Expected dtype {EVENTS_DTYPE}, got {data.dtype}.")
         self._data = data
@@ -168,7 +180,9 @@ class EventSet:
     # ------------------------------------------------------------------
 
     def __len__(self) -> int:
+        """Number of events."""
         return self.n_events
 
     def __repr__(self) -> str:
+        """Short summary naming the number of events."""
         return f"EventSet(n_events={self.n_events:,})"

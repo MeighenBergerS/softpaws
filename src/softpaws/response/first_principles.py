@@ -154,6 +154,15 @@ class IsoscalarCrossSection(CrossSection):
     """
 
     def __init__(self, base: CrossSection, species: str):
+        """Wrap a base model and pin it to the reference values of one species.
+
+        Parameters
+        ----------
+        base : CrossSection
+            Model the correction is applied to.
+        species : str
+            Key of :data:`CSMS_PB`, the species to pin against.
+        """
         self._base = base
         self._log_ratio = {}
         for channel in ("cc", "nc"):

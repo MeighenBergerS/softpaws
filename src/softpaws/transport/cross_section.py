@@ -129,6 +129,20 @@ class PowerLawCrossSection(CrossSection):
         e0_gev: float = E0_CROSS_GEV,
         total_to_cc: float = DEFAULT_TOTAL_TO_CC,
     ) -> None:
+        """Build a power-law cross section anchored at one energy.
+
+        Parameters
+        ----------
+        lam : float, optional
+            Slope, so that ``sigma ~ E^lam``.
+        sigma0_cm2 : float, optional
+            Charged-current cross section at ``e0_gev`` [cm^2].
+        e0_gev : float, optional
+            Anchor energy [GeV].
+        total_to_cc : float, optional
+            Ratio of the total to the charged-current cross section;
+            see :data:`softpaws.utils.constants.TOTAL_TO_CC_RATIO`.
+        """
         self.lam = lam
         self.sigma0_cm2 = sigma0_cm2
         self.e0_gev = e0_gev
@@ -190,12 +204,24 @@ class TabulatedCrossSection(CrossSection):
         sigma_nc_cm2: np.ndarray,
         name: str = "tabulated",
     ) -> None:
+        """Build a cross section from tabulated charged and neutral currents.
+
+        Parameters
+        ----------
+        energy_cc_gev, sigma_cc_cm2 : np.ndarray
+            Charged-current table: energies [GeV] and cross sections [cm^2].
+        energy_nc_gev, sigma_nc_cm2 : np.ndarray
+            The same for the neutral current.
+        name : str, optional
+            Label of the tabulation.
+        """
         self.name = name
         self._cc = _LogLogSpline(energy_cc_gev, sigma_cc_cm2)
         self._nc = _LogLogSpline(energy_nc_gev, sigma_nc_cm2)
         self.energy_range_gev = (float(energy_cc_gev[0]), float(energy_cc_gev[-1]))
 
     def __repr__(self) -> str:
+        """Short summary naming the tabulation and its energy range."""
         lo, hi = self.energy_range_gev
         return f"{type(self).__name__}(name={self.name!r}, range=({lo:.3g}, {hi:.3g}) GeV)"
 
@@ -221,6 +247,13 @@ class _LogLogSpline:
     """Smoothing spline of ``ln y`` against ``ln x`` with power-law continuation."""
 
     def __init__(self, x: np.ndarray, y: np.ndarray) -> None:
+        """Fit the spline to a table.
+
+        Parameters
+        ----------
+        x, y : np.ndarray
+            Tabulated abscissae and ordinates, both positive.
+        """
         log_x = np.log(np.asarray(x, dtype=float))
         log_y = np.log(np.asarray(y, dtype=float))
         # Generalized cross-validation picks the smoothing strength; on the

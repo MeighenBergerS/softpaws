@@ -90,6 +90,14 @@ class Site:
     optics: Optics | None = None
 
     def __post_init__(self) -> None:
+        """Check that the shape is known and that a solid body has a height.
+
+        Raises
+        ------
+        ValueError
+            Raised for an unknown shape, or for a cylinder or prism whose
+            height is not positive.
+        """
         if self.shape not in ("sphere", "cylinder", "prism"):
             raise ValueError(
                 f"shape must be 'sphere', 'cylinder' or 'prism', got {self.shape!r}."
