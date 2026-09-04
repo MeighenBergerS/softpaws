@@ -144,7 +144,7 @@ _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_DATA_DIR = _HERE.parents[1] / "src" / "softpaws" / "data" / "dataverse_files"
 _DEFAULT_OUT_DIR = _HERE / "output"
 _PUBLISHED_SENSITIVITY = (
-    _HERE.parent
+    _HERE.parents[1]
     / "src"
     / "softpaws"
     / "data"

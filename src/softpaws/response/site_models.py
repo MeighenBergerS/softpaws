@@ -613,16 +613,11 @@ def icecube_ladders() -> dict[str, tuple[np.ndarray, ...]]:
             # ratio is read at the default threshold and kernel scale; it moves
             # by under 2% across the fitted range of either, so the ladders
             # stay parameter independent.
-            rock = np.array(
-                [
-                    two_medium_range_ratio(
-                        float(muon_fraction * e),
-                        DEFAULT_MUON_THRESHOLD_GEV,
-                        -cos_theta,
-                        IC_ICE_BELOW_KM,
-                    )
-                    for e in rung_energy
-                ]
+            rock = two_medium_range_ratio(
+                muon_fraction * rung_energy,
+                DEFAULT_MUON_THRESHOLD_GEV,
+                -cos_theta,
+                IC_ICE_BELOW_KM,
             )
             energies[i] = rung_energy
             weights[i] = np.average(rung_weight, axis=1, weights=solid_angle)
@@ -899,16 +894,11 @@ def arca_ladders(
             )
             energies[i] = rung_energy
             weights[i] = rung_weight
-            rock[i] = np.array(
-                [
-                    two_medium_range_ratio(
-                        float(muon_fraction * e),
-                        DEFAULT_MUON_THRESHOLD_GEV,
-                        cos_theta,
-                        water_below_km,
-                    )
-                    for e in rung_energy
-                ]
+            rock[i] = two_medium_range_ratio(
+                muon_fraction * rung_energy,
+                DEFAULT_MUON_THRESHOLD_GEV,
+                cos_theta,
+                water_below_km,
             )
         ladders[flavour] = (energies, weights, rock)
     return ladders

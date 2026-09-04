@@ -643,6 +643,13 @@ THRESHOLD_GEV = 1000.0
 DEPTH_KM = ARCA230.depth_km
 
 
+#: The deterministic range is integrated on a fixed lattice rather than on a
+#: grid refined to each descent, which converged it and moved these pre-cleanup
+#: pins by up to 2e-5. Anything the range does not reach still holds at
+#: ``rtol = 1e-10``.
+QUADRATURE_RTOL = 5.0e-5
+
+
 def close(actual, expected, rtol=1e-10):
     actual = np.asarray(actual, dtype=float)
     expected = np.asarray(expected, dtype=float)
@@ -678,13 +685,13 @@ def test_first_passage_length_table_small():
     ell, cumulative = ea.first_passage_length_table(
         10.0 ** np.array(r["table_log10_e"]), r["threshold"], n_ell=r["n_ell"]
     )
-    close(ell, r["ell"])
-    close(cumulative, r["cumulative"])
+    close(ell, r["ell"], rtol=QUADRATURE_RTOL)
+    close(cumulative, r["cumulative"], rtol=QUADRATURE_RTOL)
     lookup = ea.truncated_range_from_table_km(
         np.array(r["energy_mu"]), np.array(r["column"]), np.array(r["table_log10_e"]),
         ell, cumulative,
     )
-    close(lookup, r["lookup"])
+    close(lookup, r["lookup"], rtol=QUADRATURE_RTOL)
 
 
 @pytest.mark.slow
@@ -784,10 +791,10 @@ def test_arca_effective_area():
     r = REF["arca_aeff"]
     kw = dict(log10_e=np.array(r["log10_e"]), n_zenith=r["n_zenith"])
     args = (r["threshold_gev"], r["depth_km"])
-    close(ea.arca_effective_area(0.517, 2, *args, "mu", **kw), r["mu"])
-    close(ea.arca_effective_area(0.517, 2, *args, "tau", **kw), r["tau"])
+    close(ea.arca_effective_area(0.517, 2, *args, "mu", **kw), r["mu"], rtol=QUADRATURE_RTOL)
+    close(ea.arca_effective_area(0.517, 2, *args, "tau", **kw), r["tau"], rtol=QUADRATURE_RTOL)
     close(ea.arca_effective_area(0.221, 1, *args, "mu", reach_km=0.035, pivot_gev=1.0e6, **kw),
-          r["mu_reach"])
+          r["mu_reach"], rtol=QUADRATURE_RTOL)
     close(ea.arca_effective_area(0.517, 2, *args, "mu", "frozen", **kw), r["mu_frozen"])
 
 
@@ -798,11 +805,13 @@ def test_arca_effective_area_example_30_options():
     kw = dict(log10_e=np.array(r["log10_e"]), n_zenith=r["n_zenith"], height_km=r30["height_km"],
               mask_subthreshold=False)
     args = (r["threshold_gev"], r["depth_km"])
-    close(ea.arca_effective_area(0.517, 2, *args, "mu", **kw), r30["mu"])
+    close(ea.arca_effective_area(0.517, 2, *args, "mu", **kw), r30["mu"], rtol=QUADRATURE_RTOL)
     close(ea.arca_effective_area(0.221, 1, *args, "tau", reach_km=0.035, pivot_gev=1.0e6, **kw),
-          r30["tau_reach"])
-    close(ea.arca_effective_area(0.517, 2, *args, "mu", cos_range=(-0.5, 0.0), **kw), r30["band"])
-    close(ea.arca_effective_area(0.517, 2, *args, "mu", truncate=False, **kw), r30["untruncated"])
+          r30["tau_reach"], rtol=QUADRATURE_RTOL)
+    close(ea.arca_effective_area(0.517, 2, *args, "mu", cos_range=(-0.5, 0.0), **kw),
+          r30["band"], rtol=QUADRATURE_RTOL)
+    close(ea.arca_effective_area(0.517, 2, *args, "mu", truncate=False, **kw),
+          r30["untruncated"], rtol=QUADRATURE_RTOL)
     required = ea.required_footprint_radius_km(
         np.array([np.nan, 0.8, 1.4]), 0.517, 2, r30["height_km"], r["n_zenith"]
     )

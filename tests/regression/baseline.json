@@ -8,12 +8,11 @@
   },
   "kernel_water_1pev": {
     "source": "Table E.2 (App. E), Table D.1 caption; transport.coefficients on the shipped PROPOSAL water table",
-    "rtol": 0.01,
+    "rtol": 0.005,
     "b_mu_per_km": 0.38,
     "d_mu_per_km": 0.092,
     "t_mu_per_km": 0.056,
-    "phi_prime_0_per_km": 0.484,
-    "note": "Table E.2 quotes b_mu 0.378 at 1 PeV, Table D.1 caption 0.380; both within rtol of the table value.",
+    "phi_prime_0_per_km": 0.487,
     "library_pre_cleanup": {
       "b_mu_per_km": 0.3797,
       "d_mu_per_km": 0.0918,
@@ -25,9 +24,9 @@
   },
   "kernel_water_100pev": {
     "source": "Table E.2",
-    "rtol": 0.01,
-    "b_mu_per_km": 0.424,
-    "phi_prime_0_per_km": 0.551,
+    "rtol": 0.005,
+    "b_mu_per_km": 0.426,
+    "phi_prime_0_per_km": 0.555,
     "library_pre_cleanup": {
       "b_mu_per_km": 0.4265,
       "d_mu_per_km": 0.1107,
@@ -39,7 +38,7 @@
   },
   "kernel_rock_1pev": {
     "source": "Table E.2, per unit column",
-    "rtol": 0.01,
+    "rtol": 0.005,
     "b_mu_per_km": 0.481,
     "phi_prime_0_per_km": 0.615,
     "library_pre_cleanup": {
@@ -96,8 +95,8 @@
     ]
   },
   "range_to_threshold_water_1tev": {
-    "source": "Table C.1 (App. C), examples 39/48 and numbers.json block 28; water, E_thr = 1 TeV, km w.e.",
-    "rtol": 0.015,
+    "source": "Table C.1 (App. C), machine-written by paper/make_transport_table.py; water, E_thr = 1 TeV, km w.e.",
+    "rtol": 0.005,
     "log10_e": [
       4,
       5,
@@ -106,46 +105,46 @@
       8
     ],
     "b_mu_per_km": [
-      0.34,
-      0.361,
-      0.378,
-      0.398,
-      0.424
+      0.342,
+      0.363,
+      0.38,
+      0.4,
+      0.426
     ],
     "phi_prime_0_per_km": [
-      0.424,
-      0.458,
-      0.484,
-      0.513,
-      0.551
+      0.428,
+      0.461,
+      0.487,
+      0.516,
+      0.555
     ],
     "first_passage_km": [
-      5.12,
-      10.27,
-      15.16,
-      19.78,
-      24.12
+      5.73,
+      10.76,
+      15.62,
+      20.21,
+      24.52
     ],
     "csda_km": [
-      5.12,
-      11.49,
-      17.71,
-      23.65,
-      29.27
+      5.73,
+      12.1,
+      18.3,
+      24.21,
+      29.79
     ],
     "purely_radiative_km": [
-      5.99,
-      11.2,
-      16.08,
-      20.71,
-      25.05
+      6.52,
+      11.68,
+      16.54,
+      21.14,
+      25.45
     ],
     "kernel_frozen_km": [
-      4.95,
-      9.91,
-      14.37,
-      18.3,
-      21.53
+      5.53,
+      10.36,
+      14.78,
+      18.64,
+      21.8
     ],
     "library_pre_cleanup": {
       "b_mu_per_km": [
@@ -196,10 +195,9 @@
         16.544,
         21.141,
         25.449
-      ],
-      "note": "Paper rows are ~0.6 km longer/shorter than these at every energy; regenerate Table C.1 from the library."
+      ]
     },
-    "note": "Paper kernel rows are up to 1.0% below the current water table (Phi'(0) at 1e4: 0.424 vs 0.428); the range rows are ~0.6 km off. Both regenerate from the library before submission."
+    "note": "Paper rows regenerated from the library on 2026-09-04; they now agree to the printed digits."
   },
   "range_vs_proposal": {
     "source": "example 48 run log: Phi range / PROPOSAL sampled mean range, water",

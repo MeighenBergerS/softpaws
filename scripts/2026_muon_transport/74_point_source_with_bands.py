@@ -329,11 +329,12 @@ def figure_site_ceiling(sites, dec_grid, variants, out_dir) -> None:
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
         floor, top = np.inf, 0.0
         for site in sites:
+            color = _EX35.SITE_COLORS[site.name]
             lo, hi = _band(variants, lambda v, n=site.name: v["sensitivity"][n])
-            ax.fill_between(dec_grid, lo, hi, color=site.color, alpha=0.30, lw=0)
+            ax.fill_between(dec_grid, lo, hi, color=color, alpha=0.30, lw=0)
             central = variants["baseline"]["sensitivity"][site.name]
-            ax.plot(dec_grid, central, color=site.color, lw=1.2, ls=site.linestyle,
-                    label=site.name)
+            ax.plot(dec_grid, central, color=color, lw=1.2,
+                    ls=_EX35.SITE_LINESTYLES[site.name], label=site.name)
             floor, top = min(floor, central.min()), max(top, central.max())
         ax.set_yscale("log")
         ax.set_xlim(-90.0, 90.0)

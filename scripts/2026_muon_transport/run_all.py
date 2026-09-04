@@ -46,13 +46,18 @@ STEPS: tuple[tuple[str, str | None], ...] = (
     ("82_reduced_response_plane_trident2025.py", "82_trident2025_chain.npz"),
     ("83_four_detector_aeff_reduced.py", None),
     ("74_point_source_with_bands.py", None),
+    ("84_point_source_background_limited.py", None),
     ("75_km3_figures_with_bands.py", None),
     ("76_dr2_event_benchmark.py", None),
     ("37_moment_convergence.py", None),
 )
 
-#: Written after every script, from the chains of 77 and 82.
-RECIPE_TABLE = pathlib.Path("paper") / "make_recipe_table.py"
+#: Written after every script: the recipe table from the chains of 77 and 82,
+#: and the transport table straight from the library.
+TABLE_WRITERS = (
+    pathlib.Path("paper") / "make_recipe_table.py",
+    pathlib.Path("paper") / "make_transport_table.py",
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -68,8 +73,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--only", default=None,
                         help="Run only the step whose name begins with this.")
     parser.add_argument("--recipe-table", action="store_true", default=True,
-                        help="Write the paper's Table E.1 at the end when the "
-                             "manuscript directory is present.")
+                        help="Write the paper's machine-written tables at the "
+                             "end when the manuscript directory is present.")
     return parser.parse_args()
 
 
@@ -112,10 +117,10 @@ def main() -> None:
             raise SystemExit(f"{name} exited with {result.returncode} after {elapsed:.0f} s.")
         print(f"    done in {elapsed:.0f} s")
 
-    recipe = _HERE.parents[1] / RECIPE_TABLE
-    if args.recipe_table and recipe.exists():
-        print(f"\nWriting the recipe table with {recipe} ...")
-        subprocess.run([sys.executable, str(recipe)], check=True)
+    for writer in (_HERE.parents[1] / path for path in TABLE_WRITERS):
+        if args.recipe_table and writer.exists():
+            print(f"\nWriting a table with {writer} ...")
+            subprocess.run([sys.executable, str(writer)], check=True)
     print("\nAll steps finished.")
 
 

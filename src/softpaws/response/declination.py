@@ -156,10 +156,10 @@ def directional_effective_area_cm2(
 
     total = np.zeros((energy.size, cos_theta.size))
     for flavour, muon_fraction, branching in ladders:
-        for i, e_nu in enumerate(energy):
-            # One diagonalization serves every column, so the whole set of
-            # directions costs the same as a single one.
-            rung_energy, rung_weight = flavour_transmission(
+        # One diagonalization serves every column, so the whole set of
+        # directions costs the same as a single one.
+        rungs = [
+            flavour_transmission(
                 float(e_nu),
                 neutrino_column,
                 cross_section,
@@ -167,21 +167,25 @@ def directional_effective_area_cm2(
                 n_grid=N_RUNG,
                 decades=RUNG_DECADES,
             )
+            for e_nu in energy
+        ]
+        # The rock correction below the horizon is solved per direction, so it
+        # is taken for every rung of every energy at once: the entry energy
+        # belongs to the direction, and asking for one parent at a time would
+        # walk that solve again for each of them.
+        rock_all = two_medium_range_ratio(
+            muon_fraction * np.concatenate([rung[0] for rung in rungs]),
+            threshold_gev,
+            cos_theta,
+            site.below_km + 0.5 * site.height_km,
+            site.density_g_cm3,
+        )
+        cut = np.cumsum([0] + [rung[0].size for rung in rungs])
+        for i, (rung_energy, rung_weight) in enumerate(rungs):
             muon_energy = muon_fraction * rung_energy
             # (n_rung, n_dir): each rung's muon under each direction's column,
             # shortened below the horizon by the rock beneath the optical medium.
-            rock = np.array(
-                [
-                    two_medium_range_ratio(
-                        float(e),
-                        threshold_gev,
-                        cos_theta,
-                        site.below_km + 0.5 * site.height_km,
-                        site.density_g_cm3,
-                    )
-                    for e in muon_energy
-                ]
-            )
+            rock = rock_all[cut[i]:cut[i + 1]]
             length = (
                 truncated_muon_range_km(
                     muon_energy[:, None],

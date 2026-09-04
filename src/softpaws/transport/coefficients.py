@@ -157,6 +157,27 @@ class KernelScaling:
 
 _KERNEL_SCALING: KernelScaling | None = None
 
+#: Bumped whenever the installed scaling changes, so that anything caching a
+#: quantity built from the coefficients can key on it and drop a stale entry.
+#: :func:`kernel_scaling_token` reads it.
+_KERNEL_SCALING_TOKEN = 0
+
+
+def kernel_scaling_token() -> int:
+    """A counter that changes whenever :func:`set_kernel_scaling` is called.
+
+    The coefficients are read through a global scaling, so anything that caches
+    a curve built from them has to know when that scaling moved. Keying the
+    cache on this token drops the stale entry without the caller having to
+    reach into :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    token : int
+        The current value, meaningful only by comparison with an earlier one.
+    """
+    return _KERNEL_SCALING_TOKEN
+
 
 def set_kernel_scaling(scaling: KernelScaling | None) -> None:
     """Install (or with ``None`` remove) a global :class:`KernelScaling`.
@@ -171,8 +192,9 @@ def set_kernel_scaling(scaling: KernelScaling | None) -> None:
     scaling : KernelScaling or None
         The factors to apply, or ``None`` for the shipped table.
     """
-    global _KERNEL_SCALING
+    global _KERNEL_SCALING, _KERNEL_SCALING_TOKEN
     _KERNEL_SCALING = scaling
+    _KERNEL_SCALING_TOKEN += 1
 
 
 def kernel_scaling() -> KernelScaling | None:

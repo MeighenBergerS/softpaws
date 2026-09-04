@@ -58,6 +58,8 @@ from dataclasses import replace
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.response import declination as _declination
+from softpaws.response import first_principles as _first_principles
 from softpaws.transport.coefficients import proposal_parametrizations
 from softpaws.transport.soft_volume import muon_range_km, stochastic_muon_range_km
 from softpaws.utils.constants import CM_PER_KM
@@ -275,15 +277,19 @@ def banded(ex35, ex45, ex46, site, site45, sin_dec_edges, efficiency,
     aeff : np.ndarray
         Effective area [cm^2] per band on ``ex35.COMMON_LOG10_E``.
     """
-    shipped = (ex45.stochastic_muon_range_km, ex46.truncated_muon_range_km)
+    # The range enters through the library modules the banded model calls, not
+    # through the example namespaces the cleanup emptied.
+    shipped = (_first_principles.stochastic_muon_range_km,
+               _declination.truncated_muon_range_km)
     if mean_loss:
-        ex45.stochastic_muon_range_km = csda_range
-        ex46.truncated_muon_range_km = csda_truncated
+        _first_principles.stochastic_muon_range_km = csda_range
+        _declination.truncated_muon_range_km = csda_truncated
     try:
         return ex46.model_banded(ex35, ex45, site, site45, sin_dec_edges, 8.0,
                                  ("mu",), efficiency=efficiency)
     finally:
-        ex45.stochastic_muon_range_km, ex46.truncated_muon_range_km = shipped
+        (_first_principles.stochastic_muon_range_km,
+         _declination.truncated_muon_range_km) = shipped
 
 
 def report(published, phi_model, csda_model, sin_dec_centers, log10_e, band) -> None:

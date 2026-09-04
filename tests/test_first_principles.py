@@ -26,9 +26,16 @@ N_ENERGY = 8
 MIN_MODULES = 8.0
 
 
-def _same(got, want):
+#: The deterministic range is integrated on a fixed lattice rather than on a
+#: grid refined to each descent, which converged it and moved these pre-cleanup
+#: pins by up to 2e-5. Anything the range does not reach still holds at
+#: ``rtol = 1e-10``.
+QUADRATURE_RTOL = 5.0e-5
+
+
+def _same(got, want, rtol=1e-10):
     np.testing.assert_allclose(np.asarray(got, dtype=float), np.asarray(want, dtype=float),
-                               rtol=1e-10, atol=0.0)
+                               rtol=rtol, atol=0.0)
 
 
 @pytest.mark.parametrize(
@@ -54,10 +61,10 @@ def test_column_profile():
     column, energy, total = fp.column_profile(1.0e6, THRESHOLD_GEV, N_ENERGY, RHO_ICE_G_CM3)
     _same(column, [0.0, 3.0426658234720563, 6.182152638799714, 9.435478251224854,
                    12.948189675697613, 16.55716364370917, 19.05541193403758,
-                   20.19663599783324])
+                   20.19663599783324], rtol=QUADRATURE_RTOL)
     _same(energy, [1000000.0, 268269.57952797273, 71968.56730011529, 19306.977288832495,
                    5179.474679231213, 1389.4954943731389, 372.7593720314942, 100.0])
-    _same(total, 20.19663599783324)
+    _same(total, 20.19663599783324, rtol=QUADRATURE_RTOL)
     assert fp.column_profile(50.0, THRESHOLD_GEV, N_ENERGY) is None
 
 
@@ -65,7 +72,8 @@ def test_rock_range_ratio():
     cos_theta = np.array([-1.0, -0.5, -0.1, 0.3])
     ratio = fp.rock_range_ratio(1.0e6, THRESHOLD_GEV, cos_theta, ICECUBE_OPTICS, 1.0,
                                 RHO_ICE_G_CM3)
-    _same(ratio, [0.8039656217293253, 0.8084984048334695, 0.8940153189806164, 1.0])
+    _same(ratio, [0.8039656217293253, 0.8084984048334695, 0.8940153189806164, 1.0],
+          rtol=QUADRATURE_RTOL)
     _same(fp.rock_range_ratio(1.0e6, THRESHOLD_GEV, cos_theta, ICECUBE_OPTICS, 1.0,
                               RHO_ICE_G_CM3, far_source=None), np.ones(4))
 
@@ -74,10 +82,10 @@ def test_ic_column_volume():
     cos_theta = np.array([0.1, 0.5, 0.9])
     _same(fp.ic_column_volume_km3(1.0e6, THRESHOLD_GEV, cos_theta, ICECUBE_OPTICS, MIN_MODULES,
                                   N_ENERGY),
-          [26.541334532796267, 25.9280249403473, 24.237636221273743])
+          [26.541334532796267, 25.9280249403473, 24.237636221273743], rtol=QUADRATURE_RTOL)
     _same(fp.ic_column_volume_km3(1.0e6, THRESHOLD_GEV, cos_theta, ICECUBE_OPTICS, None,
                                   N_ENERGY),
-          [22.434331953168293, 21.622138488050656, 20.300252452726838])
+          [22.434331953168293, 21.622138488050656, 20.300252452726838], rtol=QUADRATURE_RTOL)
     _same(fp.ic_column_volume_km3(50.0, THRESHOLD_GEV, cos_theta, ICECUBE_OPTICS, MIN_MODULES,
                                   N_ENERGY), np.zeros(3))
 
@@ -87,10 +95,10 @@ def test_arca_column_volume():
     available_km = overburden_km(np.cos(np.deg2rad(theta_deg)), ARCA230.depth_km)
     _same(fp.arca_column_volume_km3(1.0e6, THRESHOLD_GEV, theta_deg, available_km, ARCA_OPTICS,
                                     MIN_MODULES, N_ENERGY),
-          [21.516338428120523, 46.39894645825184, 57.3389587964313])
+          [21.516338428120523, 46.39894645825184, 57.3389587964313], rtol=QUADRATURE_RTOL)
     _same(fp.arca_column_volume_km3(1.0e6, THRESHOLD_GEV, theta_deg, available_km, ARCA_OPTICS,
                                     None, N_ENERGY),
-          [8.81128292305936, 32.015896706458655, 41.13144010948358])
+          [8.81128292305936, 32.015896706458655, 41.13144010948358], rtol=QUADRATURE_RTOL)
 
 
 def test_residuals():

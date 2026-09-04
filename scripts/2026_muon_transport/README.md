@@ -40,7 +40,8 @@ The tabulated inputs ship with the package. Beyond them:
 | Figure 3 | `83_four_detector_aeff_reduced.py` | `83a_four_detector_aeff_reduced` |
 | Figure 4 | `82_reduced_response_plane_trident2025.py` | `82_reduced_response_plane_trident2025` |
 | Figure 5, J.1, J.2 | `76_dr2_event_benchmark.py` | `76a_reco_spectrum`, `76b_declination`, `76c_declination_high` |
-| Figure 6, H.1, I.1 | `74_point_source_with_bands.py` | `74d_site_ceiling`, `74a_effective_area_bands`, `74c_published_sensitivity` |
+| Figure 6, I.1 | `84_point_source_background_limited.py` | `84d_site_ceiling`, `84c_published_sensitivity` |
+| Figure H.1 | `74_point_source_with_bands.py` | `74a_effective_area_bands` |
 | Figure 7, 8, K.1 | `75_km3_figures_with_bands.py` | `75a_event_energy_banded`, `75b_tension_bpl`, `75c_tension_spl` |
 
 Figure 1 is a hand-drawn sketch and has no script.
@@ -84,7 +85,7 @@ encodes this list:
 
 ```
 22  27  32  35  45  46  47  55  33  56  69  51  31  57
-70  71  72  73  77  81  82  83  74  75  76  37
+70  71  72  73  77  81  82  83  74  84  75  76  37
 ```
 
 then `paper/make_recipe_table.py`. The expensive steps are 22 (MCEq), 69 (the

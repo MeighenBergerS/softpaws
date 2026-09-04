@@ -41,6 +41,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from softpaws.transport.loss_ensemble import variant_scaling
+from softpaws.transport.source import mean_inelasticity
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
@@ -93,7 +94,7 @@ def variant_likelihood(u, energy_nu, kappa, normalize=True):
     the *light* energy.
     """
     energy_nu = np.atleast_1d(np.asarray(energy_nu, dtype=float))
-    entry = (1.0 - np.squeeze(_EX57.mean_inelasticity(energy_nu))) * energy_nu
+    entry = (1.0 - np.squeeze(mean_inelasticity(energy_nu))) * energy_nu
     log_e_mu = np.log(entry)[:, None] - _EX57.W_GRID[None, :]
     e_mu = np.exp(log_e_mu)
     kap = kappa(e_mu)

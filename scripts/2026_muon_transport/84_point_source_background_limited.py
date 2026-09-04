@@ -1,51 +1,35 @@
-"""Tutorial 12 -- injecting a new point source.
+"""Example 84 -- the point-source sensitivity the paper quotes.
 
-Tutorial 11 spread the injected signal over the whole sky. A source is one
-direction instead, and that changes the answer twice. The solid angle is gone,
-so the flux a search can reach is smaller. And the Earth is in the way for
-part of the day, by an amount that depends on the declination of the source
-and on where the detector sits, so the same source is a different measurement
-at each site.
+This is tutorial 12 as a paper script. It produces the two point-source
+figures of the paper: the IceCube limit against IceCube's own published
+sensitivity, and every site's limit against source declination. Example 74
+draws the same two quantities as background-free ceilings with the loss-model
+envelope on them; this one counts the background instead, and the two answer
+different questions.
 
-The three injections of tutorial 11 come along unchanged: a single event, a
-line at one energy, and a power law. So does the pair of responses, the
-geometry alone and the one instrument number fitted at each site against its
-own published table.
+Three things enter beyond the response. A point source is one direction, so
+the sky a search looks through is one bin of it, and the atmospheric
+neutrinos inside that bin are countable: MCEq gives the flux and the same
+response gives the effective area. The bin comes from IceCube's released
+point spread at 68% containment, which for a Gaussian is the radius
+maximizing signal over the root of background to within 5%, and it is not a
+constant -- it closes as the energy rises and opens again wherever the Earth
+has taken the high-energy end away. And the window is free: an atmospheric
+spectrum falls faster than an astrophysical one, so a fixed lower edge
+charges a search most exactly where its effective area is largest, and
+letting the edge move removes a declination dependence that is not in the
+data.
 
-What is new is the background. Tutorial 11 excluded 2.44 events whatever the
-exposure, which is the Feldman-Cousins limit on nothing seen over nothing
-expected. A point source is a direction, so what a search has to look through
-is one bin of sky rather than the whole of it, and the atmospheric neutrinos
-inside that bin are countable: MCEq gives the flux, the same response gives
-the effective area, and the angular resolution gives the bin. The limit that
-comes out is no longer background free, and against IceCube's own published
-sensitivity it lands on the other side: a counting experiment in a fixed bin
-is worse than the unbinned likelihood a real search uses, so the published
-curve falls between the two, which is where it has to be.
-
-Where the search is allowed to start is not a detail. An atmospheric spectrum
-falls like ``E^-3.7`` and the signal here like ``E^-2``, so counting the whole
-band charges a search most where its effective area is largest, and the
-declination dependence the response has comes out flattened. Letting the
-window move removes that, and the published shape is the evidence it should
-be removed: across the upgoing sky that shape is the ceiling's, so whatever
-the background costs a real search, it costs it almost equally at every
-declination.
-
-The bin is measured too, wherever there is a release to measure it from. The
-DR2 smearing table carries a point-spread angle with every row, so the bin can
-be the containment radius at each energy and declination rather than a chosen
-constant, and for a Gaussian point spread that radius is the optimum for a
-counting search to within 5%. It matters because it is not a constant: the
-containment closes from about 1.4 degrees at 10 TeV to 0.4 at 10 PeV, and it
-opens again toward the pole where the Earth has taken the high-energy end
-away. Both run the way the published shape needs, and a fixed bin instead
-leaves a tilt of 1.3 across the upgoing sky that is not in the data.
+One instrument number is fitted per site, the light reach of example 45,
+against that site's own published effective area. Baikal-GVD has no published
+table to fit against and so does not appear here; example 74 carries it with
+an assumed reach instead.
 
 Usage
 -----
-    python examples/12_point_source_signal.py
-    python examples/12_point_source_signal.py --bin-radius-deg 0.5
+    python scripts/2026_muon_transport/84_point_source_background_limited.py
+    python scripts/2026_muon_transport/84_point_source_background_limited.py \
+        --bin-radius-deg 0.5
 """
 
 import argparse
@@ -82,8 +66,10 @@ from softpaws.response.site_models import published_effective_area_cm2
 from softpaws.transport.earth import zenith_grid
 
 _HERE = pathlib.Path(__file__).parent
-_STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
+_STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_OUT_DIR = _HERE / "output"
+_CACHE_DIR = _HERE / "cache"
+_DEFAULT_DATA_DIR = _HERE.parents[1] / "src" / "softpaws" / "data" / "dataverse_files"
 
 #: Neutrino energies every curve here is built on [log10 GeV].
 LOG10_E = np.arange(4.0, 8.01, 0.25)
@@ -136,11 +122,11 @@ YEAR_S = 365.25 * 86400.0
 #: Exposure of the published curve the comparison is drawn against [yr].
 PUBLISHED_LIVETIME_YR = 14.0
 
-#: Cached MCEq table, the one tutorial 10 builds.
-MCEQ_TABLE = _DEFAULT_OUT_DIR / "22_mceq_atmospheric_flux.npz"
+#: Cached MCEq table, the one example 22 builds.
+MCEQ_TABLE = _CACHE_DIR / "22_mceq_atmospheric_flux.npz"
 
 #: Cached point-spread containment, taken from the DR2 smearing table once.
-PSF_TABLE = _DEFAULT_OUT_DIR / "12_psf_containment.npz"
+PSF_TABLE = _CACHE_DIR / "84_psf_containment.npz"
 
 
 def parse_args() -> argparse.Namespace:
@@ -155,10 +141,10 @@ def parse_args() -> argparse.Namespace:
                         help="Spectral index of the power-law injection.")
     parser.add_argument("--dec-deg", type=float, default=0.0,
                         help="Declination the injections are tabulated at.")
-    parser.add_argument("--data-dir", type=pathlib.Path, default=None,
+    parser.add_argument("--data-dir", type=pathlib.Path, default=_DEFAULT_DATA_DIR,
                         help="Root of the DR2 release, for IceCube's published table.")
     parser.add_argument("--mceq-table", type=pathlib.Path, default=MCEQ_TABLE,
-                        help="Cached MCEq atmospheric table; tutorial 10 builds it.")
+                        help="Cached MCEq atmospheric table; example 22 builds it.")
     parser.add_argument("--bin-radius-deg", type=float, default=DEFAULT_BIN_RADIUS_DEG,
                         help="Angular radius of the bin the background is counted in.")
     parser.add_argument("--psf-table", type=pathlib.Path, default=PSF_TABLE,
@@ -177,8 +163,8 @@ def load_background(path: pathlib.Path):
     """The MCEq background, or ``None`` if the table has not been built yet.
 
     Building the table runs MCEq once per declination and takes minutes, so
-    tutorial 10 caches it and this one reads the cache. Without it the whole
-    tutorial still runs, background free, which is what tutorial 11 does.
+    example 22 caches it and this one reads the cache. Without it the whole
+    script still runs, background free, which is the ceiling example 74 draws.
 
     Parameters
     ----------
@@ -192,7 +178,7 @@ def load_background(path: pathlib.Path):
     """
     if not path.exists():
         print(f"({path} is not on disk, so the limits below stay background free.\n"
-              " Run examples/10_atmospheric_background.py once to build it.)")
+              " Run 22_atmospheric_background_mceq.py once to build it.)")
         return None
     return AtmosphericFlux(load_mceq_table(path))
 
@@ -215,7 +201,7 @@ def load_psf(path: pathlib.Path, data_dir: pathlib.Path | None, fixed: bool) -> 
 
 def fit_site(site, data_dir: pathlib.Path | None, threshold_gev: float,
              channels: str = "both") -> tuple[float, float]:
-    """Fit the one instrument number of tutorial 09 at one site.
+    """Fit the one instrument number of example 45 at one site.
 
     The published curve carries the sky it was averaged over, so the model is
     averaged the same way before the two are compared.
@@ -576,7 +562,7 @@ def figure_published(ceilings: dict[str, dict], out_dir: pathlib.Path) -> None:
             ax.text(label_x, offset * float(reach), name,
                     color=color, ha="center", va=valign, rotation=angle,
                     rotation_mode="anchor")
-        _save(fig, out_dir, "12c_published_sensitivity")
+        _save(fig, out_dir, "84c_published_sensitivity")
 
 
 def figure_site_ceiling(ceilings: dict[str, dict], out_dir: pathlib.Path) -> None:
@@ -617,7 +603,7 @@ def figure_site_ceiling(ceilings: dict[str, dict], out_dir: pathlib.Path) -> Non
         ax.set_ylabel(r"$E^2\,\mathrm{d}N/\mathrm{d}E$ [GeV cm$^{-2}$ s$^{-1}$]")
         ax.set_box_aspect(1)
         ax.legend(loc="upper right")
-        _save(fig, out_dir, "12d_site_ceiling")
+        _save(fig, out_dir, "84d_site_ceiling")
 
 
 def make_figures(ceilings: dict[str, np.ndarray], curves: dict[str, dict[str, np.ndarray]],
@@ -728,7 +714,7 @@ def main() -> None:
     report_declination({name: band["fitted"] for name, band in ceilings.items()},
                        dec_deg, args.gamma)
     make_figures(ceilings, curves, livetime_s, args.gamma, args.dec_deg,
-                 args.out_dir / "12_point_source_signal")
+                 args.out_dir / "84_injections")
     figure_published(ceilings, args.out_dir)
     figure_site_ceiling(ceilings, args.out_dir)
 

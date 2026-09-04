@@ -192,15 +192,17 @@ def test_water_model_pinned_on_trident():
     assert ladders["mu"][0].shape == (sm.ARCA_LOG10_E.size, 1)
     assert not np.any(ladders["tau"][1])
     aeff = sm.water_model(THETA, site, ladders, weights, muon_column_km)
+    # The deterministic range is integrated on a fixed lattice rather than on a
+    # grid refined to each descent, which converged it and moved this
+    # pre-cleanup pin by 3e-6.
     assert aeff[[0, 10, 20]] == pytest.approx(
-        [577098.7590180387, 12493443.381331533, 75020799.66142105], rel=1e-12
+        [577098.7590180387, 12493443.381331533, 75020799.66142105], rel=5.0e-5
     )
-    # A mask reproduces the same nodes to 1e-6. It is not bit for bit: the
-    # running kernel evaluates the radiative length on a 48-node grid spanning
-    # the energies it is handed, so a subset moves the quadrature slightly.
+    # A mask reproduces the same nodes bit for bit. It reads the same lattice,
+    # so which energies are asked for together no longer moves the quadrature.
     select = (sm.ARCA_LOG10_E >= 5.0) & (sm.ARCA_LOG10_E <= 6.0)
-    assert sm.water_model(THETA, site, ladders, weights, muon_column_km, select) == pytest.approx(
-        aeff[select], rel=1e-5
+    assert np.array_equal(
+        sm.water_model(THETA, site, ladders, weights, muon_column_km, select), aeff[select]
     )
 
 

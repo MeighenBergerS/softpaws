@@ -67,6 +67,7 @@ from .coefficients import (
     diffusion_coefficient,
     drift_coefficient,
     ionization_coefficient,
+    kernel_scaling_token,
     log_loss_moments,
 )
 from .eigenvalue import (
@@ -659,25 +660,18 @@ def muon_range_km(
         return np.clip(np.log(ratio) / b_mu, 0.0, None)
 
     # Running: -dE/dx = a_mu + b_mu(E) E has no closed-form integral once b_mu
-    # itself runs, so integrate dL = dE / (a_mu + b_mu(E) E) on a shared
-    # logarithmic grid. Frozen b_mu recovers the closed form above exactly.
-    top = float(np.max(energy))
-    if top <= threshold_gev:
-        return np.zeros_like(energy)
-    log10_grid = np.linspace(
-        np.log10(threshold_gev),
-        np.log10(top),
-        max(2, int(np.ceil((np.log10(top) - np.log10(threshold_gev)) * 48)) + 1),
+    # itself runs, so integrate dL = dE / (a_mu + b_mu(E) E) along a shared
+    # logarithmic lattice. Frozen b_mu recovers the closed form above exactly.
+    return _depth_between_km(
+        "csda",
+        energy,
+        threshold_gev,
+        density_g_cm3,
+        b_scale,
+        source,
+        "table",
+        _CSDA_NODES_PER_DECADE,
     )
-    grid = 10.0**log10_grid
-    b_grid = b_scale * drift_coefficient(grid, density_g_cm3, source)
-    a_mu = b_scale * ionization_coefficient(density_g_cm3)
-    integrand = grid / (a_mu + b_grid * grid)
-    ln_grid = log10_grid * np.log(10.0)
-    cumulative = np.concatenate(
-        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
-    )
-    return np.clip(np.interp(np.log10(energy), log10_grid, cumulative), 0.0, None)
 
 
 def _log_loss_moments_at(
@@ -704,6 +698,167 @@ def _log_loss_moments_at(
     return kappa * polygamma(1, p + 1.0), -kappa * polygamma(2, p + 1.0)
 
 
+#: Energy span of the cached depth curves [log10 GeV]. The lower edge sits
+#: below any threshold ever asked for and the upper one above the ``10^12``
+#: bracket of :func:`_near_entry_energy_gev`, so every descent is a difference
+#: of two points inside the span. Widening it does not move a single value,
+#: since the node spacing is fixed at ``1 / nodes_per_decade`` and not by the
+#: endpoints.
+_CURVE_LOG10_LO = 0.0
+_CURVE_LOG10_HI = 15.0
+
+#: Lattice density of the deterministic curve. The radiative one takes its own
+#: from ``running_nodes_per_decade``, whose integrand ``1 / Phi'(0; E)`` is
+#: nearly flat in ``lnE``. This one is not: ``E / (a_mu + b_mu E)`` rises
+#: exponentially in ``lnE`` below the critical energy and flattens above it, so
+#: it wants the finer lattice. At this density the deterministic range is
+#: converged to 5e-7, which the earlier grid -- refined to the span of each
+#: descent and so finest close to threshold -- reached only to 3e-5.
+_CSDA_NODES_PER_DECADE = 3072
+
+
+@functools.lru_cache(maxsize=32)
+def _base_depth_curve(
+    kind: str,
+    source: str,
+    log_loss_source: str,
+    nodes_per_decade: int,
+    token: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Cumulative depth against ``log10 E``, in water and at ``b_scale = 1``.
+
+    Every descent this module integrates -- the deterministic
+    ``dL = dE / (a_mu + b_mu(E) E)``, the radiative ``dL = dlnE / Phi'(0; E)``
+    and the variance rate that goes with it -- has an integrand that depends on
+    the energy alone once the medium and the kernel are fixed. The depth
+    between any two energies is therefore a difference of one cumulative curve,
+    which is built once here and read by interpolation afterwards.
+
+    Building it on a fixed lattice rather than on a grid spanning the descent
+    asked for also makes the answer independent of *which* energies are
+    requested together: the older per-call grid ran from the floor to the
+    largest energy in the batch, so a muon evaluated alone and the same muon
+    evaluated inside an array got trapezoid rules of slightly different step.
+
+    Parameters
+    ----------
+    kind : {"csda", "radiative", "variance"}
+        Which integrand to accumulate: ``dE / (a_mu + b_mu E)``,
+        ``dlnE / Phi'(0)`` or ``dlnE (-Phi''(0)) / Phi'(0)^3``.
+    source : str
+        Transport-coefficient tabulation.
+    log_loss_source : {"table", "family"}
+        Where the log-loss moments come from; ``"csda"`` ignores it.
+    nodes_per_decade : int
+        Lattice density.
+    token : int
+        :func:`~softpaws.transport.coefficients.kernel_scaling_token`, which
+        changes when the installed kernel scaling does and so drops the entry.
+
+    Returns
+    -------
+    log10_grid, cumulative : np.ndarray
+        The lattice and the depth accumulated from its lower edge [km].
+    """
+    del token  # a cache key only; the scaling is read through the coefficients
+    n_nodes = int(round((_CURVE_LOG10_HI - _CURVE_LOG10_LO) * nodes_per_decade)) + 1
+    log10_grid = np.linspace(_CURVE_LOG10_LO, _CURVE_LOG10_HI, n_nodes)
+    grid = 10.0**log10_grid
+    if kind == "csda":
+        b_grid = drift_coefficient(grid, RHO_WATER_G_CM3, source)
+        a_mu = ionization_coefficient(RHO_WATER_G_CM3)
+        integrand = grid / (a_mu + b_grid * grid)
+    elif kind == "variance":
+        first, second, _ = log_loss_moments(grid, RHO_WATER_G_CM3, source)
+        integrand = second / first**3
+    else:
+        first, _ = _log_loss_moments_at(
+            grid, RHO_WATER_G_CM3, 1.0, source, log_loss_source
+        )
+        integrand = 1.0 / first
+    ln_grid = log10_grid * np.log(10.0)
+    cumulative = np.concatenate(
+        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
+    )
+    return log10_grid, cumulative
+
+
+@functools.lru_cache(maxsize=64)
+def _scaled_depth_curve(
+    kind: str,
+    source: str,
+    log_loss_source: str,
+    nodes_per_decade: int,
+    density_g_cm3: float,
+    b_scale: float,
+    token: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    """As :func:`_base_depth_curve`, for a medium of the given density.
+
+    Every integrand carries ``b_scale`` and the density as one overall factor:
+    ``a_mu`` and ``b_mu`` are each proportional to both, so the deterministic
+    integrand ``E / (a_mu + b_mu E)`` scales as ``1 / (b_scale rho)`` exactly,
+    and so does ``1 / Phi'(0)`` whenever the log-loss moments are read from the
+    table. The variance rate ``-Phi''(0) / Phi'(0)^3`` carries the same factor
+    squared, since both moments scale together. The two-moment family is the
+    exception -- it reconstructs the moments from ``b_mu`` and ``d_mu``, and
+    only the first of those carries ``b_scale`` -- so that route rebuilds the
+    curve instead.
+    """
+    factored = kind in ("csda", "variance") or (
+        log_loss_source == "table" and source != "table1"
+    )
+    if factored:
+        log10_grid, cumulative = _base_depth_curve(
+            kind, source, log_loss_source, nodes_per_decade, token
+        )
+        power = 2 if kind == "variance" else 1
+        scale = ((RHO_WATER_G_CM3 / density_g_cm3) / b_scale) ** power
+        return log10_grid, cumulative * scale
+
+    n_nodes = int(round((_CURVE_LOG10_HI - _CURVE_LOG10_LO) * nodes_per_decade)) + 1
+    log10_grid = np.linspace(_CURVE_LOG10_LO, _CURVE_LOG10_HI, n_nodes)
+    first, _ = _log_loss_moments_at(
+        10.0**log10_grid, density_g_cm3, b_scale, source, log_loss_source
+    )
+    ln_grid = log10_grid * np.log(10.0)
+    integrand = 1.0 / first
+    cumulative = np.concatenate(
+        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
+    )
+    return log10_grid, cumulative
+
+
+def _depth_between_km(
+    kind: str,
+    energy_gev: np.ndarray,
+    floor_gev: float | np.ndarray,
+    density_g_cm3: float,
+    b_scale: float,
+    source: str,
+    log_loss_source: str,
+    nodes_per_decade: int,
+) -> np.ndarray:
+    """Depth accumulated descending from ``energy_gev`` to ``floor_gev`` [km].
+
+    A difference of two readings of :func:`_scaled_depth_curve`, clipped at
+    zero for a muon born at or below the floor. Both arguments broadcast, so a
+    per-direction floor costs no more than a single one.
+    """
+    log10_grid, cumulative = _scaled_depth_curve(
+        kind,
+        source,
+        log_loss_source,
+        nodes_per_decade,
+        float(density_g_cm3),
+        float(b_scale),
+        kernel_scaling_token(),
+    )
+    top = np.interp(np.log10(energy_gev), log10_grid, cumulative)
+    bottom = np.interp(np.log10(floor_gev), log10_grid, cumulative)
+    return np.clip(top - bottom, 0.0, None)
+
+
 def _running_radiative_length_km(
     energy_gev: np.ndarray,
     floor_gev: float,
@@ -721,25 +876,20 @@ def _running_radiative_length_km(
     integrand at the *top* of the descent, where the loss rate is highest. It is
     therefore short, one-sidedly and by more the further the muon falls.
 
-    Evaluated once on a shared logarithmic grid and interpolated, so the cost is
-    independent of how many production energies are asked for.
+    Read off :func:`_base_depth_curve`, so the cost is independent of how many
+    production energies are asked for and of how far each of them falls.
     """
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
-    top = float(np.max(energy))
-    if top <= floor_gev:
-        return np.zeros_like(energy)
-    log10_lo, log10_hi = np.log10(floor_gev), np.log10(top)
-    n_nodes = max(2, int(np.ceil((log10_hi - log10_lo) * nodes_per_decade)) + 1)
-    log10_grid = np.linspace(log10_lo, log10_hi, n_nodes)
-    first, _ = _log_loss_moments_at(
-        10.0**log10_grid, density_g_cm3, b_scale, source, log_loss_source
+    return _depth_between_km(
+        "radiative",
+        energy,
+        floor_gev,
+        density_g_cm3,
+        b_scale,
+        source,
+        log_loss_source,
+        nodes_per_decade,
     )
-    ln_grid = log10_grid * np.log(10.0)
-    integrand = 1.0 / first
-    cumulative = np.concatenate(
-        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
-    )
-    return np.interp(np.log10(energy), log10_grid, cumulative)
 
 
 def stochastic_muon_range_km(
@@ -985,8 +1135,6 @@ def stochastic_muon_range_km(
     deterministic = muon_range_km(
         energy, threshold_gev, density_g_cm3, b_scale, source, kernel_evaluation
     )
-    b_mu = b_scale * drift_coefficient(energy, density_g_cm3, source)
-    d_mu = diffusion_coefficient(energy, density_g_cm3, source)
     selectable = (energy > threshold_gev) & (deterministic > 0.0)
 
     # Phi'(0) = <-ln(1-y)> and -Phi''(0) = <ln^2(1-y)>, both per unit length,
@@ -1066,6 +1214,10 @@ def stochastic_muon_range_km(
 
     from .loss_distribution import log_loss_cdf
 
+    # Only the depth integral needs the y-moments; the closed form reads the
+    # log-loss ones instead, so these are built here and not above.
+    b_mu = b_scale * drift_coefficient(energy, density_g_cm3, source)
+    d_mu = diffusion_coefficient(energy, density_g_cm3, source)
     out = np.zeros(energy.shape[0])
     for i, eps in enumerate(energy):
         if not selectable[i]:
@@ -1178,7 +1330,7 @@ def two_medium_muon_range_km(
 
 
 def two_medium_range_ratio(
-    production_gev: float,
+    production_gev: float | np.ndarray,
     threshold_gev: float,
     cos_theta: float | np.ndarray,
     near_vertical_km: float,
@@ -1200,8 +1352,10 @@ def two_medium_range_ratio(
 
     Parameters
     ----------
-    production_gev : float
-        Muon energy at production [GeV].
+    production_gev : float or np.ndarray
+        Muon energy at production [GeV]. An array is answered in one pass: the
+        entry energy belongs to the direction and not to the parent, so a whole
+        transmission ladder costs one descent per direction.
     threshold_gev : float
         Muon energy below which the track is not selected [GeV].
     cos_theta : float or np.ndarray
@@ -1226,26 +1380,30 @@ def two_medium_range_ratio(
     Returns
     -------
     ratio : np.ndarray
-        Range ratio, one entry per direction, in ``(0, 1]``.
+        Range ratio in ``(0, 1]``, of shape ``(n_dir,)`` for a scalar
+        production energy and ``(n_energy, n_dir)`` for an array of them.
     """
+    production = np.atleast_1d(np.asarray(production_gev, dtype=float))
     cos_theta = np.atleast_1d(np.asarray(cos_theta, dtype=float))
-    ratio = np.ones_like(cos_theta)
+    ratio = np.ones((production.size, cos_theta.size))
     upgoing = cos_theta < 0.0
     if far_source is None or not upgoing.any():
-        return ratio
-    single = float(np.squeeze(stochastic_muon_range_km(
-        production_gev, threshold_gev, density_g_cm3, b_scale, near_source, **range_kwargs
-    )))
-    if not np.isfinite(single) or single <= 0.0:
-        return ratio
-    for i in np.flatnonzero(upgoing):
-        near_km = near_vertical_km / max(-float(cos_theta[i]), 1.0e-3)
-        two = float(np.squeeze(two_medium_muon_range_km(
-            production_gev, threshold_gev, near_km, near_source, far_source,
-            density_g_cm3, b_scale, **range_kwargs
-        )))
-        ratio[i] = two / single
-    return ratio
+        return ratio if np.ndim(production_gev) else ratio[0]
+    single = np.asarray(stochastic_muon_range_km(
+        production, threshold_gev, density_g_cm3, b_scale, near_source, **range_kwargs
+    ))
+    # A muon with no single-medium range has no ratio to take, and keeps the 1
+    # that leaves the entering term to the optical medium alone.
+    usable = np.isfinite(single) & (single > 0.0)
+    if usable.any():
+        for i in np.flatnonzero(upgoing):
+            near_km = near_vertical_km / max(-float(cos_theta[i]), 1.0e-3)
+            two = np.asarray(two_medium_muon_range_km(
+                production, threshold_gev, near_km, near_source, far_source,
+                density_g_cm3, b_scale, **range_kwargs
+            ))
+            ratio[usable, i] = two[usable] / single[usable]
+    return ratio if np.ndim(production_gev) else ratio[0]
 
 
 @functools.lru_cache(maxsize=8192)
@@ -1288,22 +1446,16 @@ def _running_variance_rate_km2(
     """``int dlnE (-Phi''(0; E)) / Phi'(0; E)^3``, the running form of the term
     linear in ``w`` in :func:`stochastic_muon_range_variance_km2`."""
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
-    top = float(np.max(energy))
-    if top <= floor_gev:
-        return np.zeros_like(energy)
-    log10_grid = np.linspace(
-        np.log10(floor_gev),
-        np.log10(top),
-        max(2, int(np.ceil((np.log10(top) - np.log10(floor_gev)) * nodes_per_decade)) + 1),
+    return _depth_between_km(
+        "variance",
+        energy,
+        floor_gev,
+        density_g_cm3,
+        b_scale,
+        source,
+        "table",
+        nodes_per_decade,
     )
-    first, second, _ = log_loss_moments(10.0**log10_grid, density_g_cm3, source)
-    first, second = b_scale * first, b_scale * second
-    ln_grid = log10_grid * np.log(10.0)
-    integrand = second / first**3
-    cumulative = np.concatenate(
-        [[0.0], np.cumsum(np.diff(ln_grid) * 0.5 * (integrand[1:] + integrand[:-1]))]
-    )
-    return np.interp(np.log10(energy), log10_grid, cumulative)
 
 
 def stochastic_muon_range_variance_km2(

@@ -81,6 +81,7 @@ def sample_posterior(
     seed: int,
     args: tuple = (),
     discard_fraction: float = 1.0 / 3.0,
+    processes: int | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Sample a posterior with an affine-invariant ensemble and flatten the chain.
 
@@ -102,6 +103,17 @@ def sample_posterior(
         Extra positional arguments of ``log_probability``.
     discard_fraction : float, optional
         Fraction of the steps discarded as burn-in.
+    processes : int or None, optional
+        Worker processes to evaluate the ensemble with. ``None``, the default,
+        runs in this process. The walkers of one step are independent, so
+        splitting them across cores is close to linear in the number of them
+        and leaves the chain unchanged: the proposal draws come from the
+        sampler's own generator and the results are gathered back in walker
+        order. Only worth it where one evaluation costs more than the round
+        trip, which for the forward models here means milliseconds and up.
+        ``log_probability`` and everything in ``args`` have to be picklable,
+        so both must be reachable by import and not defined in a script that
+        another one loads by path.
 
     Returns
     -------
@@ -110,6 +122,9 @@ def sample_posterior(
     best : np.ndarray, shape (n_parameters,)
         The sample of highest log probability.
     """
+    import contextlib
+    import multiprocessing
+
     import emcee
 
     start = np.asarray(start, dtype=float)
@@ -117,8 +132,16 @@ def sample_posterior(
     initial = start + np.asarray(scatter, dtype=float) * rng.standard_normal(
         (walkers, start.size)
     )
-    sampler = emcee.EnsembleSampler(walkers, start.size, log_probability, args=args)
-    sampler.run_mcmc(initial, steps, progress=False)
+    opened = (
+        multiprocessing.Pool(processes)
+        if processes is not None and processes > 1
+        else contextlib.nullcontext()
+    )
+    with opened as pool:
+        sampler = emcee.EnsembleSampler(
+            walkers, start.size, log_probability, args=args, pool=pool
+        )
+        sampler.run_mcmc(initial, steps, progress=False)
     discard = int(steps * discard_fraction)
     chain = sampler.get_chain(discard=discard, flat=True)
     best = chain[np.argmax(sampler.get_log_prob(discard=discard, flat=True))]
