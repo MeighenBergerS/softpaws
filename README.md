@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="assets/Logo_cleaned_up.jpg" width="200"
+   alt="A neutrino entering an instrumented volume and the muon it makes leaving it">
+</p>
+
 # softpaws
 
 [![ci](https://github.com/MeighenBergerS/softpaws/actions/workflows/ci.yml/badge.svg)](https://github.com/MeighenBergerS/softpaws/actions/workflows/ci.yml)

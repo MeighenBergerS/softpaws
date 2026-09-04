@@ -6,6 +6,9 @@ site_author: Stephan Meighen-Berger
 copyright: © softpaws
 theme:
   name: readthedocs
+  custom_dir: docs_theme
+  logo: img/logo.jpg
+  # The readthedocs theme picks up docs/img/favicon.ico on its own.
 nav:
   - Documentation:
       - 'Getting started': './index.md'

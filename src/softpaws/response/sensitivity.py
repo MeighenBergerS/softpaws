@@ -53,6 +53,7 @@ __all__ = [
     "CONFIDENCE_LEVEL",
     "DEFAULT_BIN_RADIUS_DEG",
     "EXACT_BACKGROUND_MAX",
+    "BACKGROUND_CACHE_STEP",
     "N_EVENTS_LIMIT",
     "OPTIMAL_CONTAINMENT",
     "PIVOT_ENERGY_GEV",
@@ -94,6 +95,14 @@ DEFAULT_BIN_RADIUS_DEG = 1.0
 #: ``sqrt(b)`` to better than a per cent, and :func:`sensitivity_upper_limit`
 #: continues along that line instead.
 EXACT_BACKGROUND_MAX = 200.0
+
+#: Relative spacing the background is rounded to before the exact construction
+#: is cached. A window scan asks for thousands of backgrounds that differ in
+#: the fourth figure, and every distinct one is a construction from scratch,
+#: so without this the cache never hits. The average upper limit grows no
+#: faster than the root of the background, so a grid this fine moves it by
+#: under half of this, which is far below anything else in the answer.
+BACKGROUND_CACHE_STEP = 0.005
 
 #: Containment of the point-spread function that makes the best counting bin.
 #: For a Gaussian the radius maximizing signal over the root of the background
@@ -685,9 +694,29 @@ def sensitivity_upper_limit(
         out[i] = (
             slope * np.sqrt(b) + intercept
             if b > EXACT_BACKGROUND_MAX
-            else _exact_sensitivity(round(float(b), 6), confidence_level, mu_step)
+            else _exact_sensitivity(_cache_key(b), confidence_level, mu_step)
         )
     return out.reshape(values.shape) if values.ndim else out[0]
+
+
+def _cache_key(background: float) -> float:
+    """Background rounded onto the logarithmic grid the cache is kept on.
+
+    Parameters
+    ----------
+    background : float
+        Expected background events.
+
+    Returns
+    -------
+    background : float
+        The nearest point of a grid spaced by :data:`BACKGROUND_CACHE_STEP`
+        in relative terms.
+    """
+    if background <= 0.0:
+        return 0.0
+    step = float(np.log1p(BACKGROUND_CACHE_STEP))
+    return float(np.exp(np.round(np.log(background) / step) * step))
 
 
 @functools.lru_cache(maxsize=4096)

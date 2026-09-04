@@ -1,5 +1,8 @@
 # softpaws
 
+<img src="img/logo.jpg" alt="A neutrino entering an instrumented volume and the muon it makes leaving it"
+ width="220" style="display: block; margin: 0 auto 1.5em">
+
 softpaws builds the response of a neutrino telescope from muon transport
 rather than from simulation. It solves the transport of a high-energy muon
 through matter, turns that solution into the volume a detector effectively

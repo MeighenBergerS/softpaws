@@ -99,3 +99,20 @@ a.reference.internal.current:hover {
   transition: color 125ms;
 }
 /* -------------- */
+
+/* -------------- */
+/* Sidebar logo and site name */
+.wy-side-nav-search > a img.logo {
+    width: 120px;
+    max-width: 70%;
+    margin: .4em auto .6em;
+    padding: 6px;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.wy-side-nav-search > a .site-name {
+    display: block;
+    font-weight: 700;
+}
+/* -------------- */
