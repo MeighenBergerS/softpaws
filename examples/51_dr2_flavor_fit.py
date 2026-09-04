@@ -98,6 +98,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize
 
+from softpaws.comparison.feldman_cousins import cached_toys, profile_interval
 from softpaws.data.icecube import (
     IC86_SEASONS,
 )
@@ -726,18 +727,8 @@ class RecoLikelihood:
 
 
 def interval(curve, level):
-    """Crossing points of the profile at one threshold.
-
-    Parameters
-    ----------
-    curve : np.ndarray
-        Profile statistic on :data:`R_GRID`.
-    level : float or np.ndarray
-        Threshold, either one Wilks level or a calibrated threshold per grid
-        point.
-    """
-    below = curve <= level
-    return float(R_GRID[below].min()), float(R_GRID[below].max())
+    """Crossing points of the profile on :data:`R_GRID`; see :func:`profile_interval`."""
+    return profile_interval(R_GRID, curve, level)
 
 
 def fc_calibration(likelihood, nuisances, n_toys, seed, rebuild):
@@ -775,38 +766,36 @@ def fc_calibration(likelihood, nuisances, n_toys, seed, rebuild):
     """
     priors = np.array([CONV_PRIOR, PROMPT_PRIOR, TRACKS_GAMMA,
                        (TRACKS_PHI_MU[0] * 1e18, TRACKS_PHI_MU[1] * 1e18)])
-    if _FC_CACHE.exists() and not rebuild:
-        cache = np.load(_FC_CACHE)
-        if (int(cache["n_toys"]) == n_toys and int(cache["seed"]) == seed
-                and np.array_equal(cache["r_true"], FC_R_TRUE)
-                and "priors" in cache and np.array_equal(cache["priors"], priors)
-                and "version" in cache and int(cache["version"]) == _FC_VERSION):
-            print(f"  cached toy distributions from {_FC_CACHE.name}")
-            return cache["q"]
-    rng = np.random.default_rng(seed)
-    q = np.empty((FC_R_TRUE.size, n_toys))
-    for i, r_true in enumerate(FC_R_TRUE):
+    metadata = {"r_true": FC_R_TRUE, "n_toys": n_toys, "seed": seed, "priors": priors,
+                "version": _FC_VERSION}
+
+    def expectation(r_true):
         profiled = nuisances[int(np.argmin(np.abs(R_GRID - r_true)))]
         params = np.array((0.5 * ANCHORS["phi_mu"][0] / (1.0 - r_true),
                            ANCHORS["gamma"][0], profiled[2], profiled[3]))
-        mu = likelihood.expectation(r_true, *params)
-        for t in range(n_toys):
-            toy = rng.poisson(mu).astype(float)
-            fixed, warm = likelihood.delta_ll(r_true, data=toy,
-                                              warm_start=params)
-            lowest = fixed
-            for r_scan in FC_R_SCAN:
-                value, warm = likelihood.delta_ll(r_scan, data=toy,
-                                                  warm_start=warm,
-                                                  use_default_start=False)
-                lowest = min(lowest, value)
-            q[i, t] = fixed - lowest
-        print(f"  r_true {r_true:.1f}: c68 {np.percentile(q[i], 68.27):5.2f}, "
-              f"c95 {np.percentile(q[i], 95.0):5.2f}")
-    _FC_CACHE.parent.mkdir(parents=True, exist_ok=True)
-    np.savez(_FC_CACHE, r_true=FC_R_TRUE, q=q, n_toys=n_toys, seed=seed,
-             priors=priors, version=_FC_VERSION)
-    return q
+        return likelihood.expectation(r_true, *params), params
+
+    def build():
+        rng = np.random.default_rng(seed)
+        q = np.empty((FC_R_TRUE.size, n_toys))
+        for i, r_true in enumerate(FC_R_TRUE):
+            mu, params = expectation(r_true)
+            for t in range(n_toys):
+                toy = rng.poisson(mu).astype(float)
+                fixed, warm = likelihood.delta_ll(r_true, data=toy, warm_start=params)
+                lowest = fixed
+                for r_scan in FC_R_SCAN:
+                    value, warm = likelihood.delta_ll(r_scan, data=toy, warm_start=warm,
+                                                      use_default_start=False)
+                    lowest = min(lowest, value)
+                q[i, t] = fixed - lowest
+            print(f"  r_true {r_true:.1f}: c68 {np.percentile(q[i], 68.27):5.2f}, "
+                  f"c95 {np.percentile(q[i], 95.0):5.2f}")
+        return q
+
+    if _FC_CACHE.exists() and not rebuild:
+        print(f"  cached toy distributions from {_FC_CACHE.name} (if the metadata match)")
+    return cached_toys(_FC_CACHE, metadata, build, rebuild)
 
 
 def jackknife_tail(likelihood):

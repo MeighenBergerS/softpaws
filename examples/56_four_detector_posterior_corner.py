@@ -53,8 +53,8 @@ from dataclasses import dataclass
 import corner
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import chi2
 
+from softpaws.comparison.posterior import global_compatibility, leave_one_out_compatibility
 from softpaws.transport.attenuation import regenerated_transmission
 from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
 from softpaws.transport.source import nucleon_number_density
@@ -284,37 +284,14 @@ def four_way_compatibility(detectors) -> dict:
     """
     ex = _EX33
     indices = [ex.PARAM_NAMES.index(name) for name in ex.PHYSICS_PARAMS]
-    means = [d.chain[:, indices].mean(axis=0) for d in detectors]
-    precisions = [np.linalg.inv(np.cov(d.chain[:, indices].T)) for d in detectors]
-
-    def combine(subset):
-        precision = sum(precisions[i] for i in subset)
-        covariance = np.linalg.inv(precision)
-        mean = covariance @ sum(precisions[i] @ means[i] for i in subset)
-        return mean, covariance
-
+    chains = [d.chain[:, indices] for d in detectors]
     out = {"params": list(ex.PHYSICS_PARAMS), "leave_one_out": {}}
-    n = len(detectors)
-    for i, d in enumerate(detectors):
-        others = [j for j in range(n) if j != i]
-        mean, covariance = combine(others)
-        delta = means[i] - mean
-        chi_square = float(delta @ np.linalg.solve(covariance + np.linalg.inv(precisions[i]),
-                                                   delta))
-        p = float(chi2.sf(chi_square, len(indices)))
-        out["leave_one_out"][d.name] = {
-            "chi2": chi_square, "p_value": p,
-            "sigma": float(np.sqrt(chi2.isf(p, 1))) if p > 0.0 else float("inf")}
-    mean, covariance = combine(range(n))
-    chi_square = float(sum((means[i] - mean) @ precisions[i] @ (means[i] - mean)
-                           for i in range(n)))
-    dof = len(indices) * (n - 1)
-    p = float(chi2.sf(chi_square, dof))
-    out["global"] = {"chi2": chi_square, "dof": dof, "p_value": p,
-                     "sigma": float(np.sqrt(chi2.isf(p, 1))) if p > 0.0 else float("inf")}
-    out["combined_mean"] = {name: float(mean[k]) for k, name in enumerate(ex.PHYSICS_PARAMS)}
-    out["combined_sigma"] = {name: float(np.sqrt(covariance[k, k]))
-                             for k, name in enumerate(ex.PHYSICS_PARAMS)}
+    for d, result in zip(detectors, leave_one_out_compatibility(chains)):
+        out["leave_one_out"][d.name] = result
+    overall = global_compatibility(chains, ex.PHYSICS_PARAMS)
+    out["global"] = {key: overall[key] for key in ("chi2", "dof", "p_value", "sigma")}
+    out["combined_mean"] = overall["combined_mean"]
+    out["combined_sigma"] = overall["combined_sigma"]
     return out
 
 

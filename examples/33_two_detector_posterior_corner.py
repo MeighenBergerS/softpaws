@@ -77,12 +77,20 @@ from dataclasses import dataclass, field
 from typing import Callable
 
 import corner
-import emcee
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import chi2, gaussian_kde
 
 from softpaws.comparison.likelihood import B_SCALE_MEAN, B_SCALE_STD
+from softpaws.comparison.posterior import (
+    credible_interval,
+    inside_box,
+    intersection,
+    log_gaussian_in_log,
+    marginal_summary,
+    pairwise_compatibility,
+    product_posterior,
+    sample_posterior,
+)
 from softpaws.data.icecube import (
     livetime_weighted_effective_area,
 )
@@ -721,20 +729,11 @@ def log_probability(theta: np.ndarray, detector: Detector, sigma_ln: float) -> f
     Gaussian the event-rate fits use (:mod:`softpaws.comparison.likelihood`),
     identically for both detectors.
     """
-    for value, name in zip(theta, PARAM_NAMES):
-        low, high = detector.priors[name]
-        if not low < value < high:
-            return -np.inf
+    if not inside_box(theta, [detector.priors[name] for name in PARAM_NAMES]):
+        return -np.inf
     log_prior = -0.5 * ((theta[2] - B_SCALE_MEAN) / B_SCALE_STD) ** 2
     predicted = detector.predict(theta, detector.mask)
-    # A large positive reach drives the effective radius through zero at the
-    # bottom of the ladder, which a geometric ceiling cannot represent; anything
-    # non-positive or non-finite is outside the model rather than merely
-    # unlikely, so it is rejected instead of scored.
-    if not np.all(np.isfinite(predicted)) or np.any(predicted <= 0.0):
-        return -np.inf
-    residual = np.log(detector.observed[detector.mask] / predicted)
-    return log_prior - 0.5 * float(np.sum((residual / sigma_ln) ** 2))
+    return log_prior + log_gaussian_in_log(detector.observed[detector.mask], predicted, sigma_ln)
 
 
 def run_fit(detector: Detector, steps: int, walkers: int, sigma: float, seed: int) -> None:
@@ -742,18 +741,10 @@ def run_fit(detector: Detector, steps: int, walkers: int, sigma: float, seed: in
     # Per-parameter scatter: reach_km lives on a scale two orders of magnitude
     # below the others, so a common 0.02 would throw walkers out of its prior.
     scatter = np.array([0.02, 0.02, 0.02, 0.02, 0.002])
-    rng = np.random.default_rng(seed)
-    initial = detector.start + scatter * rng.standard_normal((walkers, detector.start.size))
-
     print(f"Sampling {detector.name} ({walkers} walkers x {steps} steps) ...")
-    sampler = emcee.EnsembleSampler(
-        walkers, detector.start.size, log_probability, args=(detector, sigma)
+    detector.chain, detector.best = sample_posterior(
+        log_probability, detector.start, scatter, walkers, steps, seed, args=(detector, sigma)
     )
-    sampler.run_mcmc(initial, steps, progress=False)
-    detector.chain = sampler.get_chain(discard=steps // 3, flat=True)
-    detector.best = detector.chain[
-        np.argmax(sampler.get_log_prob(discard=steps // 3, flat=True))
-    ]
 
 
 # ---------------------------------------------------------------------------
@@ -762,9 +753,7 @@ def run_fit(detector: Detector, steps: int, walkers: int, sigma: float, seed: in
 
 
 def _interval(chain: np.ndarray, index: int, level: float) -> tuple[float, float]:
-    half = 100.0 * (1.0 - level) / 2.0
-    lo, hi = np.percentile(chain[:, index], [half, 100.0 - half])
-    return float(lo), float(hi)
+    return credible_interval(chain[:, index], level)
 
 
 def overlap_region(detectors: list[Detector]) -> dict:
@@ -816,82 +805,27 @@ def overlap_region(detectors: list[Detector]) -> dict:
         "intersection_68": {},
         "physics_params": list(PHYSICS_PARAMS),
     }
-
-    for i, name in enumerate(PARAM_NAMES):
-        region["marginals"][name] = {}
-        for d in detectors:
-            lo68, hi68 = _interval(d.chain, i, 0.68)
-            lo95, hi95 = _interval(d.chain, i, 0.95)
-            low, high = d.priors[name]
-            # A 68% edge sitting on a prior edge means the prior box is doing
-            # the constraining, not the data: the interval is then a bound, not
-            # a measurement, and must not be quoted as one.
-            span = high - low
-            railed = [
-                bool(lo68 - low < 0.02 * span),
-                bool(high - hi68 < 0.02 * span),
-            ]
-            region["marginals"][name][d.name] = {
-                "median": float(np.median(d.chain[:, i])),
-                "best_fit": float(d.best[i]),
-                "ci68": [lo68, hi68],
-                "ci95": [lo95, hi95],
-                "prior": [float(low), float(high)],
-                "rails_prior": {"low": railed[0], "high": railed[1]},
-            }
-        lo = max(region["marginals"][name][d.name]["ci68"][0] for d in detectors)
-        hi = min(region["marginals"][name][d.name]["ci68"][1] for d in detectors)
+    summaries = {
+        d.name: marginal_summary(d.chain, PARAM_NAMES, d.priors, d.best) for d in detectors
+    }
+    for name in PARAM_NAMES:
+        region["marginals"][name] = {d.name: summaries[d.name][name] for d in detectors}
         region["intersection_68"][name] = {
-            "low": float(lo),
-            "high": float(hi),
-            "empty": bool(hi <= lo),
+            **intersection([summaries[d.name][name]["ci68"] for d in detectors]),
             "comparable": name in CORNER_PARAMS,
         }
-
-    # Product posterior on the shared subspace.
     indices = [PARAM_NAMES.index(name) for name in PHYSICS_PARAMS]
-    bounds = []
-    for i in indices:
-        lo = min(np.percentile(d.chain[:, i], 0.5) for d in detectors)
-        hi = max(np.percentile(d.chain[:, i], 99.5) for d in detectors)
-        bounds.append((float(lo), float(hi)))
-    axes = [np.linspace(lo, hi, 160) for lo, hi in bounds]
-    mesh = np.meshgrid(*axes, indexing="ij")
-    points = np.vstack([m.ravel() for m in mesh])
-    density = np.ones(points.shape[1])
-    for d in detectors:
-        density *= gaussian_kde(d.chain[:, indices].T)(points)
-    density = density.reshape(mesh[0].shape)
-    total = density.sum()
-
-    region["product_posterior"] = {"params": list(PHYSICS_PARAMS)}
-    for axis, (name, grid) in enumerate(zip(PHYSICS_PARAMS, axes)):
-        others = tuple(a for a in range(density.ndim) if a != axis)
-        marginal = density.sum(axis=others) / total
-        cumulative = np.cumsum(marginal)
-        median, lo68, hi68 = np.interp([0.5, 0.16, 0.84], cumulative, grid)
-        region["product_posterior"][name] = {
-            "median": float(median),
-            "ci68": [float(lo68), float(hi68)],
-        }
-    peak = np.unravel_index(np.argmax(density), density.shape)
-    region["product_posterior"]["mode"] = {
-        name: float(grid[peak[axis]]) for axis, (name, grid) in enumerate(zip(PHYSICS_PARAMS, axes))
-    }
-
-    # Compatibility on the shared subspace.
-    means = [d.chain[:, indices].mean(axis=0) for d in detectors]
-    covariances = [np.cov(d.chain[:, indices].T) for d in detectors]
-    delta = means[0] - means[1]
-    chi_square = float(delta @ np.linalg.solve(covariances[0] + covariances[1], delta))
-    p_value = float(chi2.sf(chi_square, len(indices)))
+    region["product_posterior"] = product_posterior(
+        [d.chain[:, indices] for d in detectors], PHYSICS_PARAMS
+    )
+    pair = pairwise_compatibility(first.chain[:, indices], second.chain[:, indices])
     region["compatibility"] = {
         "params": list(PHYSICS_PARAMS),
-        "dof": len(indices),
-        "chi2": chi_square,
-        "p_value": p_value,
-        "sigma": float(np.sqrt(chi2.isf(p_value, 1))) if p_value > 0.0 else float("inf"),
-        "delta": {name: float(delta[k]) for k, name in enumerate(PHYSICS_PARAMS)},
+        "dof": pair["dof"],
+        "chi2": pair["chi2"],
+        "p_value": pair["p_value"],
+        "sigma": pair["sigma"],
+        "delta": {name: float(pair["delta"][k]) for k, name in enumerate(PHYSICS_PARAMS)},
     }
     region["note"] = (
         f"{first.name} is compared at {first.selection_level} level and "
