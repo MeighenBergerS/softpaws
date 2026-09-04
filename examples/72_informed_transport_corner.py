@@ -33,6 +33,8 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.transport.loss_ensemble import implied_scales
+
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
@@ -74,10 +76,7 @@ def parse_args() -> argparse.Namespace:
 def implied_b_scales() -> dict:
     """Effective ``b_scale`` each ensemble variant implies over the window."""
     _, ratios = _EX69.load_ensemble(False)
-    log_e = np.log10(_EX69.E_GRID)
-    keep = (log_e >= IMPLIED_WINDOW[0]) & (log_e <= IMPLIED_WINDOW[1])
-    return {label: float(np.exp(np.mean(np.log(values[keep, 0]))))
-            for label, values in ratios.items()}
+    return implied_scales(ratios, _EX69.E_GRID, IMPLIED_WINDOW)
 
 
 def run_corner(args, prior_mean: float, prior_std: float, seed0: int) -> list:

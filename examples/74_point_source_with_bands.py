@@ -33,6 +33,9 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.transport.coefficients import set_kernel_scaling
+from softpaws.transport.loss_ensemble import variant_scaling
+
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
@@ -83,12 +86,7 @@ def parse_args() -> argparse.Namespace:
 
 def activate(ratios, label) -> None:
     """One ensemble variant on top of the fitted transport scale."""
-    _EX70.set_variant(ratios, label)
-    k1, k2 = _EX70._ACTIVE["kappa1"], _EX70._ACTIVE["kappa2"]
-    _EX70._ACTIVE["kappa1"] = (
-        lambda e, f=k1: B_SCALE_FITTED * (f(e) if f is not None else 1.0))
-    _EX70._ACTIVE["kappa2"] = (
-        lambda e, f=k2: B_SCALE_FITTED * (f(e) if f is not None else 1.0))
+    set_kernel_scaling(variant_scaling(ratios, label, _EX69.E_GRID, prefactor=B_SCALE_FITTED))
 
 
 def build_variant(args, sites, sin_dec_edges, dec_grid) -> dict:

@@ -110,13 +110,13 @@ library and delete the private copy. Never move two hubs in one commit.
 
 | Step | New module | Lifted from | Kills |
 |---|---|---|---|
-| 1.1 | `detectors/sites.py` | `34`, `35`, `45` (`Site`), `33`, `56` (`Detector`) | three dataclasses, two `build_sites`, two `build_detectors`, ~60 loose constants in 12 files; resolves the IceCube-radius and Gen2 conflicts |
-| 1.2 | `data/icecube.py` | `03`, `04`, `07`, `28`, `29`, `31`, `33` | `icecube_upgoing` x4, `load_ic86_observed_and_livetime` x5, `_canonical_irf_season` x9, `combine_seasons` x2, `IC86_SEASONS` x6 |
-| 1.3 | `transport/earth.py` | `attenuation.py` (PREM, chord, column) + `30`, `31`, `32` (`earth_column_g_cm2`, `upstream_column_km`, `zenith_grid`) | the three-way column duplication; also unifies the two `column_depth` units |
+| 1.1 done | `detectors/sites.py`, `detectors/optics.py` | `34`, `35`, `45` (`Site`), `33`, `56` (`Detector`) | three dataclasses, two `build_sites`, ~60 loose constants in 8 files; IceCube 0.564 km prism, Gen2 7.9 km^3 by 1.25 km; example 35 reproduces its log exactly. `33`/`56`'s fit `Detector` waits for 1.8 |
+| 1.2 done | `data/icecube.py` | `03`, `04`, `07`, `28`, `29`, `31`, `33` | `icecube_upgoing` x4, `load_ic86_observed_and_livetime` x5, `_canonical_irf_season` x9, `combine_seasons`, `IC86_SEASONS` x6 in 15 scripts; example 03's curve unchanged |
+| 1.3 done | `transport/earth.py` | `attenuation.py` (PREM, chord, column) + `30`, `31`, `32`, `33`, `56` (`earth_column_g_cm2`, `upstream_column_km`, `zenith_grid`, `arca_columns`, `water_columns`) | the five-way column duplication; `attenuation.py` re-exports the moved names. The two `column_depth` units are still open |
 | 1.4 | `response/effective_area.py` | `30`, `31`, `32`, `45` (`truncated_range_km`, `projected_area_km2`, `fit_reach_law`, `arca_effective_area`, `ic_effective_area_*`, reach derivation) | the engine that `41`, `43`, `44`, `45` reach through `32` for |
 | 1.5 | `response/declination.py` | `35`, `46`, `47` (`directional_aeff_cm2`, band-by-band evaluation, point-source ceiling) | the two largest hubs |
-| 1.6 | `fluxes/` | `06`, `07`, `14`, `51`, `54`, `57` (`power_law_flux`, `bpl_shape`, IceCube anchors, MCEq table loader from `22`) | `PHI0`/`GAMMA` in 6 files, `bpl_shape` x2 |
-| 1.7 | `transport/loss_ensemble.py` | `69`, `70` (the loss-model variant ensemble and the A_eff band it implies) | `70`, `71`, `74`, `75` stop importing `69` |
+| 1.6 done | `fluxes/astrophysical.py`, `fluxes/atmospheric.py` | `06`, `07`, `12`, `14`, `21`, `22`, `49`, `51`, `54`, `57` (`power_law_flux`, `bpl_shape`, the IceCube fits, MCEq builder and interpolator) | `PHI0`/`GAMMA` in 6 files, `bpl_shape` x2, three copies of the atmospheric grid reader; grids and anchors of 49/51/54 unchanged |
+| 1.7 done | `transport/loss_ensemble.py` + a `KernelScaling` hook in `coefficients.py` | `69`, `70` (the variant ensemble; `70`'s `sys.modules` monkeypatch becomes `set_kernel_scaling`), `72` (implied scales), `71`/`74` (variant activation) | the patch walker; drift, second moment and range per variant identical to the old route |
 | 1.8 | `response/reduced.py` | `77`, `78`, `81` (two-number reduced response, optics-predicted reach, TRIDENT 2025 map) | `78` to `83` collapse to plotting |
 | 1.9 | `comparison/mcmc.py`, `comparison/feldman_cousins.py` | `29`, `33`, `51`, `54`, `56`, `72` | `log_probability` x2, `summarize` x5, `fc_calibration` x2, `bayes_factor` x4 |
 | 1.10 | `comparison/events.py` | `51`, `76` (upgoing IC86 window, pinned-flux prediction, published-IRF baseline) | the headline benchmark becomes one function call |

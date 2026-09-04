@@ -45,7 +45,10 @@ lives inside the published IceCube response rather than in the transport.
 
 from __future__ import annotations
 
+import contextlib
+import dataclasses
 import pathlib
+from typing import Callable
 
 import numpy as np
 
@@ -121,6 +124,90 @@ def _load_proposal_table(source: str = PROPOSAL_SOURCE) -> tuple[np.ndarray, ...
         table = np.loadtxt(path, delimiter=",")
         _proposal_tables[source] = (np.log10(table[:, 0]), *table[:, 1:].T)
     return _proposal_tables[source]
+
+
+
+# ---------------------------------------------------------------------------
+# Kernel scaling hook, for the loss-model error budget
+# ---------------------------------------------------------------------------
+
+
+@dataclasses.dataclass(frozen=True)
+class KernelScaling:
+    """Energy-dependent factors that rescale the tabulated kernel moments.
+
+    Used by :mod:`softpaws.transport.loss_ensemble` to push one alternative
+    loss parametrization through every calculation without rebuilding the
+    table: the ensemble is linear in the loss spectrum, so a swapped channel
+    is a ratio of moments at each energy.
+
+    Attributes
+    ----------
+    kappa_1 : callable
+        Ratio of the first moments, ``Phi'_var(0) / Phi'(0)`` and
+        ``b_var / b``, as a function of the muon energy [GeV].
+    kappa_2 : callable
+        Ratio of the second moments, applied to ``d_mu``, to ``-Phi''(0)``
+        and to the third log-loss moment.
+    """
+
+    kappa_1: Callable[[np.ndarray], np.ndarray]
+    kappa_2: Callable[[np.ndarray], np.ndarray]
+
+
+_KERNEL_SCALING: KernelScaling | None = None
+
+
+def set_kernel_scaling(scaling: KernelScaling | None) -> None:
+    """Install (or with ``None`` remove) a global :class:`KernelScaling`.
+
+    While a scaling is installed, :func:`drift_coefficient`,
+    :func:`diffusion_coefficient` and :func:`log_loss_moments` multiply their
+    results by its factors at the requested energy, so everything built on
+    them sees the alternative kernel.
+
+    Parameters
+    ----------
+    scaling : KernelScaling or None
+        The factors to apply, or ``None`` for the shipped table.
+    """
+    global _KERNEL_SCALING
+    _KERNEL_SCALING = scaling
+
+
+def kernel_scaling() -> KernelScaling | None:
+    """The installed :class:`KernelScaling`, or ``None``."""
+    return _KERNEL_SCALING
+
+
+@contextlib.contextmanager
+def scaled_kernel(scaling: KernelScaling | None):
+    """Install a :class:`KernelScaling` for a block and restore the old one after.
+
+    Parameters
+    ----------
+    scaling : KernelScaling or None
+        The factors to apply inside the block.
+
+    Examples
+    --------
+    >>> with scaled_kernel(None):
+    ...     b = drift_coefficient(1.0e6)
+    """
+    previous = _KERNEL_SCALING
+    set_kernel_scaling(scaling)
+    try:
+        yield
+    finally:
+        set_kernel_scaling(previous)
+
+
+def _scale(value, energy_gev, order: int):
+    """Apply the installed scaling of the given moment order, if any."""
+    if _KERNEL_SCALING is None:
+        return value
+    factor = _KERNEL_SCALING.kappa_1 if order == 1 else _KERNEL_SCALING.kappa_2
+    return value * factor(energy_gev)
 
 
 def _interpolate(
@@ -444,7 +531,7 @@ def drift_coefficient(
     (logarithmic), so this is adequate in the drift limit.
     """
     b_water = _interpolate(energy_gev, source, 0)
-    return b_water * (density_g_cm3 / RHO_WATER_G_CM3)
+    return _scale(b_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 1)
 
 
 def diffusion_coefficient(
@@ -476,7 +563,7 @@ def diffusion_coefficient(
     tabulated for the diffusion extension.
     """
     d_water = _interpolate(energy_gev, source, 1)
-    return d_water * (density_g_cm3 / RHO_WATER_G_CM3)
+    return _scale(d_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 2)
 
 
 def third_moment_coefficient(
@@ -566,7 +653,10 @@ def log_loss_moments(
         if the shipped PROPOSAL table predates these columns.
     """
     scale = density_g_cm3 / RHO_WATER_G_CM3
-    return tuple(_interpolate(energy_gev, source, column) * scale for column in (3, 4, 5))
+    return tuple(
+        _scale(_interpolate(energy_gev, source, column) * scale, energy_gev, order)
+        for column, order in ((3, 1), (4, 2), (5, 2))
+    )
 
 
 def ionization_coefficient(density_g_cm3: float = RHO_WATER_G_CM3) -> float:

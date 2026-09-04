@@ -40,6 +40,8 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.transport.loss_ensemble import variant_scaling
+
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
@@ -76,15 +78,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def kappa_interp(ratios, label: str):
+def kappa_interp(ratios, label):
     """``kappa_1(E)`` of one ensemble variant, log-interpolated."""
-    values = ratios[label][:, 0]
-
-    def kappa(energy_gev):
-        log_e = np.log10(np.asarray(energy_gev, dtype=float))
-        return np.interp(log_e, np.log10(_EX69.E_GRID), values)
-
-    return kappa
+    return variant_scaling(ratios, label, _EX69.E_GRID).kappa_1
 
 
 def variant_likelihood(u, energy_nu, kappa, normalize=True):

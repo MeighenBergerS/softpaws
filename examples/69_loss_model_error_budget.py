@@ -50,8 +50,8 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.transport.coefficients import loss_spectrum_y_grid
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
+from softpaws.transport import loss_ensemble as ensemble
+from softpaws.transport.loss_ensemble import VARIANTS
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -68,26 +68,17 @@ def load_example(stem: str, name: str):
 
 
 #: Energy grid of the budget [GeV] (the shipped table's range).
-E_GRID = np.logspace(2.0, 10.0, 33)
+E_GRID = ensemble.E_GRID
 
 #: Moment orders kept: ``Phi'(0)`` (drift; the energy-reconstruction scale)
 #: and ``Phi''(0)`` (the fluctuation scale).
-N_MOMENTS = 2
+N_MOMENTS = ensemble.N_MOMENTS
 
 #: The KM3-230213A reference energy [GeV] for the printed error bar.
 KM3_MU_GEV = 1.2e8
 
-#: Variant label -> (channel to swap, human name). Constructors live in
-#: :func:`variant_parametrization` to keep the optional import local.
-VARIANTS = {
-    "brems ABB": ("bremsstrahlung", "Andreev-Bezrukov-Bugaev"),
-    "brems NLO": ("bremsstrahlung", "Sandrock-Soedingrekso-Rhode"),
-    "pair NLO": ("pair production", "Sandrock-Soedingrekso-Rhode"),
-    "photo BB": ("photonuclear", "Bezrukov-Bugaev + hard"),
-    "photo BDH": ("photonuclear", "Block-Durand-Ha"),
-    "photo ALLM91": ("photonuclear", "ALLM91"),
-    "photo DRSS": ("photonuclear", "ALLM97, DRSS shadowing"),
-}
+# The variants, the moments and the ensemble itself live in
+# :mod:`softpaws.transport.loss_ensemble`; the names stay for the scripts that load this one.
 
 COLORS = {"bremsstrahlung": ("#7570b3", "#8da0cb"), "pair production": ("0.45",),
           "photonuclear": ("#e7298a", "#d95f02", "#e6ab02", "#a6761d"),
@@ -105,98 +96,25 @@ def parse_args() -> argparse.Namespace:
 
 
 def variant_parametrization(label: str):
-    """PROPOSAL parametrization object for one variant channel."""
-    import proposal as pp
-
-    shadow_bm = pp.parametrization.photonuclear.ShadowButkevichMikheyev
-    builders = {
-        "brems ABB": lambda: pp.parametrization.bremsstrahlung.AndreevBezrukovBugaev(False),
-        "brems NLO": lambda: pp.parametrization.bremsstrahlung.SandrockSoedingreksoRhode(False),
-        "pair NLO": lambda: pp.parametrization.pairproduction.SandrockSoedingreksoRhode(False),
-        "photo BB": lambda: pp.parametrization.photonuclear.BezrukovBugaev(True),
-        "photo BDH": lambda: pp.parametrization.photonuclear.BlockDurandHa(shadow_bm()),
-        "photo ALLM91": lambda: pp.parametrization.photonuclear.AbramowiczLevinLevyMaor91(
-            shadow_bm()),
-        "photo DRSS": lambda: pp.parametrization.photonuclear.AbramowiczLevinLevyMaor97(
-            pp.parametrization.photonuclear.ShadowDuttaRenoSarcevicSeckel()),
-    }
-    return builders[label]()
+    """See :func:`softpaws.transport.loss_ensemble.variant_parametrization`."""
+    return ensemble.variant_parametrization(label)
 
 
 def channel_moments(param, energy_gev: float, y: np.ndarray) -> np.ndarray:
-    """Log-loss moments ``<(-ln(1-y))^n>`` of one channel [km^-1].
-
-    The same quadrature and water convention as
-    :func:`~softpaws.transport.coefficients.build_proposal_table`.
-    """
-    import proposal as pp
-
-    particle = pp.particle.MuMinusDef()
-    medium = pp.medium.Water()
-    energy_mev = energy_gev * 1.0e3
-    molar_mass = sum(c.atoms_in_molecule * c.atomic_number for c in medium.components)
-    scale = CM_PER_KM * RHO_WATER_G_CM3 / medium.mass_density
-    rate = np.zeros_like(y)
-    for component in medium.components:
-        limits = param.kinematic_limits(particle, component, energy_mev)
-        inside = (y > limits.v_min) & (y < limits.v_max)
-        per_gram = np.zeros_like(y)
-        per_gram[inside] = [
-            param.differential_crosssection(particle, component, energy_mev, value)
-            for value in y[inside]
-        ]
-        weight = component.atoms_in_molecule * component.atomic_number / molar_mass
-        rate += medium.mass_density * weight * per_gram
-    rate *= scale
-    log_loss = -np.log1p(-y)
-    return np.array([np.trapezoid(log_loss**n * rate, y) for n in range(1, N_MOMENTS + 1)])
+    """See :func:`softpaws.transport.loss_ensemble.channel_moments`."""
+    return ensemble.channel_moments(param, energy_gev, y, N_MOMENTS)
 
 
 def build_ensemble() -> dict:
-    """Baseline channel moments and every variant's swapped channel."""
-    from softpaws.transport.coefficients import proposal_parametrizations
-
-    y = loss_spectrum_y_grid()
-    base_params = proposal_parametrizations()
-    baseline = {ch: np.zeros((E_GRID.size, N_MOMENTS)) for ch in base_params}
-    print("Baseline channels (KKP + KKP + ALLM97/BM) ...")
-    for i, e in enumerate(E_GRID):
-        for ch, param in base_params.items():
-            baseline[ch][i] = channel_moments(param, float(e), y)
-    swapped = {}
-    for label, (channel, name) in VARIANTS.items():
-        print(f"Variant {label} ({name}) ...")
-        param = variant_parametrization(label)
-        swapped[label] = np.array([channel_moments(param, float(e), y) for e in E_GRID])
-    out = {f"base {ch}": v for ch, v in baseline.items()}
-    out.update({f"swap {label}": v for label, v in swapped.items()})
-    return out
+    """See :func:`softpaws.transport.loss_ensemble.build_ensemble`."""
+    return ensemble.build_ensemble(E_GRID, VARIANTS, N_MOMENTS)
 
 
 def load_ensemble(rebuild: bool) -> tuple:
-    """The ensemble, from the cache when it is present.
-
-    Returns
-    -------
-    baseline : dict
-        Channel -> ``(n_e, N_MOMENTS)`` baseline moments.
-    ratios : dict
-        Variant label -> ``(n_e, N_MOMENTS)`` total-moment ratio to baseline.
-    """
+    """The ensemble from the cache; see :func:`softpaws.transport.loss_ensemble.load_ensemble`."""
     if _CACHE.exists() and not rebuild:
         print(f"  cached ensemble from {_CACHE.name}")
-        data = dict(np.load(_CACHE))
-    else:
-        data = build_ensemble()
-        _CACHE.parent.mkdir(parents=True, exist_ok=True)
-        np.savez(_CACHE, **data)
-    baseline = {k[5:]: v for k, v in data.items() if k.startswith("base ")}
-    total = sum(baseline.values())
-    ratios = {}
-    for label, (channel, _) in VARIANTS.items():
-        variant_total = total - baseline[channel] + data[f"swap {label}"]
-        ratios[label] = variant_total / total
-    return baseline, ratios
+    return ensemble.load_ensemble(_CACHE, rebuild)
 
 
 def _save(fig, out_dir: pathlib.Path, stem: str) -> None:

@@ -39,10 +39,12 @@ Usage
 import argparse
 import importlib.util
 import pathlib
-import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+from softpaws.transport.coefficients import set_kernel_scaling
+from softpaws.transport.loss_ensemble import variant_scaling
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -57,10 +59,6 @@ def load_example(stem: str, name: str):
     spec.loader.exec_module(module)
     return module
 
-
-#: The active loss-variant ratios; identity for the baseline. Set by
-#: :func:`set_variant`, read by the patched coefficients at call time.
-_ACTIVE = {"kappa1": None, "kappa2": None}
 
 #: Point-source fold: spectral indices and the lower integration edge [GeV].
 GAMMA_GRID = np.linspace(1.5, 3.5, 21)
@@ -82,67 +80,16 @@ def parse_args() -> argparse.Namespace:
 
 
 def install_patches() -> None:
-    """Wrap ``drift_coefficient`` and ``diffusion_coefficient`` everywhere.
+    """Kept for the scripts that call it; the library hook needs no patching.
 
-    Every softpaws module that from-imported the two names holds its own
-    alias; each alias of the original function objects is replaced, so the
-    wrap reaches library-internal calls and every example loaded afterwards.
+    The coefficients read :func:`softpaws.transport.coefficients.kernel_scaling`
+    at call time, so :func:`set_variant` reaches every caller.
     """
-    import softpaws.transport.coefficients as co
-
-    base_drift, base_diff = co.drift_coefficient, co.diffusion_coefficient
-    base_moments = co.log_loss_moments
-
-    def drift(*args, **kwargs):
-        out = base_drift(*args, **kwargs)
-        if _ACTIVE["kappa1"] is not None:
-            out = out * _ACTIVE["kappa1"](args[0])
-        return out
-
-    def diffusion(*args, **kwargs):
-        out = base_diff(*args, **kwargs)
-        if _ACTIVE["kappa2"] is not None:
-            out = out * _ACTIVE["kappa2"](args[0])
-        return out
-
-    def moments(*args, **kwargs):
-        # The first-passage range reads Phi'(0) and Phi''(0) through this
-        # accessor, not through drift_coefficient -- the miss that made the
-        # first version of this example brightness-only. The third moment is
-        # scaled with kappa_2 as well; it is discarded by every range call.
-        first, second, third = base_moments(*args, **kwargs)
-        if _ACTIVE["kappa1"] is not None:
-            k1, k2 = _ACTIVE["kappa1"](args[0]), _ACTIVE["kappa2"](args[0])
-            first, second, third = first * k1, second * k2, third * k2
-        return first, second, third
-
-    for module in list(sys.modules.values()):
-        if module is None or not getattr(module, "__name__", "").startswith("softpaws"):
-            continue
-        for name, value in vars(module).items():
-            if value is base_drift:
-                setattr(module, name, drift)
-            elif value is base_diff:
-                setattr(module, name, diffusion)
-            elif value is base_moments:
-                setattr(module, name, moments)
 
 
 def set_variant(ratios, label: str | None) -> None:
     """Activate one ensemble variant (``None`` restores the baseline)."""
-    if label is None:
-        _ACTIVE["kappa1"] = _ACTIVE["kappa2"] = None
-        return
-    ex69_grid = _EX69.E_GRID
-    values = ratios[label]
-
-    def make(column):
-        def kappa(energy_gev):
-            log_e = np.log10(np.asarray(energy_gev, dtype=float))
-            return np.interp(log_e, np.log10(ex69_grid), values[:, column])
-        return kappa
-
-    _ACTIVE["kappa1"], _ACTIVE["kappa2"] = make(0), make(1)
+    set_kernel_scaling(variant_scaling(ratios, label, _EX69.E_GRID))
 
 
 #: Example 69 supplies the ensemble (from its cache); patches go in before
