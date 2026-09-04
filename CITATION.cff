@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: softpaws
+message: If you use this software, please cite both the software and the method paper.
+type: software
+authors:
+  - given-names: Stephan A.
+    family-names: Meighen-Berger
+    email: stephan.meighenberger@gmail.com
+    orcid: https://orcid.org/0000-0001-6579-2000
+repository-code: https://github.com/MeighenBergerS/softpaws
+url: https://meighenbergers.github.io/softpaws/
+abstract: >-
+  A first-principles forward model for ultra-high-energy neutrino telescopes.
+  softpaws solves high-energy muon transport analytically and builds detector
+  effective areas, event rates and single-event energy reconstructions from
+  that solution, for IceCube, KM3NeT/ARCA, P-ONE, TRIDENT and Baikal-GVD.
+keywords:
+  - neutrino
+  - neutrino telescope
+  - muon transport
+  - effective area
+  - astroparticle physics
+license: GPL-3.0-or-later
+version: 0.1.0
