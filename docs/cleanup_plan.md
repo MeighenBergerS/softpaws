@@ -176,7 +176,16 @@ the `--run-slow` gating.
 8. **`tests/conftest.py`** copied from prometheus: chdir to the repo root and
    `--run-slow` gating. Mark the MCMC and PROPOSAL tests slow.
 
-### Phase 3. Paper scripts (1 to 2 days, after Phase 1)
+### Phase 3. Paper scripts (done 2026-09-04)
+
+Done, though not in the shape first sketched. Rather than rewriting each
+figure as a fresh script, the 52 paper-producing scripts moved unchanged to
+`scripts/2026_muon_transport/`, with a README mapping every figure and table
+to its script and a `run_all.py` that runs the 26-step chain in dependency
+order and skips whatever is cached. That preserves reproducibility today; the
+per-figure rewrite is follow-up work, and is easier now that the library holds
+the physics. The seven BSM scripts moved to `scripts/future_bsm/`.
+
 
 `scripts/2026_muon_transport/` reproduces the paper and nothing else. Rename
 the directory to the arXiv number on submission.
@@ -260,7 +269,14 @@ repository, and point `CONTRIBUTING.md` at them.
 `ci.yml` runs `ruff check`, `ruff format --check` and `pytest -m "not slow"`
 on Python 3.11 to 3.13.
 
-### Phase 6. Release (half a day)
+### Phase 6. Release (mostly done 2026-09-04)
+
+Done: the README, `CITATION.cff`, `CHANGELOG.md`, and the clean-clone
+acceptance test (a fresh clone installs with `pip install -e ".[dev]"` and
+401 tests pass, the 33 skips being the ones that need a downloaded release).
+Left for the author: tagging `v0.1.0`, and registering the project on PyPI so
+the publish workflow has somewhere to upload to.
+
 
 README rewritten to the prometheus structure (badges, link table, summary,
 citation, contributing, getting help). `CITATION.cff`. `CHANGELOG.md` with a
