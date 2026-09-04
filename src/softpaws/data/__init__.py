@@ -10,6 +10,7 @@ effective-area tables of the other detectors that ship with the package.
 from .container import EventSet
 from .icecube import (
     IC86_SEASONS,
+    banded_effective_area,
     hemisphere_average,
     irf_season,
     livetime_weighted_effective_area,
@@ -34,6 +35,7 @@ from .published import (
     arca230_quoted_fit,
     arca230_trigger_level_aeff,
     icecube_dr2_aeff,
+    icecube_point_source_sensitivity,
     interpolate_aeff,
     pone_allsky_aeff,
     pone_band_aeff,
@@ -59,8 +61,10 @@ __all__ = [
     "arca230_quoted_fit",
     "arca230_trigger_level_aeff",
     "compute_livetime_s",
+    "banded_effective_area",
     "hemisphere_average",
     "icecube_dr2_aeff",
+    "icecube_point_source_sensitivity",
     "interpolate_aeff",
     "irf_season",
     "livetime_weighted_effective_area",

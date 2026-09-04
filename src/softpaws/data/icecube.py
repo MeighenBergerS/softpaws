@@ -29,6 +29,7 @@ from .schema import SEASONS
 
 __all__ = [
     "IC86_SEASONS",
+    "banded_effective_area",
     "hemisphere_average",
     "irf_season",
     "livetime_weighted_effective_area",
@@ -217,6 +218,55 @@ def livetime_weighted_effective_area(
         total += livetime_s * np.interp(log10_e, aeff.log10_energy_centers, curve)
         livetime_total += livetime_s
     return total / livetime_total, livetime_total
+
+
+def banded_effective_area(
+    data_dir: str | pathlib.Path | None,
+    log10_e: np.ndarray,
+    seasons: tuple[str, ...] = SEASONS,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Livetime-weighted effective area keeping the declination axis.
+
+    :func:`livetime_weighted_effective_area` averages the published bands over
+    a hemisphere; this is the same combination with that last step removed, so
+    a model can be compared band by band. All DR2 seasons share the
+    ``sin(dec)`` binning and only the energy binning is interpolated.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses :func:`softpaws.data.paths.dr2_dir`.
+    log10_e : np.ndarray
+        Neutrino energies the curves are returned on [log10 GeV].
+    seasons : tuple of str, optional
+        Seasons to combine. Defaults to the whole release.
+
+    Returns
+    -------
+    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+        Band edges in ``sin(dec)``, as published.
+    aeff_cm2 : np.ndarray, shape (log10_e.size, n_dec)
+        Effective area [cm^2] per energy and band, weighted by season livetime.
+    """
+    log10_e = np.asarray(log10_e, dtype=float)
+    total: np.ndarray | None = None
+    sin_dec_edges: np.ndarray | None = None
+    livetime_total = 0.0
+    for season in seasons:
+        aeff = load_effective_area(data_dir, season)
+        livetime_s = season_livetime_s(data_dir, season)
+        curve = np.vstack(
+            [
+                np.interp(log10_e, aeff.log10_energy_centers, aeff.values[:, j])
+                for j in range(aeff.values.shape[1])
+            ]
+        ).T
+        if total is None:
+            total = np.zeros_like(curve)
+            sin_dec_edges = aeff.sin_dec_edges
+        total += livetime_s * curve
+        livetime_total += livetime_s
+    return sin_dec_edges, total / livetime_total
 
 
 def load_events(

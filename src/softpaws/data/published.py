@@ -35,6 +35,7 @@ __all__ = [
     "arca230_quoted_fit",
     "arca230_trigger_level_aeff",
     "icecube_dr2_aeff",
+    "icecube_point_source_sensitivity",
     "interpolate_aeff",
     "pone_allsky_aeff",
     "pone_band_aeff",
@@ -387,3 +388,32 @@ def trident_2025_map(path: pathlib.Path | None = None) -> tuple[np.ndarray, np.n
     cos_theta, log10_a_m2 = raw[:, 0], raw[:, 1:]
     log10_e = 3.0 + 0.25 * (np.arange(log10_a_m2.shape[1]) + 0.5)
     return cos_theta, log10_e, log10_a_m2 + 4.0
+
+
+def icecube_point_source_sensitivity(
+    path: pathlib.Path | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """IceCube's 14-year through-going-track point-source sensitivity.
+
+    Digitized from the collaboration's published sensitivity against source
+    declination, for an ``E^-2`` source over the whole energy range.
+
+    Parameters
+    ----------
+    path : pathlib.Path, optional
+        Two-column CSV of ``sin(dec)`` and ``E^2 dN/dE`` [TeV cm^-2 s^-1].
+        ``None`` uses the table shipped in ``softpaws/data/bounds``.
+
+    Returns
+    -------
+    sin_dec : np.ndarray
+        Source ``sin(dec)``, sorted ascending and clipped to the unit interval.
+    e2_flux : np.ndarray
+        ``E^2 dN/dE`` per flavour [GeV cm^-2 s^-1].
+    """
+    if path is None:
+        path = _DATA_DIR / "bounds" / "icecube_14year_track_sensitivity_e2.csv"
+    raw = np.loadtxt(path, delimiter=",")
+    order = np.argsort(raw[:, 0])
+    # The digitization overshoots |sin(dec)| = 1 by a few parts in a thousand.
+    return np.clip(raw[order, 0], -1.0, 1.0), raw[order, 1] * 1.0e3

@@ -61,15 +61,14 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.transport.attenuation import flavour_transmission, regenerated_transmission
-from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
-    eroded_prism_target_km2,
-    truncated_muon_range_km,
+from softpaws.response.declination import (
+    band_statistics as _band_statistics,
 )
-from softpaws.transport.source import mean_inelasticity, nucleon_number_density
-from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM
+from softpaws.response.declination import (
+    column_target_volume_km3,
+    derived_band_averaged_effective_area_cm2,
+    derived_directional_effective_area_cm2,
+)
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -125,219 +124,49 @@ def directional_aeff_cm2(
     flavours: tuple[str, ...], cross_section, inelasticity_nc: float | None = None,
     halo_weight: float = 1.0, efficiency: float = 1.0,
 ) -> np.ndarray:
-    """Effective area per arrival direction, with example 45's derived reach [cm^2].
+    """Effective area per arrival direction, with the derived reach [cm^2].
 
-    Example 35's builder with example 45's machinery substituted in: the body
-    dilated by the derived light reach and eroded by the minimum in-detector
-    track, the Poisson multiplicity weight carrying the threshold turn-on, and
-    the range running to the nominal threshold so the dimming enters once.
-
-    Parameters
-    ----------
-    ex35, ex45 : ModuleType
-        Examples 35 and 45.
-    site : ex35.Site
-        Detector geometry, medium and latitude.
-    site45 : ex45.Site
-        The same detector's optics and optical module.
-    cos_theta : np.ndarray, shape (n_dir,)
-        Cosine of the arrival zenith; ``+1`` is overhead.
-    min_modules : float
-        Modules that must register a coincident hit.
-    flavours : tuple of str
-        Parent channels to sum, ``"mu"`` and optionally ``"tau"``.
-    cross_section : softpaws.transport.cross_section.CrossSection
-        Cross section of the incident species, used for the interaction and for
-        the Earth absorption alike.
-    inelasticity_nc : float, optional
-        Mean neutral-current inelasticity. ``None`` keeps the library default.
-    halo_weight : float, optional
-        Fraction of the reach-dilated halo the selection accepts. The
-        acceptance is blended as ``(1 - w) A_static + w A_dilated``, so 1 (the
-        default) counts every track the light condition admits and 0 keeps
-        the instrumented body only.
-    efficiency : float, optional
-        Flat selection efficiency applied to the whole curve. Defaults to 1.
-
-    Returns
-    -------
-    aeff : np.ndarray, shape (n_energy, n_dir)
-        Effective area [cm^2] on ``ex35.COMMON_LOG10_E``.
+    See
+    :func:`softpaws.response.declination.derived_directional_effective_area_cm2`.
+    The ``ex35`` and ``ex45`` arguments are kept for the scripts that load this
+    one; only ``ex35.COMMON_LOG10_E`` is still read from them.
     """
-    cos_theta = np.atleast_1d(np.asarray(cos_theta, dtype=float))
-    neutrino_column, muon_column_km = site.columns(cos_theta)
-    n_nucleon = nucleon_number_density(site.density_g_cm3)
-    energy = 10.0**ex35.COMMON_LOG10_E
-    n_sides = site.n_sides if site.shape == "prism" else None
-
-    total = np.zeros((energy.size, cos_theta.size))
-    for flavour in flavours:
-        for i, e_nu in enumerate(energy):
-            if flavour == "mu":
-                extra = {} if inelasticity_nc is None else {
-                    "mean_inelasticity": inelasticity_nc}
-                rung_energy, rung_weight = regenerated_transmission(
-                    float(e_nu), neutrino_column, cross_section, **extra)
-                branching = 1.0
-                muon_gev = (1.0 - mean_inelasticity(rung_energy)) * rung_energy
-            else:
-                extra = {} if inelasticity_nc is None else {
-                    "mean_inelasticity_nc": inelasticity_nc}
-                rung_energy, rung_weight = flavour_transmission(
-                    float(e_nu), neutrino_column, cross_section, flavour="tau",
-                    n_grid=N_RUNG, decades=RUNG_DECADES, **extra)
-                branching = BR_TAU_TO_MU
-                muon_gev = (MEAN_Z * (1.0 - mean_inelasticity(rung_energy))
-                            * rung_energy)
-            rate = np.zeros((rung_energy.size, cos_theta.size))
-            for k, e_mu in enumerate(muon_gev):
-                rate[k] = column_volume_km3(
-                    ex45, site, site45, float(e_mu), cos_theta, muon_column_km,
-                    min_modules, halo_weight, n_sides)
-            rate *= (n_nucleon * cross_section.cc(rung_energy)[:, None]
-                     * branching * CM_PER_KM**3)
-            total[i] += np.sum(rung_weight * rate, axis=0)
-    return efficiency * total
+    return derived_directional_effective_area_cm2(
+        site, site45, cos_theta, min_modules, flavours, cross_section,
+        inelasticity_nc, halo_weight, efficiency, ex35.COMMON_LOG10_E,
+    )
 
 
 def column_volume_km3(ex45, site, site45, production_gev, cos_theta, available_km,
                       min_modules, halo_weight, n_sides, n_energy: int = 40):
     """Column target volume for one production energy and every direction [km^3].
 
-    Example 45's construction, direction resolved: the truncated first-passage
-    range against the available upstream column, the effective footprint
-    evaluated at the energy the muon has where it is seen (averaged over the
-    part of the column it can actually have covered), the body eroded by the
-    minimum in-detector track and dilated by the light reach, the Poisson
-    multiplicity weight, and the halo blended at ``halo_weight``.
-
-    Parameters
-    ----------
-    ex45 : ModuleType
-        Example 45.
-    site : ex35.Site
-        Detector geometry and medium.
-    site45 : ex45.Site
-        The same detector's optics and optical module.
-    production_gev : float
-        Muon energy at production [GeV].
-    cos_theta : np.ndarray
-        Cosine of the arrival zenith.
-    available_km : np.ndarray
-        Upstream column available in each direction [km of detector medium].
-    min_modules : float
-        Modules that must register a coincident hit.
-    halo_weight : float
-        Fraction of the reach-dilated halo the selection accepts.
-    n_sides : int or None
-        Cross-section of the instrumented body.
-    n_energy : int, optional
-        Points in the arrival-energy quadrature.
-
-    Returns
-    -------
-    volume : np.ndarray
-        Target volume [km^3], one entry per direction.
+    See :func:`softpaws.response.declination.column_target_volume_km3`. ``ex45``
+    is kept for the scripts that load this one and is no longer read.
     """
-    threshold = DEFAULT_MUON_THRESHOLD_GEV
-    if production_gev <= threshold:
-        return np.zeros_like(cos_theta)
-    truncated = np.clip(np.atleast_1d(truncated_muon_range_km(
-        production_gev, available_km, threshold, site.density_g_cm3)), 0.0, None)
-    # Below the bedrock or the sea floor the muon is in rock, which shortens
-    # every upgoing column; downgoing directions are the optical medium alone.
-    ratio = ex45.rock_range_ratio(production_gev, threshold, cos_theta, site45,
-                                  site.height_km, site.density_g_cm3)
-    truncated = truncated * ratio
-    profile = ex45.column_profile(production_gev, threshold, n_energy,
-                                  site.density_g_cm3)
-    if profile is None:
-        return np.zeros_like(cos_theta)
-    column, energy, _ = profile
-
-    radius, height, weight = ex45.effective_body_km(
-        site.radius_km, site.height_km, energy, site45, min_modules, n_sides)
-    area_d, vol_d = eroded_prism_target_km2(
-        cos_theta[None, :], radius[:, None], height[:, None],
-        site45.min_track_km, n_sides, site.n_blocks)
-    area_0, vol_0 = eroded_prism_target_km2(
-        cos_theta, site.radius_km, site.height_km, site45.min_track_km,
-        n_sides, site.n_blocks)
-    area = weight[:, None] * ((1.0 - halo_weight) * area_0[None, :]
-                              + halo_weight * area_d)
-    vol = (1.0 - halo_weight) * vol_0 + halo_weight * vol_d
-    clipped = np.minimum(column[:, None] * ratio[None, :], available_km[None, :])
-    span = clipped[-1]
-    mean_area = np.where(
-        span > 0.0,
-        np.trapezoid(area, clipped, axis=0) / np.where(span > 0.0, span, 1.0),
-        weight[0] * area_0,
+    return column_target_volume_km3(
+        site, site45, production_gev, cos_theta, available_km, min_modules,
+        halo_weight, n_sides, n_energy,
     )
-    return mean_area * truncated + weight[0] * vol[0]
 
 
 def model_banded(ex35, ex45, site, site45, sin_dec_edges, min_modules, flavours,
                  inelasticity_nc=None, halo_weight=1.0, efficiency=1.0):
     """Model effective area per published band, averaged over both species [cm^2].
 
-    Returns
-    -------
-    aeff : np.ndarray, shape (n_energy, n_dec)
-        Effective area [cm^2], band-averaged uniformly in ``sin(dec)``.
+    See
+    :func:`softpaws.response.declination.derived_band_averaged_effective_area_cm2`.
     """
-    directions = ex35.polar_band_directions(sin_dec_edges)
-    n_dec, n_sub = directions.shape
-    per_species = [
-        directional_aeff_cm2(ex35, ex45, site, site45, directions.ravel(),
-                             min_modules, flavours, xsec, inelasticity_nc,
-                             halo_weight, efficiency)
-        for xsec in ex45.SPECIES
-    ]
-    averaged = np.mean(per_species, axis=0)
-    return averaged.reshape(-1, n_dec, n_sub).mean(axis=2)
+    return derived_band_averaged_effective_area_cm2(
+        site, site45, sin_dec_edges, min_modules, flavours, ex45.SPECIES,
+        inelasticity_nc, halo_weight, efficiency, ex35.COMMON_LOG10_E,
+        ex35.N_SUB_BAND,
+    )
 
 
 def band_statistics(log10_e, published, model, band):
-    """Level and tilt of ``published / model`` within each declination band.
-
-    The level is the geometric mean of the ratio over the scored band and the
-    tilt is the slope of its base-ten logarithm against ``log10 E``, so a tilt of
-    zero means the model has the right energy dependence in that band whatever
-    its normalization.
-
-    Parameters
-    ----------
-    log10_e : np.ndarray
-        ``log10(E_nu / GeV)`` grid.
-    published, model : np.ndarray, shape (n_energy, n_dec)
-        Effective areas [cm^2].
-    band : np.ndarray
-        Boolean mask of the scored energies.
-
-    Returns
-    -------
-    level : np.ndarray, shape (n_dec,)
-        Geometric-mean ratio.
-    tilt : np.ndarray, shape (n_dec,)
-        Slope of ``log10(published / model)`` [dex per decade of energy].
-    scatter : np.ndarray, shape (n_dec,)
-        Root-mean-square about the fitted line [dex].
-    """
-    x = log10_e[band]
-    level = np.full(published.shape[1], np.nan)
-    tilt = np.full(published.shape[1], np.nan)
-    scatter = np.full(published.shape[1], np.nan)
-    for j in range(published.shape[1]):
-        y = published[band, j] / model[band, j]
-        ok = np.isfinite(y) & (y > 0.0)
-        if ok.sum() < 3:
-            continue
-        logy = np.log10(y[ok])
-        slope, intercept = np.polyfit(x[ok], logy, 1)
-        level[j] = 10.0 ** np.mean(logy)
-        tilt[j] = slope
-        scatter[j] = float(np.std(logy - (slope * x[ok] + intercept)))
-    return level, tilt, scatter
+    """Level, tilt and scatter per band; see :func:`band_statistics`."""
+    return _band_statistics(log10_e, published, model, band)
 
 
 def report(sin_dec_centers, columns_g_cm2, level, tilt, scatter) -> None:

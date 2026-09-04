@@ -115,20 +115,29 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.data.loader import compute_livetime_s, load_uptime, parse_aeff
-from softpaws.data.schema import SEASONS
+from softpaws.data.icecube import banded_effective_area
+from softpaws.data.published import icecube_point_source_sensitivity
 from softpaws.detectors import ARCA230, GVD, ICECUBE, PONE, TRIDENT, Site
-from softpaws.transport.attenuation import flavour_transmission
+from softpaws.response.declination import (
+    band_averaged_effective_area_cm2,
+    directional_effective_area_cm2,
+)
+from softpaws.response.declination import (
+    central_energy_range as _central_energy_range,
+)
+from softpaws.response.declination import (
+    point_source_sensitivity as _point_source_sensitivity,
+)
+from softpaws.response.declination import (
+    polar_band_directions as _polar_band_directions,
+)
+from softpaws.response.declination import (
+    zenith_band_weights as _zenith_band_weights,
+)
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.soft_volume import (
     DEFAULT_MUON_THRESHOLD_GEV,
-    light_reach_radius_km,
-    truncated_muon_range_km,
-    two_medium_range_ratio,
 )
-from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
-from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -356,89 +365,14 @@ def directional_aeff_cm2(
     pivot_gev: float = REACH_PIVOT_GEV,
     channels: str = "both",
 ) -> np.ndarray:
-    """Effective area per arrival direction, in the published convention.
+    """Effective area per arrival direction, on ``COMMON_LOG10_E``.
 
-    A tabulated ``A_eff`` is differential in the neutrino energy, so the parent
-    is monochromatic and this is App. I's ``s -> 0`` case throughout: no
-    spectral weighting anywhere, and the length is the first-passage range
-    rather than ``1/Phi(A)``. The assembly is example 28's -- neutral-current
-    and tau ladders kept, each rung credited to the surface energy -- with two
-    changes. Nothing is averaged over direction, and the first-passage integral
-    is cut at whatever column the direction actually supplies.
-
-    Parameters
-    ----------
-    site : Site
-        Detector geometry and medium.
-    cos_theta : np.ndarray, shape (n_dir,)
-        Cosine of the arrival zenith for each direction; ``+1`` is overhead.
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    reach_km : float or None, optional
-        Growth of the light reach per e-fold [km], from Eq. (17). ``None``, the
-        default, keeps the static instrumented radius and leaves the result
-        parameter-free.
-    pivot_gev : float, optional
-        Energy at which the reach vanishes [GeV]. Ignored when ``reach_km`` is
-        ``None``.
-    channels : {"both", "mu"}, optional
-        ``"mu"`` keeps only ``nu_mu`` charged current, which is the flavor the
-        DR2 tables were generated from. ``"both"``, the default, adds
-        ``nu_tau -> tau -> mu``, which a through-going track cannot distinguish.
-
-    Returns
-    -------
-    aeff : np.ndarray, shape (COMMON_LOG10_E.size, n_dir)
-        Effective area [cm^2] at each energy and arrival direction.
+    See :func:`softpaws.response.declination.directional_effective_area_cm2`.
     """
-    cos_theta = np.atleast_1d(np.asarray(cos_theta, dtype=float))
-    neutrino_column, muon_column_km = site.columns(cos_theta)
-    n_nucleon = nucleon_number_density(site.density_g_cm3)
-    energy = 10.0**COMMON_LOG10_E
-
-    ladders = [("mu", 1.0 - MEAN_INELASTICITY, 1.0)]
-    if channels == "both":
-        ladders.append(("tau", MEAN_Z * (1.0 - MEAN_INELASTICITY), BR_TAU_TO_MU))
-
-    total = np.zeros((energy.size, cos_theta.size))
-    for flavour, muon_fraction, branching in ladders:
-        for i, e_nu in enumerate(energy):
-            # One diagonalization serves every column, so the whole set of
-            # directions costs the same as a single one.
-            rung_energy, rung_weight = flavour_transmission(
-                float(e_nu),
-                neutrino_column,
-                CROSS_SECTION,
-                flavour=flavour,
-                n_grid=N_RUNG,
-                decades=RUNG_DECADES,
-            )
-            muon_energy = muon_fraction * rung_energy
-            # (n_rung, n_dir): each rung's muon under each direction's column,
-            # shortened below the horizon by the rock beneath the optical medium.
-            rock = np.array([
-                two_medium_range_ratio(
-                    float(e), threshold_gev, cos_theta,
-                    site.below_km + 0.5 * site.height_km, site.density_g_cm3,
-                )
-                for e in muon_energy
-            ])
-            length = truncated_muon_range_km(
-                muon_energy[:, None],
-                muon_column_km[None, :],
-                threshold_gev,
-                site.density_g_cm3,
-            ) * rock
-            radius = (
-                np.full(muon_energy.shape, site.radius_km)
-                if reach_km is None
-                else light_reach_radius_km(site.radius_km, muon_energy, reach_km, pivot_gev)
-            )
-            area_km2 = site.projected_area_km2(cos_theta[None, :], radius[:, None])
-            volume_km3 = area_km2 * length + site.detector_volume_km3(radius)[:, None]
-            rate = n_nucleon * CROSS_SECTION.cc(rung_energy)[:, None] * volume_km3 * CM_PER_KM**3
-            total[i] += branching * np.sum(rung_weight * rate, axis=0)
-    return total
+    return directional_effective_area_cm2(
+        site, cos_theta, threshold_gev, reach_km, pivot_gev, channels,
+        COMMON_LOG10_E, CROSS_SECTION,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -449,78 +383,14 @@ def directional_aeff_cm2(
 def icecube_banded(data_dir: pathlib.Path) -> tuple[np.ndarray, np.ndarray]:
     """Livetime-weighted DR2 effective area, keeping the declination axis.
 
-    Example 28 averaged these bands over the upgoing hemisphere. Everything
-    below is the same load with that last step removed.
-
-    Parameters
-    ----------
-    data_dir : pathlib.Path
-        Root of the DR2 data directory.
-
-    Returns
-    -------
-    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
-        Band edges in ``sin(dec)``, as published.
-    aeff : np.ndarray, shape (COMMON_LOG10_E.size, n_dec)
-        Effective area [cm^2] per energy and band, weighted by season livetime.
+    See :func:`softpaws.data.icecube.banded_effective_area`.
     """
-    irf_dir = data_dir / "irfs"
-    uptime_dir = data_dir / "uptime"
-
-    total: np.ndarray | None = None
-    sin_dec_edges: np.ndarray | None = None
-    total_livetime_s = 0.0
-    cache: dict[str, object] = {}
-
-    for season in SEASONS:
-        irf_season = "IC86" if season.startswith("IC86") else season
-        if irf_season not in cache:
-            raw = np.genfromtxt(irf_dir / f"{irf_season}_effectiveArea.csv", comments="#")
-            cache[irf_season] = parse_aeff(raw)
-        aeff = cache[irf_season]
-
-        livetime_s = compute_livetime_s(load_uptime(uptime_dir / f"{season}_exp.csv"))
-        # All DR2 seasons share the sin(dec) binning; the energy binning is
-        # interpolated onto the common grid.
-        curve = np.vstack(
-            [
-                np.interp(COMMON_LOG10_E, aeff.log10_energy_centers, aeff.values[:, j])
-                for j in range(aeff.values.shape[1])
-            ]
-        ).T
-        if total is None:
-            total = np.zeros_like(curve)
-            sin_dec_edges = aeff.sin_dec_edges
-        total += livetime_s * curve
-        total_livetime_s += livetime_s
-
-    assert total is not None and sin_dec_edges is not None
-    return sin_dec_edges, total / total_livetime_s
+    return banded_effective_area(data_dir, COMMON_LOG10_E)
 
 
 def polar_band_directions(sin_dec_edges: np.ndarray) -> np.ndarray:
-    """Arrival directions sampling each published band, seen from the Pole.
-
-    At the South Pole the hour angle drops out of the zenith relation and every
-    declination maps to one fixed zenith, ``cos(theta_z) = -sin(dec)``. A source
-    in the northern sky is therefore permanently upgoing and one in the southern
-    sky permanently downgoing, which is what makes IceCube the clean site for a
-    declination-resolved test: no time averaging enters at all.
-
-    Parameters
-    ----------
-    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
-        Published band edges in ``sin(dec)``.
-
-    Returns
-    -------
-    cos_theta : np.ndarray, shape (n_dec, N_SUB_BAND)
-        Sub-sample directions within each band, uniform in ``sin(dec)``.
-    """
-    lo, hi = sin_dec_edges[:-1], sin_dec_edges[1:]
-    fraction = (np.arange(N_SUB_BAND) + 0.5) / N_SUB_BAND
-    sin_dec = lo[:, None] + (hi - lo)[:, None] * fraction[None, :]
-    return -sin_dec
+    """Directions sampling each published band; see :func:`polar_band_directions`."""
+    return _polar_band_directions(sin_dec_edges, N_SUB_BAND)
 
 
 def icecube_model_banded(
@@ -532,32 +402,12 @@ def icecube_model_banded(
 ) -> np.ndarray:
     """Model effective area averaged within each published declination band.
 
-    Parameters
-    ----------
-    site : Site
-        IceCube's geometry and medium.
-    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
-        Published band edges in ``sin(dec)``.
-    threshold_gev : float
-        Muon selection threshold [GeV].
-    reach_km : float or None, optional
-        Growth of the light reach per e-fold [km]; ``None`` stays static.
-    pivot_gev : float, optional
-        Energy at which the reach vanishes [GeV].
-
-    Returns
-    -------
-    aeff : np.ndarray, shape (COMMON_LOG10_E.size, n_dec)
-        Effective area [cm^2], band-averaged uniformly in ``sin(dec)``.
+    See :func:`softpaws.response.declination.band_averaged_effective_area_cm2`.
     """
-    directions = polar_band_directions(sin_dec_edges)
-    n_dec, n_sub = directions.shape
-    per_direction = directional_aeff_cm2(
-        site, directions.ravel(), threshold_gev, reach_km=reach_km, pivot_gev=pivot_gev
+    return band_averaged_effective_area_cm2(
+        site, sin_dec_edges, threshold_gev, reach_km, pivot_gev,
+        COMMON_LOG10_E, CROSS_SECTION, N_SUB_BAND,
     )
-    # Uniform in sin(dec) is uniform in solid angle, which is how the published
-    # band average is built.
-    return per_direction.reshape(-1, n_dec, n_sub).mean(axis=2)
 
 
 # ---------------------------------------------------------------------------
@@ -566,47 +416,8 @@ def icecube_model_banded(
 
 
 def zenith_band_weights(latitude_deg: float, dec_deg: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """Fraction of a sidereal day each declination spends in each zenith band.
-
-    A source at declination ``delta`` seen from latitude ``phi`` has
-
-    .. math:: \\cos\\theta_z = \\sin\\phi\\,\\sin\\delta
-        + \\cos\\phi\\,\\cos\\delta\\,\\cos H,
-
-    with the hour angle ``H`` sweeping uniformly over a sidereal day. Since the
-    effective area depends on the arrival direction only through
-    ``cos(theta_z)``, binning that sweep is all the geometry a point source
-    needs: the direction-averaged area is the band areas contracted with these
-    weights, exactly.
-
-    Parameters
-    ----------
-    latitude_deg : float
-        Geographic latitude of the site [deg].
-    dec_deg : np.ndarray, shape (n_dec,)
-        Source declinations [deg].
-
-    Returns
-    -------
-    cos_theta : np.ndarray, shape (N_COS_THETA,)
-        Band centres in ``cos(theta_z)``, descending from near ``+1``.
-    weights : np.ndarray, shape (n_dec, N_COS_THETA)
-        Time fraction in each band; each row sums to one.
-    """
-    phi = np.deg2rad(latitude_deg)
-    delta = np.deg2rad(np.atleast_1d(np.asarray(dec_deg, dtype=float)))
-    hour = np.linspace(0.0, 2.0 * np.pi, N_HOUR_ANGLE, endpoint=False)
-
-    cos_theta_z = (
-        np.sin(phi) * np.sin(delta)[:, None]
-        + np.cos(phi) * np.cos(delta)[:, None] * np.cos(hour)[None, :]
-    )
-    edges = np.linspace(-1.0, 1.0, N_COS_THETA + 1)
-    weights = np.vstack(
-        [np.histogram(row, bins=edges)[0] for row in cos_theta_z]
-    ).astype(float)
-    weights /= weights.sum(axis=1, keepdims=True)
-    return 0.5 * (edges[:-1] + edges[1:]), weights
+    """Daily time fraction per zenith band; see :func:`zenith_band_weights`."""
+    return _zenith_band_weights(latitude_deg, dec_deg, N_COS_THETA, N_HOUR_ANGLE)
 
 
 def point_source_sensitivity(
@@ -615,61 +426,18 @@ def point_source_sensitivity(
     gamma: float,
     emin_gev: float = DEFAULT_EMIN_GEV,
 ) -> np.ndarray:
-    """Flux normalization a background-free search would exclude.
-
-    For ``phi(E) = phi_0 (E / E_piv)^-gamma`` the expected count is linear in
-    ``phi_0``, so the limit is one quadrature,
-
-    .. math:: \\phi_0^{\\rm lim} = \\frac{N_{\\rm lim}}
-        {T \\int_{E_{\\min}} \\dd E\\, A_{\\rm eff}(E) (E/E_{\\rm piv})^{-\\gamma}}.
-
-    Parameters
-    ----------
-    aeff_cm2 : np.ndarray, shape (COMMON_LOG10_E.size, ...)
-        Effective area [cm^2] on the common energy grid, energy first.
-    livetime_s : float
-        Exposure [s].
-    gamma : float
-        Spectral index of the assumed source.
-    emin_gev : float, optional
-        Bottom of the analysis window [GeV]. See :data:`DEFAULT_EMIN_GEV`: this
-        is what decides whether the result carries declination information.
-
-    Returns
-    -------
-    e2_flux : np.ndarray
-        ``E^2 phi`` at :data:`PIVOT_ENERGY_GEV` [GeV cm^-2 s^-1].
-    """
-    energy = 10.0**COMMON_LOG10_E
-    window = energy >= emin_gev
-    weight = (energy / PIVOT_ENERGY_GEV) ** (-gamma)
-    shape = (-1,) + (1,) * (np.ndim(aeff_cm2) - 1)
-    integral = np.trapezoid(
-        (aeff_cm2 * weight.reshape(shape))[window], energy[window], axis=0
+    """Background-free point-source ceiling; see :func:`point_source_sensitivity`."""
+    return _point_source_sensitivity(
+        aeff_cm2, livetime_s, gamma, emin_gev, COMMON_LOG10_E, PIVOT_ENERGY_GEV, N_EVENTS_LIMIT
     )
-    phi_0 = N_EVENTS_LIMIT / (livetime_s * integral)
-    return PIVOT_ENERGY_GEV**2 * phi_0
 
 
 def load_published_sensitivity(path: pathlib.Path) -> tuple[np.ndarray, np.ndarray]:
-    """IceCube's 14-year PSTracks point-source sensitivity, in GeV cm^-2 s^-1.
+    """IceCube's published point-source sensitivity, in GeV cm^-2 s^-1.
 
-    Parameters
-    ----------
-    path : pathlib.Path
-        Two-column CSV of ``sin(dec)`` and ``E^2 dN/dE`` [TeV cm^-2 s^-1].
-
-    Returns
-    -------
-    sin_dec : np.ndarray
-        Source ``sin(dec)``, sorted ascending and clipped to the unit interval.
-    e2_flux : np.ndarray
-        ``E^2 dN/dE`` per flavor [GeV cm^-2 s^-1].
+    See :func:`softpaws.data.published.icecube_point_source_sensitivity`.
     """
-    raw = np.loadtxt(path, delimiter=",")
-    order = np.argsort(raw[:, 0])
-    # The digitization overshoots |sin(dec)| = 1 by a few parts in a thousand.
-    return np.clip(raw[order, 0], -1.0, 1.0), raw[order, 1] * TEV_TO_GEV
+    return icecube_point_source_sensitivity(path)
 
 
 def central_energy_range(
@@ -677,35 +445,8 @@ def central_energy_range(
     gamma: float,
     emin_gev: float = DEFAULT_EMIN_GEV,
 ) -> tuple[float, float]:
-    """Central 90% energy range of the signal a sensitivity comes from.
-
-    Parameters
-    ----------
-    aeff_cm2 : np.ndarray, shape (COMMON_LOG10_E.size,)
-        Effective area [cm^2] on the common energy grid.
-    gamma : float
-        Spectral index of the assumed source.
-    emin_gev : float, optional
-        Bottom of the analysis window [GeV].
-
-    Returns
-    -------
-    log10_lo, log10_hi : float
-        ``log10(E_nu / GeV)`` bracketing the central 90% of the expected count.
-    """
-    energy = 10.0**COMMON_LOG10_E
-    window = energy >= emin_gev
-    log10_e = COMMON_LOG10_E[window]
-    # Per log-decade, so the quantiles read off the axis the figure uses.
-    integrand = (aeff_cm2 * (energy / PIVOT_ENERGY_GEV) ** (-gamma) * energy)[window]
-    cumulative = np.concatenate(
-        ([0.0], np.cumsum(0.5 * np.diff(log10_e) * (integrand[1:] + integrand[:-1])))
-    )
-    cumulative /= cumulative[-1]
-    return (
-        float(np.interp(0.05, cumulative, log10_e)),
-        float(np.interp(0.95, cumulative, log10_e)),
-    )
+    """Central 90% energy range of the signal; see :func:`central_energy_range`."""
+    return _central_energy_range(aeff_cm2, gamma, emin_gev, COMMON_LOG10_E, PIVOT_ENERGY_GEV)
 
 
 # ---------------------------------------------------------------------------
