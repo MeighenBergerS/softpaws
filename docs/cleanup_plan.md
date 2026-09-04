@@ -113,13 +113,14 @@ library and delete the private copy. Never move two hubs in one commit.
 | 1.1 done | `detectors/sites.py`, `detectors/optics.py` | `34`, `35`, `45` (`Site`), `33`, `56` (`Detector`) | three dataclasses, two `build_sites`, ~60 loose constants in 8 files; IceCube 0.564 km prism, Gen2 7.9 km^3 by 1.25 km; example 35 reproduces its log exactly. `33`/`56`'s fit `Detector` waits for 1.8 |
 | 1.2 done | `data/icecube.py` | `03`, `04`, `07`, `28`, `29`, `31`, `33` | `icecube_upgoing` x4, `load_ic86_observed_and_livetime` x5, `_canonical_irf_season` x9, `combine_seasons`, `IC86_SEASONS` x6 in 15 scripts; example 03's curve unchanged |
 | 1.3 done | `transport/earth.py` | `attenuation.py` (PREM, chord, column) + `30`, `31`, `32`, `33`, `56` (`earth_column_g_cm2`, `upstream_column_km`, `zenith_grid`, `arca_columns`, `water_columns`) | the five-way column duplication; `attenuation.py` re-exports the moved names. The two `column_depth` units are still open |
-| 1.4 | `response/effective_area.py` | `30`, `31`, `32`, `45` (`truncated_range_km`, `projected_area_km2`, `fit_reach_law`, `arca_effective_area`, `ic_effective_area_*`, reach derivation) | the engine that `41`, `43`, `44`, `45` reach through `32` for |
-| 1.5 | `response/declination.py` | `35`, `46`, `47` (`directional_aeff_cm2`, band-by-band evaluation, point-source ceiling) | the two largest hubs |
+| 1.4a done | `response/effective_area.py`, `data/published.py` | `30`, `31`, `32` (`truncated_range_km`, `fit_reach_law`, `arca_effective_area`, `ic_effective_area_*`, the target-volume helpers) and the published-curve readers of `30`, `31`, `32`, `47`, `55`, `81` | 1,028 lines of three private engines; 30 and 32 reproduce their runs; 32's sub-threshold mask is a flag |
+| 1.4b done | `response/light_reach.py`, `response/first_principles.py` | `45` (optics chain, hit statistics, reach offset, first-principles A_eff assembly) | 1,192 lines out of the biggest hub; the `--numu-only` run reproduces its archived log byte for byte, and the tau channel is pinned against the pre-cleanup script. The two-flavour archived log is stale (it predates the script's Lambda column) and is regenerated in Phase 3 |
+| 1.5 done | `response/declination.py`, plus `data.icecube.banded_effective_area` and `data.published.icecube_point_source_sensitivity` | `35` (directional and band-averaged A_eff, zenith weights, ceiling, central energy range), `46` (derived-optics directional A_eff, column target volume, band statistics) | both private families; `47` consumes them unchanged; every lifted function reproduces at zero relative difference |
 | 1.6 done | `fluxes/astrophysical.py`, `fluxes/atmospheric.py` | `06`, `07`, `12`, `14`, `21`, `22`, `49`, `51`, `54`, `57` (`power_law_flux`, `bpl_shape`, the IceCube fits, MCEq builder and interpolator) | `PHI0`/`GAMMA` in 6 files, `bpl_shape` x2, three copies of the atmospheric grid reader; grids and anchors of 49/51/54 unchanged |
 | 1.7 done | `transport/loss_ensemble.py` + a `KernelScaling` hook in `coefficients.py` | `69`, `70` (the variant ensemble; `70`'s `sys.modules` monkeypatch becomes `set_kernel_scaling`), `72` (implied scales), `71`/`74` (variant activation) | the patch walker; drift, second moment and range per variant identical to the old route |
 | 1.8 | `response/reduced.py` | `77`, `78`, `81` (two-number reduced response, optics-predicted reach, TRIDENT 2025 map) | `78` to `83` collapse to plotting |
-| 1.9 | `comparison/mcmc.py`, `comparison/feldman_cousins.py` | `29`, `33`, `51`, `54`, `56`, `72` | `log_probability` x2, `summarize` x5, `fc_calibration` x2, `bayes_factor` x4 |
-| 1.10 | `comparison/events.py` | `51`, `76` (upgoing IC86 window, pinned-flux prediction, published-IRF baseline) | the headline benchmark becomes one function call |
+| 1.9 done | `comparison/posterior.py`, `comparison/feldman_cousins.py` | `33` (sampling, marginals, product posterior, compatibility), `56` (leave-one-out and global tests), `51` (profile interval, toy loop, validated cache) | statistics on the cached chains and toys identical; `29`'s and `54`'s copies and `bayes_factor` x4 go with their scripts in Phase 3 |
+| 1.10 done | `comparison/reco_likelihood.py`, `comparison/events.py` | `51` (smearing marginal, banded responses, atmospheric grids, event binning, anchors, `RecoLikelihood`), `76` (prediction, band combination, published-IRF baseline) | 728 lines; example 76 reproduces its archived log exactly and the likelihood agrees to every digit on the cached inputs |
 | 1.11 done | `comparison/event_energy.py` | `57` (potential density, measurement, energy likelihood, posterior, summary), `68` (two-layer column, survival, unity energy), `15` (parent-energy posterior, quantile); the `TrackEvent` record for KM3-230213A | the three private copies; the tension ladder of `57` Part B stays with `31`'s likelihood engine for step 1.9 |
 
 Not lifted: the BSM scripts `59` to `66` (stau, millicharge). They belong to a
@@ -131,7 +132,13 @@ the move takes the hub scripts' pre-cleanup versions with it.
 Exit criterion: no `load_example` call remains anywhere, and every entry in
 `baseline.json` passes.
 
-### Phase 2. Library cleanup and packaging (2 to 3 days)
+### Phase 2. Library cleanup and packaging (mostly done 2026-09-04)
+
+Still open: the two module splits below, the cross-section and attenuation
+deduplication, and enabling ruff's `D` rules. Everything else in this phase
+is done: the constructor docstrings, the `transport` re-exports, the
+package data, the `SOFTPAWS_DATA_DIR` override, the dead-module removal and
+the `--run-slow` gating.
 
 1. **Split the two large modules.** `transport/soft_volume.py` into
    `geometry`, `closed_form`, `ranges` (the 930-line range block first),
@@ -157,17 +164,11 @@ Exit criterion: no `load_example` call remains anywhere, and every entry in
    other subpackages. The top-level `softpaws/__init__.py` exposes the ten
    entry points a user needs (`Site` registry, `effective_area`,
    `SoftVolumeResponse`, `phi_eigenvalue`, `muon_range_km`, loaders).
-6. **Packaging.** Add
-
-   ```toml
-   [tool.setuptools.package-data]
-   softpaws = ["data/**/*.csv", "data/**/*.json", "data/**/*.geo", "styles/*.mplstyle"]
-   ```
-
-   Commit `proposal_muon_rock.csv`, the TRIDENT 2025 map and
-   `data/bounds/*.csv`. Add extras `docs`, `atm`, `transport`, `dev`. Verify
-   with `python -m build` and `unzip -l dist/*.whl`, then `pip install` into
-   a fresh venv from a clean clone and run the tests.
+6. **Packaging.** Done 2026-09-03 for the data: `[tool.setuptools.package-data]`
+   lists the tables under `softpaws/data`, the bounds CSVs and the MESE
+   contour are tracked, and `python -m build` gives a wheel with 56 data
+   files and no release data. Still to do: the `docs` extra, moving the
+   mplstyle into the package, and the clean-clone install test.
 7. **Data root.** Add `softpaws.data.data_root()` that reads
    `SOFTPAWS_DATA_DIR`, falling back to the package directory. Loaders raise
    a clear error naming the DOI and the expected layout when a file is
@@ -231,7 +232,7 @@ docstring, and writes to `examples/output/`. Proposed set:
 Add a `tests/test_examples.py` that runs each one with `--quick` so CI catches
 drift.
 
-### Phase 5. Documentation site (1 to 2 days)
+### Phase 5. Documentation site (done 2026-09-04)
 
 Copy the prometheus setup: MkDocs, `readthedocs` theme, `mkdocstrings` with
 `docstring_style: numpy`, `mkdocs-api-autonav` generating the API reference
