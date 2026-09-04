@@ -46,6 +46,11 @@ _EX33 = _EX77._EX33
 
 COLORS = {"up": "#e7298a", "horizon": "#1b9e77", "down": "#d95f02", "sky": "0.25"}
 
+#: Detector name -> key of :data:`COLORS`, filled in by
+#: :func:`build_band_detectors`. Plotting stays in the script, so the colour
+#: is not carried on the ``Detector`` record.
+BAND_KEYS: dict[str, str] = {}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
@@ -74,19 +79,21 @@ def build_band_detectors() -> list:
         observed = _EX56._on_grid(log10_e, log10_a)
         mask = (grid >= site.fit_band[0]) & (grid <= site.fit_band[1]) & np.isfinite(observed)
         weights = np.where((cos_theta >= lo) & (cos_theta < hi), zenith_weights, 0.0)
+        BAND_KEYS[f"{key} ({lo:+.1f} < cos < {hi:+.1f})"] = key
         detectors.append(_EX33.Detector(
             name=f"{key} ({lo:+.1f} < cos < {hi:+.1f})", log10_e=grid, observed=observed,
             mask=mask,
             predict=(lambda theta, select=None, s=site, la=ladders, w=weights,
                      m=muon_column_km: _EX56.water_model(theta, s, la, w, m, select)),
-            priors=priors, start=start.copy(), color=COLORS[key], selection_level="6 deg cut"))
+            priors=priors, start=start.copy(), selection_level="6 deg cut"))
+    BAND_KEYS["sky average"] = "sky"
     observed = _EX56.trident_allsky_cm2()
     mask = (grid >= site.fit_band[0]) & (grid <= site.fit_band[1]) & np.isfinite(observed)
     detectors.append(_EX33.Detector(
         name="sky average", log10_e=grid, observed=observed, mask=mask,
         predict=(lambda theta, select=None, s=site, la=ladders, w=zenith_weights,
                  m=muon_column_km: _EX56.water_model(theta, s, la, w, m, select)),
-        priors=priors, start=start.copy(), color=COLORS["sky"], selection_level="6 deg cut"))
+        priors=priors, start=start.copy(), selection_level="6 deg cut"))
     return detectors
 
 
@@ -156,7 +163,7 @@ def main() -> None:
             entry[tag] = {"best": theta.tolist(), "deviance": dev,
                           "quantiles": {k: v.tolist() for k, v in q.items()}}
             if tag == "2-param":
-                results[d.name] = (chain, d.color)
+                results[d.name] = (chain, COLORS[BAND_KEYS[d.name]])
                 # Residual of the published band over the best-fit model, node by node.
                 print("      published/model per node: "
                       + " ".join(f"{np.exp(r):.3f}" for r in res))

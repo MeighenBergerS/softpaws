@@ -20,10 +20,11 @@ Usage
 import argparse
 import importlib.util
 import pathlib
-import types
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+from softpaws.response import reduced
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -68,55 +69,18 @@ def parse_args() -> argparse.Namespace:
 
 def reduced_detectors(data_dir, chains_path):
     """Example 56's IceCube, ARCA230 and P-ONE with example 77's two-parameter chains."""
-    data = np.load(chains_path)
     detectors = [d for d in _EX56.build_detectors(data_dir) if d.name != "TRIDENT"]
-    for d in detectors:
-        fixed = {"eps_0": _EX77.EPS_FIXED[d.name], "log10_e_thr": 3.0, "b_scale": 1.0,
-                 "lam": _EX33.LAMBDA_BGR18, "reach_km": 0.03}
-        two = data[f"{d.name}_2p_chain"]
-        d.chain = np.array([_EX77.full_theta(_EX77.FREE2, row, fixed) for row in two])
-    return detectors
+    return reduced.attach_reduced_chains(detectors, chains_path)
 
 
 def trident_2025(trident_chain_path):
     """The 2025 map averaged over ``|cos| <= COS_MAX`` and its posterior."""
-    cos_c, le_all, la_all = _EX81.load_map()
-    keep = le_all >= _EX33.ARCA_LOG10_E.min()
-    log10_e, log10_a = le_all[keep], la_all[:, keep]
-    edges = _EX81.COS_EDGES
-    dcos = np.abs(np.diff(edges))
-    rows = np.abs(cos_c) <= COS_MAX
-    area = 10 ** log10_a                                     # [m^2]
-    fitted = np.average(area[rows], axis=0, weights=dcos[rows])
-    allsky = np.average(area, axis=0, weights=dcos)
-    # The map's cells carry their simulation's statistics as a checkerboard of
-    # a few hundredths of a dex, and the eight-point average inherits a kink
-    # near 10^5.3 GeV. A quadratic in log-log is the smoothest curve with the
-    # right curvature over two decades; the residual it removes is reported.
-    coeff = np.polyfit(log10_e, np.log10(fitted), 2)
-    smoothed = 10 ** np.polyval(coeff, log10_e)
+    detector, allsky, smoothing = reduced.trident_2025_average_detector(
+        trident_chain_path, COS_MAX
+    )
     print("TRIDENT 2025 average smoothed by a log-log quadratic; residual rms "
-          f"{np.std(np.log10(fitted / smoothed)):.3f} dex, max {np.max(np.abs(np.log10(fitted / smoothed))):.3f} dex")
-    fitted = smoothed
-    model = _EX81.MapModel(log10_e)
-    weights = [w for w, r in zip(model.weights, rows) if r]
-
-    def predict(theta, select=None):
-        curves = np.empty((len(weights), log10_e.size))
-        for i, w in enumerate(weights):
-            full = _EX56.water_model(theta, model.site, model.ladders, w, model.mcol, None)
-            curves[i] = 10 ** np.interp(log10_e, model.grid, np.log10(full))
-        pred = np.average(curves, axis=0, weights=dcos[rows])
-        return pred if select is None else pred[select]
-
-    chain = np.load(trident_chain_path)["chain"]
-    fixed = {"eps_0": 0.7, "log10_e_thr": 2.5, "b_scale": 1.0, "lam": _EX33.LAMBDA_BGR18,
-             "reach_km": 0.03}
-    full = np.array([_EX77.full_theta(_EX77.FREE3, row, fixed) for row in chain])
-    detector = types.SimpleNamespace(
-        name="TRIDENT", log10_e=log10_e, observed=1.0e4 * fitted, mask=np.ones(log10_e.size, bool),
-        predict=predict, chain=full, color=_EX56.COLORS["TRIDENT"])
-    return detector, 1.0e4 * allsky
+          f"{smoothing['rms']:.3f} dex, max {smoothing['max']:.3f} dex")
+    return detector, allsky
 
 
 def figure(detectors, out_dir) -> None:
@@ -128,8 +92,9 @@ def figure(detectors, out_dir) -> None:
             good = np.isfinite(observed) & (observed > 0.0)
             ax.plot(d.log10_e[good], observed[good], color="k", lw=1.2)
             med, lo, hi = _EX73.posterior_band(d, N_DRAWS)
-            ax.fill_between(d.log10_e[good], lo[good], hi[good], color=d.color, alpha=0.45, lw=0)
-            ax.plot(d.log10_e[good], med[good], color=d.color, lw=1.1, ls="--")
+            color = _EX56.SITE_COLORS[d.name]
+            ax.fill_between(d.log10_e[good], lo[good], hi[good], color=color, alpha=0.45, lw=0)
+            ax.plot(d.log10_e[good], med[good], color=color, lw=1.1, ls="--")
             medians[d.name] = (d.log10_e[good], med[good])
         ax.plot([], [], color="k", lw=1.2, label="Published")
         ax.fill_between([], [], [], color="0.4", alpha=0.45, label="Model")
@@ -146,8 +111,8 @@ def figure(detectors, out_dir) -> None:
             angle = _EX73._curve_angle_deg(ax, *medians[slope_of], x0) if slope_of else 0.0
             x, y = medians[anchor_on]
             height = factor * float(np.interp(y_at if y_at is not None else x0, x, y))
-            ax.text(x0, height, d.name, color=d.color, ha=ha, va="center", rotation=angle,
-                    rotation_mode="anchor")
+            ax.text(x0, height, d.name, color=_EX56.SITE_COLORS[d.name], ha=ha, va="center",
+                    rotation=angle, rotation_mode="anchor")
         _EX73._save(fig, out_dir, "83a_four_detector_aeff_reduced")
 
 

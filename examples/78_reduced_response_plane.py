@@ -26,6 +26,8 @@ import corner
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.response import reduced
+
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_OUT_DIR = _HERE / "output"
@@ -43,23 +45,22 @@ _EX77 = load_example("77_reduced_response_fit.py", "_example_77")
 _EX56 = _EX77._EX56
 _EX33 = _EX77._EX33
 
-SITES = ("IceCube", "ARCA230", "P-ONE", "TRIDENT")
+SITES = reduced.REDUCED_SITES
 LEVELS = {"IceCube": "analysis", "ARCA230": "trigger", "P-ONE": "trigger", "TRIDENT": "6 deg cut"}
 LABELS = [r"$\log_{10}(E_{\mathrm{thr}}/\mathrm{GeV})$", r"$\Lambda$ [m]"]
 STYLES = ["-", "--", "-", ":"]
 
-#: Reach each site's own optics predict [m], as (low, high): the effective
-#: attenuation length at 400 nm, the shorter of the absorption length and the
-#: diffusive length sqrt(abs * scat / 3). IceCube: absorption 110-200 m with
-#: effective scattering 25-50 m (dust-layer average to clearest ice).
-#: ARCA230: Capo Passero absorption ~50 m at 470 nm (ANTARES site 60 m),
-#: scaled to 400 nm. P-ONE: STRAW 28 m at 450 nm (35 m in the proposal),
-#: scaled. TRIDENT: measured effective attenuation 15-27 m over 405-460 nm.
-PREDICTED_M = {"IceCube": (30.0, 59.0), "ARCA230": (41.0, 50.0), "P-ONE": (24.0, 30.0),
-               "TRIDENT": (15.0, 27.0)}
+#: Reach each site's own optics predict [m]; see
+#: :data:`softpaws.response.reduced.PREDICTED_REACH_M`.
+PREDICTED_M = reduced.PREDICTED_REACH_M
+
+#: Chains as ``{site: (n, 2) array of [log10 E_thr, Lambda in m]}``, with the
+#: error model the fit ran at.
+load_chains = reduced.load_two_parameter_chains
 
 
 def parse_args() -> argparse.Namespace:
+    """Command-line arguments; see the module docstring."""
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--chains", type=pathlib.Path, default=_DEFAULT_OUT_DIR / "77_chains.npz")
     parser.add_argument("--tag", type=str, default="")
@@ -67,34 +68,18 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_chains(path: pathlib.Path) -> tuple[dict, float]:
-    """Return ``{site: (n, 2) array of [log10 E_thr, Lambda in m]}`` and the error model."""
-    data = np.load(path)
-    sigma = float(data["sigma"])
-    chains = {}
-    for site in SITES:
-        chain = data[f"{site}_2p_chain"]
-        chains[site] = np.column_stack([chain[:, 0], 1.0e3 * chain[:, 1]])
-    return chains, sigma
-
-
 def summarize(chains: dict, sigma: float) -> None:
+    """Print the two-parameter posteriors and how far apart the reaches sit."""
     print(f"Two-parameter posteriors, error model {100*sigma:.0f}% per node")
     print(f"{'site':>8}  {'E_thr [GeV]':>22}  {'Lambda [m]':>22}")
-    for site, chain in chains.items():
-        lo_e, med_e, hi_e = 10 ** np.percentile(chain[:, 0], [16, 50, 84])
-        lo_l, med_l, hi_l = np.percentile(chain[:, 1], [16, 50, 84])
+    for site, entry in reduced.reduced_chain_summary(chains).items():
+        lo_e, med_e, hi_e = entry["e_thr_gev"]
+        lo_l, med_l, hi_l = entry["reach_m"]
         print(f"{site:>8}  {med_e:8.0f} [{lo_e:6.0f}, {hi_e:6.0f}]  "
               f"{med_l:8.1f} [{lo_l:6.1f}, {hi_l:6.1f}]")
-    # Pairwise separation of the reach medians in units of the combined 68% half-widths.
     print("Reach separation between sites, in sigma:")
-    names = list(chains)
-    for i, a in enumerate(names):
-        for b in names[i + 1:]:
-            qa = np.percentile(chains[a][:, 1], [16, 50, 84])
-            qb = np.percentile(chains[b][:, 1], [16, 50, 84])
-            width = np.hypot(0.5 * (qa[2] - qa[0]), 0.5 * (qb[2] - qb[0]))
-            print(f"  {a:>8} vs {b:<8} {abs(qa[1] - qb[1]) / width:5.1f}")
+    for first, second, separation in reduced.reach_separation_sigma(chains):
+        print(f"  {first:>8} vs {second:<8} {separation:5.1f}")
 
 
 def make_figure(chains: dict, sigma: float, out_path: pathlib.Path) -> None:
@@ -108,12 +93,11 @@ def make_figure(chains: dict, sigma: float, out_path: pathlib.Path) -> None:
     # set the frame and the predicted strips would not be readable.
     ranges[1] = (max(ranges[1][0], -60.0), min(max(ranges[1][1], 65.0), 120.0))
 
-
     rc = {"xtick.labelsize": 8, "ytick.labelsize": 8, "axes.labelsize": 8, "font.size": 8}
     with plt.style.context(str(_STYLE)), plt.rc_context(rc):
         fig, _ = plt.subplots(2, 2, figsize=(4.6, 4.6))
         for row, site in enumerate(SITES):
-            color = _EX56.COLORS[site]
+            color = _EX56.SITE_COLORS[site]
             base = np.array(plt.matplotlib.colors.to_rgb(color))
             filled = False
             fills = [(*base, 0.0), (*base, 0.12), (*base, 0.28)]
@@ -126,19 +110,19 @@ def make_figure(chains: dict, sigma: float, out_path: pathlib.Path) -> None:
                 label_kwargs={"fontsize": 8}, smooth=0.8, no_fill_contours=not filled)
 
         axes = np.array(fig.axes[:4]).reshape((2, 2))
-        plane, thr_ax, reach_ax = axes[1, 0], axes[0, 0], axes[1, 1]
+        plane, thr_ax = axes[1, 0], axes[0, 0]
         # The reach each site's measured optics predict, as a band in the
         # site's colour across the whole threshold range.
         for site in SITES:
             lo, hi = PREDICTED_M[site]
-            plane.axhspan(lo, hi, facecolor=_EX56.COLORS[site], edgecolor="none", alpha=0.16,
+            plane.axhspan(lo, hi, facecolor=_EX56.SITE_COLORS[site], edgecolor="none", alpha=0.16,
                           zorder=0)
         plane.axhline(0.0, color="0.6", lw=0.7, zorder=0)
         thr_ax.axvline(_EX33.SMEARING_LOG10_E_THR, color="0.35", lw=0.9, ls=(0, (1, 2)), zorder=0)
         plane.axvline(_EX33.SMEARING_LOG10_E_THR, color="0.35", lw=0.9, ls=(0, (1, 2)), zorder=0)
 
         pct = r"\%" if plt.rcParams["text.usetex"] else "%"
-        handles = [plt.Line2D([], [], color=_EX56.COLORS[s], lw=1.6, ls=STYLES[i],
+        handles = [plt.Line2D([], [], color=_EX56.SITE_COLORS[s], lw=1.6, ls=STYLES[i],
                               label=f"{s} ({LEVELS[s]})") for i, s in enumerate(SITES)]
         handles.append(plt.matplotlib.patches.Patch(facecolor="0.5", alpha=0.3, lw=0,
                                                     label="Predicted from optics"))

@@ -24,6 +24,8 @@ import pathlib
 
 import numpy as np
 
+from softpaws.response import reduced
+
 _HERE = pathlib.Path(__file__).parent
 _DEFAULT_OUT_DIR = _HERE / "output"
 
@@ -56,31 +58,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def trident_2025_detector():
-    cos_c, le_all, la_all = _EX81.load_map()
-    keep = le_all >= LOG10_E_MIN
-    log10_e, log10_a = le_all[keep], la_all[:, keep]
-    rows = np.abs(cos_c) <= COS_MAX
-    model = _EX81.MapModel(log10_e)
-    # Only the selected cos bins are needed; drop the others from the model loop.
-    model.weights = [w for w, r in zip(model.weights, rows) if r]
-    observed = 1.0e4 * 10 ** log10_a[rows].ravel()          # [cm^2]
+    """The 2025 map's flat-selection cells as one detector, and the cell count.
 
-    def predict(theta, select=None):
-        out = np.empty((int(rows.sum()), log10_e.size))
-        for i, w in enumerate(model.weights):
-            full = _EX77._EX56.water_model(theta, model.site, model.ladders, w, model.mcol, None)
-            out[i] = np.interp(log10_e, model.grid, np.log10(full))
-        pred = 10 ** out.ravel()
-        return pred if select is None else pred[select]
-
-    priors = dict(_EX33.PRIORS["ARCA230"])
-    priors["reach_km"] = (-0.08, 0.40)
-    priors["eps_0"] = (0.05, 1.5)
-    return _EX33.Detector(
-        name="TRIDENT", log10_e=np.tile(log10_e, int(rows.sum())), observed=observed,
-        mask=np.ones(observed.size, bool), predict=predict, priors=priors,
-        start=np.array([0.7, 2.5, 1.0, _EX33.LAMBDA_BGR18, 0.03]), color=_EX78._EX56.COLORS["TRIDENT"],
-        selection_level="2025 map"), int(rows.sum()) * log10_e.size
+    A thin wrapper on
+    :func:`softpaws.response.reduced.trident_2025_detector`.
+    """
+    return reduced.trident_2025_detector(COS_MAX, LOG10_E_MIN)
 
 
 def main() -> None:
@@ -104,7 +87,8 @@ def main() -> None:
         else:
             print(f"  eps_0 : median {med:.3f} [{lo:.3f}, {hi:.3f}]")
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    np.savez(args.out_dir / "82_trident2025_chain.npz", chain=chain, best=theta, free=np.array(_EX77.FREE3))
+    np.savez(args.out_dir / "82_trident2025_chain.npz", chain=chain, best=theta,
+             free=np.array(_EX77.FREE3))
 
     chains, sigma = _EX78.load_chains(args.chains)
     chains["TRIDENT"] = np.column_stack([chain[:, 1], 1.0e3 * chain[:, 2]])

@@ -27,9 +27,9 @@ import importlib.util
 import json
 import pathlib
 
-import emcee
 import numpy as np
-from scipy.optimize import minimize
+
+from softpaws.response import reduced
 
 _HERE = pathlib.Path(__file__).parent
 _DEFAULT_DATA_DIR = _HERE.parent / "src" / "softpaws" / "data" / "dataverse_files"
@@ -47,20 +47,25 @@ def load_example(stem: str, name: str):
 _EX56 = load_example("56_four_detector_posterior_corner.py", "_example_56")
 _EX33 = _EX56._EX33
 
-#: Fixed selection efficiency per site. IceCube: the through-going
-#: analysis-level efficiency the paper quotes; water sites: trigger or
-#: proposal level, nothing to lose by construction.
-EPS_FIXED = {"IceCube": 0.956, "ARCA230": 1.0, "P-ONE": 1.0, "TRIDENT": 1.0}
+# ---------------------------------------------------------------------------
+# The reduced fit now lives in softpaws.response.reduced. The names below are
+# re-exported so the sibling examples that load this script by path keep
+# resolving; Phase 3 of the cleanup retires that helper and this block.
+# ---------------------------------------------------------------------------
 
-#: Derived reach expectation per medium [km per e-fold], the optical
-#: attenuation lengths of App. F (59 m ice, 68 m water).
-REACH_DERIVED_KM = {"IceCube": 0.059, "ARCA230": 0.068, "P-ONE": 0.068, "TRIDENT": 0.068}
+EPS_FIXED = reduced.EPS_FIXED
+REACH_DERIVED_KM = reduced.REACH_DERIVED_KM
+FREE2 = reduced.FREE2
+FREE3 = reduced.FREE3
 
-FREE2 = ("log10_e_thr", "reach_km")
-FREE3 = ("eps_0", "log10_e_thr", "reach_km")
+full_theta = reduced.full_theta
+deviance = reduced.deviance
+make_logprob = reduced.reduced_log_probability
+fit = reduced.fit
 
 
 def parse_args() -> argparse.Namespace:
+    """Command-line arguments; see the module docstring."""
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--data-dir", type=pathlib.Path, default=_DEFAULT_DATA_DIR)
     parser.add_argument("--steps", type=int, default=3000)
@@ -69,57 +74,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--eps-icecube", type=float, default=EPS_FIXED["IceCube"])
     parser.add_argument("--out-dir", type=pathlib.Path, default=_DEFAULT_OUT_DIR)
     return parser.parse_args()
-
-
-def full_theta(free_names, free_values, fixed):
-    theta = np.array([fixed[n] for n in _EX33.PARAM_NAMES], dtype=float)
-    for name, value in zip(free_names, free_values):
-        theta[_EX33.PARAM_NAMES.index(name)] = value
-    return theta
-
-
-def deviance(detector, theta, sigma_ln):
-    predicted = detector.predict(theta, detector.mask)
-    if not np.all(np.isfinite(predicted)) or np.any(predicted <= 0.0):
-        return np.inf, None
-    residual = np.log(detector.observed[detector.mask] / predicted)
-    return float(np.sum((residual / sigma_ln) ** 2)), residual
-
-
-def make_logprob(detector, free_names, fixed, sigma_ln):
-    def logprob(values):
-        for name, value in zip(free_names, values):
-            low, high = detector.priors[name]
-            if not low < value < high:
-                return -np.inf
-        dev, _ = deviance(detector, full_theta(free_names, values, fixed), sigma_ln)
-        return -0.5 * dev
-    return logprob
-
-
-def fit(detector, free_names, fixed, sigma_ln, steps, walkers, seed):
-    logprob = make_logprob(detector, free_names, fixed, sigma_ln)
-    start = np.array([fixed[n] for n in free_names])
-    # Best fit first, from a small grid of starts so the sampler begins on it.
-    best, best_val = start, -logprob(start)
-    rng = np.random.default_rng(seed)
-    for _ in range(6):
-        x0 = np.array([rng.uniform(*detector.priors[n]) for n in free_names])
-        if not np.isfinite(logprob(x0)):
-            continue
-        res = minimize(lambda x: -logprob(x), x0, method="Nelder-Mead",
-                       options={"xatol": 1e-4, "fatol": 1e-4, "maxiter": 2000})
-        if res.fun < best_val:
-            best, best_val = res.x, res.fun
-    scatter = np.array([{"eps_0": 0.01, "log10_e_thr": 0.02, "reach_km": 0.002}[n]
-                        for n in free_names])
-    initial = best + scatter * rng.standard_normal((walkers, len(free_names)))
-    sampler = emcee.EnsembleSampler(walkers, len(free_names), logprob)
-    sampler.run_mcmc(initial, steps, progress=False)
-    chain = sampler.get_chain(discard=steps // 3, flat=True)
-    lp = sampler.get_log_prob(discard=steps // 3, flat=True)
-    best = chain[np.argmax(lp)]
-    return best, chain
 
 
 def main() -> None:
@@ -133,7 +87,8 @@ def main() -> None:
     print(f"\nPhysics fixed: b_scale = 1, lam = {_EX33.LAMBDA_BGR18} (BGR18); "
           f"eps_0 fixed at {EPS_FIXED}")
     for seed, d in enumerate(detectors, start=21):
-        fixed = {"eps_0": EPS_FIXED[d.name], "log10_e_thr": np.log10(_EX33.DEFAULT_MUON_THRESHOLD_GEV),
+        fixed = {"eps_0": EPS_FIXED[d.name],
+                 "log10_e_thr": np.log10(_EX33.DEFAULT_MUON_THRESHOLD_GEV),
                  "b_scale": 1.0, "lam": _EX33.LAMBDA_BGR18, "reach_km": 0.03}
         n = int(d.mask.sum())
         best5 = five[f"{d.name}_best"]
@@ -150,7 +105,8 @@ def main() -> None:
             dev, res = deviance(d, theta, args.sigma)
             q = {name: np.percentile(chain[:, k], [16, 50, 84]) for k, name in enumerate(free)}
             print(f"  {tag}: deviance {dev:.2f} / {n - len(free)} dof, "
-                  f"rms {np.std(res)/np.log(10):.3f} dex, trend {(res[-1]-res[0])/np.log(10):+.3f} dex")
+                  f"rms {np.std(res)/np.log(10):.3f} dex, "
+                  f"trend {(res[-1]-res[0])/np.log(10):+.3f} dex")
             for name in free:
                 lo, med, hi = q[name]
                 scale, unit = (1e3, " m") if name == "reach_km" else (1.0, "")
@@ -159,7 +115,8 @@ def main() -> None:
                     extra = f"   (derived {1e3*REACH_DERIVED_KM[d.name]:.0f} m)"
                 if name == "log10_e_thr":
                     extra = f"   (E_thr {10**med:.0f} GeV, 68% {10**lo:.0f}-{10**hi:.0f})"
-                print(f"      {name:>12}: best {scale*theta[_EX33.PARAM_NAMES.index(name)]:.3f}{unit}, "
+                best_value = scale * theta[_EX33.PARAM_NAMES.index(name)]
+                print(f"      {name:>12}: best {best_value:.3f}{unit}, "
                       f"median {scale*med:.3f}{unit} [{scale*lo:.3f}, {scale*hi:.3f}]{extra}")
             entry[tag] = {"best": theta.tolist(), "deviance": dev,
                           "quantiles": {k: v.tolist() for k, v in q.items()}}

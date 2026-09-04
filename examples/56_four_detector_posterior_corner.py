@@ -48,17 +48,13 @@ import argparse
 import importlib.util
 import json
 import pathlib
-from dataclasses import dataclass
 
 import corner
 import matplotlib.pyplot as plt
 import numpy as np
 
 from softpaws.comparison.posterior import global_compatibility, leave_one_out_compatibility
-from softpaws.transport.attenuation import regenerated_transmission
-from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
-from softpaws.transport.source import nucleon_number_density
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
+from softpaws.response import site_models
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
@@ -78,15 +74,27 @@ _EX33 = load_example("33_two_detector_posterior_corner.py", "_example_33")
 _EX55 = load_example("55_pone_trident_prediction.py", "_example_55")
 
 #: Style-file colours, one per site: IceCube, ARCA230, P-ONE, TRIDENT.
-COLORS = {"IceCube": "#7570b3", "ARCA230": "#1b9e77", "P-ONE": "#d95f02",
-          "TRIDENT": "#e7298a"}
+SITE_COLORS = {"IceCube": "#7570b3", "ARCA230": "#1b9e77", "P-ONE": "#d95f02",
+               "TRIDENT": "#e7298a"}
 
-#: Fit band of the two digitized sites [log10 GeV]: from example 33's lower
-#: edge to the last smoothed bin below the plotted edge.
-DIGITIZED_FIT_BAND = (5.0, 6.9)
+# ---------------------------------------------------------------------------
+# The water-site model now lives in softpaws.response.site_models. The names
+# below are re-exported so the sibling examples that load this script by path
+# keep resolving; Phase 3 of the cleanup retires that helper and this block.
+# ---------------------------------------------------------------------------
 
-#: Solid-angle weights of TRIDENT's three ``cos(theta)`` bands.
-TRIDENT_BAND_WEIGHTS = np.array([0.8, 0.4, 0.8]) / 2.0
+DIGITIZED_FIT_BAND = site_models.DIGITIZED_FIT_BAND
+TRIDENT_BAND_WEIGHTS = site_models.TRIDENT_BAND_WEIGHTS
+
+WaterSite = site_models.WaterSite
+water_sites = site_models.water_sites
+water_columns = site_models.water_columns
+water_ladders = site_models.water_ladders
+water_projected_area_km2 = site_models.water_projected_area_km2
+water_model = site_models.water_model
+pone_allsky_cm2 = site_models.pone_allsky_cm2
+trident_allsky_cm2 = site_models.trident_allsky_cm2
+_on_grid = site_models.on_arca_grid
 
 
 def parse_args() -> argparse.Namespace:
@@ -102,169 +110,19 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-# ---------------------------------------------------------------------------
-# A water site: example 33's ARCA model with the cylinder and overburden free
-# ---------------------------------------------------------------------------
-
-
-@dataclass(frozen=True)
-class WaterSite:
-    """Upright-cylinder water detector for example 33's forward model."""
-
-    name: str
-    radius_km: float
-    height_km: float
-    n_blocks: int
-    depth_km: float
-    selection_level: str
-    fit_band: tuple[float, float]
-    reach_prior: tuple[float, float]
-    #: ``tau -> mu`` channel weight; 0 for a ``nu_mu``-only simulation.
-    f_tau: float
-    #: Neutral-current regeneration in the Earth; False for pure absorption.
-    regeneration: bool
-    #: Water between the bottom of the instrumented volume and the sea floor
-    #: [km]; rock lies beneath, and shortens every upgoing entering term.
-    below_km: float
-
-
-def water_columns(site: WaterSite):
-    """Example 33's :func:`arca_columns` for any depth, from :mod:`softpaws.transport.earth`."""
-    theta_deg, weights = _EX33.arca_zenith_grid()
-    cos_theta = np.cos(np.deg2rad(theta_deg))
-    neutrino_column = neutrino_column_g_cm2(cos_theta, site.depth_km, RHO_WATER_G_CM3,
-                                            _EX33.ARCA_MAX_SEA_PATH_KM)
-    muon_column_km = overburden_km(cos_theta, site.depth_km, _EX33.ARCA_MAX_SEA_PATH_KM)
-    return weights, neutrino_column, muon_column_km
-
-
-def water_ladders(site: WaterSite, neutrino_column):
-    """Transmission ladders; a one-rung ``nu_mu`` ladder when regeneration is off."""
-    below_centre_km = site.below_km + 0.5 * site.height_km
-    if site.regeneration:
-        return _EX33.arca_ladders(neutrino_column, below_centre_km)
-    grid = _EX33.ARCA_LOG10_E
-    theta_deg, _ = _EX33.arca_zenith_grid()
-    cos_theta = np.cos(np.deg2rad(theta_deg))
-    energies = np.empty((grid.size, 1))
-    weights = np.empty((grid.size, 1, neutrino_column.size))
-    rock = np.ones_like(weights)
-    for i, log10_e in enumerate(grid):
-        energies[i], weights[i] = regenerated_transmission(
-            10.0**log10_e, neutrino_column, _EX33.CROSS_SECTION, n_levels=1)
-        rock[i] = _EX33.two_medium_range_ratio(
-            float((1.0 - _EX33.MEAN_INELASTICITY) * energies[i, 0]),
-            _EX33.DEFAULT_MUON_THRESHOLD_GEV, cos_theta, below_centre_km)[None, :]
-    return {"mu": (energies, weights, rock), "tau": (energies, np.zeros_like(weights), rock)}
-
-
-def water_projected_area_km2(site: WaterSite, theta_deg, radius_km):
-    """Convex-body projection of ``n_blocks`` upright cylinders [km^2]."""
-    theta = np.deg2rad(theta_deg)
-    cap = np.pi * np.asarray(radius_km) ** 2 * np.abs(np.cos(theta))
-    side = 2.0 * np.asarray(radius_km) * site.height_km * np.sin(theta)
-    return site.n_blocks * (cap + side)
-
-
-def water_model(theta, site: WaterSite, ladders, zenith_weights, muon_column_km, select=None):
-    """Example 33's :func:`arca_model` on a :class:`WaterSite` [cm^2]."""
-    ex = _EX33
-    eps_0, log10_e_thr, b_scale, lam, reach_km = theta
-    threshold = 10.0**log10_e_thr
-    n_nucleon = nucleon_number_density(RHO_WATER_G_CM3)
-    theta_deg, _ = ex.arca_zenith_grid()
-    nodes = slice(None) if select is None else select
-    total = np.zeros(ex.ARCA_LOG10_E.size if select is None else int(np.sum(select)))
-    channels = (("mu", 1.0 - ex.MEAN_INELASTICITY, 1.0),
-                ("tau", ex.MEAN_Z * (1.0 - ex.MEAN_INELASTICITY), site.f_tau * ex.BR_TAU_TO_MU))
-    for flavour, muon_fraction, weight in channels:
-        if weight == 0.0:
-            continue
-        energies, arrival, rock = ladders[flavour]
-        energies, arrival, rock = energies[nodes], arrival[nodes], rock[nodes]
-        muon_energy = muon_fraction * energies
-        length = ex.truncated_muon_range_km(
-            muon_energy[:, :, None], muon_column_km[None, None, :], threshold, b_scale) * rock
-        radius = ex.light_reach_radius_km(site.radius_km, muon_energy, reach_km,
-                                          ex.REACH_PIVOT_GEV)
-        area_km2 = water_projected_area_km2(site, theta_deg[None, None, :], radius[:, :, None])
-        v_det_km3 = site.n_blocks * np.pi * radius**2 * site.height_km
-        volume_km3 = area_km2 * length + v_det_km3[:, :, None]
-        sigma = ex._tilted_cc(energies, lam)
-        rate = n_nucleon * sigma[:, :, None] * volume_km3 * CM_PER_KM**3
-        total += weight * np.average((arrival * rate).sum(axis=1), axis=1,
-                                     weights=zenith_weights)
-    return eps_0 * total
-
-
-# ---------------------------------------------------------------------------
-# The two digitized sky averages
-# ---------------------------------------------------------------------------
-
-
-def _on_grid(log10_e, log10_a):
-    """Interpolate a smoothed curve onto example 33's ARCA grid [cm^2], NaN outside."""
-    return 10.0 ** np.interp(_EX33.ARCA_LOG10_E, log10_e, log10_a, left=np.nan, right=np.nan)
-
-
-def pone_allsky_cm2():
-    """P-ONE's all-sky trigger-level curve on the grid."""
-    return _on_grid(*_EX55.pone_allsky())
-
-
-def trident_allsky_cm2():
-    """TRIDENT's sky average from its three bands, solid-angle weighted, on the grid."""
-    bands = [_on_grid(log10_e, log10_a) for _, _, log10_e, log10_a in _EX55.trident_bands()]
-    return np.sum([w * b for w, b in zip(TRIDENT_BAND_WEIGHTS, bands)], axis=0)
-
-
-# ---------------------------------------------------------------------------
-# Detectors
-# ---------------------------------------------------------------------------
-
-
-def water_sites() -> list[WaterSite]:
-    """The two new sites; example 35's geometries."""
-    ex35 = load_example("35_point_source_effective_area.py", "_example_35")
-    geometry = {s.name: s for s in ex35.build_sites()}
-    pone, trident = geometry["P-ONE"], geometry["TRIDENT"]
-    # P-ONE's strings stand on the Cascadia Basin floor; TRIDENT's block sits
-    # about 100 m above the South China Sea bed at its 3.5 km site.
-    return [
-        WaterSite("P-ONE", pone.radius_km, pone.height_km, pone.n_blocks, pone.depth_km,
-                  "trigger", DIGITIZED_FIT_BAND, (-0.05, 0.40), 0.0, False, 0.0),
-        WaterSite("TRIDENT", trident.radius_km, trident.height_km, trident.n_blocks,
-                  trident.depth_km, "6 deg cut", DIGITIZED_FIT_BAND, (-0.05, 0.40), 0.0, False,
-                  0.1),
-    ]
-
-
 def build_detectors(data_dir: pathlib.Path) -> list:
-    """Example 33's two detectors plus the two water sites, recoloured."""
-    ex = _EX33
-    detectors = ex.build_detectors(data_dir)
-    for d in detectors:
-        d.color = COLORS[d.name]
-    curves = {"P-ONE": pone_allsky_cm2, "TRIDENT": trident_allsky_cm2}
+    """Example 33's two detectors plus P-ONE and TRIDENT.
+
+    A thin wrapper on :mod:`softpaws.response.site_models` that reports
+    progress, since every ladder takes a few seconds.
+    """
+    detectors = _EX33.build_detectors(data_dir)
     start = detectors[1].start.copy()
     for site in water_sites():
         print(f"Building {site.name}: {site.n_blocks} x (r {site.radius_km:g} km, "
               f"h {site.height_km:g} km) at {site.depth_km:.2f} km, nu_mu only, "
               f"{'NC regeneration' if site.regeneration else 'pure absorption'} ...")
-        observed = curves[site.name]()
-        mask = ((ex.ARCA_LOG10_E >= site.fit_band[0]) & (ex.ARCA_LOG10_E <= site.fit_band[1])
-                & np.isfinite(observed))
-        zenith_weights, neutrino_column, muon_column_km = water_columns(site)
-        ladders = water_ladders(site, neutrino_column)
-        priors = dict(ex.PRIORS["ARCA230"])
-        priors["reach_km"] = site.reach_prior
-        ex.EXPECTED[site.name] = {"b_scale": 1.0, "lam": ex.LAMBDA_BGR18}
-        detectors.append(ex.Detector(
-            name=site.name, log10_e=ex.ARCA_LOG10_E, observed=observed, mask=mask,
-            predict=(lambda theta, select=None, s=site, la=ladders, w=zenith_weights,
-                     m=muon_column_km: water_model(theta, s, la, w, m, select)),
-            priors=priors, start=start.copy(), color=COLORS[site.name],
-            selection_level=site.selection_level))
+        detectors.append(site_models.build_water_detector(site, start))
     return detectors
 
 
@@ -375,11 +233,12 @@ def make_figure(detectors, out_path: pathlib.Path) -> None:
     with plt.style.context(str(_STYLE)), plt.rc_context(rc):
         fig, _ = plt.subplots(k, k, figsize=(7.2, 7.2))
         for row, d in enumerate(detectors):
-            base = np.array(plt.matplotlib.colors.to_rgb(d.color))
+            color = SITE_COLORS[d.name]
+            base = np.array(plt.matplotlib.colors.to_rgb(color))
             filled = row == 0
             fills = [(*base, 0.0), (*base, 0.12), (*base, 0.28)]
             corner.corner(
-                d.chain[:, indices], labels=labels, range=ranges, color=d.color, fig=fig,
+                d.chain[:, indices], labels=labels, range=ranges, color=color, fig=fig,
                 plot_datapoints=False, plot_density=False, levels=(0.68, 0.95),
                 fill_contours=filled, contourf_kwargs={"colors": fills} if filled else None,
                 contour_kwargs={"linewidths": 1.1, "linestyles": styles[row]},
@@ -401,7 +260,7 @@ def make_figure(detectors, out_path: pathlib.Path) -> None:
         left, width = column.x0, column.width
         bottom, top = axes[k - 2, k - 1].get_position().y0, column.y1
         span = top - bottom
-        handles = [plt.Line2D([], [], color=d.color, lw=1.6, ls=styles[i],
+        handles = [plt.Line2D([], [], color=SITE_COLORS[d.name], lw=1.6, ls=styles[i],
                               label=f"{d.name} ({d.selection_level})")
                    for i, d in enumerate(detectors)]
         handles.append(plt.Line2D([], [], color="0.35", lw=1.0, ls=":", label="First principles"))
