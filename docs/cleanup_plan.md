@@ -100,7 +100,7 @@ Nothing gets refactored until the current outputs are pinned.
 5. Done. The `examples/output/*.npz` and `*.json` caches are copied to
    `scripts/2026_muon_transport/cache/` (gitignored, 72 MB).
 
-### Phase 1. Lift the hub examples into the library (the main work, 4 to 6 days)
+### Phase 1. Lift the hub examples into the library (done 2026-09-04)
 
 This is where the 33,500 lines shrink. Work bottom-up through the dependency
 graph, one hub at a time. For each hub: move the physics into a library
@@ -118,7 +118,7 @@ library and delete the private copy. Never move two hubs in one commit.
 | 1.5 done | `response/declination.py`, plus `data.icecube.banded_effective_area` and `data.published.icecube_point_source_sensitivity` | `35` (directional and band-averaged A_eff, zenith weights, ceiling, central energy range), `46` (derived-optics directional A_eff, column target volume, band statistics) | both private families; `47` consumes them unchanged; every lifted function reproduces at zero relative difference |
 | 1.6 done | `fluxes/astrophysical.py`, `fluxes/atmospheric.py` | `06`, `07`, `12`, `14`, `21`, `22`, `49`, `51`, `54`, `57` (`power_law_flux`, `bpl_shape`, the IceCube fits, MCEq builder and interpolator) | `PHI0`/`GAMMA` in 6 files, `bpl_shape` x2, three copies of the atmospheric grid reader; grids and anchors of 49/51/54 unchanged |
 | 1.7 done | `transport/loss_ensemble.py` + a `KernelScaling` hook in `coefficients.py` | `69`, `70` (the variant ensemble; `70`'s `sys.modules` monkeypatch becomes `set_kernel_scaling`), `72` (implied scales), `71`/`74` (variant activation) | the patch walker; drift, second moment and range per variant identical to the old route |
-| 1.8 | `response/reduced.py` | `77`, `78`, `81` (two-number reduced response, optics-predicted reach, TRIDENT 2025 map) | `78` to `83` collapse to plotting |
+| 1.8 done | `response/site_models.py`, `response/reduced.py` | `33`, `56` (the five-parameter forward models, the ladders, the `Detector` record, the builders), `77`, `78`, `81`, `82`, `83` (the two-number fit, the chain summaries, the TRIDENT 2025 map) | 1,057 lines; the forward models agree exactly at the cached best fits, and examples 78, 80 and 83 print byte-identical output |
 | 1.9 done | `comparison/posterior.py`, `comparison/feldman_cousins.py` | `33` (sampling, marginals, product posterior, compatibility), `56` (leave-one-out and global tests), `51` (profile interval, toy loop, validated cache) | statistics on the cached chains and toys identical; `29`'s and `54`'s copies and `bayes_factor` x4 go with their scripts in Phase 3 |
 | 1.10 done | `comparison/reco_likelihood.py`, `comparison/events.py` | `51` (smearing marginal, banded responses, atmospheric grids, event binning, anchors, `RecoLikelihood`), `76` (prediction, band combination, published-IRF baseline) | 728 lines; example 76 reproduces its archived log exactly and the likelihood agrees to every digit on the cached inputs |
 | 1.11 done | `comparison/event_energy.py` | `57` (potential density, measurement, energy likelihood, posterior, summary), `68` (two-layer column, survival, unity energy), `15` (parent-energy posterior, quantile); the `TrackEvent` record for KM3-230213A | the three private copies; the tension ladder of `57` Part B stays with `31`'s likelihood engine for step 1.9 |
@@ -209,7 +209,7 @@ library and writes `numbers.json`, which the paper checks against.
 The old `examples/` scripts are deleted in this phase. Git history and the
 `pre-cleanup` tag keep them.
 
-### Phase 4. Examples (1 day)
+### Phase 4. Examples (done 2026-09-04)
 
 Short tutorials that run in under a minute with no cache, numbered from 01.
 Each starts with a module docstring, an `argparse` block built from that
