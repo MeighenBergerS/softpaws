@@ -40,7 +40,7 @@ when ``D_nu`` varies slowly over the ~few-``Phi(A)^-1`` km-w.e. range the soft
 volume is produced in. :func:`neutrino_interaction_length_km` instead gives
 ``Lambda_nu`` in the same km^-1 units as ``Phi(A)``, letting
 :func:`softpaws.transport.soft_volume.saturation_factor` combine the two
-analytically into the paper's exact ``R_nu(x, A)`` (Eq. 11, App. C.2-C.3) --
+analytically into the paper's coupled ``R_nu(x, A)`` (Sec. III A and App. A) --
 **Form C**, used by
 :meth:`~softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_coupled_attenuation`
 for the strongly-absorbed upgoing UHE regime where Forms A/B are an
@@ -167,7 +167,7 @@ def neutrino_interaction_length_km(
     matches the km^-1 units :func:`softpaws.transport.eigenvalue.phi_eigenvalue`
     already uses for ``Phi(A)``, so the two combine directly in
     :func:`softpaws.transport.soft_volume.saturation_factor`'s coupled form
-    (Eq. 11 of ``paper/main.tex``).
+    (the coupled rate ``R_nu`` of Sec. III A of the method paper).
 
     Parameters
     ----------

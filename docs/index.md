@@ -40,7 +40,8 @@ error on the transport itself is measured.
 
 Read [Installation](installation.md), then [Quickstart](quickstart.md) for
 five calls that take you from a detector to an effective area to an event
-rate. [Data](data.md) explains what ships with the package and what you have
+rate, and [Your own detector](own_detector.md) for a layout or a flux of
+your own. [Data](data.md) explains what ships with the package and what you have
 to download. The [API reference](api-reference/) is generated from the
 docstrings.
 

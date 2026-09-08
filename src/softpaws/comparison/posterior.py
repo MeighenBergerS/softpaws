@@ -10,6 +10,8 @@ for any chains; the forward models and the priors stay with the fits.
 
 from __future__ import annotations
 
+from collections.abc import Callable, Sequence
+
 import numpy as np
 from scipy.stats import chi2, gaussian_kde
 
@@ -27,7 +29,7 @@ __all__ = [
 ]
 
 
-def inside_box(theta: np.ndarray, bounds) -> bool:
+def inside_box(theta: np.ndarray, bounds: Sequence[tuple[float, float]]) -> bool:
     """Whether every parameter lies strictly inside its prior box.
 
     Parameters
@@ -73,7 +75,7 @@ def log_gaussian_in_log(observed: np.ndarray, predicted: np.ndarray, sigma_ln: f
 
 
 def sample_posterior(
-    log_probability,
+    log_probability: Callable[..., float],
     start: np.ndarray,
     scatter: np.ndarray,
     walkers: int,
@@ -223,7 +225,7 @@ def marginal_summary(
     return out
 
 
-def intersection(intervals) -> dict:
+def intersection(intervals: Sequence[tuple[float, float]]) -> dict:
     """Overlap of several intervals.
 
     Parameters

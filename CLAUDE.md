@@ -68,7 +68,7 @@ data/  +  detectors/  +  fluxes/  →  transport/  →  response/  →  comparis
   background through MCEq.
 - **`transport/`** — the physics core: the loss kernel, the transport exponent
   `Phi(s)` and its eigenvalue treatment (`eigenvalue`), the range to threshold
-  and its first-passage moments, the log-loss law, Earth geometry and
+  and its first-passage moments (`muon_range`), the log-loss law, Earth geometry and
   attenuation, and the tau channel. The drift-diffusion coefficients
   (`coefficients`) and the drift-limit soft volume (`soft_volume`) are the
   prior-work limit, kept as a cross-check.

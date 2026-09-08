@@ -91,7 +91,7 @@ from softpaws.comparison.posterior import (
 )
 from softpaws.data.published import KM3NET_DIR
 from softpaws.response import site_models
-from softpaws.transport.soft_volume import DEFAULT_MUON_THRESHOLD_GEV
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

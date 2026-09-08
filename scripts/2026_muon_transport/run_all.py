@@ -54,10 +54,7 @@ STEPS: tuple[tuple[str, str | None], ...] = (
 
 #: Written after every script: the recipe table from the chains of 77 and 82,
 #: and the transport table straight from the library.
-TABLE_WRITERS = (
-    pathlib.Path("paper") / "make_recipe_table.py",
-    pathlib.Path("paper") / "make_transport_table.py",
-)
+TABLE_WRITERS = ("make_recipe_table.py", "make_transport_table.py")
 
 
 def parse_args() -> argparse.Namespace:
@@ -117,7 +114,7 @@ def main() -> None:
             raise SystemExit(f"{name} exited with {result.returncode} after {elapsed:.0f} s.")
         print(f"    done in {elapsed:.0f} s")
 
-    for writer in (_HERE.parents[1] / path for path in TABLE_WRITERS):
+    for writer in (_HERE / name for name in TABLE_WRITERS):
         if args.recipe_table and writer.exists():
             print(f"\nWriting a table with {writer} ...")
             subprocess.run([sys.executable, str(writer)], check=True)

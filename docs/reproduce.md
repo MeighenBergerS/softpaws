@@ -11,7 +11,7 @@ pinned in `tests/regression/baseline.json`.
 python scripts/2026_muon_transport/run_all.py --dry-run
 ```
 
-That prints the 26 steps in dependency order and says which are already
+That prints the 27 steps in dependency order and says which are already
 cached. Drop the flag to run them. A step whose outputs sit in
 `scripts/2026_muon_transport/output/` is skipped unless you pass `--force`,
 which matters because several take hours.
@@ -44,10 +44,10 @@ pytest -q --run-slow tests/regression
 ```
 
 A value that moves outside its tolerance is either a bug or an inconsistency
-the scripts previously hid. Two blocks are already known to be stale, and are
-regenerated rather than trusted: the range rows of Table C.1 and the water
-log-loss rate of Tables C.1 and E.2 predate the current kernel table, and the
-two-flavour run log of the reach script predates a column it now prints.
+the scripts previously hid. The transport rows of Tables C.1 and E.2 are
+machine-written from the library by `make_transport_table.py`, and the
+plug-in response of Table E.1 by `make_recipe_table.py`, both in the scripts
+directory, so those tables cannot drift from the code.
 
 ## Two scripts do not reproduce run to run
 

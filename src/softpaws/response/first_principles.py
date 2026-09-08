@@ -43,13 +43,13 @@ from softpaws.response.light_reach import DEFAULT_MIN_MODULES, effective_body_km
 from softpaws.transport.attenuation import flavour_transmission, regenerated_transmission
 from softpaws.transport.cross_section import CrossSection, bgr18_cross_section
 from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km, zenith_grid
-from softpaws.transport.soft_volume import (
+from softpaws.transport.muon_range import (
     DEFAULT_MUON_THRESHOLD_GEV,
-    eroded_prism_target_km2,
     stochastic_muon_range_km,
     truncated_muon_range_km,
     two_medium_range_ratio,
 )
+from softpaws.transport.soft_volume import eroded_prism_target_km2
 from softpaws.transport.source import mean_inelasticity, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
 from softpaws.utils.constants import CM_PER_KM, M_PER_KM, RHO_WATER_G_CM3
@@ -99,7 +99,7 @@ ANCHORS = (5.0, 6.0, 7.0)
 DEFAULT_FLAVOURS = ("mu", "tau")
 
 #: Medium below the optical one, entered through the two-medium first passage
-#: of :func:`softpaws.transport.soft_volume.two_medium_range_ratio` for every
+#: of :func:`softpaws.transport.muon_range.two_medium_range_ratio` for every
 #: upgoing direction: PROPOSAL's standard rock, whose ``Phi'(0)`` per unit
 #: column sits 27% above water at 1 PeV. An upgoing muon is born below the
 #: bedrock or the sea floor and crosses only the near column of ice or water

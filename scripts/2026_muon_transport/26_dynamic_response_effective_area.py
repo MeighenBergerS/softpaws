@@ -55,11 +55,8 @@ from softpaws.data.schema import SEASONS
 from softpaws.response.soft_volume import SoftVolumeResponse
 from softpaws.transport.attenuation import prem_column, survival_probability
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
-    range_target_volume_km3,
-    sphere_radius_from_volume,
-)
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV
+from softpaws.transport.soft_volume import range_target_volume_km3, sphere_radius_from_volume
 from softpaws.transport.source import (
     MEAN_INELASTICITY,
     nucleon_number_density,

@@ -23,7 +23,7 @@ pip install -e ".[dev]"
 
 ## Optional extras
 
-Three extras cover work that needs a heavier dependency. None of them is
+Four extras cover work that needs a heavier dependency. None of them is
 required to use the shipped tables.
 
 | Extra | Installs | Needed for |
@@ -31,6 +31,7 @@ required to use the shipped tables.
 | `dev` | ruff, pytest, build, twine | Running the tests and building the package |
 | `atm` | MCEq, crflux | Tabulating the atmospheric neutrino background once |
 | `transport` | PROPOSAL | Regenerating the loss-coefficient tables and the loss-model ensemble |
+| `paper` | corner, mpmath, PyMuPDF | Running the paper scripts in `scripts/` |
 | `docs` | mkdocs, mkdocstrings | Building this site |
 
 Install one like this:

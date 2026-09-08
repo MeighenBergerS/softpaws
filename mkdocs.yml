@@ -14,6 +14,7 @@ nav:
       - 'Getting started': './index.md'
       - 'Installation': './installation.md'
       - 'Quickstart': './quickstart.md'
+      - 'Your own detector': './own_detector.md'
       - 'Data': './data.md'
       - 'Examples': './examples.md'
       - 'Reproducing the paper': './reproduce.md'
@@ -30,10 +31,6 @@ extra_javascript:
   - js/tippy-bundle.umd.js
   - js/clipboard.js
   - js/extra.js
-# The cleanup plan is a development document, not part of the site.
-exclude_docs: |
-  cleanup_plan.md
-
 markdown_extensions:
   - admonition
 plugins:

@@ -22,17 +22,18 @@ Every script takes `--out-dir`, and the ones that read a release take
 | 02 | `transport_exponent` | `Phi(A)` from the loss kernel, against the drift-only and second-order truncations | — |
 | 03 | `range_and_loss_law` | The first-passage range against the mean-loss range, and why the loss tail is not Gaussian | — |
 | 04 | `earth_attenuation` | The PREM column against arrival direction, the survival it implies, and what regeneration adds back | — |
-| 05 | `effective_area` | Effective areas of four detectors from the instrumented footprint alone, against IceCube's published table | DR2 |
+| 05 | `effective_area` | Effective areas of four detectors from the instrumented footprint alone, against IceCube's published table | DR2 for the comparison |
 | 06 | `declination_and_point_sources` | The response band by band, and the flux a background-free search would exclude | DR2 |
 | 07 | `single_event_energy` | The neutrino energy behind KM3-230213A, under three flux priors and three loss families | — |
 | 08 | `tau_induced_tracks` | What the tau channel contributes to the track rate, and where it takes over | — |
 | 09 | `fitting_the_light_reach` | Scanning the one instrument number that closes the gap in tutorial 05 | DR2 |
-| 10 | `atmospheric_background` | The MCEq background against the astrophysical flux, and where they cross | cached table or the `atm` extra |
+| 10 | `atmospheric_background` | The MCEq background against the astrophysical flux, and where they cross | — |
 | 11 | `diffuse_signal` | The flux a new diffuse signal needs before each telescope sees it, as a single event, a line and a power law | DR2 for IceCube |
 | 12 | `point_source_signal` | The same three injections for a point source, against declination and site latitude | DR2 for IceCube |
 
-Tutorials 02, 03, 07 and 08 need no downloaded data at all: everything they
-use ships with the package.
+Tutorials 02, 03, 04, 07, 08 and 10 need no downloaded data at all, and 05,
+11 and 12 run without it and skip the IceCube comparison. Only 01, 06 and 09
+need the release.
 
 ## What they reproduce
 
@@ -49,9 +50,3 @@ quick check that an installation is sound.
 - Tutorials 11 and 12 fit that same number at all four sites, to between 0.02
   and 0.08 dex, and carry it into a sensitivity.
 
-## The older scripts
-
-`examples/` also holds the analysis scripts the method paper was built from,
-numbered in the order they were written. They are being moved to a directory
-of their own, one script per figure; see
-[Reproducing the paper](reproduce.md).

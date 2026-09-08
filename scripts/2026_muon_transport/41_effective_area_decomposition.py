@@ -73,7 +73,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.transport.soft_volume import (
+from softpaws.transport.muon_range import (
     DEFAULT_MUON_THRESHOLD_GEV,
     muon_range_km,
     stochastic_muon_range_km,

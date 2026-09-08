@@ -96,7 +96,7 @@ print(ceiling)
 ```
 
 ```
-[2.75e-10 4.24e-10 6.57e-10 1.37e-09]
+[2.75e-10 4.25e-10 6.57e-10 1.39e-09]
 ```
 
 `E² φ` in GeV cm⁻² s⁻¹ at 100 TeV, band by band. The ceiling worsens toward
@@ -105,6 +105,8 @@ declination dependence lives.
 
 ## Next
 
-The [examples](examples.md) work through each of these in more depth, and
+[Your own detector](own_detector.md) does the same for a layout and a flux
+that are not in the registry. The [examples](examples.md) work through each
+of these in more depth, and
 [Reproducing the paper](reproduce.md) rebuilds every figure. The
 [API reference](api-reference/) documents every function.

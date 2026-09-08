@@ -7,7 +7,7 @@ supersedes them, with every loss moment kept.
 
 The QED energy-loss operator is scale-invariant, so power laws ``phi ~ E^-1-s``
 are its eigenfunctions with eigenvalue (``docs/theory/exact_soft_volume.md``, and
-``paper/main.tex`` Part 2)
+Sec. II of the method paper)
 
 .. math:: \\Phi(s) = \\int_0^1 dy\\, \\frac{d\\Gamma}{dy}
     \\bigl[\\,1 - (1 - y)^s\\,\\bigr].
@@ -46,7 +46,8 @@ def spectral_index(gamma: float, lam: float = DEFAULT_LAMBDA) -> float:
     Unlike :func:`softpaws.transport.soft_volume.spectral_penalty`, this does not
     require ``A > 0``: the exact treatment stays finite for ``A <= 0`` through the
     saturation factor, so the sign is left for the caller to interpret (``A < 0``
-    signals the cross-section pole, ``paper/main.tex`` Part 11.2).
+    signals the cross-section pole, handled by
+    :func:`softpaws.transport.soft_volume.saturation_factor`).
 
     Parameters
     ----------
@@ -71,7 +72,7 @@ def two_moment_loss_spectrum(
     """Calibrate the two-parameter loss spectrum ``dGamma/dy = kappa (1-y)^p / y``.
 
     The family is fixed by matching its first two ``y``-moments to the drift and
-    diffusion coefficients (``paper/main.tex`` Part 10.4):
+    diffusion coefficients (App. A.1 of the method paper):
 
     .. math:: b_\\mu = \\frac{\\kappa}{p+1}, \\qquad
         d_\\mu = \\frac{\\kappa}{(p+1)(p+2)}
@@ -550,11 +551,11 @@ def phi_eigenvalue_derivative(
 
     .. math:: \\frac{d\\Phi}{dA}(A) = \\kappa\\,\\psi_1(p + A + 1),
 
-    with ``psi_1`` the trigamma function. This is the ingredient App. B's own
-    Bernstein-function property (``Phi' > 0``, ``Phi'' < 0``) refers to, and
-    what :func:`softpaws.transport.soft_volume.
-    scale_breaking_saturation_factor` needs for the App. F running-index
-    correction (Eq. F4 of ``paper/main.tex``).
+    with ``psi_1`` the trigamma function. This is the ingredient the Bernstein-function
+    property of App. A of the method paper (``Phi' > 0``, ``Phi'' < 0``) refers
+    to, and what :func:`softpaws.transport.soft_volume.
+    scale_breaking_saturation_factor` needs for its running-index correction,
+    which an earlier draft of the paper carried as its App. F.
 
     Parameters
     ----------

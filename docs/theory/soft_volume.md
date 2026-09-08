@@ -19,13 +19,8 @@ energy neutrinos experiments*
 ([arXiv:2607.13143](https://arxiv.org/abs/2607.13143)), with its companion
 *Exploring ultra-high energy neutrino experiments through the lens of the
 transport equation* ([arXiv:2507.10665](https://arxiv.org/abs/2507.10665),
-JHEP 03 (2026) 223). Equation numbers below refer to arXiv:2607.13143. Local
-copy: `paper/2607.13143.pdf`.
-
-!!! note
-    `paper/` holds the working draft and is not distributed with the public
-    repository. The arXiv number replaces these path references once the
-    paper is posted.
+JHEP 03 (2026) 223). Equation numbers below refer to
+[arXiv:2607.13143](https://arxiv.org/abs/2607.13143).
 
 ---
 
@@ -70,7 +65,7 @@ direction, since `Δθ ∝ m_μ/E ≪ 1`). The muon flux per unit energy
 
 - **Drift term** `b_μ(E)` — mean fractional energy loss per unit length. Muon range ≈ `1/b_μ`.
 - **Diffusion term** `d_μ(E)` — stochastic spread of energy loss (variance).
-- **Source** `C_weak` — neutrino CC production of muons (Section 2, below).
+- **Source** `C_weak` — neutrino CC production of muons (§3, below).
 - `x` has units of length (column depth); coefficients are per-length (km⁻¹).
 
 ### 2.2 Transport coefficients (Eq. 2.8)
@@ -262,32 +257,44 @@ Benchmark fit result to aim at reproducing (IceCube 9.5 yr, diffusion model, Eq.
 
 ## 8. Numerical recipe → mapping to `softpaws`
 
-Data flows `data/ → transport/ → response/ → comparison/`. Proposed pieces:
+Data flows `data/ → transport/ → response/ → comparison/`. Where each piece lives:
 
-**`utils/`** — constants (m_e, m_μ, m_π, N_A), unit conversions (GeV↔cm↔km,
-densities), PREM shells + `L(zenith)` column-depth helper (Eq. footnote p.11).
+**`utils/`**: constants (m_e, m_μ, m_π, N_A) and unit conversions (GeV↔cm↔km,
+densities) in `softpaws.utils.constants`. The PREM shells and the `L(zenith)`
+column-depth helper (Eq. footnote p.11) are in `softpaws.transport.earth`
+(`prem_density`, `prem_column`, `neutrino_column_g_cm2`).
 
-**`transport/`** — the physics core:
-- `coefficients`: `b_μ(E)`, `d_μ(E)` — start from Table 1 constants (water/ice),
-  interface to swap in energy-dependent / MC-calibrated values later.
-- `green`: `G(E, x; ε, ξ)` log-normal kernel (Eq. 2.16) + drift-limit delta (2.17);
-  optional slow-coefficient version (A.24).
-- `source`: `C_weak` (Eq. 2.19) — needs `σ_CC(E_ν)` (Eq. 2.5), `P(y_w)` (or ⟨y_w⟩),
-  `D_ν` attenuation (Eq. 2.4).
-- `flux`: convolve G with source → `ϕ_μ(E, Ω)|det` (Eq. 2.15).
-- `soft_volume`: `V_soft(E)` (Eq. 2.14/2.22); analytic drift/diffusion forms
-  (2.23/2.25) as fast path + validation.
+**`transport/`**: the physics core.
+- `softpaws.transport.coefficients`: `b_μ(E)`, `d_μ(E)` as `drift_coefficient` and
+  `diffusion_coefficient`, read from the PROPOSAL tables (Table 1 gives the water
+  reference values).
+- The log-normal kernel `G(E, x; ε, ξ)` (Eq. 2.16) has no module of its own. Its
+  Gaussian log-loss law is `softpaws.transport.loss_distribution.loss_density_gaussian`,
+  kept as the reference that the exact density `loss_density` supersedes. The
+  drift-limit delta (2.17) is the continuous-slowing-down range of
+  `softpaws.transport.muon_range.muon_range_km`.
+- `softpaws.transport.source`: `C_weak` (Eq. 2.19), with `σ_CC(E_ν)` (Eq. 2.5) as
+  `cc_cross_section` and ⟨y_w⟩ as `inelasticity_factor`. The `D_ν` attenuation
+  (Eq. 2.4) is in `softpaws.transport.attenuation`.
+- `softpaws.transport.soft_volume`: `V_soft(E)` (Eq. 2.14/2.22). The analytic
+  drift/diffusion forms (2.23/2.25) are `soft_volume_drift`, `soft_volume_diffusion`,
+  `spectral_penalty`, `volume_ratio_drift` and `saturation_factor`, with
+  `soft_volume_exact`, the projected areas and `range_target_volume_km3` beside them.
 
-**`response/`** — `SoftVolumeResponse` alongside the existing IRF path in
-`response/irfs.py`, both exposing the same `flux → dN/dE dΩ` interface (master
-formula Eq. 2.20). This interchangeability is what enables the head-to-head.
+**`response/`**: `softpaws.response.soft_volume.SoftVolumeResponse` carries the
+`flux → dN/dE dΩ` map (master formula Eq. 2.20), including the convolution of the
+source into `ϕ_μ(E, Ω)|det` (Eq. 2.15), alongside the IRF path in
+`softpaws.response.irfs`. Both expose the same interface, and this
+interchangeability is what enables the head-to-head.
 
-**`comparison/`** — put the two predictions and the DR2 events side by side;
-reproduce the power-law fit (Eq. 4.1–4.2, Poisson likelihood over ≥10 TeV bins),
-extract `ε_IC-TG`.
+**`comparison/`**: `softpaws.comparison.rates` and `softpaws.comparison.likelihood`
+put the two predictions and the DR2 events side by side, reproduce the power-law fit
+(Eq. 4.1–4.2, Poisson likelihood over ≥10 TeV bins), and extract `ε_IC-TG`
+(`implied_efficiency`).
 
-**Suggested build order:** utils constants → drift-limit V_soft (closed form,
-Eq. 2.23, validate against the "4×" figure of merit) → full Green's-function
-convolution (Eq. 2.20) → wrap as `response/` predictor → comparison fit. Add MC
-coefficient calibration (Section 3.1) and hard-scatter correction (Appendix B)
-only if needed for accuracy.
+**Build order followed:** utils constants → drift-limit V_soft (closed form,
+Eq. 2.23, validated against the "4×" figure of merit) → full Green's-function
+convolution (Eq. 2.20) → `response/` predictor → comparison fit. The MC coefficient
+calibration (Section 3.1) and the hard-scatter correction (Appendix B) were not
+needed once the transport exponent of [The transport exponent](exact_soft_volume.md)
+replaced the expansion.

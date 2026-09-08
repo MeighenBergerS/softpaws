@@ -41,9 +41,10 @@ different loss model.
 pip install git+https://github.com/MeighenBergerS/softpaws.git
 ```
 
-Requires Python 3.11 or later. The optional extras `atm` (MCEq, for the
-atmospheric background), `transport` (PROPOSAL, for regenerating the loss
-tables) and `dev` cover the heavier dependencies. See the
+Requires Python 3.11 or later, NumPy, SciPy, Matplotlib and emcee. The
+optional extras `atm` (MCEq, for rebuilding the atmospheric background),
+`transport` (PROPOSAL, for regenerating the loss tables), `paper` (the paper
+scripts) and `dev` cover the heavier dependencies. See the
 [installation guide](https://meighenbergers.github.io/softpaws/installation/).
 
 ## A first calculation
@@ -60,13 +61,15 @@ print(aeff[:, 0])       # [1.38e+06 3.60e+06] cm^2, at 100 TeV and 1 PeV
 ```
 
 The [quickstart](https://meighenbergers.github.io/softpaws/quickstart/) takes
-this to a point-source ceiling in five calls.
+this to a point-source ceiling in five calls, and
+[Your own detector](https://meighenbergers.github.io/softpaws/own_detector/)
+does the same for a layout that has no published table.
 
 ## Data
 
 The tabulated inputs ship with the package: the muon loss coefficients, the
-BGR18 cross section, and the published effective areas of KM3NeT/ARCA, P-ONE
-and TRIDENT. The two IceCube releases are large and are not included. Download
+BGR18 cross section, the MCEq atmospheric background, and the published
+effective areas of KM3NeT/ARCA, P-ONE and TRIDENT. The two IceCube releases are large and are not included. Download
 the IceTracks-DR2 release
 ([10.7910/DVN/MMIIZA](https://doi.org/10.7910/DVN/MMIIZA); paper
 [arXiv:2605.19040](https://arxiv.org/abs/2605.19040)) and, if you need the

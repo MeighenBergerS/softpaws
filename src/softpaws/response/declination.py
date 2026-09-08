@@ -25,18 +25,19 @@ is ``dec > 0``.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 import numpy as np
 
 from ..detectors import Optics, Site
 from ..transport.attenuation import flavour_transmission, regenerated_transmission
 from ..transport.cross_section import CrossSection
-from ..transport.soft_volume import (
+from ..transport.muon_range import (
     DEFAULT_MUON_THRESHOLD_GEV,
-    eroded_prism_target_km2,
-    light_reach_radius_km,
     truncated_muon_range_km,
     two_medium_range_ratio,
 )
+from ..transport.soft_volume import eroded_prism_target_km2, light_reach_radius_km
 from ..transport.source import MEAN_INELASTICITY, mean_inelasticity, nucleon_number_density
 from ..transport.tau import BR_TAU_TO_MU, MEAN_Z
 from ..utils.constants import CM_PER_KM
@@ -736,7 +737,7 @@ def derived_band_averaged_effective_area_cm2(
     sin_dec_edges: np.ndarray,
     min_modules: float,
     flavours: tuple[str, ...],
-    species,
+    species: Sequence[CrossSection],
     inelasticity_nc: float | None = None,
     halo_weight: float = 1.0,
     efficiency: float = 1.0,

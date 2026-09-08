@@ -24,11 +24,11 @@ analysis threshold,
 Two ingredients are new relative to examples 20 and 26.
 
 **The length is stochastic, not deterministic.**
-:func:`~softpaws.transport.soft_volume.muon_range_km` puts the arrival
+:func:`~softpaws.transport.muon_range.muon_range_km` puts the arrival
 probability at a step function on the mean CSDA range. The real loss law is
 right-skewed (:mod:`softpaws.transport.loss_distribution`), so more muons fall
 short of the mean than overshoot it, and
-:func:`~softpaws.transport.soft_volume.stochastic_muon_range_km` -- the exact
+:func:`~softpaws.transport.muon_range.stochastic_muon_range_km` -- the exact
 log-loss CDF integrated over depth -- comes out ~7% shorter at 1 PeV and ~12%
 shorter at 100 PeV.
 
@@ -74,13 +74,12 @@ from softpaws.transport.attenuation import (
     survival_probability,
 )
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.soft_volume import (
+from softpaws.transport.muon_range import (
     DEFAULT_MUON_THRESHOLD_GEV,
-    light_reach_radius_km,
     muon_range_km,
-    prism_projected_area_km2,
     stochastic_muon_range_km,
 )
+from softpaws.transport.soft_volume import light_reach_radius_km, prism_projected_area_km2
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
 from softpaws.utils.constants import CM_PER_KM

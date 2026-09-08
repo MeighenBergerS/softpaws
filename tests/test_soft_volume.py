@@ -16,13 +16,12 @@ from softpaws.transport.coefficients import (
     drift_coefficient,
     ionization_coefficient,
 )
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, muon_range_km
 from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
     dm_line_target_volume_km3,
     dynamic_projected_area_km2,
     dynamic_projected_radius_km,
     light_reach_radius_km,
-    muon_range_km,
     prism_projected_area_km2,
     range_target_volume_km3,
     soft_volume_diffusion,

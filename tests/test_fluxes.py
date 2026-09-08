@@ -1,6 +1,5 @@
 """Tests for the flux package."""
 
-import pathlib
 
 import numpy as np
 import pytest
@@ -9,6 +8,7 @@ from softpaws.fluxes import (
     ICECUBE_BPL_2025,
     ICECUBE_TRACKS_2022,
     REFERENCE_SPL,
+    SHIPPED_TABLE,
     AtmosphericFlux,
     broken_power_law_flux,
     broken_power_law_shape,
@@ -16,8 +16,7 @@ from softpaws.fluxes import (
 )
 from softpaws.response.soft_volume import power_law_flux as reexported
 
-PAPER_SCRIPTS = pathlib.Path(__file__).parents[1] / "scripts" / "2026_muon_transport"
-MCEQ_TABLE = PAPER_SCRIPTS / "output" / "22_mceq_atmospheric_flux.npz"
+MCEQ_TABLE = SHIPPED_TABLE
 
 
 def test_power_law_reexport_and_pivot():

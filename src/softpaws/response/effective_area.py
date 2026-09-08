@@ -44,12 +44,8 @@ from ..transport.coefficients import diffusion_coefficient, drift_coefficient
 from ..transport.cross_section import CrossSection, bgr18_cross_section
 from ..transport.earth import neutrino_column_g_cm2, overburden_km, prem_column, zenith_grid
 from ..transport.loss_distribution import log_loss_cdf
-from ..transport.soft_volume import (
-    light_reach_radius_km,
-    muon_range_km,
-    prism_projected_area_km2,
-    truncated_muon_range_km,
-)
+from ..transport.muon_range import muon_range_km, truncated_muon_range_km
+from ..transport.soft_volume import light_reach_radius_km, prism_projected_area_km2
 from ..transport.source import MEAN_INELASTICITY, nucleon_number_density
 from ..transport.tau import BR_TAU_TO_MU, MEAN_Z
 from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
@@ -170,7 +166,7 @@ def truncated_range_km(
     Eq. (16) of the paper is ``L = Integral_0^inf d_ell P[W(ell) < w_star]``.
     Cutting the integral at a finite ``X`` gives ``E[tau(w_star) ^ X]``, the
     length available when the muon cannot be born further upstream than
-    ``X``. This is :func:`~softpaws.transport.soft_volume.truncated_muon_range_km`
+    ``X``. This is :func:`~softpaws.transport.muon_range.truncated_muon_range_km`
     broadcast to a ``(n_energy, n_column)`` table and clipped at zero.
 
     Parameters

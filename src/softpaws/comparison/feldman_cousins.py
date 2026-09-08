@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import logging
 import pathlib
+from collections.abc import Callable
 
 import numpy as np
 
@@ -92,8 +93,8 @@ def calibrated_thresholds(
 
 def toy_statistics(
     truths: np.ndarray,
-    expectation,
-    statistic,
+    expectation: Callable[[float], np.ndarray],
+    statistic: Callable[[float, np.ndarray], float],
     n_toys: int,
     rng: np.random.Generator,
 ) -> np.ndarray:
@@ -134,7 +135,7 @@ def toy_statistics(
 def cached_toys(
     path: str | pathlib.Path,
     metadata: dict,
-    build,
+    build: Callable[[], np.ndarray],
     rebuild: bool = False,
 ) -> np.ndarray:
     """Toy distributions from a cache file, rebuilt when the metadata differs.

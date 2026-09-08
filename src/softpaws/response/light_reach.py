@@ -43,7 +43,7 @@ from scipy.special import gammainc
 
 from softpaws.detectors import ANCHOR_NM, Optics
 from softpaws.transport.coefficients import drift_coefficient
-from softpaws.transport.soft_volume import DEFAULT_MUON_THRESHOLD_GEV
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV
 from softpaws.utils.constants import M_PER_KM, RHO_WATER_G_CM3
 
 __all__ = [
@@ -616,7 +616,7 @@ def muon_threshold_gev(site: Optics, min_modules: float, chord_km: float) -> flo
     -------
     threshold_gev : float
         Muon threshold [GeV], held at or above
-        :data:`~softpaws.transport.soft_volume.DEFAULT_MUON_THRESHOLD_GEV`.
+        :data:`~softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV`.
         ``nan`` when no energy up to ``10^12`` GeV meets the multiplicity.
     """
     def gap(log10_e: float) -> float:

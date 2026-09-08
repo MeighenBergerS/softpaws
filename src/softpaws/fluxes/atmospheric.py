@@ -22,6 +22,7 @@ __all__ = [
     "ATMOSPHERE",
     "INTERACTION_MODEL",
     "PRIMARY_MODEL",
+    "SHIPPED_TABLE",
     "TABLE_KEYS",
     "AtmosphericFlux",
     "build_mceq_table",
@@ -41,6 +42,13 @@ PRIMARY_MODEL = "H3a"
 ATMOSPHERE = ("SouthPole", "January")
 #: Arrays a table holds.
 TABLE_KEYS = ("energy_gev", "dec_deg", "conv", "prompt")
+
+#: The table that ships with the package: ``nu_mu + nu_mu_bar`` at the South
+#: Pole in January, SIBYLL-2.3d on H3a, 19 declinations from the horizon to the
+#: vertical. Built by ``scripts/2026_muon_transport/22_atmospheric_background_mceq.py``.
+SHIPPED_TABLE = (
+    pathlib.Path(__file__).parents[1] / "data" / "atmospheric" / "mceq_numu_south_pole.npz"
+)
 
 
 def build_mceq_table(
@@ -131,13 +139,16 @@ def build_mceq_table(
     return table
 
 
-def load_mceq_table(path: str | pathlib.Path, recompute: bool = False) -> dict[str, np.ndarray]:
+def load_mceq_table(
+    path: str | pathlib.Path | None = None, recompute: bool = False
+) -> dict[str, np.ndarray]:
     """Load a cached MCEq table, building it first if needed.
 
     Parameters
     ----------
-    path : str or pathlib.Path
-        Table file.
+    path : str or pathlib.Path or None, optional
+        Table file. ``None``, the default, reads :data:`SHIPPED_TABLE`, which
+        needs no MCEq installation.
     recompute : bool, optional
         Rebuild with :func:`build_mceq_table` even if ``path`` exists.
 
@@ -146,7 +157,7 @@ def load_mceq_table(path: str | pathlib.Path, recompute: bool = False) -> dict[s
     table : dict of np.ndarray
         As returned by :func:`build_mceq_table`.
     """
-    path = pathlib.Path(path)
+    path = SHIPPED_TABLE if path is None else pathlib.Path(path)
     if recompute or not path.exists():
         logger.info("Building the MCEq flux table at %s (this takes minutes)", path)
         return build_mceq_table(path)

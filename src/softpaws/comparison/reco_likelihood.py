@@ -313,7 +313,7 @@ def cached_fit_inputs(
     cache_path: str | pathlib.Path,
     reco_edges: np.ndarray = RECO_EDGES,
     channels: Sequence[str] = CHANNELS,
-):
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray]] | None:
     """Fit inputs from an earlier run, or ``None`` if the cache cannot serve.
 
     Parameters
@@ -346,11 +346,11 @@ def cached_fit_inputs(
 def fit_inputs(
     data_dir: str | pathlib.Path | None,
     cache_path: str | pathlib.Path,
-    build_responses: Callable,
+    build_responses: Callable[[np.ndarray], dict[str, np.ndarray]],
     rebuild: bool = False,
     reco_edges: np.ndarray = RECO_EDGES,
     channels: Sequence[str] = CHANNELS,
-):
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray]]:
     """Smearing marginal and banded responses, cached across runs.
 
     Parameters

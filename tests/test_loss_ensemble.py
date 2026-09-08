@@ -6,7 +6,7 @@ import pathlib
 import numpy as np
 import pytest
 
-from softpaws.transport import coefficients, loss_ensemble, soft_volume
+from softpaws.transport import coefficients, loss_ensemble, muon_range
 from softpaws.transport.coefficients import (
     KernelScaling,
     kernel_scaling,
@@ -43,10 +43,10 @@ def test_scaling_hook_multiplies_the_accessors():
 
 
 def test_scaling_shortens_the_range():
-    base = np.asarray(soft_volume.stochastic_muon_range_km(1e6, 1e3)).item()
+    base = np.asarray(muon_range.stochastic_muon_range_km(1e6, 1e3)).item()
     more_loss = KernelScaling(lambda x: 1.2, lambda x: 1.2)
     with scaled_kernel(more_loss):
-        scaled = np.asarray(soft_volume.stochastic_muon_range_km(1e6, 1e3)).item()
+        scaled = np.asarray(muon_range.stochastic_muon_range_km(1e6, 1e3)).item()
     assert scaled < base
     set_kernel_scaling(None)
 

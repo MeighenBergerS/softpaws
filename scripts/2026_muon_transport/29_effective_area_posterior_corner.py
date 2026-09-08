@@ -93,11 +93,8 @@ from softpaws.data.icecube import (
 )
 from softpaws.transport.attenuation import flavour_transmission, prem_column
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
-    light_reach_radius_km,
-    stochastic_muon_range_km,
-)
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
+from softpaws.transport.soft_volume import light_reach_radius_km
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
 from softpaws.utils.constants import CM_PER_KM

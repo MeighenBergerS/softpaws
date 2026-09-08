@@ -6,7 +6,8 @@ outnumber the astrophysical ones by orders of magnitude. Where the two cross
 is what decides the window an analysis can use.
 
 MCEq solves the cascade equations for that background. Running it takes
-minutes, so the table is built once and cached; this tutorial loads the cache
+minutes, so the table is built once and shipped with the package; this tutorial
+loads that table
 if it is there and builds it otherwise, then folds it through an effective
 area and finds the crossing point.
 
@@ -23,14 +24,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from softpaws.detectors import ICECUBE
-from softpaws.fluxes import ICECUBE_TRACKS_2022, AtmosphericFlux, load_mceq_table
+from softpaws.fluxes import ICECUBE_TRACKS_2022, SHIPPED_TABLE, AtmosphericFlux, load_mceq_table
 from softpaws.response.declination import directional_effective_area_cm2
 from softpaws.transport.earth import zenith_grid
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parent / "styles" / "beacom_conformal.mplstyle"
 _DEFAULT_OUT_DIR = _HERE / "output"
-_DEFAULT_TABLE = _DEFAULT_OUT_DIR / "22_mceq_atmospheric_flux.npz"
+_DEFAULT_TABLE = SHIPPED_TABLE
 
 #: Neutrino energies the comparison runs on [log10 GeV].
 LOG10_E = np.linspace(3.0, 8.0, 41)

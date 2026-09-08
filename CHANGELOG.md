@@ -8,6 +8,14 @@ uses [semantic versioning](https://semver.org/).
 
 ### Added
 
+- `softpaws.transport.muon_range`: the range to threshold and its
+  first-passage moments, split out of `softpaws.transport.soft_volume`, which
+  keeps the drift-limit and exact soft volumes.
+- The MCEq atmospheric table ships as package data, read by
+  `softpaws.fluxes.load_mceq_table` when no path is given.
+- A `paper` extra for the dependencies only the paper scripts need, and a
+  `py.typed` marker.
+- A documentation page on defining a detector and a flux of your own.
 - `softpaws.detectors`: published geometry, medium and optics for IceCube,
   IceCube-Gen2, KM3NeT/ARCA in two configurations, TRIDENT in two layouts,
   P-ONE and Baikal-GVD.
@@ -31,6 +39,8 @@ uses [semantic versioning](https://semver.org/).
 ### Changed
 
 - The tabulated inputs ship in the wheel as package data.
+- astropy, requests and corner are no longer runtime dependencies; corner
+  moved to the `paper` extra.
 - The slow tests are opt-in behind `--run-slow`.
 
 ### Removed

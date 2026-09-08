@@ -11,7 +11,7 @@ import pathlib
 import numpy as np
 import pytest
 
-from softpaws.transport import coefficients, eigenvalue, loss_distribution, soft_volume
+from softpaws.transport import coefficients, eigenvalue, loss_distribution, muon_range
 
 BASELINE = json.loads((pathlib.Path(__file__).parent / "baseline.json").read_text())
 
@@ -121,10 +121,10 @@ def test_range_table_pinned(key, kwargs, function):
     """Table C.1, range rows, pinned to the pre-cleanup library.
 
     The paper's rows are machine-written from the library by
-    ``paper/make_transport_table.py``, so they agree with these to the printed
+    ``make_transport_table.py`` in the scripts directory, so they agree with these to the printed
     digits and the refactor is held to today's values.
     """
     want = BASELINE["range_to_threshold_water_1tev"]
     energies = 10.0 ** np.asarray(want["log10_e"], dtype=float)
-    got = getattr(soft_volume, function)(energies, 1.0e3, **kwargs)
+    got = getattr(muon_range, function)(energies, 1.0e3, **kwargs)
     np.testing.assert_allclose(got, want["library_pre_cleanup"][key], rtol=1e-3)

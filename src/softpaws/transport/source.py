@@ -115,7 +115,7 @@ def inelasticity_factor(
 
     The muon is born with only a fraction ``1 - y_w`` of the neutrino energy, so
     the source picks up the spectrum-weighted average
-    ``I(A) = <(1 - y_w)^A>_P`` (``paper/main.tex`` Sec. II C,
+    ``I(A) = <(1 - y_w)^A>_P`` (the method paper, Sec. II C,
     ``docs/theory/exact_soft_volume.md``). This factor multiplies both the
     inside and the soft contributions in the master formula.
 

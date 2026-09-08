@@ -135,9 +135,7 @@ from softpaws.response.declination import (
     zenith_band_weights as _zenith_band_weights,
 )
 from softpaws.transport.cross_section import bgr18_cross_section
-from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
-)
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

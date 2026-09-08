@@ -39,7 +39,7 @@ downgoing). Three ways to apply it, in increasing physical fidelity:
   multiplicative ``D_nu(E)`` but with a declination-dependent column;
 - **Form C**, :meth:`SoftVolumeResponse.expected_counts_coupled_attenuation`,
   which folds the attenuation directly into the soft-volume propagator
-  (Eq. 11, App. C.2-C.3 of ``paper/main.tex``;
+  (Sec. III A and App. A of the method paper;
   :func:`softpaws.transport.soft_volume.soft_volume_attenuated_exact`)
   instead of applying it as a separate factor. Forms A/B are valid
   approximations wherever ``D_nu`` varies slowly over the soft volume's own
@@ -76,8 +76,8 @@ from ..transport.coefficients import DEFAULT_SOURCE, diffusion_coefficient, drif
 from ..transport.cross_section import CrossSection
 from ..transport.cutoff_source import cutoff_soft_rate_density
 from ..transport.eigenvalue import spectral_index
+from ..transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV
 from ..transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
     range_target_volume_km3,
     soft_volume_attenuated_exact,
     soft_volume_diffusion,
@@ -438,7 +438,7 @@ class SoftVolumeResponse:
             True neutrino energy [GeV].
         threshold_gev : float, optional
             Muon selection threshold [GeV]. Defaults to
-            :data:`~softpaws.transport.soft_volume.DEFAULT_MUON_THRESHOLD_GEV`.
+            :data:`~softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV`.
         lam : float, optional
             CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
         mean_inelasticity : float, optional
@@ -867,8 +867,8 @@ class SoftVolumeResponse:
         Unlike :meth:`expected_counts_attenuated` (Form B), which multiplies the
         soft volume by a decoupled survival probability ``D_nu(E)``, this folds
         the parent neutrino's Earth attenuation directly into the same depth
-        integral that produces the soft volume (Eq. 11, App. C.2-C.3 of
-        ``paper/main.tex``; :func:`softpaws.transport.soft_volume.
+        integral that produces the soft volume (Sec. III A and App. A of
+        the method paper; :func:`softpaws.transport.soft_volume.
         soft_volume_attenuated_exact`). The two agree wherever ``D_nu`` varies
         slowly over the ~few-``Phi(A)^-1`` km-w.e. range the soft volume is
         produced in, and diverge for strongly-absorbed upgoing UHE tracks,

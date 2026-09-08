@@ -60,14 +60,14 @@ from softpaws.transport.coefficients import diffusion_coefficient, drift_coeffic
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
 from softpaws.transport.earth import zenith_grid as _zenith_grid
-from softpaws.transport.soft_volume import (
+from softpaws.transport.muon_range import (
     DEFAULT_MUON_THRESHOLD_GEV,
-    light_reach_radius_km,
     muon_range_km,
     stochastic_muon_range_km,
     truncated_muon_range_km,
     two_medium_range_ratio,
 )
+from softpaws.transport.soft_volume import light_reach_radius_km
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
 from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3

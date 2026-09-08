@@ -56,6 +56,8 @@ dataverse_files/
 # Published sensitivity curves and the digitized MESE flavour contour.
 !src/softpaws/data/bounds/*.csv
 !src/softpaws/data/icecube/*.csv
+# The MCEq atmospheric table: 27 kB, built once by scripts/2026_muon_transport/22.
+!src/softpaws/data/atmospheric/*.npz
 
 # IceCube HESE 7.5-year release: ~90 MB of Monte Carlo json, bulk release data.
 src/softpaws/data/hese/*.json
@@ -92,9 +94,6 @@ texput.log
 *.swo
 .DS_Store
 Thumbs.db
-
-# Pre-commit
-.pre-commit-config.yaml
 
 # MkDocs
 site/

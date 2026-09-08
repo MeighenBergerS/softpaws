@@ -188,7 +188,7 @@ from softpaws.response.light_reach import (
     muon_threshold_gev,
     reach_offset_m,
 )
-from softpaws.transport.soft_volume import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
 from softpaws.utils.constants import M_PER_KM
 
 #: Names the scripts that load this one by path reach for. Listing them keeps

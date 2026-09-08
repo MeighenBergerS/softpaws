@@ -64,11 +64,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize_scalar
 
-from softpaws.transport.soft_volume import (
-    light_reach_radius_km,
-    prism_projected_area_km2,
-    stochastic_muon_range_km,
-)
+from softpaws.transport.muon_range import stochastic_muon_range_km
+from softpaws.transport.soft_volume import light_reach_radius_km, prism_projected_area_km2
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.utils.constants import CM_PER_KM
 

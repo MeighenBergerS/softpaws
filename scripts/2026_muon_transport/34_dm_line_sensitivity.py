@@ -112,10 +112,7 @@ from softpaws.detectors import ARCA230, GEN2, GVD, PONE, TRIDENT, Site
 from softpaws.transport.attenuation import flavour_transmission
 from softpaws.transport.cross_section import bgr18_cross_section
 from softpaws.transport.eigenvalue import phi_eigenvalue
-from softpaws.transport.soft_volume import (
-    DEFAULT_MUON_THRESHOLD_GEV,
-    truncated_muon_range_km,
-)
+from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, truncated_muon_range_km
 from softpaws.transport.source import (
     MEAN_INELASTICITY,
     inelasticity_factor,

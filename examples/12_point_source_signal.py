@@ -56,7 +56,7 @@ import numpy as np
 
 from softpaws.data import icecube_point_source_sensitivity, load_psf_table
 from softpaws.detectors import ARCA230, ICECUBE, PONE, TRIDENT
-from softpaws.fluxes import AtmosphericFlux, load_mceq_table
+from softpaws.fluxes import SHIPPED_TABLE, AtmosphericFlux, load_mceq_table
 from softpaws.response.declination import (
     REACH_FRACTIONS,
     REACH_REFERENCE_GEV,
@@ -137,7 +137,7 @@ YEAR_S = 365.25 * 86400.0
 PUBLISHED_LIVETIME_YR = 14.0
 
 #: Cached MCEq table, the one tutorial 10 builds.
-MCEQ_TABLE = _DEFAULT_OUT_DIR / "22_mceq_atmospheric_flux.npz"
+MCEQ_TABLE = SHIPPED_TABLE
 
 #: Cached point-spread containment, taken from the DR2 smearing table once.
 PSF_TABLE = _DEFAULT_OUT_DIR / "12_psf_containment.npz"

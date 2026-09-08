@@ -16,7 +16,10 @@ Two treatments of the QED collision operator:
   two terms of ``Phi(s)`` and kept as a cross-check; see
   ``docs/theory/soft_volume.md``.
 
-Both feed the same master formula and are exposed through interchangeable
+The range of a muon to a threshold, the first-passage generator built on
+``Phi(s)``, lives in ``muon_range``; the effective areas of
+:mod:`softpaws.response` are built on it. Both soft-volume treatments feed
+the same master formula and are exposed through interchangeable
 :mod:`softpaws.response` predictors.
 """
 
@@ -28,6 +31,7 @@ from . import (
     eigenvalue,
     loss_distribution,
     loss_ensemble,
+    muon_range,
     soft_volume,
     source,
     tau,
@@ -45,7 +49,7 @@ from .cross_section import CrossSection, PowerLawCrossSection, bgr18_cross_secti
 from .earth import neutrino_column_g_cm2, overburden_km, prem_column, zenith_grid
 from .eigenvalue import phi_eigenvalue, phi_eigenvalue_at_energy, spectral_index
 from .loss_distribution import loss_density, loss_density_three_moment
-from .soft_volume import (
+from .muon_range import (
     DEFAULT_MUON_THRESHOLD_GEV,
     muon_range_km,
     stochastic_muon_range_km,
@@ -69,6 +73,7 @@ __all__ = [
     "log_loss_moments",
     "loss_distribution",
     "loss_ensemble",
+    "muon_range",
     "muon_range_km",
     "neutrino_column_g_cm2",
     "overburden_km",

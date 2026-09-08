@@ -17,6 +17,7 @@ digitized or tabulated inputs.
 | `data/trident` | The TRIDENT effective area in three bands, and the 2025 simulation map |
 | `data/bounds` | IceCube's published point-source sensitivity and the Gen2 dark-matter line curves |
 | `data/icecube` | The digitized MESE flavour contour |
+| `data/atmospheric` | The MCEq atmospheric `nu_mu` table, South Pole, SIBYLL-2.3d on H3a |
 
 ## What you download
 

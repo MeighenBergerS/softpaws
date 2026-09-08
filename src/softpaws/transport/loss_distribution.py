@@ -346,7 +346,7 @@ def log_loss_cdf(
         \\qquad \\varphi(k) = e^{-\\ell\\,\\Phi(-i k)}.
 
     That is what the per-neutrino-energy target volume needs
-    (:func:`softpaws.transport.soft_volume.stochastic_muon_range_km`): a muon
+    (:func:`softpaws.transport.muon_range.stochastic_muon_range_km`): a muon
     born at ``eps`` is still above an analysis threshold ``E_thr`` after
     propagating ``ell`` exactly when ``W < ln(eps / E_thr)``, one threshold per
     energy but every depth along the column.

@@ -145,7 +145,7 @@ def test_interaction_length_matches_total_cross_section():
 
 
 def test_interaction_length_is_thousands_of_km_we_at_pev():
-    # Palmisano et al. (arXiv:2607.13143) and paper/main.tex quote
+    # Palmisano et al. (arXiv:2607.13143) and the method paper quote
     # Lambda_nu ~ O(10^3) km.w.e.
     assert 1.0e2 < neutrino_interaction_length_km(E_1PEV)[0] < 1.0e5
 

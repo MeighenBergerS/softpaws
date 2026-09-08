@@ -1,30 +1,31 @@
-"""Exponential-cutoff sources via real-space log-loss convolution (App. H).
+"""Exponential-cutoff sources via real-space log-loss convolution.
 
 A pure power-law source excites exactly one Mellin mode, ``s = A``
 (:mod:`softpaws.transport.eigenvalue`), which is what makes the closed-form
-soft volume (Eq. 9) possible. Sec. VII.C of ``paper/main.tex`` notes
+soft volume possible. An earlier draft of the method paper (its Sec. VII.C
+and App. H, kept in the current paper as one remark in Sec. II C) notes
 that this breaks down for ``A < 0`` (the cross-section pole,
 :func:`softpaws.transport.soft_volume.spectral_penalty`): the effective range
 scales as ``exp(x |Phi(A)|)``, which for a realistic Earth-crossing column
-(``x ~ 10^4`` km.w.e.) is an "enormous exponential enhancement." Sec. VII.C
+(``x ~ 10^4`` km.w.e.) is an "enormous exponential enhancement." It
 "strongly recommend[s] mitigating this by applying a physical spectral cutoff
-to the parent neutrino flux," derived in App. H for a source
+to the parent neutrino flux," derived in its App. H for a source
 ``phi_nu ~ E^-gamma e^{-E/E0}``.
 
-**Why this isn't the paper's literal Cahen-Mellin pole series.** App. H's own
+**Why this isn't that draft's literal Cahen-Mellin pole series.** App. H's own
 route (Eq. H1-H3) sums the source's Mellin poles at ``s = A, A-1, A-2, ...``
 via a Taylor expansion of the transport kernel ``h(s)`` about ``s = A``,
 truncated to a handful of terms. That series is asymptotic rather than
 rapidly convergent in exactly the regime it exists to fix: for the same
-large-``x``, negative-``A`` case Sec. VII.C describes, ``h(s)`` itself scales
+large-``x``, negative-``A`` case that draft describes, ``h(s)`` itself scales
 like ``exp(x |Phi(s)|)`` at every stencil point near ``A``, so the individual
 Taylor terms overflow before any cancellation can bring them back down to the
 finite physical answer -- a truncated real-axis series is not a numerically
 stable way to evaluate it there.
 
 This module instead evaluates the *same physical convolution* directly in
-real (energy) space, which stays numerically well behaved throughout: App. B
-already establishes that the muon's accumulated log-loss ``w = ln(eps / E)``
+real (energy) space, which stays numerically well behaved throughout: App. A
+of the method paper already establishes that the muon's accumulated log-loss ``w = ln(eps / E)``
 over a column ``ell`` is a subordinator with an exactly known density
 (:func:`softpaws.transport.loss_distribution.loss_density`, always a proper,
 normalized, non-negative probability law -- no exponentially large

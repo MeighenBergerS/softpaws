@@ -48,6 +48,7 @@ from __future__ import annotations
 import contextlib
 import dataclasses
 import pathlib
+from collections.abc import Iterator
 from typing import Callable
 
 import numpy as np
@@ -203,7 +204,7 @@ def kernel_scaling() -> KernelScaling | None:
 
 
 @contextlib.contextmanager
-def scaled_kernel(scaling: KernelScaling | None):
+def scaled_kernel(scaling: KernelScaling | None) -> Iterator[None]:
     """Install a :class:`KernelScaling` for a block and restore the old one after.
 
     Parameters
@@ -636,7 +637,7 @@ def log_loss_moments(
     Where ``b_mu``, ``d_mu`` and ``t_mu`` are moments of the fractional loss
     ``y``, these are moments of the *logarithmic* loss ``-ln(1-y)``, which is
     what the first-passage range of
-    :func:`softpaws.transport.soft_volume.stochastic_muon_range_km` and its
+    :func:`softpaws.transport.muon_range.stochastic_muon_range_km` and its
     variance are built from:
 
     .. math:: \\Phi'(0) = \\langle -\\ln(1-y)\\rangle, \\quad

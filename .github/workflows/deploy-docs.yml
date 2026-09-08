@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# gh-deploy pushes the built site to the gh-pages branch, which needs write access.
+permissions:
+  contents: write
+
 jobs:
   deploy:
     name: Deploy the documentation site

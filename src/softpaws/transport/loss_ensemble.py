@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import logging
 import pathlib
+from typing import Any
 
 import numpy as np
 
@@ -65,7 +66,7 @@ VARIANTS = {
 }
 
 
-def variant_parametrization(label: str):
+def variant_parametrization(label: str) -> Any:
     """PROPOSAL parametrization object for one variant's swapped channel.
 
     Parameters
@@ -110,7 +111,7 @@ def variant_parametrization(label: str):
 
 
 def channel_moments(
-    param, energy_gev: float, y: np.ndarray, n_moments: int = N_MOMENTS
+    param: Any, energy_gev: float, y: np.ndarray, n_moments: int = N_MOMENTS
 ) -> np.ndarray:
     """Log-loss moments ``<(-ln(1-y))^n>`` of one channel [km^-1].
 

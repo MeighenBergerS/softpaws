@@ -66,7 +66,8 @@ Use it to make sure your change is tested, documented, and linted before review.
 
 - Python docstrings use NumPy style — see the skill file at
   [`.claude/skills/numpy-docstring-format.md`](.claude/skills/numpy-docstring-format.md).
-- Python code is linted with `ruff` (line length 100, rules E/F/W/I).
+- Python code is linted with `ruff` (line length 100, rules E/F/W/I). Run
+  `pre-commit install` once and the same check runs before every commit.
 - Figures use the shared style in [`styles/beacom_conformal.mplstyle`](styles/beacom_conformal.mplstyle).
 - Follow the [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/)
   for prose in docstrings and documentation.

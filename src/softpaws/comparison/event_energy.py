@@ -14,6 +14,7 @@ paper) and of the single-track reconstructions that precede it.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 import numpy as np
@@ -291,7 +292,7 @@ def energy_likelihood(
     u: np.ndarray,
     w_grid: np.ndarray,
     energy_nu: float | np.ndarray,
-    measurement,
+    measurement: Callable[[np.ndarray], np.ndarray],
     accept_gev: float | None = None,
 ) -> np.ndarray:
     """The event's energy likelihood ``l(E_nu) = int dw u(w) L(eps e^-w)``.
@@ -392,7 +393,7 @@ def interaction_unity_energy_gev(column_g_cm2: float, cross_section: CrossSectio
 def energy_posterior(
     likelihood: np.ndarray,
     log10_enu: np.ndarray,
-    flux_shape,
+    flux_shape: Callable[[np.ndarray], np.ndarray],
     cross_section: CrossSection,
     survival: np.ndarray | None = None,
 ) -> np.ndarray:

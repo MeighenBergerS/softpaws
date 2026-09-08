@@ -50,13 +50,15 @@ Figure 1 is a hand-drawn sketch and has no script.
 
 | Paper | Built from |
 | --- | --- |
-| Table C.1, the range to threshold | `39_range_moment_estimator.py`, `48_fluctuation_cost.py` |
+| Table C.1, the range to threshold | `make_transport_table.py`, checked by `39_range_moment_estimator.py` and `48_fluctuation_cost.py` |
 | Tables D.1 and D.2, the truncations and the loss law | `27_proposal_cross_section_and_loss.py`, `36_transport_exponent_truncations.py`, `37_moment_convergence.py` |
-| Table E.1, the plug-in response | `../../paper/make_recipe_table.py`, from the chains of 77 and 82 |
+| Table E.1, the plug-in response | `make_recipe_table.py`, from the chains of 77 and 82 |
 | Table G.1, the predicted ARCA response | `30_arca_effective_area.py` |
 | Table K.1, the tension ladder | `31_flux_contours_effective_area.py` |
 
-Table E.2 is hand-collected geometry, and matches `softpaws.detectors`.
+Table E.2 is hand-collected geometry, and matches `softpaws.detectors`; its
+kernel rows are printed by `make_transport_table.py`. Both table scripts write
+LaTeX to `output/`.
 
 ## The quoted numbers
 
