@@ -29,11 +29,12 @@ MIN_MODULES = 8.0
 #: The deterministic range is integrated on a fixed lattice rather than on a
 #: grid refined to each descent, which converged it and moved these pre-cleanup
 #: pins by up to 2e-5. Anything the range does not reach still holds at
-#: ``rtol = 1e-10``.
+#: ``rtol = 1e-8``, which leaves room for the 1e-10 scatter between SciPy
+#: builds on different Python versions.
 QUADRATURE_RTOL = 5.0e-5
 
 
-def _same(got, want, rtol=1e-10):
+def _same(got, want, rtol=1e-8):
     np.testing.assert_allclose(np.asarray(got, dtype=float), np.asarray(want, dtype=float),
                                rtol=rtol, atol=0.0)
 

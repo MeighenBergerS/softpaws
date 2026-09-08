@@ -772,9 +772,10 @@ def test_ic_effective_area_without_subthreshold_mask():
         r31["regenerated_reach"],
     )
     close(ea.ic_effective_area_tau_channel(length, r["threshold"], **kw), r31["tau"])
-    # the mask can only lower the area
+    # The mask can only lower the area. The margin covers the quadrature
+    # noise between SciPy builds, which reaches 1e-12 on some runners.
     masked = ea.ic_effective_area_regenerated(length, r["threshold"], log10_e=grid, n_dec=60)
-    assert np.all(masked <= np.array(r31["regenerated"]) * (1.0 + 1e-12))
+    assert np.all(masked <= np.array(r31["regenerated"]) * (1.0 + 1e-9))
 
 
 def test_cylinder_projected_area_km2():
