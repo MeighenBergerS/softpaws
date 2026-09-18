@@ -37,12 +37,13 @@ The tabulated inputs ship with the package. Beyond them:
 | Paper | Script | Output |
 | --- | --- | --- |
 | Figure 2 | `37_moment_convergence.py` | `37_exponent_vs_proposal` |
-| Figure 3 | `83_four_detector_aeff_reduced.py` | `83a_four_detector_aeff_reduced` |
-| Figure 4 | `82_reduced_response_plane_trident2025.py` | `82_reduced_response_plane_trident2025` |
-| Figure 5, J.1, J.2 | `76_dr2_event_benchmark.py` | `76a_reco_spectrum`, `76b_declination`, `76c_declination_high` |
-| Figure 6, I.1 | `84_point_source_background_limited.py` | `84d_site_ceiling`, `84c_published_sensitivity` |
-| Figure H.1 | `74_point_source_with_bands.py` | `74a_effective_area_bands` |
-| Figure 7, 8, K.1 | `75_km3_figures_with_bands.py` | `75a_event_energy_banded`, `75b_tension_bpl`, `75c_tension_spl` |
+| Figure 3 | `89_sky_averaged_plug_in.py`, from the cache of 88 | `89a_sky_averaged_plug_in` |
+| Figure 4 | `83_four_detector_aeff_reduced.py` | `83a_four_detector_aeff_reduced` |
+| Figure 5, 12, 13 | `76_dr2_event_benchmark.py` | `76a_reco_spectrum`, `76b_declination`, `76c_declination_high` |
+| Figure 6, 11 | `84_point_source_background_limited.py` | `84d_site_ceiling`, `84c_published_sensitivity` |
+| Figure 7, 8, 14 | `75_km3_figures_with_bands.py` | `75a_event_energy_banded`, `75b_tension_bpl`, `75c_tension_spl` |
+| Figure 9, Appendix B | `82_reduced_response_plane_trident2025.py` | `82_reduced_response_plane_trident2025` |
+| Figure 10, Appendix C | `74_point_source_with_bands.py` | `74a_effective_area_bands` |
 
 Figure 1 is a hand-drawn sketch and has no script.
 
@@ -50,11 +51,11 @@ Figure 1 is a hand-drawn sketch and has no script.
 
 | Paper | Built from |
 | --- | --- |
-| Table C.1, the range to threshold | `make_transport_table.py`, checked by `39_range_moment_estimator.py` and `48_fluctuation_cost.py` |
-| Tables D.1 and D.2, the truncations and the loss law | `27_proposal_cross_section_and_loss.py`, `36_transport_exponent_truncations.py`, `37_moment_convergence.py` |
-| Table E.1, the plug-in response | `make_recipe_table.py`, from the chains of 77 and 82 |
-| Table G.1, the predicted ARCA response | `30_arca_effective_area.py` |
-| Table K.1, the tension ladder | `31_flux_contours_effective_area.py` |
+| Table I, the instrument numbers | `make_recipe_table.py`, from the chains of 77, 82 and 88 |
+| Table II, the range to threshold | `make_transport_table.py`, checked by `39_range_moment_estimator.py` and `48_fluctuation_cost.py` |
+| Table III, the loss law | `27_proposal_cross_section_and_loss.py`, `36_transport_exponent_truncations.py`, `37_moment_convergence.py` |
+| Table V, the inputs of the estimate | `make_estimate_table.py`, from example 89's first-principles inputs and the library |
+| Table VI, the tension ladder | `31_flux_contours_effective_area.py` |
 
 Table E.2 is hand-collected geometry, and matches `softpaws.detectors`; its
 kernel rows are printed by `make_transport_table.py`. Both table scripts write
@@ -66,7 +67,17 @@ Several scripts make no figure but supply numbers the text quotes: 45 and 46
 for the derived optics and the band-by-band residual, 47 for the point-source
 residual, 48 for the range validation, 49 for the tau share, 50 and 51 for the
 flavour fit, 57 for the KM3-230213A energies, 72 and 73 for the informed prior
-and the four-site residuals, and 76 for the event benchmark.
+and the four-site residuals, 76 for the event benchmark, 85 for the
+closed-form response of Section III against the full one at IceCube, 86
+for the same comparison drawn at all four sites (`86a_closed_form_four_detectors`),
+and 87 for what each of the three corrections of Section IV is worth at
+KM3NeT/ARCA230 (`87a_arca_closed_form_ladder`, no longer a paper figure).
+Script 90 checks how much of Figure 2's agreement the three matched moments
+guarantee. It draws two other kernels with the same moments and the envelope of
+all of them (`90a_three_moment_families`, `90b_three_moment_ratio`), and the
+nested envelopes for one to five matched moments
+(`90c_moment_envelopes`, and as `Phi(A)` itself in
+`90d_moment_envelopes_absolute`).
 
 Every number the paper depends on is pinned in
 `tests/regression/baseline.json`; check them with
@@ -87,7 +98,7 @@ encodes this list:
 
 ```
 22  27  32  35  45  46  47  55  33  56  69  51  31  57
-70  71  72  73  77  81  82  83  74  84  75  76  37
+70  71  72  73  77  81  82  83  85  86  87  88  89  74  84  75  76  37
 ```
 
 then `paper/make_recipe_table.py`. The expensive steps are 22 (MCEq), 69 (the

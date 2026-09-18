@@ -45,16 +45,22 @@ STEPS: tuple[tuple[str, str | None], ...] = (
     ("81_trident_2025_map_fit.py", "81_trident_2025_map_fit.json"),
     ("82_reduced_response_plane_trident2025.py", "82_trident2025_chain.npz"),
     ("83_four_detector_aeff_reduced.py", None),
+    ("85_closed_form_response.py", "85_closed_form_ratio.npz"),
+    ("86_closed_form_four_detectors.py", None),
+    ("87_arca_closed_form_ladder.py", None),
+    ("88_sky_averaged_analytic_fit.py", "88_sky_averaged_analytic_fit.npz"),
+    ("89_sky_averaged_plug_in.py", None),
     ("74_point_source_with_bands.py", None),
     ("84_point_source_background_limited.py", None),
     ("75_km3_figures_with_bands.py", None),
     ("76_dr2_event_benchmark.py", None),
     ("37_moment_convergence.py", None),
+    ("90_three_moment_families.py", None),
 )
 
 #: Written after every script: the recipe table from the chains of 77 and 82,
 #: and the transport table straight from the library.
-TABLE_WRITERS = ("make_recipe_table.py", "make_transport_table.py")
+TABLE_WRITERS = ("make_recipe_table.py", "make_transport_table.py", "make_estimate_table.py")
 
 
 def parse_args() -> argparse.Namespace:

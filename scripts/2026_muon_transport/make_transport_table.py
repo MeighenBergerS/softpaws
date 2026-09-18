@@ -1,7 +1,7 @@
 """Generate the transport validation table and the kernel rows of the inputs table.
 
 Writes ``output/transport_table.tex``, the body of the range-to-threshold table
-that Appendix~\\ref{app:renewal} carries: the two loss rates of the kernel and
+that Appendix~\\ref{app:renewal} carries: the three loss moments of the kernel and
 four ranges for a muon in water with a 1 TeV threshold, over five decades of
 production energy. It also prints the kernel rows that the inputs table quotes,
 water at 1 and 100 PeV and standard rock at 1 PeV, so the two tables cannot
@@ -44,6 +44,7 @@ def rows() -> dict[str, np.ndarray]:
     return {
         "b": np.atleast_1d(drift_coefficient(energy)),
         "phi1": np.atleast_1d(log_loss_moments(energy)[0]),
+        "phi2": np.atleast_1d(log_loss_moments(energy)[1]),
         "L": np.atleast_1d(stochastic_muon_range_km(energy, **common)),
         "csda": np.atleast_1d(muon_range_km(energy, **common)),
         "radiative": np.atleast_1d(
@@ -90,6 +91,7 @@ def main() -> None:
         "\\colrule",
         f"$b_\\mu = \\langle y \\rangle$          & {cells(r['b'], 3)} \\\\",
         f"$\\Phi'(0) = \\langle -\\ln(1{{-}}y)\\rangle$ & {cells(r['phi1'], 3)} \\\\",
+        f"$-\\Phi''(0) = \\langle \\ln^2(1{{-}}y)\\rangle$ & {cells(r['phi2'], 3)} \\\\",
         "\\colrule",
         f"$L$, Eq.~(\\ref{{eq:Lclosed}}) & {cells(r['L'], 2)} \\\\",
         f"$R_{{\\mathrm{{CSDA}}}}$         & {cells(r['csda'], 2)} \\\\",

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `softpaws` is a first-principles forward model for ultra-high-energy neutrino
 telescopes. It implements the analytic muon transport of Meighen-Berger,
-*Analytical High-Energy Muon Transport for Neutrino Telescopes* (2026), the
+*Estimating High-Energy Neutrino Effective Areas from Muon Propagation* (2026), the
 method paper drafted in `paper/main.tex`. That calculation diagonalizes the
 locally scale-invariant collision operator with power laws, so the whole loss
 history collapses to a single transport exponent `Phi(s)`, and it uses that
@@ -26,8 +26,10 @@ An earlier analytic calculation, Palmisano, Redigolo, Tammaro and Tesi,
 collision operator to second order in the energy each collision removes. That
 approach was implemented here first, as a check, and it is kept as the drift
 limit of the transport exponent and as a cross-check of it. It is prior work,
-never "the paper": refer to it by author and arXiv number so the two are never
-confused.
+never "the paper". In docs and docstrings refer to it by author and arXiv
+number so the two are never confused. In `paper/main.tex` prose cite it by
+number only (`two recent papers~\cite{...}`, `Refs.~\cite{...}`), never by
+author name.
 
 ## Commands
 

@@ -5,7 +5,7 @@ If softpaws is useful in your work, please cite the method paper.
 ```txt
 @article{MeighenBerger:softpaws,
   author  = {Meighen-Berger, Stephan A.},
-  title   = {{Analytical High-Energy Muon Transport for Neutrino Telescopes}},
+  title   = {{Estimating High-Energy Neutrino Effective Areas from Muon Propagation}},
   year    = {2026},
 }
 ```

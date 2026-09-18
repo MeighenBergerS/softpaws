@@ -1,8 +1,8 @@
 # The transport exponent — physics notes
 
 Distilled reference for the eigenvalue solution softpaws is built on, derived
-in the method paper, Meighen-Berger, *Analytical High-Energy Muon Transport for
-Neutrino Telescopes* (2026). It replaces the earlier Fokker–Planck
+in the method paper, Meighen-Berger, *Estimating High-Energy Neutrino Effective Areas from
+Muon Propagation* (2026). It replaces the earlier Fokker–Planck
 (drift–diffusion) expansion with an eigenvalue treatment of the QED collision
 operator, keeping every loss moment. This is the physics core of the
 `transport/` → `response/` path.

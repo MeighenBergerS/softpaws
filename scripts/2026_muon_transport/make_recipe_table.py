@@ -5,8 +5,9 @@ at the collaboration's level, ``log10_e_thr`` and ``reach_km`` sampled at
 5% per node) for IceCube, ARCA230 and P-ONE, and the three-parameter chain
 of example 82 for TRIDENT (its 2025 map, ``eps_0`` free), and writes
 ``output/recipe_table.tex``: one row per detector with the held or fitted
-normalization, the threshold, the fitted reach, the reach the site's
-measured optics predict, and a worked reference value, the effective area
+normalization, the threshold and the reach from the full model and from the
+sky-averaged form of example 88, the reach the site's measured optics
+predict, and a worked reference value, the effective area
 at 1 PeV evaluated at the posterior medians.
 
 The table is machine-written so the paper never carries hand-transcribed
@@ -26,6 +27,7 @@ _HERE = pathlib.Path(__file__).parent
 _EXAMPLES = _HERE
 _CHAINS = _EXAMPLES / "output" / "77_chains_sigma05.npz"
 _TRIDENT_CHAIN = _EXAMPLES / "output" / "82_trident2025_chain.npz"
+_SKY_AVERAGED = _EXAMPLES / "output" / "88_sky_averaged_analytic_fit.npz"
 _OUT = _HERE / "output" / "recipe_table.tex"
 
 SITES = ("IceCube", "ARCA230", "P-ONE", "TRIDENT")
@@ -64,16 +66,20 @@ def main() -> None:
     trident, _ = ex83.trident_2025(_TRIDENT_CHAIN)
     detectors.append(trident)
     by_name = {d.name: d for d in detectors}
+    sky = np.load(_SKY_AVERAGED) if _SKY_AVERAGED.exists() else None
 
     lines = [
         "% Machine-written by scripts/2026_muon_transport/make_recipe_table.py; "
         "do not edit by hand.",
         "% Sources: output/77_chains_sigma05.npz (IceCube, ARCA230, P-ONE; physics fixed, "
-        "eps_0 held) and output/82_trident2025_chain.npz (TRIDENT 2025 map, eps_0 free).",
-        "\\begin{tabular}{lccccc}",
+        "eps_0 held), output/82_trident2025_chain.npz (TRIDENT 2025 map, eps_0 free), and "
+        "output/88_sky_averaged_analytic_fit.npz (the sky-averaged form refitted).",
+        "\\begin{tabular}{lcccccccc}",
         "\\hline\\hline",
-        ("detector & $\\varepsilon_0$ & $E_{\\mathrm{thr}}$ [GeV] & "
-         "$\\Lambda$ fitted [m] & $\\Lambda$ predicted [m] & "
+        (" & & \\multicolumn{2}{c}{$E_{\\mathrm{thr}}$ [GeV]} & "
+         "\\multicolumn{3}{c}{$\\Lambda$ [m]} & \\\\"),
+        ("detector & $\\varepsilon_0$ & sky-averaged & full model & "
+         "sky-averaged & full model & optics & "
          "$A_{\\mathrm{eff}}(1~\\mathrm{PeV})$ [m$^2$] \\\\"),
         "\\hline",
     ]
@@ -95,10 +101,20 @@ def main() -> None:
         area = 10 ** np.interp(REFERENCE_LOG10_E, d.log10_e,
                                np.log10(np.clip(predicted, 1.0e-30, None)))
         lo_p, hi_p = ex78.PREDICTED_M[site]
+        if sky is not None and f"{site}_chain" in sky.files:
+            sky_chain = sky[f"{site}_chain"]
+            s_med, s_lo, s_hi = quantiles(sky_chain[:, 1])
+            sky_e_thr = fmt(10 ** s_med, 10 ** s_med - 10 ** (s_med - s_lo),
+                            10 ** (s_med + s_hi) - 10 ** s_med, 0)
+            sky_reach = fmt(*quantiles(1.0e3 * sky_chain[:, 4]), 0)
+        else:
+            sky_e_thr = sky_reach = "--"
         cells = [
             site,
             eps_cell,
+            sky_e_thr,
             fmt(e_thr[0], e_thr[1], e_thr[2], 0),
+            sky_reach,
             fmt(r_med, r_lo, r_hi, 0),
             f"${lo_p:.0f}$ to ${hi_p:.0f}$",
             f"${float(f'{area / 1.0e4:.3g}'):.0f}$",

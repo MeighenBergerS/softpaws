@@ -105,7 +105,7 @@ inputs your analysis relies on; the list is in the
 ```txt
 @article{MeighenBerger:softpaws,
   author  = {Meighen-Berger, Stephan A.},
-  title   = {{Analytical High-Energy Muon Transport for Neutrino Telescopes}},
+  title   = {{Estimating High-Energy Neutrino Effective Areas from Muon Propagation}},
   year    = {2026},
 }
 ```

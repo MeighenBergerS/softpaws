@@ -45,5 +45,5 @@ your own. [Data](data.md) explains what ships with the package and what you have
 to download. The [API reference](api-reference/) is generated from the
 docstrings.
 
-The method is described in *Analytical High-Energy Muon Transport for
-Neutrino Telescopes*; see [Citation](citation.md).
+The method is described in *Estimating High-Energy Neutrino Effective Areas from
+Muon Propagation*; see [Citation](citation.md).
