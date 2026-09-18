@@ -1,4 +1,4 @@
-"""Light reach of a detector, derived from its optics and its module.
+r"""Light reach of a detector, derived from its optics and its module.
 
 A muon's Cherenkov output per unit length follows its energy loss. The bare
 track radiates at the Frank-Tamm rate, and each GeV of radiative loss builds
@@ -110,7 +110,7 @@ PROJECTED_FRACTION = 0.25
 
 
 def cherenkov_spectrum_per_m_per_nm(site: Optics) -> np.ndarray:
-    """Frank-Tamm photon yield of a bare relativistic track [m^-1 nm^-1].
+    r"""Frank-Tamm photon yield of a bare relativistic track [m^-1 nm^-1].
 
     .. math:: \\frac{{\\rm d}^2N_\\gamma}{{\\rm d}x\\,{\\rm d}\\lambda}
         = \\frac{2\\pi\\alpha}{\\lambda^2}\\left(1 - n^{-2}\\right),
@@ -274,7 +274,7 @@ def brightness_factor(energy_gev: float | np.ndarray) -> np.ndarray:
 def module_charge_pe(
     distance_m: float | np.ndarray, energy_gev: float | np.ndarray, site: Optics
 ) -> np.ndarray:
-    """Photoelectrons a module collects from a track passing at a distance.
+    r"""Photoelectrons a module collects from a track passing at a distance.
 
     Light leaves a long track cylindrically, so the fluence at perpendicular
     distance ``d`` is the yield per metre spread over ``2 pi d`` and
@@ -462,7 +462,7 @@ def hit_probability(
 def hit_count(
     offset_m: float, energy_gev: float | np.ndarray, site: Optics, chord_km: float,
 ) -> np.ndarray:
-    """Mean number of hit modules, for a track at a signed distance from the boundary.
+    r"""Mean number of hit modules, for a track at a signed distance from the boundary.
 
     Each module hits with :func:`hit_probability`, so the mean count is that
     probability integrated over the in-array part of the transverse plane. A

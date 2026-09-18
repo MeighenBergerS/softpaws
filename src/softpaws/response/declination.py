@@ -577,7 +577,7 @@ def zenith_band_weights(
     n_cos_theta: int = N_COS_THETA,
     n_hour_angle: int = N_HOUR_ANGLE,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Fraction of a sidereal day each declination spends in each zenith band.
+    r"""Fraction of a sidereal day each declination spends in each zenith band.
 
     A source at declination ``delta`` seen from latitude ``phi`` has
 
@@ -631,7 +631,7 @@ def point_source_sensitivity(
     pivot_gev: float = PIVOT_ENERGY_GEV,
     n_events: float = N_EVENTS_LIMIT,
 ) -> np.ndarray:
-    """Flux normalization a background-free search would exclude.
+    r"""Flux normalization a background-free search would exclude.
 
     For ``phi(E) = phi_0 (E / E_piv)^-gamma`` the expected count is linear in
     ``phi_0``, so the limit is one quadrature,

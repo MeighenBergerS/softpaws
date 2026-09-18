@@ -1,4 +1,4 @@
-"""Earth attenuation of the neutrino flux before it reaches the detector.
+r"""Earth attenuation of the neutrino flux before it reaches the detector.
 
 The soft-volume forward model (:mod:`softpaws.response.soft_volume`) assumes an
 unattenuated flux (``D_nu = 1``, Palmisano et al., arXiv:2607.13143, Eq. 2.4),
@@ -201,7 +201,7 @@ def effective_solid_angle(
     n_dec: int = 64,
     cross_section: "CrossSection | None" = None,
 ) -> np.ndarray:
-    """Attenuation-weighted solid angle of a declination band (per-event form).
+    r"""Attenuation-weighted solid angle of a declination band (per-event form).
 
     For an isotropic flux and a uniform target, the neutrino energy, target
     volume, cross section, and flux factor out of the band integral, leaving
@@ -268,7 +268,7 @@ def regenerated_transmission(
     mean_inelasticity: float = NC_MEAN_INELASTICITY,
     n_levels: int = NC_REGENERATION_LEVELS,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Arriving-neutrino energy ladder and weights, with NC down-scattering kept.
+    r"""Arriving-neutrino energy ladder and weights, with NC down-scattering kept.
 
     :func:`survival_probability` is pure absorption: it removes the neutrino on
     *any* interaction, charged- or neutral-current. That is right for the flux

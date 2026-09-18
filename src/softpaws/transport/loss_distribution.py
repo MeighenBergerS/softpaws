@@ -1,4 +1,4 @@
-"""Full distribution of the accumulated muon log-energy loss.
+r"""Full distribution of the accumulated muon log-energy loss.
 
 Where :mod:`softpaws.transport.eigenvalue` gives the single eigenvalue ``Phi(A)``
 that a power-law flux excites, this module gives the whole probability law behind
@@ -47,7 +47,7 @@ def invert_log_loss_symbol(
     symbol: Callable[[np.ndarray], np.ndarray],
     n_k: int = 2**14,
 ) -> np.ndarray:
-    """Density ``P(w)`` from any subordinator symbol, by Fourier inversion.
+    r"""Density ``P(w)`` from any subordinator symbol, by Fourier inversion.
 
     The characteristic function of the log-loss is ``phi_w(k) = exp(-ell Phi(-i k))``
     for *any* Laplace exponent ``Phi``, so the inversion
@@ -174,7 +174,7 @@ def loss_density(
     d_mu: float,
     n_k: int = 2**14,
 ) -> np.ndarray:
-    """Exact density ``P(w)`` of the log-loss, by characteristic-function inversion.
+    r"""Exact density ``P(w)`` of the log-loss, by characteristic-function inversion.
 
     The characteristic function of the subordinator is
     ``phi_w(k) = exp(-ell Phi(-i k))``, so
@@ -334,7 +334,7 @@ def log_loss_cdf(
     n_k: int = 400_000,
     chunk: int = _GIL_PELAEZ_CHUNK,
 ) -> np.ndarray:
-    """Probability ``P(W <= w_query)`` at each propagated depth, by Gil-Pelaez.
+    r"""Probability ``P(W <= w_query)`` at each propagated depth, by Gil-Pelaez.
 
     Where :func:`loss_density` inverts the characteristic function onto a whole
     ``w`` grid and :func:`survival_from_density` then integrates it, this goes

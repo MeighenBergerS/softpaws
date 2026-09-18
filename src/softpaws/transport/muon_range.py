@@ -72,7 +72,7 @@ def muon_range_km(
     source: str = DEFAULT_SOURCE,
     kernel_evaluation: str = "running",
 ) -> np.ndarray:
-    """Muon range from a starting energy down to a detection threshold.
+    r"""Muon range from a starting energy down to a detection threshold.
 
     Integrating the continuous-slowing-down loss law ``-dE/dx = a_mu + b_mu E``
     from ``E`` down to ``E_thr`` gives
@@ -370,7 +370,7 @@ def stochastic_muon_range_km(
     kernel_evaluation: str = "running",
     running_nodes_per_decade: int = 48,
 ) -> np.ndarray:
-    """Muon range to a threshold, averaged over the exact stochastic loss law.
+    r"""Muon range to a threshold, averaged over the exact stochastic loss law.
 
     :func:`muon_range_km` answers "how far does the *average* muon get before
     dropping below ``E_thr``" by integrating the continuous-slowing-down law,
@@ -704,7 +704,7 @@ def two_medium_muon_range_km(
     b_scale: float = 1.0,
     **range_kwargs,
 ) -> np.ndarray:
-    """Range to threshold through a far medium first and a near one last.
+    r"""Range to threshold through a far medium first and a near one last.
 
     An upgoing muon at IceCube or ARCA is born in the bedrock or the sea floor
     and only enters the ice or the water for the last stretch before the
@@ -906,8 +906,11 @@ def _running_variance_rate_km2(
     source: str,
     nodes_per_decade: int = 48,
 ) -> np.ndarray:
-    """``int dlnE (-Phi''(0; E)) / Phi'(0; E)^3``, the running form of the term
-    linear in ``w`` in :func:`stochastic_muon_range_variance_km2`."""
+    """Running form of the variance term linear in ``w``.
+
+    The integrand is ``int dlnE (-Phi''(0; E)) / Phi'(0; E)^3``; see
+    :func:`stochastic_muon_range_variance_km2`.
+    """
     energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
     return _depth_between_km(
         "variance",
@@ -929,7 +932,7 @@ def stochastic_muon_range_variance_km2(
     source: str = DEFAULT_SOURCE,
     kernel_evaluation: str = "running",
 ) -> np.ndarray:
-    """Variance of the muon range to a threshold, from the same first passage.
+    r"""Variance of the muon range to a threshold, from the same first passage.
 
     :func:`stochastic_muon_range_km` returns the *mean* depth at which a muon
     first falls below ``E_thr``. Individual muons scatter about it by tens of
@@ -1036,7 +1039,7 @@ def truncated_muon_range_km(
     source: str = DEFAULT_SOURCE,
     kernel_evaluation: str = "running",
 ) -> np.ndarray:
-    """First-passage range cut at a finite upstream column [km].
+    r"""First-passage range cut at a finite upstream column [km].
 
     :func:`stochastic_muon_range_km` integrates the first-passage probability to
     infinite depth, which is right whenever the medium supplies more column than

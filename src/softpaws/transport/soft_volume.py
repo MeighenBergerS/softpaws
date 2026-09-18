@@ -1,4 +1,4 @@
-"""Soft volume in the drift limit.
+r"""Soft volume in the drift limit.
 
 The soft volume is the effective target region for through-going muon tracks: a
 muon produced outside the instrumented volume can still drift into it, so the
@@ -122,7 +122,7 @@ def dynamic_projected_radius_km(
     b_scale: float = 1.0,
     source: str = DEFAULT_SOURCE,
 ) -> np.ndarray:
-    """Energy-growing lateral trigger radius from stochastic light yield.
+    r"""Energy-growing lateral trigger radius from stochastic light yield.
 
     Not part of Palmisano et al. (arXiv:2607.13143), whose soft volume uses a
     fixed projected area ``pi R_det^2``. That is only right if a muon's ability to
@@ -223,7 +223,7 @@ def prism_projected_area_km2(
     n_sides: int | None = 6,
     n_blocks: int = 1,
 ) -> np.ndarray:
-    """Projected area of an upright convex prism, averaged over azimuth.
+    r"""Projected area of an upright convex prism, averaged over azimuth.
 
     A sphere presents ``pi R^2`` from every direction, which is convenient and
     wrong for an array that is as wide as it is tall. This is the projection of
@@ -301,7 +301,7 @@ def eroded_prism_target_km2(
     n_sides: int | None = 6,
     n_blocks: int = 1,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Target area and volume of a prism that a track must cross for ``min_chord_km``.
+    r"""Target area and volume of a prism that a track must cross for ``min_chord_km``.
 
     :func:`prism_projected_area_km2` counts every line that touches the body,
     including the ones that clip a corner and leave again. A reconstructed track
@@ -407,7 +407,7 @@ def light_reach_radius_km(
     reach_km: float,
     pivot_gev: float,
 ) -> np.ndarray:
-    """Instrumented radius plus a signed, logarithmically growing light reach.
+    r"""Instrumented radius plus a signed, logarithmically growing light reach.
 
     :func:`dynamic_projected_radius_km` clips its growth at ``R_det``, so it can
     only ever describe a detector responding to *more* than its footprint. That
@@ -541,7 +541,7 @@ def soft_volume_diffusion(
     source: str = DEFAULT_SOURCE,
     light_yield_length_km: float | None = None,
 ) -> np.ndarray:
-    """Diffusion-corrected soft volume (Palmisano et al., Eq. 2.25).
+    r"""Diffusion-corrected soft volume (Palmisano et al., Eq. 2.25).
 
     Their drift-diffusion model multiplies the drift soft volume by the
     leading diffusion correction ``1 - d_mu / (2 b_mu)``,
@@ -595,7 +595,7 @@ def range_target_volume_km3(
     source: str = DEFAULT_SOURCE,
     light_yield_length_km: float | None = None,
 ) -> np.ndarray:
-    """Target volume for through-going tracks, in the muon-range convention.
+    r"""Target volume for through-going tracks, in the muon-range convention.
 
     A muon of energy ``E`` produced anywhere in the upstream column
     ``pi R_det^2 R(E -> E_thr)`` reaches the detector above threshold, and the
@@ -755,7 +755,7 @@ def saturation_factor(
     column_depth_km: float,
     inv_lambda_per_km: float | np.ndarray = 0.0,
 ) -> np.ndarray:
-    """Effective attenuated range over a finite column (Eq. 9, or Eq. 11 coupled).
+    r"""Effective attenuated range over a finite column (Eq. 9, or Eq. 11 coupled).
 
     With ``inv_lambda_per_km = 0`` (the default) this is the plain transparent-
     Earth factor ``(1 - e^{-Phi x}) / Phi`` that turns the infinite-column range
@@ -819,7 +819,7 @@ def scale_breaking_saturation_factor(
     column_depth_km: float,
     n_steps: int = 256,
 ) -> np.ndarray:
-    """Saturation factor with a running-spectral-index correction.
+    r"""Saturation factor with a running-spectral-index correction.
 
     App. F of an earlier draft of the method paper treats a scale-breaking
     loss rate ``dGamma/dy = E^beta kappa(y)``
@@ -899,7 +899,7 @@ def soft_volume_exact(
     beta: float = 0.0,
     light_yield_length_km: float | None = None,
 ) -> np.ndarray:
-    """Exact soft volume with the eigenvalue ``Phi(A)`` and a finite column.
+    r"""Exact soft volume with the eigenvalue ``Phi(A)`` and a finite column.
 
     Implements ``docs/theory/exact_soft_volume.md`` Part 7:
 
@@ -1002,7 +1002,7 @@ def soft_volume_attenuated_exact(
     d_scale: float = 1.0,
     source: str = DEFAULT_SOURCE,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Coupled inside/soft volume terms with parent-neutrino attenuation (Eq. 11).
+    r"""Coupled inside/soft volume terms with parent-neutrino attenuation (Eq. 11).
 
     Generalizes :func:`soft_volume_exact` by folding the parent neutrino's own
     Earth attenuation into the same depth integral that produces the soft

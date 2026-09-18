@@ -1,4 +1,4 @@
-"""Loader for the IceCube HESE 7.5-year data release.
+r"""Loader for the IceCube HESE 7.5-year data release.
 
 The release (`doi:10.21234/4EQJ-BB17
 <https://icecube.wisc.edu/data-releases/2021/12/hese-7-5-year-data/>`_, described

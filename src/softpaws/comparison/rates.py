@@ -319,7 +319,7 @@ def fit_scale_factor_with_background(
     log10_e_edges: np.ndarray,
     log10_e_min_fit: float = 4.0,
 ) -> float:
-    """Signal normalization on top of a fixed background prediction.
+    r"""Signal normalization on top of a fixed background prediction.
 
     The background-free :func:`fit_scale_factor` has a closed-form solution; with
     an additive background held at its predicted normalization the Poisson
@@ -400,7 +400,7 @@ def fit_component_scales(
     n_iterations: int = 500,
     tol: float = 1e-12,
 ) -> np.ndarray:
-    """Joint Poisson maximum-likelihood normalizations of several templates.
+    r"""Joint Poisson maximum-likelihood normalizations of several templates.
 
     Generalizes :func:`fit_scale_factor` to a prediction that is a sum of
     independently normalized components, ``N_i = sum_c k_c t_{ci}`` -- an

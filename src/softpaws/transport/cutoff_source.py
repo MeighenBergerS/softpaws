@@ -57,7 +57,7 @@ def cutoff_soft_rate_density(
     w_span: float | None = None,
     n_k: int = 4096,
 ) -> np.ndarray:
-    """Transported (soft) rate density for a source with an exponential cutoff.
+    r"""Transported (soft) rate density for a source with an exponential cutoff.
 
     Generalizes Eq. 9's ``S(E) (1 - e^{-x Phi(A)}) / Phi(A)`` to a source that
     is not a single power-law mode, ``S(eps) e^{-eps / E0}``. A muon observed

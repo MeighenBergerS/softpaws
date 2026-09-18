@@ -1,4 +1,4 @@
-"""Soft-volume forward model: neutrino flux to muon track rate (drift limit).
+r"""Soft-volume forward model: neutrino flux to muon track rate (drift limit).
 
 This is the soft-volume counterpart to the IRF path in :mod:`softpaws.response.irfs`.
 Both map an incident neutrino flux to a predicted track rate; keeping them
@@ -981,7 +981,7 @@ class SoftVolumeResponse:
         n_subdivisions: int = 32,
         n_dec: int = 32,
     ) -> np.ndarray:
-        """Expected track counts for an arbitrary, direction-dependent flux.
+        r"""Expected track counts for an arbitrary, direction-dependent flux.
 
         Generalizes :meth:`expected_counts_attenuated` from the power law of
         :func:`power_law_flux` to a tabulated flux such as an MCEq atmospheric

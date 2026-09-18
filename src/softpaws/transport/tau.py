@@ -1,4 +1,4 @@
-"""Tau-neutrino contribution to the through-going muon sample.
+r"""Tau-neutrino contribution to the through-going muon sample.
 
 A ``nu_tau`` charged-current interaction makes a tau instead of a muon. At the
 soft-volume regime's energies (>~100 TeV) the tau's decay length grows past its
@@ -81,7 +81,7 @@ MEAN_Z = 0.3
 
 
 def decay_spectrum(z: float | np.ndarray) -> np.ndarray:
-    """Muon energy-fraction spectrum ``g(z)`` from polarized tau decay.
+    r"""Muon energy-fraction spectrum ``g(z)`` from polarized tau decay.
 
     For the leptonic decay ``tau -> mu nu_mu nu_tau``, the V-A matrix element
     in the tau rest frame is ``dGamma/(dx dcos(theta)) ~ x^2 [(3-2x) -
@@ -110,7 +110,7 @@ def decay_spectrum(z: float | np.ndarray) -> np.ndarray:
 
 
 def z_symbol(s: complex | np.ndarray) -> np.ndarray:
-    """Mellin symbol ``<z^s>_g`` of the tau decay spectrum, for any ``s``.
+    r"""Mellin symbol ``<z^s>_g`` of the tau decay spectrum, for any ``s``.
 
     Writing :func:`decay_spectrum` as ``g(z) = 2(1-z)^2 + 4z(1-z)^2`` and using
     ``int_0^1 z^s (1-z)^2 dz = B(s+1, 3) = 2 / [(s+1)(s+2)(s+3)]``,
@@ -253,7 +253,7 @@ def tau_loss_density(
     d_mu: float,
     n_k: int = 2**14,
 ) -> np.ndarray:
-    """Defective density of ``w = ln(E_tau / E_obs)`` for the tau-origin chain.
+    r"""Defective density of ``w = ln(E_tau / E_obs)`` for the tau-origin chain.
 
     Inverts the closed-form symbol derived in the module docstring,
 

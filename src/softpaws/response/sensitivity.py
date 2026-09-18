@@ -182,7 +182,7 @@ def single_event_sensitivity(
     n_events: float | np.ndarray = 1.0,
     solid_angle_sr: float | None = None,
 ) -> np.ndarray:
-    """Flux delivering one event per decade of neutrino energy.
+    r"""Flux delivering one event per decade of neutrino energy.
 
     A decade of a flux ``phi`` delivers ``T A_eff E ln(10) phi`` events, so the
     flux that delivers ``n_events`` of them is
@@ -279,7 +279,7 @@ def power_law_sensitivity(
     n_events: float | np.ndarray = N_EVENTS_LIMIT,
     solid_angle_sr: float | None = None,
 ) -> np.ndarray:
-    """Normalization of a power law a search would exclude.
+    r"""Normalization of a power law a search would exclude.
 
     For ``phi(E) = phi_0 (E / E_piv)^-gamma`` the expected count is linear in
     ``phi_0``, so the limit is one quadrature,

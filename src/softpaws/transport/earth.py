@@ -80,7 +80,7 @@ def mean_density_column(declination_deg: float | np.ndarray) -> np.ndarray:
     return RHO_EARTH_MEAN_G_CM3 * length_cm
 
 def representative_column(dec_min_deg: float, dec_max_deg: float) -> float:
-    """Solid-angle-averaged mean-density column over a declination band.
+    r"""Solid-angle-averaged mean-density column over a declination band.
 
     The closed-form attenuation replaces the per-direction column by this single
     scalar. With ``dOmega = 2 pi cos(dec) d(dec)`` and the constant-density

@@ -129,7 +129,7 @@ def arca230_trigger_level_aeff(path: pathlib.Path | None = None) -> tuple[np.nda
 
 
 def arca230_quoted_fit(log10_e: np.ndarray) -> np.ndarray:
-    """Analytic parametrization of the ARCA230 trigger curve quoted in the literature.
+    r"""Analytic parametrization of the ARCA230 trigger curve quoted in the literature.
 
     Several phenomenology papers quote
 

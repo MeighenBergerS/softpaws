@@ -632,7 +632,7 @@ def log_loss_moments(
     density_g_cm3: float = RHO_WATER_G_CM3,
     source: str = DEFAULT_SOURCE,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """The three log-loss moments of the kernel, from the tabulated spectrum.
+    r"""The three log-loss moments of the kernel, from the tabulated spectrum.
 
     Where ``b_mu``, ``d_mu`` and ``t_mu`` are moments of the fractional loss
     ``y``, these are moments of the *logarithmic* loss ``-ln(1-y)``, which is

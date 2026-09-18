@@ -1,4 +1,4 @@
-"""The transport exponent: eigenvalue of the QED collision operator.
+r"""The transport exponent: eigenvalue of the QED collision operator.
 
 Where :mod:`softpaws.transport.coefficients` provides the drift ``b_mu`` and
 diffusion ``d_mu`` of the earlier Fokker-Planck expansion (Palmisano et al.,
@@ -69,7 +69,7 @@ def two_moment_loss_spectrum(
     b_mu: float | np.ndarray,
     d_mu: float | np.ndarray,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Calibrate the two-parameter loss spectrum ``dGamma/dy = kappa (1-y)^p / y``.
+    r"""Calibrate the two-parameter loss spectrum ``dGamma/dy = kappa (1-y)^p / y``.
 
     The family is fixed by matching its first two ``y``-moments to the drift and
     diffusion coefficients (App. A.1 of the method paper):
@@ -105,7 +105,7 @@ def three_moment_loss_spectrum(
     d_mu: float | np.ndarray,
     t_mu: float | np.ndarray,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Calibrate the loss spectrum ``dGamma/dy = kappa y^(q-1) (1-y)^p`` to three moments.
+    r"""Calibrate the loss spectrum ``dGamma/dy = kappa y^(q-1) (1-y)^p`` to three moments.
 
     One-parameter generalization of :func:`two_moment_loss_spectrum`, which is the
     ``q = 0`` member of this family. Freeing the soft exponent ``q`` lets the third
@@ -188,7 +188,7 @@ def phi_symbol(
     kappa: float | np.ndarray,
     p: float | np.ndarray,
 ) -> np.ndarray:
-    """Mellin symbol ``Phi(s)`` of the two-moment loss family, for any ``s``.
+    r"""Mellin symbol ``Phi(s)`` of the two-moment loss family, for any ``s``.
 
     Closed form of the family ``dGamma/dy = kappa (1-y)^p / y`` (Part 10.4),
 
@@ -234,7 +234,7 @@ def phi_symbol_three_moment(
     q: float,
     p: float,
 ) -> np.ndarray:
-    """Mellin symbol ``Phi(s)`` of the three-moment loss family, for any ``s``.
+    r"""Mellin symbol ``Phi(s)`` of the three-moment loss family, for any ``s``.
 
     Closed form of ``dGamma/dy = kappa y^(q-1) (1-y)^p``,
 
@@ -418,7 +418,7 @@ def phi_symbol_n_moment(
     q: float,
     p: float,
 ) -> np.ndarray:
-    """Mellin symbol ``Phi(s)`` of the ``N``-moment loss family, for any ``s``.
+    r"""Mellin symbol ``Phi(s)`` of the ``N``-moment loss family, for any ``s``.
 
     Term by term, ``int_0^1 dy y^(q-1+j) (1-y)^p [1 - (1-y)^s]`` is a difference
     of Beta functions, so the exponent stays closed form at every order,
@@ -500,7 +500,7 @@ def phi_eigenvalue(
     b_mu: float | np.ndarray,
     d_mu: float | np.ndarray,
 ) -> np.ndarray:
-    """Exact collision eigenvalue ``Phi(A)`` from the two calibrated moments.
+    r"""Exact collision eigenvalue ``Phi(A)`` from the two calibrated moments.
 
     Using the closed form of the two-moment family (Part 10.4),
 
@@ -545,7 +545,7 @@ def phi_eigenvalue_derivative(
     b_mu: float | np.ndarray,
     d_mu: float | np.ndarray,
 ) -> np.ndarray:
-    """Derivative ``d Phi / dA`` of the exact eigenvalue, from the trigamma function.
+    r"""Derivative ``d Phi / dA`` of the exact eigenvalue, from the trigamma function.
 
     Differentiating the closed form of :func:`phi_eigenvalue`,
 
