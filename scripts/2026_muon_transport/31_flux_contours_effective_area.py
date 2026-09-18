@@ -79,9 +79,11 @@ tension number below inherits that caveat.
 
 Usage
 -----
-    python examples/31_flux_contours_effective_area.py
-    python examples/31_flux_contours_effective_area.py --data-dir /path/to/dataverse_files
-    python examples/31_flux_contours_effective_area.py --no-ceiling   # skip the slow contrast curve
+    python scripts/2026_muon_transport/31_flux_contours_effective_area.py
+    python scripts/2026_muon_transport/31_flux_contours_effective_area.py \
+        --data-dir /path/to/dataverse_files
+    python scripts/2026_muon_transport/31_flux_contours_effective_area.py \
+        --no-ceiling   # skip the slow contrast curve
 """
 
 import argparse

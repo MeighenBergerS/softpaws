@@ -42,8 +42,8 @@ footprint-plus-optics definitions for the detectors nobody has built.
 
 Usage
 -----
-    python examples/50_flavor_triangle.py
-    python examples/50_flavor_triangle.py --rebuild-grids
+    python scripts/2026_muon_transport/50_flavor_triangle.py
+    python scripts/2026_muon_transport/50_flavor_triangle.py --rebuild-grids
 """
 
 import argparse

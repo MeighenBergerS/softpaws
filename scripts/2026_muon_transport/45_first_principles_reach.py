@@ -129,10 +129,10 @@ multiplicity scan and the two figures.
 
 Usage
 -----
-    python examples/45_first_principles_reach.py
-    python examples/45_first_principles_reach.py --min-modules 4
-    python examples/45_first_principles_reach.py --numu-only
-    python examples/45_first_principles_reach.py --scan
+    python scripts/2026_muon_transport/45_first_principles_reach.py
+    python scripts/2026_muon_transport/45_first_principles_reach.py --min-modules 4
+    python scripts/2026_muon_transport/45_first_principles_reach.py --numu-only
+    python scripts/2026_muon_transport/45_first_principles_reach.py --scan
 """
 
 import argparse

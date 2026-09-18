@@ -85,8 +85,8 @@ analysis, not a collaboration-grade measurement.
 
 Usage
 -----
-    python examples/51_dr2_flavor_fit.py
-    python examples/51_dr2_flavor_fit.py --rebuild-cache
+    python scripts/2026_muon_transport/51_dr2_flavor_fit.py
+    python scripts/2026_muon_transport/51_dr2_flavor_fit.py --rebuild-cache
 """
 
 import argparse

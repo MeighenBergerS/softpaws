@@ -19,6 +19,23 @@ re-exported from :mod:`softpaws.response.effective_area` alone; read the
 site-model grids from that module directly.
 """
 
+from .declination import (
+    COMMON_LOG10_E,
+    band_averaged_effective_area_cm2,
+    band_statistics,
+    central_energy_range,
+    column_target_volume_km3,
+    derived_band_averaged_effective_area_cm2,
+    derived_directional_effective_area_cm2,
+    directional_effective_area_cm2,
+    fit_light_reach,
+    fit_published_reach,
+    point_source_limit,
+    point_source_sensitivity,
+    polar_band_directions,
+    sky_averaged_effective_area_cm2,
+    zenith_band_weights,
+)
 from .effective_area import (
     ARCA_FIT_BAND,
     ARCA_LOG10_E,
@@ -93,6 +110,20 @@ from .reduced import (
     trident_2025_cells,
     trident_2025_detector,
 )
+from .sensitivity import (
+    N_EVENTS_LIMIT,
+    PIVOT_ENERGY_GEV,
+    atmospheric_background_counts,
+    atmospheric_background_density,
+    feldman_cousins_upper_limit,
+    line_sensitivity,
+    optimized_window_sensitivity,
+    point_source_bin_sr,
+    power_law_sensitivity,
+    psf_bin_radius_deg,
+    sensitivity_upper_limit,
+    single_event_sensitivity,
+)
 from .site_models import (
     ARCA230_WATER_SITE,
     B_SCALE_FLOOR,
@@ -142,6 +173,33 @@ from .site_models import (
 from .soft_volume import SoftVolumeResponse, power_law_flux
 
 __all__ = [
+    "N_EVENTS_LIMIT",
+    "PIVOT_ENERGY_GEV",
+    "atmospheric_background_counts",
+    "atmospheric_background_density",
+    "feldman_cousins_upper_limit",
+    "line_sensitivity",
+    "optimized_window_sensitivity",
+    "point_source_bin_sr",
+    "power_law_sensitivity",
+    "psf_bin_radius_deg",
+    "sensitivity_upper_limit",
+    "single_event_sensitivity",
+    "COMMON_LOG10_E",
+    "band_averaged_effective_area_cm2",
+    "band_statistics",
+    "central_energy_range",
+    "column_target_volume_km3",
+    "derived_band_averaged_effective_area_cm2",
+    "derived_directional_effective_area_cm2",
+    "directional_effective_area_cm2",
+    "fit_light_reach",
+    "fit_published_reach",
+    "point_source_limit",
+    "point_source_sensitivity",
+    "polar_band_directions",
+    "sky_averaged_effective_area_cm2",
+    "zenith_band_weights",
     "ARCA_FIT_BAND",
     "ARCA_LOG10_E",
     "DEFAULT_FLAVOURS",

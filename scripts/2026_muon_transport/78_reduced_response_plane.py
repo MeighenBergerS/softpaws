@@ -13,9 +13,10 @@ matrix implies.
 
 Usage
 -----
-    python examples/77_reduced_response_fit.py --sigma 0.05
-    python examples/78_reduced_response_plane.py
-    python examples/78_reduced_response_plane.py --chains path/to/77_chains.npz --tag sigma05
+    python scripts/2026_muon_transport/77_reduced_response_fit.py --sigma 0.05
+    python scripts/2026_muon_transport/78_reduced_response_plane.py
+    python scripts/2026_muon_transport/78_reduced_response_plane.py \
+        --chains path/to/77_chains.npz --tag sigma05
 """
 
 import argparse

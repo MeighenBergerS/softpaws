@@ -81,9 +81,9 @@ Examples
 --------
 ::
 
-    python examples/39_range_moment_estimator.py
-    python examples/39_range_moment_estimator.py --n-muons 8000
-    python examples/39_range_moment_estimator.py --stop-energy-gev 3e5
+    python scripts/2026_muon_transport/39_range_moment_estimator.py
+    python scripts/2026_muon_transport/39_range_moment_estimator.py --n-muons 8000
+    python scripts/2026_muon_transport/39_range_moment_estimator.py --stop-energy-gev 3e5
 """
 
 import argparse

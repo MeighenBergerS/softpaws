@@ -43,8 +43,8 @@ not a reproduction of the published limit.
 
 Usage
 -----
-    python examples/64_horizon_dim_track_sensitivity.py
-    python examples/64_horizon_dim_track_sensitivity.py --years 20
+    python scripts/future_bsm/64_horizon_dim_track_sensitivity.py
+    python scripts/future_bsm/64_horizon_dim_track_sensitivity.py --years 20
 """
 
 import argparse

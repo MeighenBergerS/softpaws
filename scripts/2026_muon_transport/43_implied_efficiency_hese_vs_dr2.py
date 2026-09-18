@@ -38,7 +38,7 @@ zenith drift, so the tau quotient is not a clean efficiency.
 
 Usage
 -----
-    python examples/43_implied_efficiency_hese_vs_dr2.py
+    python scripts/2026_muon_transport/43_implied_efficiency_hese_vs_dr2.py
 """
 
 import argparse

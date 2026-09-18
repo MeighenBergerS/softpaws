@@ -14,8 +14,8 @@ Monte Carlo scatter. The other three sites keep example 77's 5% chains.
 
 Usage
 -----
-    python examples/82_reduced_response_plane_trident2025.py
-    python examples/82_reduced_response_plane_trident2025.py --steps 1500
+    python scripts/2026_muon_transport/82_reduced_response_plane_trident2025.py
+    python scripts/2026_muon_transport/82_reduced_response_plane_trident2025.py --steps 1500
 """
 
 import argparse

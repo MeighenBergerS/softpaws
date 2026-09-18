@@ -42,8 +42,8 @@ fitted to that curve.
 
 Usage
 -----
-    python examples/74_point_source_with_bands.py
-    python examples/74_point_source_with_bands.py --gamma 2.5
+    python scripts/2026_muon_transport/74_point_source_with_bands.py
+    python scripts/2026_muon_transport/74_point_source_with_bands.py --gamma 2.5
 """
 
 import argparse

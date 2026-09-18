@@ -42,8 +42,8 @@ just below the horizon.
 
 Usage
 -----
-    python examples/62_stau_flux_limit.py
-    python examples/62_stau_flux_limit.py --gamma 3.0 3.7
+    python scripts/future_bsm/62_stau_flux_limit.py
+    python scripts/future_bsm/62_stau_flux_limit.py --gamma 3.0 3.7
 """
 
 import argparse

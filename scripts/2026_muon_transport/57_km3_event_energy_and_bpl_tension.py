@@ -48,8 +48,9 @@ of freedom, and is printed for every combination.
 
 Usage
 -----
-    python examples/57_km3_event_energy_and_bpl_tension.py
-    python examples/57_km3_event_energy_and_bpl_tension.py --n-gamma 31 --n-phi0 41
+    python scripts/2026_muon_transport/57_km3_event_energy_and_bpl_tension.py
+    python scripts/2026_muon_transport/57_km3_event_energy_and_bpl_tension.py \
+        --n-gamma 31 --n-phi0 41
 """
 
 import argparse

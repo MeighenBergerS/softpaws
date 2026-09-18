@@ -38,9 +38,10 @@ it is the configuration whose reach law example 30 transfers.
 
 Usage
 -----
-    python examples/32_effective_area_comparison.py
-    python examples/32_effective_area_comparison.py --threshold 1e4
-    python examples/32_effective_area_comparison.py --data-dir /path/to/dataverse_files
+    python scripts/2026_muon_transport/32_effective_area_comparison.py
+    python scripts/2026_muon_transport/32_effective_area_comparison.py --threshold 1e4
+    python scripts/2026_muon_transport/32_effective_area_comparison.py \
+        --data-dir /path/to/dataverse_files
 """
 
 import argparse

@@ -75,8 +75,9 @@ form of ``stochastic_muon_range_km``.
 
 Usage
 -----
-    python examples/29_effective_area_posterior_corner.py
-    python examples/29_effective_area_posterior_corner.py --steps 6000 --sigma 0.10
+    python scripts/2026_muon_transport/29_effective_area_posterior_corner.py
+    python scripts/2026_muon_transport/29_effective_area_posterior_corner.py \
+        --steps 6000 --sigma 0.10
 """
 
 import argparse

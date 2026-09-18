@@ -100,11 +100,12 @@ of the figure (c) gap carries that difference.
 
 Usage
 -----
-    python examples/35_point_source_effective_area.py
-    python examples/35_point_source_effective_area.py --gamma 2.5
-    python examples/35_point_source_effective_area.py --emin-gev 1e3
-    python examples/35_point_source_effective_area.py --data-dir /path/to/dataverse_files
-    python examples/35_point_source_effective_area.py --out-dir /path/to/figures
+    python scripts/2026_muon_transport/35_point_source_effective_area.py
+    python scripts/2026_muon_transport/35_point_source_effective_area.py --gamma 2.5
+    python scripts/2026_muon_transport/35_point_source_effective_area.py --emin-gev 1e3
+    python scripts/2026_muon_transport/35_point_source_effective_area.py \
+        --data-dir /path/to/dataverse_files
+    python scripts/2026_muon_transport/35_point_source_effective_area.py --out-dir /path/to/figures
 
 Writes four standalone figures, ``35a``-``35d``, in the order described above.
 """

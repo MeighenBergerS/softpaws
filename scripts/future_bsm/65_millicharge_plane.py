@@ -53,8 +53,8 @@ statement of where the openings are, not an exclusion.
 
 Usage
 -----
-    python examples/65_millicharge_plane.py
-    python examples/65_millicharge_plane.py --years 30
+    python scripts/future_bsm/65_millicharge_plane.py
+    python scripts/future_bsm/65_millicharge_plane.py --years 30
 """
 
 import argparse

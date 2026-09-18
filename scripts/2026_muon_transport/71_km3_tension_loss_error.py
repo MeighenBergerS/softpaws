@@ -29,8 +29,8 @@ should be quoted with.
 
 Usage
 -----
-    python examples/71_km3_tension_loss_error.py
-    python examples/71_km3_tension_loss_error.py --no-rate-scaling
+    python scripts/2026_muon_transport/71_km3_tension_loss_error.py
+    python scripts/2026_muon_transport/71_km3_tension_loss_error.py --no-rate-scaling
 """
 
 import argparse

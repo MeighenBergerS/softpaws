@@ -52,8 +52,8 @@ read off and compared with what is known about the ice.
 
 Usage
 -----
-    python examples/44_depth_dependent_reach.py
-    python examples/44_depth_dependent_reach.py --n-energy 60
+    python scripts/2026_muon_transport/44_depth_dependent_reach.py
+    python scripts/2026_muon_transport/44_depth_dependent_reach.py --n-energy 60
 """
 
 import argparse

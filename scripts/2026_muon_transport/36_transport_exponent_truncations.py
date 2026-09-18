@@ -48,9 +48,10 @@ of the three features above.
 
 Usage
 -----
-    python examples/36_transport_exponent_truncations.py
-    python examples/36_transport_exponent_truncations.py --energy-gev 1e6
-    python examples/36_transport_exponent_truncations.py --out-dir /path/to/figures
+    python scripts/2026_muon_transport/36_transport_exponent_truncations.py
+    python scripts/2026_muon_transport/36_transport_exponent_truncations.py --energy-gev 1e6
+    python scripts/2026_muon_transport/36_transport_exponent_truncations.py \
+        --out-dir /path/to/figures
 
 Writes one figure, ``36_transport_exponent``, and prints the Table F.1
 comparison it is drawn from.

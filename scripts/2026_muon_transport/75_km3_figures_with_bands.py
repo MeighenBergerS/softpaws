@@ -23,7 +23,7 @@ panel is annotated with the ensemble span of the tension.
 
 Usage
 -----
-    python examples/75_km3_figures_with_bands.py
+    python scripts/2026_muon_transport/75_km3_figures_with_bands.py
 """
 
 import argparse

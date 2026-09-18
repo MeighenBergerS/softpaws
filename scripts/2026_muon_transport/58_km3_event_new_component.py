@@ -50,8 +50,8 @@ the ARCA21 side is example 31's. The bump width is a convention and
 
 Usage
 -----
-    python examples/58_km3_event_new_component.py
-    python examples/58_km3_event_new_component.py --width 0.3 --no-icecube
+    python scripts/2026_muon_transport/58_km3_event_new_component.py
+    python scripts/2026_muon_transport/58_km3_event_new_component.py --width 0.3 --no-icecube
 """
 
 import argparse

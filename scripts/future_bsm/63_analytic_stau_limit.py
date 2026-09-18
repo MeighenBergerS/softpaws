@@ -51,8 +51,8 @@ al., PLB 811 (2020) 135929, where ``E_min`` is two decades lower.
 
 Usage
 -----
-    python examples/63_analytic_stau_limit.py
-    python examples/63_analytic_stau_limit.py --k-factor 1.6
+    python scripts/future_bsm/63_analytic_stau_limit.py
+    python scripts/future_bsm/63_analytic_stau_limit.py --k-factor 1.6
 """
 
 import argparse

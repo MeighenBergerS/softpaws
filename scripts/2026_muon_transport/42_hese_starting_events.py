@@ -48,8 +48,8 @@ the rest of the paper carries no ``nu_e``.
 
 Usage
 -----
-    python examples/42_hese_starting_events.py
-    python examples/42_hese_starting_events.py --no-deposited-cut
+    python scripts/2026_muon_transport/42_hese_starting_events.py
+    python scripts/2026_muon_transport/42_hese_starting_events.py --no-deposited-cut
 """
 
 import argparse

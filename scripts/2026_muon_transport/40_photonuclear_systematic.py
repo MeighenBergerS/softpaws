@@ -42,9 +42,9 @@ Examples
 --------
 ::
 
-    python examples/40_photonuclear_systematic.py
-    python examples/40_photonuclear_systematic.py --pn-uncertainty 0.15
-    python examples/40_photonuclear_systematic.py --threshold-gev 1e4
+    python scripts/2026_muon_transport/40_photonuclear_systematic.py
+    python scripts/2026_muon_transport/40_photonuclear_systematic.py --pn-uncertainty 0.15
+    python scripts/2026_muon_transport/40_photonuclear_systematic.py --threshold-gev 1e4
 """
 
 import argparse

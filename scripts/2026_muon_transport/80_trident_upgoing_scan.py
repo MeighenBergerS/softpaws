@@ -13,7 +13,7 @@ absorption scale on the column and a cap on the muon column, band by band.
 
 Usage
 -----
-    python examples/80_trident_upgoing_scan.py
+    python scripts/2026_muon_transport/80_trident_upgoing_scan.py
 """
 
 import importlib.util

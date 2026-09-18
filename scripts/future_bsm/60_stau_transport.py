@@ -44,8 +44,8 @@ production spectrum is out of scope, stated deliberately.
 
 Usage
 -----
-    python examples/60_stau_transport.py
-    python examples/60_stau_transport.py --millicharge 0.1 0.3
+    python scripts/future_bsm/60_stau_transport.py
+    python scripts/future_bsm/60_stau_transport.py --millicharge 0.1 0.3
 """
 
 import argparse

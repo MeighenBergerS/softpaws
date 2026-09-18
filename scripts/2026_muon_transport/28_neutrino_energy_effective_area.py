@@ -52,9 +52,10 @@ efficiency.
 
 Usage
 -----
-    python examples/28_neutrino_energy_effective_area.py
-    python examples/28_neutrino_energy_effective_area.py --threshold 700
-    python examples/28_neutrino_energy_effective_area.py --data-dir /path/to/dataverse_files
+    python scripts/2026_muon_transport/28_neutrino_energy_effective_area.py
+    python scripts/2026_muon_transport/28_neutrino_energy_effective_area.py --threshold 700
+    python scripts/2026_muon_transport/28_neutrino_energy_effective_area.py \
+        --data-dir /path/to/dataverse_files
 """
 
 import argparse

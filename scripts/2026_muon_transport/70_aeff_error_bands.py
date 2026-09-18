@@ -32,8 +32,8 @@ the photonuclear spread lives and carry the larger band.
 
 Usage
 -----
-    python examples/70_aeff_error_bands.py
-    python examples/70_aeff_error_bands.py --n-energy 120
+    python scripts/2026_muon_transport/70_aeff_error_bands.py
+    python scripts/2026_muon_transport/70_aeff_error_bands.py --n-energy 120
 """
 
 import argparse

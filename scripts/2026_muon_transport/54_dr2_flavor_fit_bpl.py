@@ -42,8 +42,8 @@ high-energy index the astrophysical template is softer, the anchored
 
 Usage
 -----
-    python examples/54_dr2_flavor_fit_bpl.py
-    python examples/54_dr2_flavor_fit_bpl.py --toys 200
+    python scripts/2026_muon_transport/54_dr2_flavor_fit_bpl.py
+    python scripts/2026_muon_transport/54_dr2_flavor_fit_bpl.py --toys 200
 """
 
 import argparse

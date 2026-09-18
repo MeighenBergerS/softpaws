@@ -18,8 +18,8 @@ kernel can no longer absorb it.
 
 Usage
 -----
-    python examples/77_reduced_response_fit.py
-    python examples/77_reduced_response_fit.py --steps 3000 --eps-icecube 0.95
+    python scripts/2026_muon_transport/77_reduced_response_fit.py
+    python scripts/2026_muon_transport/77_reduced_response_fit.py --steps 3000 --eps-icecube 0.95
 """
 
 import argparse

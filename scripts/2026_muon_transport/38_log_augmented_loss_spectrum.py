@@ -60,10 +60,10 @@ spectrum and a worse closure. Use the moment families when the target is
 
 Usage
 -----
-    python examples/38_log_augmented_loss_spectrum.py
-    python examples/38_log_augmented_loss_spectrum.py --energy-gev 1e8
-    python examples/38_log_augmented_loss_spectrum.py --max-log-power 8
-    python examples/38_log_augmented_loss_spectrum.py --out-dir /path/to/figures
+    python scripts/2026_muon_transport/38_log_augmented_loss_spectrum.py
+    python scripts/2026_muon_transport/38_log_augmented_loss_spectrum.py --energy-gev 1e8
+    python scripts/2026_muon_transport/38_log_augmented_loss_spectrum.py --max-log-power 8
+    python scripts/2026_muon_transport/38_log_augmented_loss_spectrum.py --out-dir /path/to/figures
 
 ``M = 6`` is the practical minimum. Three of the coefficients are spent on the
 moment constraints, so ``M = 4`` leaves only two for the shape and the fit

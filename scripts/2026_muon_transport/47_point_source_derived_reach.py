@@ -65,9 +65,9 @@ it rather than hiding it.
 
 Usage
 -----
-    python examples/47_point_source_derived_reach.py
-    python examples/47_point_source_derived_reach.py --halo-weight 1.0
-    python examples/47_point_source_derived_reach.py --emin-gev 1e4
+    python scripts/2026_muon_transport/47_point_source_derived_reach.py
+    python scripts/2026_muon_transport/47_point_source_derived_reach.py --halo-weight 1.0
+    python scripts/2026_muon_transport/47_point_source_derived_reach.py --emin-gev 1e4
 """
 
 import argparse

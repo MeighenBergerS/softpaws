@@ -26,12 +26,14 @@ is ``dec > 0``.
 from __future__ import annotations
 
 from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
 
 from ..detectors import Optics, Site
 from ..transport.attenuation import flavour_transmission, regenerated_transmission
 from ..transport.cross_section import CrossSection
+from ..transport.earth import zenith_grid
 from ..transport.muon_range import (
     DEFAULT_MUON_THRESHOLD_GEV,
     truncated_muon_range_km,
@@ -44,7 +46,17 @@ from ..utils.constants import CM_PER_KM
 from .effective_area import default_cross_section
 from .first_principles import column_profile, rock_range_ratio
 from .light_reach import effective_body_km
-from .sensitivity import N_EVENTS_LIMIT, PIVOT_ENERGY_GEV, power_law_sensitivity
+from .sensitivity import (
+    N_EVENTS_LIMIT,
+    PIVOT_ENERGY_GEV,
+    atmospheric_background_density,
+    optimized_window_sensitivity,
+    power_law_sensitivity,
+)
+from .site_models import published_effective_area_cm2
+
+if TYPE_CHECKING:
+    from ..fluxes.atmospheric import AtmosphericFlux
 
 __all__ = [
     "COMMON_LOG10_E",
@@ -210,6 +222,56 @@ def directional_effective_area_cm2(
     return total
 
 
+def sky_averaged_effective_area_cm2(
+    site: Site,
+    threshold_gev: float,
+    cos_range: tuple[float, float] = (-1.0, 1.0),
+    n_zenith: int = 24,
+    **kwargs,
+) -> np.ndarray:
+    """Effective area averaged over a band of arrival directions [cm^2].
+
+    Averages :func:`directional_effective_area_cm2` over ``n_zenith`` slices
+    of equal solid angle, which is how a published table quoted over a
+    hemisphere or the whole sky is built.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry and medium.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    cos_range : tuple of float, optional
+        Band of ``cos(theta)`` to average over. The default is the whole sky,
+        and ``(-1.0, 0.0)`` is the upgoing hemisphere.
+    n_zenith : int, optional
+        Number of zenith slices in the average.
+    **kwargs
+        Passed on to :func:`directional_effective_area_cm2`, for example
+        ``reach_km``, ``channels`` or ``log10_e``.
+
+    Returns
+    -------
+    aeff : np.ndarray, shape (log10_e.size,)
+        Direction-averaged effective area [cm^2] at each energy.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from softpaws.detectors import ICECUBE
+    >>> aeff = sky_averaged_effective_area_cm2(
+    ...     ICECUBE, 1.0e3, cos_range=(-1.0, 0.0), n_zenith=4, log10_e=np.array([6.0])
+    ... )
+    >>> aeff.shape
+    (1,)
+    """
+    theta_deg, weights = zenith_grid(n_zenith, cos_range)
+    per_direction = directional_effective_area_cm2(
+        site, np.cos(np.deg2rad(theta_deg)), threshold_gev, **kwargs
+    )
+    return per_direction @ weights
+
+
 #: Effective radius at :data:`REACH_REFERENCE_GEV` that :func:`fit_light_reach`
 #: scans, as a fraction of the instrumented footprint radius. The range covers
 #: a detector that responds to two thirds of its footprint at 1 PeV and one
@@ -299,6 +361,131 @@ def fit_light_reach(
             ratio = np.log10(published[usable] / models[i][usable])
             residual[i] = float(np.sqrt(np.mean(ratio**2)))
     return float(reaches[int(np.argmin(residual))]), residual, models
+
+
+def fit_published_reach(
+    site: Site,
+    threshold_gev: float,
+    log10_e: np.ndarray = np.arange(4.0, 8.01, 0.25),
+    fit_band: tuple[float, float] = (5.0, 7.5),
+    n_zenith: int = 8,
+    channels: str = "both",
+    data_dir=None,
+) -> tuple[float, float]:
+    """Fit a site's light reach to its own published effective area.
+
+    Looks up the published curve and the sky it was averaged over, averages
+    the model over the same sky, and scans the reach with
+    :func:`fit_light_reach` inside ``fit_band``.
+
+    Parameters
+    ----------
+    site : Site
+        One of the sites with a published curve: IceCube, ARCA230, P-ONE or
+        TRIDENT.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    log10_e : np.ndarray, optional
+        Neutrino energies the comparison runs on [log10 GeV].
+    fit_band : tuple of float, optional
+        Band of ``log10(E / GeV)`` the fit is scored over. Published nodes
+        outside the site's own range are skipped.
+    n_zenith : int, optional
+        Number of zenith slices in the sky average.
+    channels : {"both", "mu"}, optional
+        Channels summed; see :func:`directional_effective_area_cm2`.
+    data_dir : pathlib.Path or None, optional
+        Root of the IceTracks-DR2 release, read for IceCube alone.
+
+    Returns
+    -------
+    reach_km : float
+        Fitted reach per e-fold of muon energy [km].
+    residual_dex : float
+        Root-mean-square residual of the best fit [dex].
+    """
+    published, cos_range = published_effective_area_cm2(site, log10_e, data_dir)
+    theta_deg, weights = zenith_grid(n_zenith, cos_range)
+    band = (log10_e >= fit_band[0]) & (log10_e <= fit_band[1])
+    reach_km, residual, _ = fit_light_reach(
+        site, np.cos(np.deg2rad(theta_deg)), weights, published[band], threshold_gev,
+        log10_e=log10_e[band], channels=channels,
+    )
+    return reach_km, float(np.min(residual))
+
+
+def point_source_limit(
+    site: Site,
+    dec_deg: float | np.ndarray,
+    threshold_gev: float,
+    livetime_s: float,
+    gamma: float = 2.0,
+    reach_km: float | None = None,
+    background: AtmosphericFlux | None = None,
+    bin_radius_deg: float | np.ndarray = 1.0,
+    log10_e: np.ndarray = np.arange(4.0, 8.01, 0.25),
+    n_cos_theta: int = 60,
+    channels: str = "both",
+) -> np.ndarray:
+    """Flux a point-source search reaches with one detector, per declination.
+
+    A source at a fixed declination sweeps a fixed set of zeniths as the Earth
+    turns, so its response is the directional effective area contracted with
+    the time the source spends in each zenith band
+    (:func:`zenith_band_weights`). Without a background the result is the
+    background-free power-law ceiling. With an atmospheric flux, the
+    background is counted direction by direction in a bin of
+    ``bin_radius_deg`` around the source, and the energy the search starts at
+    is chosen to give the best limit (see
+    :func:`~softpaws.response.sensitivity.optimized_window_sensitivity`).
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry, medium and latitude.
+    dec_deg : float or np.ndarray, shape (n_dec,)
+        Source declinations [deg].
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    livetime_s : float
+        Exposure [s].
+    gamma : float, optional
+        Spectral index of the source.
+    reach_km : float or None, optional
+        Light reach per e-fold of muon energy [km], as from
+        :func:`fit_published_reach`. ``None`` keeps the instrumented footprint.
+    background : AtmosphericFlux or None, optional
+        Atmospheric neutrino flux. ``None`` gives a background-free search.
+    bin_radius_deg : float or np.ndarray, optional
+        Angular radius of the source bin [deg].
+    log10_e : np.ndarray, optional
+        Neutrino energies [log10 GeV].
+    n_cos_theta : int, optional
+        Number of zenith bands the daily sweep is binned into.
+    channels : {"both", "mu"}, optional
+        Channels summed; see :func:`directional_effective_area_cm2`.
+
+    Returns
+    -------
+    e2_flux : np.ndarray, shape (n_dec,)
+        ``E^2 phi`` at 100 TeV the search excludes at 90% [GeV cm^-2 s^-1].
+    """
+    dec_deg = np.atleast_1d(np.asarray(dec_deg, dtype=float))
+    cos_theta, weights = zenith_band_weights(
+        site.latitude_deg, dec_deg, n_cos_theta=n_cos_theta
+    )
+    per_direction = directional_effective_area_cm2(
+        site, cos_theta, threshold_gev, reach_km=reach_km, log10_e=log10_e,
+        channels=channels,
+    )
+    swept = per_direction @ weights.T
+    if background is None:
+        return power_law_sensitivity(swept, livetime_s, gamma, log10_e)
+    density = atmospheric_background_density(
+        background, per_direction, cos_theta, weights, livetime_s, log10_e, bin_radius_deg
+    )
+    limit, _ = optimized_window_sensitivity(swept, density, livetime_s, gamma, log10_e)
+    return limit
 
 
 def polar_band_directions(

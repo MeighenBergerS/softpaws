@@ -22,8 +22,8 @@ which they measure, against the location of the break, which they do not.
 
 Usage
 -----
-    python examples/53_spectral_shape_tracks.py
-    python examples/53_spectral_shape_tracks.py --published-response
+    python scripts/2026_muon_transport/53_spectral_shape_tracks.py
+    python scripts/2026_muon_transport/53_spectral_shape_tracks.py --published-response
 """
 
 import argparse

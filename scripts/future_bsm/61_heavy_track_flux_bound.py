@@ -51,8 +51,8 @@ event counts as signal.
 
 Usage
 -----
-    python examples/61_heavy_track_flux_bound.py
-    python examples/61_heavy_track_flux_bound.py --deposit-window 2.0 3.25
+    python scripts/future_bsm/61_heavy_track_flux_bound.py
+    python scripts/future_bsm/61_heavy_track_flux_bound.py --deposit-window 2.0 3.25
 """
 
 import argparse

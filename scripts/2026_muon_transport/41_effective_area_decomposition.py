@@ -62,8 +62,8 @@ principles`` curve line for line.
 
 Usage
 -----
-    python examples/41_effective_area_decomposition.py
-    python examples/41_effective_area_decomposition.py --threshold 1e4
+    python scripts/2026_muon_transport/41_effective_area_decomposition.py
+    python scripts/2026_muon_transport/41_effective_area_decomposition.py --threshold 1e4
 """
 
 import argparse

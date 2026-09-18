@@ -22,8 +22,8 @@ quantified in the printout rather than eyeballed.
 
 Usage
 -----
-    python examples/72_informed_transport_corner.py
-    python examples/72_informed_transport_corner.py --steps 4000
+    python scripts/2026_muon_transport/72_informed_transport_corner.py
+    python scripts/2026_muon_transport/72_informed_transport_corner.py --steps 4000
 """
 
 import argparse

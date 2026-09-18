@@ -28,8 +28,8 @@ them, because it is a property of the response and not of the spectrum.
 
 Usage
 -----
-    python examples/49_tau_wall.py
-    python examples/49_tau_wall.py --first-principles
+    python scripts/2026_muon_transport/49_tau_wall.py
+    python scripts/2026_muon_transport/49_tau_wall.py --first-principles
 """
 
 import argparse

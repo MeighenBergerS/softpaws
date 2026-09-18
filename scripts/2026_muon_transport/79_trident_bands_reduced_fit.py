@@ -13,8 +13,8 @@ the 6-degree cut need not cost every band the same.
 
 Usage
 -----
-    python examples/79_trident_bands_reduced_fit.py
-    python examples/79_trident_bands_reduced_fit.py --sigma 0.05 --steps 2000
+    python scripts/2026_muon_transport/79_trident_bands_reduced_fit.py
+    python scripts/2026_muon_transport/79_trident_bands_reduced_fit.py --sigma 0.05 --steps 2000
 """
 
 import argparse

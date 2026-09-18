@@ -48,8 +48,8 @@ as well and be easier to see, so the forecast is conservative.
 
 Usage
 -----
-    python examples/59_bsm_loss_forecast.py
-    python examples/59_bsm_loss_forecast.py --proxy-sigma 0.4
+    python scripts/2026_muon_transport/59_bsm_loss_forecast.py
+    python scripts/2026_muon_transport/59_bsm_loss_forecast.py --proxy-sigma 0.4
 """
 
 import argparse

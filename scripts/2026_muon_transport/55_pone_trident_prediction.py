@@ -48,8 +48,8 @@ areas, the same residual ARCA shows.
 
 Usage
 -----
-    python examples/55_pone_trident_prediction.py
-    python examples/55_pone_trident_prediction.py --with-regeneration
+    python scripts/2026_muon_transport/55_pone_trident_prediction.py
+    python scripts/2026_muon_transport/55_pone_trident_prediction.py --with-regeneration
 """
 
 import argparse

@@ -65,9 +65,9 @@ the figure can be redrawn without resampling.
 
 Usage
 -----
-    python examples/33_two_detector_posterior_corner.py
-    python examples/33_two_detector_posterior_corner.py --steps 6000 --sigma 0.10
-    python examples/33_two_detector_posterior_corner.py --check-truncation
+    python scripts/2026_muon_transport/33_two_detector_posterior_corner.py
+    python scripts/2026_muon_transport/33_two_detector_posterior_corner.py --steps 6000 --sigma 0.10
+    python scripts/2026_muon_transport/33_two_detector_posterior_corner.py --check-truncation
 """
 
 import argparse

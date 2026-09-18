@@ -49,9 +49,9 @@ curve.
 
 Usage
 -----
-    python examples/46_declination_resolved_reach.py
-    python examples/46_declination_resolved_reach.py --min-modules 4
-    python examples/46_declination_resolved_reach.py --with-tau
+    python scripts/2026_muon_transport/46_declination_resolved_reach.py
+    python scripts/2026_muon_transport/46_declination_resolved_reach.py --min-modules 4
+    python scripts/2026_muon_transport/46_declination_resolved_reach.py --with-tau
 """
 
 import argparse

@@ -45,9 +45,9 @@ The muon-level ratio is density invariant, so figure (a) is computed in water
 
 Usage
 -----
-    python examples/48_fluctuation_cost.py
-    python examples/48_fluctuation_cost.py --threshold-gev 1e3
-    python examples/48_fluctuation_cost.py --first-principles
+    python scripts/2026_muon_transport/48_fluctuation_cost.py
+    python scripts/2026_muon_transport/48_fluctuation_cost.py --threshold-gev 1e3
+    python scripts/2026_muon_transport/48_fluctuation_cost.py --first-principles
 """
 
 import argparse

@@ -65,9 +65,9 @@ not exceed one.
 
 Usage
 -----
-    python examples/30_arca_effective_area.py
-    python examples/30_arca_effective_area.py --threshold 1e4
-    python examples/30_arca_effective_area.py --depth-km 3.2
+    python scripts/2026_muon_transport/30_arca_effective_area.py
+    python scripts/2026_muon_transport/30_arca_effective_area.py --threshold 1e4
+    python scripts/2026_muon_transport/30_arca_effective_area.py --depth-km 3.2
 """
 
 import argparse

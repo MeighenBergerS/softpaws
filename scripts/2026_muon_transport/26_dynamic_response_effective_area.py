@@ -36,8 +36,9 @@ tuned for.
 
 Usage
 -----
-    python examples/26_dynamic_response_effective_area.py
-    python examples/26_dynamic_response_effective_area.py --data-dir /path/to/dataverse_files
+    python scripts/2026_muon_transport/26_dynamic_response_effective_area.py
+    python scripts/2026_muon_transport/26_dynamic_response_effective_area.py \
+        --data-dir /path/to/dataverse_files
 """
 
 import argparse

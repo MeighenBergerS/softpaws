@@ -49,8 +49,8 @@ assumption's role explicit.
 
 Usage
 -----
-    python examples/68_flux_agnostic_event_energy.py
-    python examples/68_flux_agnostic_event_energy.py --sigma-dir 3.0
+    python scripts/2026_muon_transport/68_flux_agnostic_event_energy.py
+    python scripts/2026_muon_transport/68_flux_agnostic_event_energy.py --sigma-dir 3.0
 """
 
 import argparse

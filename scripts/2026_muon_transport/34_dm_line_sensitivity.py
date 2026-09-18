@@ -97,9 +97,9 @@ largest astrophysical error on the vertical scale and is not shown.
 
 Usage
 -----
-    python examples/34_dm_line_sensitivity.py
-    python examples/34_dm_line_sensitivity.py --livetime-yr 15
-    python examples/34_dm_line_sensitivity.py --no-electroweak
+    python scripts/2026_muon_transport/34_dm_line_sensitivity.py
+    python scripts/2026_muon_transport/34_dm_line_sensitivity.py --livetime-yr 15
+    python scripts/2026_muon_transport/34_dm_line_sensitivity.py --no-electroweak
 """
 
 import argparse

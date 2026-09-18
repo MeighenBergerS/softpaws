@@ -40,8 +40,8 @@ reinterprets a single event.
 
 Usage
 -----
-    python examples/67_loss_model_energy_reconstruction.py
-    python examples/67_loss_model_energy_reconstruction.py --mu-pev 220
+    python scripts/2026_muon_transport/67_loss_model_energy_reconstruction.py
+    python scripts/2026_muon_transport/67_loss_model_energy_reconstruction.py --mu-pev 220
 """
 
 import argparse

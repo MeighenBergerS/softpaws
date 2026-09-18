@@ -73,11 +73,11 @@ and ``mpmath``.
 
 Usage
 -----
-    python examples/37_moment_convergence.py
-    python examples/37_moment_convergence.py --energy-gev 1e8 --ell-km 5
-    python examples/37_moment_convergence.py --n-moments 2 3 4 8
-    python examples/37_moment_convergence.py --exact-family two
-    python examples/37_moment_convergence.py --out-dir /path/to/figures
+    python scripts/2026_muon_transport/37_moment_convergence.py
+    python scripts/2026_muon_transport/37_moment_convergence.py --energy-gev 1e8 --ell-km 5
+    python scripts/2026_muon_transport/37_moment_convergence.py --n-moments 2 3 4 8
+    python scripts/2026_muon_transport/37_moment_convergence.py --exact-family two
+    python scripts/2026_muon_transport/37_moment_convergence.py --out-dir /path/to/figures
 
 Writes two figures. ``37_moment_convergence`` is the three-panel convergence
 study above. ``37_exponent_vs_proposal`` is the standalone square figure that

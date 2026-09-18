@@ -39,8 +39,8 @@ neither fake nor hide them.
 
 Usage
 -----
-    python examples/69_loss_model_error_budget.py
-    python examples/69_loss_model_error_budget.py --rebuild
+    python scripts/2026_muon_transport/69_loss_model_error_budget.py
+    python scripts/2026_muon_transport/69_loss_model_error_budget.py --rebuild
 """
 
 import argparse

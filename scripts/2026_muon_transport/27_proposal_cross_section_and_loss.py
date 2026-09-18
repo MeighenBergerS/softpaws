@@ -48,9 +48,10 @@ what stays local here is only the auditing -- the Monte Carlo, the numerical
 
 Usage
 -----
-    python examples/27_proposal_cross_section_and_loss.py
-    python examples/27_proposal_cross_section_and_loss.py --energy-gev 1e8 --ell-km 3
-    python examples/27_proposal_cross_section_and_loss.py --n-muons 20000
+    python scripts/2026_muon_transport/27_proposal_cross_section_and_loss.py
+    python scripts/2026_muon_transport/27_proposal_cross_section_and_loss.py \
+        --energy-gev 1e8 --ell-km 3
+    python scripts/2026_muon_transport/27_proposal_cross_section_and_loss.py --n-muons 20000
 """
 
 import argparse

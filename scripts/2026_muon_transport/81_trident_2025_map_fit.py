@@ -13,8 +13,8 @@ cell selections, and the residual map of the full fit is drawn.
 
 Usage
 -----
-    python examples/81_trident_2025_map_fit.py
-    python examples/81_trident_2025_map_fit.py --sigma-dex 0.043
+    python scripts/2026_muon_transport/81_trident_2025_map_fit.py
+    python scripts/2026_muon_transport/81_trident_2025_map_fit.py --sigma-dex 0.043
 """
 
 import argparse

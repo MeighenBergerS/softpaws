@@ -18,8 +18,8 @@ curves are extrapolation.
 
 Usage
 -----
-    python examples/73_four_detector_aeff_fit.py
-    python examples/73_four_detector_aeff_fit.py --steps 4000
+    python scripts/2026_muon_transport/73_four_detector_aeff_fit.py
+    python scripts/2026_muon_transport/73_four_detector_aeff_fit.py --steps 4000
 """
 
 import argparse

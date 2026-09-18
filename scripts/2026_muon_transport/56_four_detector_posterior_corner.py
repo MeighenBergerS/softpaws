@@ -40,8 +40,8 @@ end of a curve.
 
 Usage
 -----
-    python examples/56_four_detector_posterior_corner.py
-    python examples/56_four_detector_posterior_corner.py --steps 6000
+    python scripts/2026_muon_transport/56_four_detector_posterior_corner.py
+    python scripts/2026_muon_transport/56_four_detector_posterior_corner.py --steps 6000
 """
 
 import argparse

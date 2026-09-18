@@ -14,7 +14,7 @@ record.
 
 Usage
 -----
-    python examples/83_four_detector_aeff_reduced.py
+    python scripts/2026_muon_transport/83_four_detector_aeff_reduced.py
 """
 
 import argparse

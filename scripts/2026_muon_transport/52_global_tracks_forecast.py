@@ -28,8 +28,8 @@ with muons crossing between clusters not counted.
 
 Usage
 -----
-    python examples/52_global_tracks_forecast.py
-    python examples/52_global_tracks_forecast.py --rebuild-responses
+    python scripts/2026_muon_transport/52_global_tracks_forecast.py
+    python scripts/2026_muon_transport/52_global_tracks_forecast.py --rebuild-responses
 """
 
 import argparse

@@ -70,8 +70,8 @@ carried first by ``Upsilon`` and then by the continuum Drell-Yan.
 
 Usage
 -----
-    python examples/66_millicharge_faint_hits.py
-    python examples/66_millicharge_faint_hits.py --p-hit 0.5 --n-hits 8
+    python scripts/future_bsm/66_millicharge_faint_hits.py
+    python scripts/future_bsm/66_millicharge_faint_hits.py --p-hit 0.5 --n-hits 8
 """
 
 import argparse

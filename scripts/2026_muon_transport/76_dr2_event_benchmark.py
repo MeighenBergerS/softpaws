@@ -29,8 +29,8 @@ parameters.
 
 Usage
 -----
-    python examples/76_dr2_event_benchmark.py
-    python examples/76_dr2_event_benchmark.py --rebuild-cache
+    python scripts/2026_muon_transport/76_dr2_event_benchmark.py
+    python scripts/2026_muon_transport/76_dr2_event_benchmark.py --rebuild-cache
 """
 
 import argparse

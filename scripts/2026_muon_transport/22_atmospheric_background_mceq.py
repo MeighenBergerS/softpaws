@@ -102,9 +102,10 @@ Caveats
 
 Usage
 -----
-    python examples/22_atmospheric_background_mceq.py
-    python examples/22_atmospheric_background_mceq.py --recompute-table
-    python examples/22_atmospheric_background_mceq.py --data-dir /path/to/dataverse_files
+    python scripts/2026_muon_transport/22_atmospheric_background_mceq.py
+    python scripts/2026_muon_transport/22_atmospheric_background_mceq.py --recompute-table
+    python scripts/2026_muon_transport/22_atmospheric_background_mceq.py \
+        --data-dir /path/to/dataverse_files
 
 Requires the optional MCEq dependency (``pip install -e ".[atm]"``), but only
 when the flux table has to be built.

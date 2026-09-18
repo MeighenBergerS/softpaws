@@ -92,6 +92,74 @@ def test_band_average_is_the_mean_of_its_directions():
     np.testing.assert_allclose(banded, per_direction.reshape(1, 2, 2).mean(axis=2))
 
 
+def test_sky_average_is_the_weighted_mean_of_its_directions():
+    """The sky average is the solid-angle mean of the directional area."""
+    from softpaws.transport.earth import zenith_grid
+
+    log10_e = np.array([5.0, 7.0])
+    theta_deg, weights = zenith_grid(6, (-1.0, 0.0))
+    per_direction = dec.directional_effective_area_cm2(
+        ICECUBE, np.cos(np.deg2rad(theta_deg)), 1.0e3, log10_e=log10_e
+    )
+    averaged = dec.sky_averaged_effective_area_cm2(
+        ICECUBE, 1.0e3, cos_range=(-1.0, 0.0), n_zenith=6, log10_e=log10_e
+    )
+    np.testing.assert_allclose(averaged, per_direction @ weights, rtol=1e-12)
+    assert np.all(averaged > per_direction.min(axis=1))
+    assert np.all(averaged < per_direction.max(axis=1))
+
+
+def test_fit_published_reach_matches_the_manual_fit():
+    """The wrapper is the published curve, its sky, and the reach scan."""
+    from softpaws.response.site_models import published_effective_area_cm2
+    from softpaws.transport.earth import zenith_grid
+
+    log10_e = np.arange(4.0, 8.01, 0.25)
+    published, cos_range = published_effective_area_cm2(ARCA230, log10_e)
+    theta_deg, weights = zenith_grid(8, cos_range)
+    band = (log10_e >= 5.0) & (log10_e <= 7.5)
+    want_reach, residual, _ = dec.fit_light_reach(
+        ARCA230, np.cos(np.deg2rad(theta_deg)), weights, published[band], 1.0e3,
+        log10_e=log10_e[band],
+    )
+    reach_km, residual_dex = dec.fit_published_reach(ARCA230, 1.0e3)
+    assert reach_km == want_reach
+    assert residual_dex == pytest.approx(np.min(residual))
+
+
+def test_point_source_limit_is_the_swept_response():
+    """The limit contracts the directional area with the daily sweep."""
+    from softpaws.fluxes import SHIPPED_TABLE, AtmosphericFlux, load_mceq_table
+    from softpaws.response.sensitivity import (
+        atmospheric_background_density,
+        optimized_window_sensitivity,
+        power_law_sensitivity,
+    )
+
+    log10_e = np.arange(4.0, 8.01, 0.5)
+    dec_deg = np.array([-20.0, 30.0])
+    livetime_s = 3.0e8
+    cos_theta, weights = dec.zenith_band_weights(ARCA230.latitude_deg, dec_deg, n_cos_theta=20)
+    per_direction = dec.directional_effective_area_cm2(ARCA230, cos_theta, 1.0e3, log10_e=log10_e)
+    swept = per_direction @ weights.T
+
+    free = dec.point_source_limit(
+        ARCA230, dec_deg, 1.0e3, livetime_s, log10_e=log10_e, n_cos_theta=20
+    )
+    np.testing.assert_allclose(free, power_law_sensitivity(swept, livetime_s, 2.0, log10_e))
+
+    flux = AtmosphericFlux(load_mceq_table(SHIPPED_TABLE))
+    density = atmospheric_background_density(
+        flux, per_direction, cos_theta, weights, livetime_s, log10_e, 1.0
+    )
+    want, _ = optimized_window_sensitivity(swept, density, livetime_s, 2.0, log10_e)
+    limited = dec.point_source_limit(
+        ARCA230, dec_deg, 1.0e3, livetime_s, background=flux, log10_e=log10_e, n_cos_theta=20
+    )
+    np.testing.assert_allclose(limited, want)
+    assert np.all(limited > free)
+
+
 def test_band_statistics():
     """A pure power-law ratio has that slope as its tilt and no scatter."""
     log10_e = np.linspace(4.0, 8.0, 21)
