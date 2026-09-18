@@ -10,6 +10,16 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
   fit container in `response/site_models.py`, so that class must be renamed or
   made private first.
 
+## 2026-09-18: Added workflow-issues (I1-I4)
+
+The two Markdown issue templates are replaced by four issue forms (bug,
+wrong or surprising result, feature, documentation) with required fields,
+and blank issues are off. The 15 labels live in `.github/labels.yml`,
+grouped as type, contributors, status, resolution and PR, and
+`crazy-max/ghaction-github-labeler@v6` syncs them on changes to main. There
+are no area labels, because the API refactor will move module boundaries.
+Approved by the user.
+
 ## 2026-09-18: Required PR template (PR2, PR7)
 
 The template has three required sections (What and why, How to check it,

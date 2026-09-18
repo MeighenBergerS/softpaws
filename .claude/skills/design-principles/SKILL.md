@@ -20,6 +20,7 @@ names, without reading long docs. Robust for ~90% of users, not for every edge.
 | `workflow-commits` | splitting and writing commits | C |
 | `workflow-pull-requests` | scoping and describing PRs | PR |
 | `workflow-ai-disclosure` | no AI authorship, one project-level note | AI |
+| `workflow-issues` | issue forms, labels, triage | I |
 
 Rules describe the target state. Existing code that breaks one is migration
 debt: fix it when you touch it, don't warn about it otherwise.

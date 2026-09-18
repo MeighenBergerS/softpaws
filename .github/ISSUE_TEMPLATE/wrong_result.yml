@@ -1,0 +1,39 @@
+name: Wrong or surprising result
+description: A number disagrees with the paper, a published curve, or what you expected.
+labels: [physics, needs triage]
+body:
+  - type: input
+    id: quantity
+    attributes:
+      label: Which quantity?
+      placeholder: Effective area of ARCA230 at 1 PeV, upgoing
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: How you computed it
+      description: The code or call, with every input.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: got
+    attributes:
+      label: What you got
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and where it comes from
+      description: A paper, table, figure or published curve, with a link if you have one.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: softpaws, Python and operating system.
+    validations:
+      required: true

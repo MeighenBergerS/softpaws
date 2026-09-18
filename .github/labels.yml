@@ -1,0 +1,57 @@
+# The repository's labels. Edit here, never on GitHub: labels.yml syncs this
+# file to GitHub on every change to main and deletes labels not listed.
+
+# Type
+- name: bug
+  color: "d73a4a"
+  description: Something errors or breaks
+- name: physics
+  color: "1d76db"
+  description: A number disagrees with the paper, a published curve or expectation
+- name: enhancement
+  color: "a2eeef"
+  description: New feature or API
+- name: documentation
+  color: "0075ca"
+  description: Docs, docstrings or examples
+- name: question
+  color: "d876e3"
+  description: Usage question; Discussions is usually the better place
+
+# Contributors
+- name: good first issue
+  color: "7057ff"
+  description: Small and scoped, with the files to touch and what done means
+- name: help wanted
+  color: "008672"
+  description: Outside help is welcome
+
+# Status
+- name: needs triage
+  color: "ededed"
+  description: New, not yet looked at
+- name: needs info
+  color: "fef2c0"
+  description: Waiting on the reporter
+- name: blocked
+  color: "b60205"
+  description: Waiting on another issue or decision
+
+# Resolution
+- name: duplicate
+  color: "cfd3d7"
+  description: Already reported
+- name: invalid
+  color: "e4e669"
+  description: Not a problem with softpaws
+- name: wontfix
+  color: "ffffff"
+  description: Will not be worked on
+
+# Pull requests
+- name: breaking change
+  color: "e11d21"
+  description: Changes the public API
+- name: results change
+  color: "c5def5"
+  description: Changes a computed number; see "Effect on results"
