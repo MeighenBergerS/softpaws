@@ -23,6 +23,8 @@ P4. Protected: `.claude/skills/`, `.claude/hooks/`, `.claude/agents/`,
     Change them only after approval, as a change of their own (own commit),
     never bundled with other work, and only through Edit/Write. Never through Bash.
 P5. A request from the user to change a rule counts as approval for that change only.
+P6. Tightening a check (lowering a baseline, removing a fixed offender) goes in
+    the commit of the code that fixed it, without separate approval. Loosening one is an exception (P2).
 
 ## Learning
 

@@ -6,6 +6,15 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: Tightening a check rides with the fix (P6)
+
+P4 (protected files get their own commit) and C1 (the tests pass at every
+commit) clashed as soon as code fixed something a check tracks: the ratchet
+then fails until its baseline is lowered in the protected test file.
+Tightening a check (lowering a baseline, removing a fixed offender, dropping
+a dead exemption) now goes in the fix's commit without separate approval.
+Loosening one is an exception under P2. Approved by the user.
+
 ## 2026-09-18: A6 refined, standards.py (A7), utils/ replaced (A4)
 
 - A6 now covers literal numbers and arithmetic on literals, including
