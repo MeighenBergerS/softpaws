@@ -25,6 +25,8 @@ from softpaws.data import (
 from softpaws.utils.constants import SECONDS_PER_YEAR
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 LOG10_E = np.linspace(3.0, 8.0, 26)  # neutrino energy [log10 GeV]
 
 
@@ -40,15 +42,18 @@ def main():
     print(f"IC86 effective-area table: {table.values.shape[0]} energies "
           f"x {table.values.shape[1]} declination bands")
 
-    fig, ax = plt.subplots()
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
     for hemisphere in ("upgoing", "downgoing"):
         aeff, _ = livetime_weighted_effective_area(None, LOG10_E, hemisphere)
-        ax.plot(LOG10_E, aeff, label=hemisphere)
+        ax.plot(LOG10_E, aeff, label=f"IceCube DR2, {hemisphere}")
     ax.set(yscale="log", xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$",
-           ylabel=r"$A_\mathrm{eff}$ [cm$^2$]", title="IceCube DR2, livetime weighted")
+           ylabel=r"Livetime-weighted $A_\mathrm{eff}$ [cm$^2$]")
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "01_load_the_release.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"01_load_the_release{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

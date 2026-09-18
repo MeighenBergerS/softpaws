@@ -27,9 +27,12 @@ from softpaws.response import fit_published_reach, point_source_limit
 from softpaws.utils.constants import SECONDS_PER_YEAR
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 THRESHOLD_GEV = 1.0e3  # muon selection threshold
 LIVETIME_S = 14.0 * SECONDS_PER_YEAR  # the exposure of IceCube's published curve
 SIN_DEC = np.linspace(-1.0, 1.0, 41)  # uniform in sin(dec) is uniform on the sky
+COLORS = {"IceCube": "k", "ARCA230": "C0", "TRIDENT": "C1", "P-ONE": "C2"}
 
 
 def main():
@@ -37,8 +40,9 @@ def main():
     dec_deg = np.rad2deg(np.arcsin(SIN_DEC))
 
     print("E^2 phi at 100 TeV excluded at 90% in 14 years, E^-2 source [GeV cm^-2 s^-1]:")
-    fig, ax = plt.subplots()
-    for site in (ICECUBE, ARCA230, PONE, TRIDENT):
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    for site in (ICECUBE, ARCA230, TRIDENT, PONE):
         try:
             reach_km, _ = fit_published_reach(site, THRESHOLD_GEV)
         except FileNotFoundError:
@@ -49,15 +53,17 @@ def main():
         best = np.argmin(limit)
         print(f"{site.name:>8} at {site.latitude_deg:+5.1f} deg latitude: best {limit[best]:.2g} "
               f"at dec {dec_deg[best]:+3.0f} deg, worst {limit.max():.2g}")
-        ax.plot(SIN_DEC, limit, label=site.name)
+        ax.plot(SIN_DEC, limit, color=COLORS[site.name], label=site.name)
 
     published_sin_dec, published = icecube_point_source_sensitivity()
     ax.plot(published_sin_dec, published, "k--", label="IceCube, published")
-    ax.set(yscale="log", xlabel=r"$\sin\delta$",
+    ax.set(yscale="log", xlim=(-1.0, 1.0), xlabel=r"$\sin\delta$",
            ylabel=r"$E^2\phi$ at 100 TeV [GeV cm$^{-2}$ s$^{-1}$]")
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "12_point_source_signal.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"12_point_source_signal{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

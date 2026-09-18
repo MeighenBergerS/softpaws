@@ -20,6 +20,8 @@ from softpaws.response import directional_effective_area_cm2
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z, decay_length_km
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 THRESHOLD_GEV = 1.0e3  # muon selection threshold
 LOG10_E = np.linspace(4.0, 8.0, 17)  # neutrino energy [log10 GeV]
 COS_THETA = np.array([-0.99, -0.7, -0.4, -0.1])  # -1 is the nadir
@@ -38,16 +40,19 @@ def main():
     )
     share = 1.0 - muon_only / with_tau
 
-    fig, ax = plt.subplots()
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
     for j, cos_theta in enumerate(COS_THETA):
         print(f"cos(theta) = {cos_theta:+.2f}: tau share {share[8, j]:.0%} at 1 PeV, "
               f"{share[-1, j]:.0%} at 100 PeV")
-        ax.plot(LOG10_E, share[:, j], label=rf"$\cos\theta = {cos_theta:+.2f}$")
+        ax.plot(LOG10_E, share[:, j], label=rf"$\cos\theta_z = {cos_theta:+.2f}$")
     ax.set(xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$", ylabel="Tau share of the track rate",
-           ylim=(0.0, 1.0))
+           xlim=(LOG10_E[0], LOG10_E[-1]), ylim=(0.0, 1.0))
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "08_tau_induced_tracks.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"08_tau_induced_tracks{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

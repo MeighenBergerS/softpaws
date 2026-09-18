@@ -29,17 +29,21 @@ from softpaws.response import (
 from softpaws.utils.constants import SECONDS_PER_YEAR
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 THRESHOLD_GEV = 1.0e3  # muon selection threshold
 LIVETIME_S = 10.0 * SECONDS_PER_YEAR
 LOG10_E = np.arange(4.0, 8.01, 0.25)  # neutrino energy [log10 GeV]
 PEV = 8  # index of 1 PeV in LOG10_E
 SKY_SR = 4.0 * np.pi
+COLORS = {"IceCube": "k", "ARCA230": "C0", "TRIDENT": "C1", "P-ONE": "C2"}
 
 
 def main():
     print("Flux needed in 10 years, per flavour, no background [GeV cm^-2 s^-1 sr^-1]:")
-    fig, ax = plt.subplots()
-    for site in (ICECUBE, ARCA230, PONE, TRIDENT):
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    for site in (ICECUBE, ARCA230, TRIDENT, PONE):
         try:
             reach_km, _ = fit_published_reach(site, THRESHOLD_GEV, log10_e=LOG10_E)
         except FileNotFoundError:
@@ -53,16 +57,21 @@ def main():
         power_law = power_law_sensitivity(aeff, LIVETIME_S, 2.0, LOG10_E, solid_angle_sr=SKY_SR)
         print(f"{site.name:>8}: one event at 1 PeV {one_event[PEV]:.2g}, "
               f"line at 1 PeV {line:.2g}, E^-2 at 100 TeV {float(power_law):.2g}")
-        ax.plot(LOG10_E, one_event, label=site.name)
+        ax.plot(LOG10_E, one_event, color=COLORS[site.name], label=site.name)
 
     energy = 10.0**LOG10_E
-    ax.plot(LOG10_E, energy**2 * ICECUBE_TRACKS_2022.flux(energy), "k--", label="Measured flux")
-    ax.set(yscale="log", xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$",
-           ylabel=r"$E^2\phi$ [GeV cm$^{-2}$ s$^{-1}$ sr$^{-1}$]",
-           title="One event per decade, 10 years")
+    ax.plot(LOG10_E, energy**2 * ICECUBE_TRACKS_2022.flux(energy), "--", color="0.5",
+            label="Measured flux")
+    ax.text(0.95, 0.95, "One event per decade\nin 10 years", transform=ax.transAxes,
+            ha="right", va="top")
+    ax.set(yscale="log", xlim=(LOG10_E[0], LOG10_E[-1]),
+           xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$",
+           ylabel=r"$E^2\phi$ [GeV cm$^{-2}$ s$^{-1}$ sr$^{-1}$]")
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "11_diffuse_signal.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"11_diffuse_signal{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

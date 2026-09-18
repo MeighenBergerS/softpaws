@@ -22,6 +22,8 @@ from softpaws.response import sky_averaged_effective_area_cm2
 from softpaws.utils.constants import SECONDS_PER_YEAR
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 THRESHOLD_GEV = 1.0e3  # muon selection threshold
 LOG10_E = np.linspace(3.0, 8.0, 41)  # neutrino energy [log10 GeV]
 LIVETIME_S = 10.0 * SECONDS_PER_YEAR
@@ -47,16 +49,20 @@ def main():
               f"{np.sum((atmospheric * exposure)[above]):9.1f} atmospheric, "
               f"{np.sum((astrophysical * exposure)[above]):7.1f} astrophysical")
 
-    fig, ax = plt.subplots()
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    ax.plot(LOG10_E, energy**2 * astrophysical, color="k", lw=1.4, label="Astrophysical")
     for dec_deg in (5.0, 30.0, 60.0, 85.0):
         values = np.ravel(flux(energy, np.full_like(energy, dec_deg)))
         ax.plot(LOG10_E, energy**2 * values, label=rf"Atmospheric, $\delta = {dec_deg:.0f}^\circ$")
-    ax.plot(LOG10_E, energy**2 * astrophysical, "k--", label="Astrophysical")
-    ax.set(yscale="log", ylim=(1e-10, 1e-3), xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$",
+    ax.set(yscale="log", xlim=(LOG10_E[0], LOG10_E[-1]), ylim=(1e-10, 1e-3),
+           xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$",
            ylabel=r"$E^2\phi$ [GeV cm$^{-2}$ s$^{-1}$ sr$^{-1}$]")
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "10_atmospheric_background.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"10_atmospheric_background{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

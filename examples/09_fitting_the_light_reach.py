@@ -22,6 +22,8 @@ from softpaws.detectors import ICECUBE
 from softpaws.response import fit_published_reach, sky_averaged_effective_area_cm2
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 THRESHOLD_GEV = 1.0e3  # muon selection threshold
 LOG10_E = np.linspace(4.0, 8.0, 17)  # neutrino energy [log10 GeV]
 UPGOING = (-1.0, 0.0)  # the sky the published table covers
@@ -41,17 +43,20 @@ def main():
         ),
     }
 
-    fig, ax = plt.subplots()
-    ax.plot(LOG10_E, published, "k--", label="IceCube, published")
-    for name, model in models.items():
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    ax.plot(LOG10_E, published, color="k", lw=1.4, label="IceCube, published")
+    for (name, model), color in zip(models.items(), ("C1", "C0")):
         ratio = (published / model)[4:15]  # 10^5 to 10^7.5 GeV
         print(f"{name:>10}: published / model = {np.exp(np.mean(np.log(ratio))):.2f}")
-        ax.plot(LOG10_E, model, label=name)
+        ax.plot(LOG10_E, model, "--", color=color, label=f"Model, {name.lower()}")
     ax.set(yscale="log", xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$",
-           ylabel=r"$A_\mathrm{eff}$ [cm$^2$]", title="IceCube, upgoing")
+           ylabel=r"Upgoing $A_\mathrm{eff}$ [cm$^2$]")
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "09_fitting_the_light_reach.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"09_fitting_the_light_reach{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

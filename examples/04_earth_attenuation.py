@@ -17,6 +17,8 @@ from softpaws.transport import bgr18_cross_section, earth
 from softpaws.transport.attenuation import regenerated_transmission, survival_probability
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 COS_THETA = np.linspace(-1.0, 0.0, 121)  # upgoing directions
 LOG10_E = np.linspace(3.0, 9.0, 121)  # neutrino energy [log10 GeV]
 
@@ -41,12 +43,16 @@ def main():
     survival = np.array([np.ravel(survival_probability(energies, c, cross_section=cross_section))
                          for c in columns])
 
-    fig, ax = plt.subplots()
-    mesh = ax.pcolormesh(LOG10_E, COS_THETA, survival, vmin=0.0, vmax=1.0, cmap="magma")
-    fig.colorbar(mesh, ax=ax, label="Survival probability")
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    mesh = ax.pcolormesh(LOG10_E, COS_THETA, survival, vmin=0.0, vmax=1.0, cmap="magma",
+                         rasterized=True)
     ax.set(xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$", ylabel=r"$\cos\theta_z$")
+    ax.set_box_aspect(1)
+    fig.colorbar(mesh, ax=ax, label="Survival probability", fraction=0.046, pad=0.04)
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "04_earth_attenuation.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"04_earth_attenuation{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

@@ -31,6 +31,8 @@ from softpaws.transport.loss_distribution import (
 )
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 THRESHOLD_GEV = 1.0e3  # the range runs down to this muon energy
 ENERGY_GEV = 1.0e6  # muon energy of the loss law
 DISTANCE_KM = 1.0  # distance the loss law is taken after [km of water]
@@ -55,14 +57,17 @@ def main():
     for name, density in densities.items():
         print(f"  {name:>13}: {float(survival_from_density(1.5, W, density)):.1e}")
 
-    fig, ax = plt.subplots()
-    for name, density in densities.items():
-        ax.plot(W, np.clip(density, 1e-12, None), label=name)
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    for (name, density), style in zip(densities.items(), ("-", "--", ":")):
+        ax.plot(W, np.clip(density, 1e-12, None), style, label=name)
     ax.set(yscale="log", xlim=(0.0, 5.0), ylim=(1e-4, 5.0),
-           xlabel=r"Log loss $w = \ln(\varepsilon/E)$", ylabel=r"$P(w)$")
+           xlabel=r"Log loss $w = \ln(\varepsilon/E)$", ylabel=r"Probability density $P(w)$")
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "03_range_and_loss_law.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"03_range_and_loss_law{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

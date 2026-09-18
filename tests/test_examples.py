@@ -18,7 +18,7 @@ from softpaws.data import dr2_dir
 EXAMPLES = sorted((pathlib.Path(__file__).parents[1] / "examples").glob("[0-9][0-9]_*.py"))
 
 #: Tutorials that cannot run without the IceTracks-DR2 release on disk.
-NEEDS_DR2 = {"01_load_the_release.py", "06_declination_and_point_sources.py",
+NEEDS_DR2 = {"01_load_the_release.py", "06_declination_bands.py",
              "09_fitting_the_light_reach.py"}
 
 

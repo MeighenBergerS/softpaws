@@ -20,15 +20,19 @@ from softpaws.detectors import ARCA230, ICECUBE, PONE, TRIDENT
 from softpaws.response import sky_averaged_effective_area_cm2
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 LOG10_E = np.linspace(4.0, 8.0, 17)  # neutrino energy [log10 GeV]
 THRESHOLD_GEV = 1.0e3  # muon energy a selection needs
+COLORS = {"IceCube": "k", "ARCA230": "C0", "TRIDENT": "C1", "P-ONE": "C2"}
 
 
 def main():
-    fig, ax = plt.subplots()
-    for site in (ICECUBE, ARCA230, PONE, TRIDENT):
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    for site in (ICECUBE, ARCA230, TRIDENT, PONE):
         aeff = sky_averaged_effective_area_cm2(site, THRESHOLD_GEV, log10_e=LOG10_E)
-        ax.plot(LOG10_E, aeff, label=site.name)
+        ax.plot(LOG10_E, aeff, color=COLORS[site.name], label=site.name)
         print(f"{site.name:>8}: A_eff(1 PeV) = {np.interp(6.0, LOG10_E, aeff):.3g} cm^2")
 
     # IceCube publishes its upgoing effective area with the DR2 data release.
@@ -43,13 +47,15 @@ def main():
         ratio = (published / upgoing)[4:13]  # 10^5 to 10^7 GeV
         print(f"IceCube published / model: {ratio.min():.2f} to {ratio.max():.2f}")
         print("The table carries the selection's turn-on, which example 06 adds.")
-        ax.plot(LOG10_E, published, "k--", label="IceCube, published (upgoing)")
+        ax.plot(LOG10_E, published, "k--", label="IceCube, published upgoing")
 
     ax.set(yscale="log", xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$",
-           ylabel=r"$A_\mathrm{eff}$ [cm$^2$]")
+           ylabel=r"Sky-averaged $A_\mathrm{eff}$ [cm$^2$]")
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "05_effective_area.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"05_effective_area{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

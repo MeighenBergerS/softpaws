@@ -1,0 +1,8 @@
+# Overlay for beacom_conformal.mplstyle that needs no LaTeX install, used by
+# the examples. Matplotlib's own mathtext renders the labels, in Computer
+# Modern, so the figures keep the look of the LaTeX-rendered paper figures.
+# cmr10 has no < > { } | outside math mode, so put those inside $...$.
+text.usetex: False
+font.serif: cmr10, DejaVu Serif
+mathtext.fontset: cm
+axes.formatter.use_mathtext: True

@@ -29,6 +29,8 @@ from softpaws.fluxes import ICECUBE_BPL_2025, ICECUBE_TRACKS_2022
 from softpaws.transport import bgr18_cross_section
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 W = np.linspace(0.0, 24.0, 1601)  # logarithmic loss
 LOG10_ENU = np.linspace(7.0, 10.5, 141)  # neutrino energy [log10 GeV]
 PRIORS = {
@@ -49,7 +51,8 @@ def main():
     def measurement(log10_e_mu):
         return lognormal_measurement(log10_e_mu, event.muon_energy_gev, event.muon_energy_90_gev)
 
-    fig, ax = plt.subplots()
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
     for losses in ("exact", "gaussian"):  # the full loss law, and its Gaussian limit
         likelihood = energy_likelihood(potential_density(losses, W, n_x=120), W, energy,
                                        measurement)
@@ -59,13 +62,17 @@ def main():
             print(f"  {losses:>8} losses, {name:>16} prior: median {median:4.0f} PeV, "
                   f"90% in [{lo:.0f}, {hi:.0f}]")
             if losses == "exact":
-                ax.plot(LOG10_ENU, posterior, label=name)
+                label = r"$E^{-2}$" if name == "E^-2" else name
+                ax.plot(LOG10_ENU, posterior, label=f"{label} prior")
 
+    ax.text(0.95, 0.72, event.name, transform=ax.transAxes, ha="right", va="top")
     ax.set(xlabel=r"$\log_{10}(E_\nu/\mathrm{GeV})$", ylabel="Posterior density",
-           title=event.name)
-    ax.legend(title="Flux prior")
+           xlim=(LOG10_ENU[0], LOG10_ENU[-1]), ylim=(0.0, None))
+    ax.set_box_aspect(1)
+    ax.legend(loc="upper right")
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "07_single_event_energy.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"07_single_event_energy{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

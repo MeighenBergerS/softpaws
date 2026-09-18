@@ -19,6 +19,8 @@ from softpaws.transport import diffusion_coefficient, drift_coefficient, third_m
 from softpaws.transport.eigenvalue import phi_drift, phi_eigenvalue_three_moment, phi_fokker_planck
 
 OUT = Path(__file__).parent / "output"
+STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX
+         for name in ("beacom_conformal.mplstyle", "no_latex.mplstyle")]
 ENERGY_GEV = 1.0e6
 A = np.linspace(0.05, 6.0, 200)  # spectral index of the muon spectrum
 
@@ -34,14 +36,18 @@ def main():
     print(f"Phi(2) = {phi_eigenvalue_three_moment(2.0, b, d, t):.4f} = 2 b_mu - d_mu "
           f"= {2 * b - d:.4f}")
 
-    fig, ax = plt.subplots()
-    ax.plot(A, phi, label=r"$\Phi(A)$")
-    ax.plot(A, phi_drift(A, b), "--", label=r"$A\,b_\mu$")
-    ax.plot(A, phi_fokker_planck(A, b, d), ":", label=r"second order")
-    ax.set(xlabel="Spectral index $A$", ylabel=r"$\Phi$ [km$^{-1}$]", ylim=(0.0, 2.5))
+    plt.style.use(STYLE)
+    fig, ax = plt.subplots(figsize=(3.4, 3.4))
+    ax.plot(A, phi, color="k", label=r"$\Phi(A)$")
+    ax.plot(A, phi_drift(A, b), "--", label=r"Drift only, $A\,b_\mu$")
+    ax.plot(A, phi_fokker_planck(A, b, d), ":", label="Second order")
+    ax.set(xlabel="Spectral index $A$", ylabel=r"$\Phi$ [km$^{-1}$]", xlim=(0.0, 6.0),
+           ylim=(0.0, 2.5))
+    ax.set_box_aspect(1)
     ax.legend()
     OUT.mkdir(exist_ok=True)
-    fig.savefig(OUT / "02_transport_exponent.png", dpi=150)
+    for suffix in (".pdf", ".png"):
+        fig.savefig(OUT / f"02_transport_exponent{suffix}", dpi=300, bbox_inches="tight")
 
 
 if __name__ == "__main__":

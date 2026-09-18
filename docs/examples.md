@@ -3,8 +3,12 @@
 Twelve numbered examples in `examples/` work through the package from the
 transport up. Each is a short script that reads top to bottom: a docstring
 saying what it shows, a few named inputs, and one `main()` built from public
-library calls. Each prints the numbers it computes and writes one figure to
-`examples/output/`.
+library calls. Each prints the numbers it computes and writes its figure to
+`examples/output/` as PDF and PNG.
+
+The figures use the paper's style, `styles/beacom_conformal.mplstyle`, with
+the `styles/no_latex.mplstyle` overlay on top. The overlay renders every label
+with Matplotlib's own mathtext, so the examples run without a LaTeX install.
 
 Run one like this:
 
@@ -24,7 +28,7 @@ compared, edit the constants at the top of the script.
 | 03 | `range_and_loss_law` | The first-passage range against the mean-loss range, and why the loss tail is not Gaussian | — |
 | 04 | `earth_attenuation` | The PREM column against arrival direction, the survival it implies, and what regeneration adds back | — |
 | 05 | `effective_area` | Sky-averaged effective areas of four detectors from the instrumented footprint, against IceCube's published table | DR2 for the comparison |
-| 06 | `declination_and_point_sources` | The response band by band, with and without the light reach, and the flux a background-free search excludes | DR2 |
+| 06 | `declination_bands` | IceCube's published effective area against the model band by band, with and without the light reach | DR2 |
 | 07 | `single_event_energy` | The neutrino energy behind KM3-230213A, under three flux priors and two loss models | — |
 | 08 | `tau_induced_tracks` | What the tau channel contributes to the track rate, and where it takes over | — |
 | 09 | `fitting_the_light_reach` | Fitting the one instrument number that closes the gap left in example 05 | DR2 |
