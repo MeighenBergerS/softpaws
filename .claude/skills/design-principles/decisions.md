@@ -6,6 +6,30 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: No detector names outside data (N6); like things together (A5); one data module (A8)
+
+From the user's review of the public names:
+- N6: `icecube_`, `arca_`, `trident_`, `pone_` style names collapse into
+  `Detector`. Outside `data` the detector is an argument. The check counts
+  the 14 offenders outside `data`.
+- A5: like things go together. The instrument and its response go in
+  `Detector`, event data and single-event quantities in `events`, anything
+  held against published data in `comparison`, and loading in `data`.
+- A8: `data` loads every dataset, with its own loader only where a format
+  needs one. Every effective area loads into one shared structure.
+- The single-track energy stays out of `Detector` and goes in `events`. The
+  DR2 event benchmark and the flavour fit stay in `comparison`, and public
+  event data is handled by `events`.
+- `response/effective_area.py` is not moved to `_paper`. Building effective
+  areas is the package's core, so its site-specific variants collapse into
+  `Detector.effective_area`, after checking they agree numerically with
+  `response.declination`.
+- `data.loader` merges into the rest of `data`, and the two unused names
+  (`season_livetime_s`, `load_all_seasons`) are removed. The size of the
+  advanced layer waits until the structure is settled.
+
+Approved by the user.
+
 ## 2026-09-18: The design checks cover the top level, constants, standards and methods (L6, A1)
 
 `test_design_rules.py` now also reads the top-level `softpaws` namespace

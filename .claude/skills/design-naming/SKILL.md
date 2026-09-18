@@ -18,3 +18,7 @@ N4. No unit suffixes on public names or arguments. The code computes in GeV,
     (`radius=1.0 * km`) and divide to read a result out (`aeff / m**2`).
 N5. Field-standard abbreviations are fine (`aeff`, `psf`). Project jargon is
     not (`ladder`, `halo`, `ceiling`, `rung`).
+N6. Outside `data`, no public name carries a detector or dataset name: the
+    detector is an argument, or a `Detector`.
+    Do: `det.published_effective_area(energy)`.
+    Not: `icecube_upgoing()`, `pone_allsky_cm2()`, `ic_effective_area_regenerated()`.

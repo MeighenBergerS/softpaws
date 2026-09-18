@@ -76,6 +76,15 @@ LONG_SUMMARY = {
 #: Known N5 offenders. Rename or make private, then delete it here.
 JARGON_NAMES: set[str] = set()
 
+#: N6: a detector or dataset name as a word of a public name.
+SITE_WORD = re.compile(
+    r"(^|_)(icecube|ic|ic86|arca|arca21|arca230|trident|pone|gvd|gen2|km3net|hese|dr2)(_|$)"
+    r"|^km3_"
+)
+
+#: Known N6 offenders outside ``data``. Lower it as they collapse into ``Detector``.
+SITE_NAME_COUNT = 14
+
 
 def public_objects():
     """Every public function, class and method, keyed by where it is defined.
@@ -209,3 +218,13 @@ def test_no_jargon_in_public_names():
         if any(word in name.rsplit(".", 1)[1].lower() for word in JARGON)
     }
     check_ratchet(offenders, JARGON_NAMES)
+
+
+def test_no_detector_names_outside_data():
+    """N6: outside ``data``, the detector is an argument, never part of a name."""
+    offenders = [
+        name for name in public_objects()
+        if not name.startswith("softpaws.data.")
+        and SITE_WORD.search(name.rsplit(".", 1)[1].lower())
+    ]
+    check_count(len(offenders), SITE_NAME_COUNT)

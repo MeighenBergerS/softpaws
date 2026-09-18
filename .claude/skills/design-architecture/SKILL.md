@@ -16,7 +16,10 @@ A3. One source of truth. A quantity or helper is defined once and imported,
 A4. Dependencies flow one way: `constants`, `standards` -> `data`, `detectors`,
     `fluxes` -> `transport` -> `response` -> `comparison`. `Detector` sits on
     top of all of them, and nothing imports it.
-A5. Group modules by concept, never by paper section or example number.
+A5. Group like things together, by concept, never by paper section or example
+    number. The instrument and its response go in `Detector`; event data and
+    single-event quantities such as the energy go in `events`; anything held
+    against published data or results goes in `comparison`; loading goes in `data`.
 A6. Every named number that is a literal, or arithmetic on literals, lives in
     `src/softpaws/constants.py`. Three kinds stay put: values computed by
     package code, numbers that define a published record or table
@@ -25,3 +28,6 @@ A7. Current best-fit values ship in `src/softpaws/data/standards.json` with
     their source, and `softpaws.standards` exposes them. `make_standards()`
     rebuilds the file from a fit result, and `standards.use(path)` switches to
     a user's own. Every default that comes from a fit is read from here.
+A8. `data` loads every dataset. A dataset gets its own loader only if its
+    format needs one. Tables of one kind share one format: every effective
+    area loads into the same structure, whatever detector published it.
