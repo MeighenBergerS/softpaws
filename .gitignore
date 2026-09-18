@@ -103,3 +103,6 @@ scripts/*/cache/
 
 # Generated output of the paper and BSM scripts.
 scripts/*/output/
+
+# Repo Audit reports, state and tool venv (never tracked)
+.audit/

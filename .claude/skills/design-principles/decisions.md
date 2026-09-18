@@ -10,6 +10,17 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
   fit container in `response/site_models.py`, so that class must be renamed or
   made private first.
 
+## 2026-09-18: Added the Repo Audit (RA1-RA4)
+
+Every 14 days, a `SessionStart` hook (`repo_audit_due.py`, only on new
+sessions) tells Claude the audit is due. Claude explains it in 1-3 sentences
+and asks; a "no" snoozes it for 3 days. When approved, the audit runs
+`sp-repo-review` from its own venv in `.audit/`, then the read-only
+`repo-auditor` subagent checks fixed sources per area plus one open search.
+The report goes to the gitignored `.audit/`, and proposals follow
+design-governance. The trigger lives in `.claude/settings.local.json`, so it
+fires for the maintainer only. Approved by the user.
+
 ## 2026-09-18: Added workflow-issues (I1-I4)
 
 The two Markdown issue templates are replaced by four issue forms (bug,
