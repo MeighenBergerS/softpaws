@@ -6,6 +6,17 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: Standards ship as JSON and can be rebuilt (A7)
+
+The standards are the two instrument numbers per site from script 77 at
+σ = 5% (the run scripts 83-89 read): median and 68% range, with b = 1,
+λ = BGR18 and ε₀ fixed. TRIDENT comes from the 2022 bands in the same fit.
+They ship as `data/standards.json`, which `softpaws.standards` reads, so a
+plain pip install works. `make_standards(fit_result, out)` rebuilds the file
+from a fit result, and `standards.use(path)` or `SOFTPAWS_STANDARDS` switches
+to a user's own. The fit itself stays a separate step, because running it
+would make the paper's fit code public. Approved by the user.
+
 ## 2026-09-18: C5 checks what's staged as its own step; exception to C1 in 2f164e0
 
 `2f164e0` also carries the staged move of `utils/constants.py`, so that

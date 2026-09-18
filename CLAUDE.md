@@ -61,8 +61,10 @@ constants, standards  →  data/  +  detectors/  +  fluxes/  →  transport/  �
 - **`constants.py`**: every fixed number: the units (the code computes in
   GeV, cm, s and rad; users multiply by `km`, `PeV`, `deg`, ...), physical
   constants, calibrated parameters and defaults.
-- **`standards.py`**: the current best-fit values from the paper's fits, each
-  naming the script that produced it, so no user has to run a fit first.
+- **`standards.py`**: the current best-fit values, read from the shipped
+  `data/standards.json`, so no user has to run a fit first.
+  `make_standards()` rebuilds that file from a fit result, and
+  `standards.use(path)` switches to a user's own.
 
 - **`data/`** — loaders for the IceCube releases and for the published curves
   of the other detectors. The tabulated inputs that ship with the package (the

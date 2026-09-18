@@ -21,6 +21,7 @@ A6. Every named number that is a literal, or arithmetic on literals, lives in
     `src/softpaws/constants.py`. Three kinds stay put: values computed by
     package code, numbers that define a published record or table
     (`detectors/sites.py`, `detectors/optics.py`), and paper tuning (private `_paper/`).
-A7. Current best-fit values live in `src/softpaws/standards.py`, each naming
-    the script that produced it. Users never run a fit first, and every
-    default that comes from a fit is read from here.
+A7. Current best-fit values ship in `src/softpaws/data/standards.json` with
+    their source, and `softpaws.standards` exposes them. `make_standards()`
+    rebuilds the file from a fit result, and `standards.use(path)` switches to
+    a user's own. Every default that comes from a fit is read from here.
