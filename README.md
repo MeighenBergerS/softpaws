@@ -113,6 +113,12 @@ inputs your analysis relies on; the list is in the
 The entry is updated with the arXiv number and the journal reference once
 they exist.
 
+## Development with AI assistance
+
+softpaws was developed with the help of Claude, Anthropic's AI assistant,
+used through Claude Code for code, tests and documentation. The author
+directed the work and is responsible for its content.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and

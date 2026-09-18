@@ -72,6 +72,13 @@ Use it to make sure your change is tested, documented, and linted before review.
 - Follow the [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/)
   for prose in docstrings and documentation.
 
+## AI-Assisted Contributions
+
+You may use AI tools. You are the author of what you submit and are
+responsible for it, so understand and test every line. Don't list an AI tool
+as an author, co-author or signer in commits or pull requests. The project
+discloses its own AI use once, in the README.
+
 ## Setting Up the Development Environment
 
 Install the package in editable mode with dev dependencies:
