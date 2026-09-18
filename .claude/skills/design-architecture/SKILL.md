@@ -13,9 +13,9 @@ A2. A name is public only if a user workflow needs it. A name that one script
     uses lives with that script, or is private.
 A3. One source of truth. A quantity or helper is defined once and imported,
     never copied into an example or a script.
-A4. Dependencies flow one way: `constants`, `standards` -> `data`, `detectors`,
-    `fluxes` -> `transport` -> `response` -> `comparison`. `Detector` sits on
-    top of all of them, and nothing imports it.
+A4. Dependencies flow one way: `constants`, `standards` -> `data` -> `transport`,
+    `fluxes` -> `detector` -> `events` -> `comparison`. `detector` holds `Detector`,
+    the sites, the optics and everything a response is built from.
 A5. Group like things together, by concept, never by paper section or example
     number. The instrument and its response go in `Detector`; event data and
     single-event quantities such as the energy go in `events`; anything held

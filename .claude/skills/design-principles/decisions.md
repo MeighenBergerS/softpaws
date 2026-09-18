@@ -6,6 +6,22 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: New module map (A4); exception for a Bash edit (P4)
+
+- A4: `constants, standards -> data, detectors, fluxes -> transport ->
+  response -> comparison`, with `Detector` on top, becomes `constants,
+  standards -> data -> transport, fluxes -> detector -> events -> comparison`.
+  `response/` and `detectors/` merge into `detector/` (`Detector`, sites,
+  optics, effective areas, light reach, sensitivities as methods). `events/`
+  holds `TrackEvent`, public event data and the single-track energy.
+  `comparison/` holds the DR2 benchmark, the flavour fit, reach fits against
+  published curves, site compatibility and the statistics. Why: the old map
+  split the instrument across two packages and had no home for A5's `events`.
+  Approved by the user.
+- P4 exception: `SUFFIXED_COUNT` in `tests/test_design_rules.py` was lowered
+  through `sed` in Bash. P6 allowed the change, the tool broke P4. The value
+  stays. Approved by the user.
+
 ## 2026-09-18: No detector names outside data (N6); like things together (A5); one data module (A8)
 
 From the user's review of the public names:
