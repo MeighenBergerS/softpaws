@@ -92,11 +92,24 @@ for every figure.
 
 ## Conventions
 
-- Docstrings use NumPy style with project-specific conventions (units in
-  square brackets, `EVENTS_DTYPE` field names in double backticks) — see
-  `.claude/skills/numpy-docstring-format.md` for the full rules.
+- Design rules live in `.claude/skills/design-*`. The index is
+  `design-principles`; the change protocol and the learning rules are in
+  `design-governance`. Load the
+  relevant skill before touching public code, docstrings, docs or examples.
+  A conflict with a rule is flagged in chat as **Design warning**, a rule
+  change as **Design change**, and both are logged in
+  `design-principles/decisions.md`. Never change a rule silently.
+- The design skill tree is a living document. Whenever development makes,
+  changes or reverses a design choice, propose the skill update in chat as
+  **Design change proposed**, following the learning rules in
+  `design-governance`. A PostToolUse hook (`.claude/hooks/design_reminder.py`)
+  prompts this after edits to public files.
+- Skills, hooks, `.claude/settings.json`, this file and
+  `tests/test_design_rules.py` change only after the user explicitly approves
+  that change. Never silently, never bundled with other work, never through
+  Bash. `permissions.ask` in `.claude/settings.json` enforces the prompt.
 - Prose in docstrings and documentation follows the
   [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/).
-- Ruff line length is 100; enabled rule sets are E, F, W, I.
-- Commit messages are short and imperative (`add drift-diffusion collision
-  operator`, not `update` or `fixed stuff`).
+- Ruff line length is 100; enabled rule sets are E, F, W, I, and D (numpy docstrings, `src/` only).
+- Commits and PRs follow `workflow-commits` and `workflow-pull-requests`.
+  Never add Claude as an author, co-author or signer (`workflow-ai-disclosure`).

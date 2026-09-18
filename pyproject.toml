@@ -103,11 +103,18 @@ softpaws = [
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I"]
+select = ["E", "F", "W", "I", "D"]
+# A summary may be a noun phrase ("Effective area for ... [cm^2]."), see design rule D1.
+ignore = ["D401"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
 
 [tool.ruff.lint.per-file-ignores]
 "*/__init__.py" = ["F401"]
 "tests/*.py" = ["E402"]
+# Docstring rules (design rule D5) apply to the package only.
+"!src/**" = ["D"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

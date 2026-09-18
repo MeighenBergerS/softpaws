@@ -4,6 +4,31 @@
       "Bash(git fetch *)",
       "Bash(git ls-tree *)",
       "Bash(ruff check *)"
+    ],
+    "ask": [
+      "Edit(.claude/skills/**)",
+      "Edit(.claude/hooks/**)",
+      "Edit(.claude/settings.json)",
+      "Edit(CLAUDE.md)",
+      "Edit(tests/test_design_rules.py)"
+    ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/design_reminder.py\" 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }
