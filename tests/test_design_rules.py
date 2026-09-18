@@ -34,7 +34,7 @@ UNIT_SUFFIX = re.compile(
 )
 
 #: Known N4 offenders: public names plus ``name(argument)`` pairs. Lower it as they go.
-SUFFIXED_COUNT = 296
+SUFFIXED_COUNT = 295
 
 #: A6: where literal numbers may live besides ``constants.py``. The paper's
 #: tuning under ``_paper/`` is exempt too.

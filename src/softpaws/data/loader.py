@@ -20,7 +20,6 @@ import re
 import numpy as np
 
 from ..response.irfs import EffectiveArea, SmearingMatrix
-from .paths import dr2_dir, require
 from .schema import CSV_TO_FIELD, EVENTS_DTYPE
 
 _SEASON_FILE_PATTERN = re.compile(r"^(IC\d+(?:_[IVX]+)?)_exp\.csv$")
@@ -38,46 +37,6 @@ BOUNDS_DIR = pathlib.Path(__file__).parent / "bounds"
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
-
-
-def load_all_seasons(data_dir: str | pathlib.Path | None = None) -> np.ndarray:
-    """Load and concatenate events from all seasons in ``data_dir``.
-
-    Parameters
-    ----------
-    data_dir : str or pathlib.Path
-        Root of the DR2 data directory, expected to contain an ``events/``
-        subdirectory with one CSV file per IceCube season.
-
-    Returns
-    -------
-    events : np.ndarray
-        Structured array with dtype ``EVENTS_DTYPE`` containing every
-        event across all seasons, sorted by MJD arrival time.
-
-    Raises
-    ------
-    FileNotFoundError
-        Raised if ``data_dir/events/`` does not exist or contains no
-        recognisable season files.
-    """
-    if data_dir is None:
-        data_dir = dr2_dir()
-    events_dir = require(pathlib.Path(data_dir) / "events", "IceTracks-DR2 release")
-    if not events_dir.is_dir():
-        raise FileNotFoundError(f"Events directory not found: {events_dir}")
-
-    season_files = sorted(
-        p for p in events_dir.glob("*_exp.csv")
-        if _SEASON_FILE_PATTERN.match(p.name)
-    )
-    if not season_files:
-        raise FileNotFoundError(f"No season files found in {events_dir}")
-
-    chunks = [load_season(p) for p in season_files]
-    combined = np.concatenate(chunks)
-    combined.sort(order="time")
-    return combined
 
 
 def load_season(path: str | pathlib.Path) -> np.ndarray:

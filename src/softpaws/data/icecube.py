@@ -37,7 +37,6 @@ __all__ = [
     "load_effective_area",
     "load_events",
     "load_psf_table",
-    "season_livetime_s",
     "total_livetime_s",
 ]
 
@@ -166,7 +165,7 @@ def load_effective_area(data_dir: str | pathlib.Path | None, season: str) -> Eff
     return _cached_effective_area(str(path.resolve()))
 
 
-def season_livetime_s(data_dir: str | pathlib.Path | None, season: str) -> float:
+def _season_livetime(data_dir: str | pathlib.Path | None, season: str) -> float:
     """Good-run livetime of one season [s].
 
     Parameters
@@ -202,7 +201,7 @@ def total_livetime_s(
     livetime_s : float
         Total livetime [s].
     """
-    return float(sum(season_livetime_s(data_dir, s) for s in seasons))
+    return float(sum(_season_livetime(data_dir, s) for s in seasons))
 
 
 def hemisphere_average(aeff: EffectiveArea, hemisphere: str = "upgoing") -> np.ndarray:
@@ -271,7 +270,7 @@ def livetime_weighted_effective_area(
     livetime_total = 0.0
     for season in seasons:
         aeff = load_effective_area(data_dir, season)
-        livetime_s = season_livetime_s(data_dir, season)
+        livetime_s = _season_livetime(data_dir, season)
         curve = hemisphere_average(aeff, hemisphere)
         total += livetime_s * np.interp(log10_e, aeff.log10_energy_centers, curve)
         livetime_total += livetime_s
@@ -312,7 +311,7 @@ def banded_effective_area(
     livetime_total = 0.0
     for season in seasons:
         aeff = load_effective_area(data_dir, season)
-        livetime_s = season_livetime_s(data_dir, season)
+        livetime_s = _season_livetime(data_dir, season)
         curve = np.vstack(
             [
                 np.interp(log10_e, aeff.log10_energy_centers, aeff.values[:, j])
