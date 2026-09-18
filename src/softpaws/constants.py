@@ -495,3 +495,16 @@ N_TAU_GRID = np.linspace(0.0, 100.0, 33)
 
 #: Tau-flux scan at the anchored ``nu_mu`` flux [combined-fit units].
 PHI_TAU_SCAN = np.linspace(0.0, 6.0, 61)
+
+# ---------------------------------------------------------------------------
+# Published curves (used by ``softpaws.response.published``)
+# ---------------------------------------------------------------------------
+
+#: Energy grid the water sites' published curves are put on, as ``log10(E_nu / GeV)``.
+PUBLISHED_WATER_LOG10_E = np.arange(4.0, 8.01, 0.2)
+
+#: Bin width [dex] of the median filter applied to a digitized step curve.
+SMOOTH_BIN_DEX = 0.1
+
+#: Width [bins] of the running mean applied after that median filter.
+SMOOTH_WINDOW = 5

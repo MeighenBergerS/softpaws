@@ -58,6 +58,7 @@ from ..transport.tau import BR_TAU_TO_MU, MEAN_Z
 from .effective_area import default_cross_section
 from .first_principles import column_profile, rock_range_ratio
 from .light_reach import effective_body_km
+from .published import published_effective_area_cm2
 from .sensitivity import (
     N_EVENTS_LIMIT,
     PIVOT_ENERGY_GEV,
@@ -65,7 +66,6 @@ from .sensitivity import (
     optimized_window_sensitivity,
     power_law_sensitivity,
 )
-from .site_models import published_effective_area_cm2
 
 if TYPE_CHECKING:
     from ..fluxes.atmospheric import AtmosphericFlux

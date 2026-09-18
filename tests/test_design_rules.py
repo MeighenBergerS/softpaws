@@ -37,7 +37,7 @@ A6_EXEMPT = {
 }
 
 #: Known A6 offenders: literal numbers defined anywhere else. Lower it as they go.
-LOOSE_NUMBER_COUNT = 16
+LOOSE_NUMBER_COUNT = 13
 
 #: A1: the top level holds the names a typical analysis needs, and no more.
 MAX_TOP_LEVEL = 20
