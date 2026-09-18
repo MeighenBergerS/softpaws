@@ -2,16 +2,33 @@
 
 Rules that existing code still breaks are ratchets: the known offenders are
 listed, a new offender fails, and a fixed one must be removed from its list.
+Where the list would be long, the ratchet holds a count instead, which must
+be lowered as offenders are fixed.
 """
 
+import ast
 import importlib
 import inspect
+import pathlib
+import re
 
 import pytest
 
 import softpaws
 
 SUBPACKAGES = ("transport", "detectors", "fluxes", "response", "comparison", "data")
+PACKAGE_DIR = pathlib.Path(softpaws.__file__).parent
+
+#: N4: a unit suffix at the end of a name or argument.
+UNIT_SUFFIX = re.compile(
+    r"_(gev|tev|pev|km|km2|km3|m|m2|m3|cm|cm2|cm3|g_cm2|g_cm3|s|sr|deg|rad|nm|pe|per_km3)$"
+)
+
+#: Known N4 offenders: public names plus ``name(argument)`` pairs. Lower it as they go.
+SUFFIXED_COUNT = 259
+
+#: Known A6 offenders: named numbers defined outside a constants module. Lower it as they go.
+LOOSE_NUMBER_COUNT = 74
 
 #: A1: the top level holds the names a typical analysis needs, and no more.
 MAX_TOP_LEVEL = 20
@@ -59,6 +76,57 @@ def check_ratchet(offenders, known):
     """Fail on a new offender, and on a known one that has been fixed."""
     assert not offenders - known, f"New offenders: {sorted(offenders - known)}"
     assert not known - offenders, f"Fixed, remove from the list: {sorted(known - offenders)}"
+
+
+def check_count(found, known):
+    """Fail if the count grew, and if it shrank without the baseline being lowered."""
+    assert found <= known, f"{found - known} new offenders; see the rule"
+    assert found == known, f"Fixed some, lower the baseline from {known} to {found}"
+
+
+def is_number(node):
+    """Whether an assignment's value is a number or arithmetic on numbers."""
+    if isinstance(node, ast.Constant):
+        return isinstance(node.value, (int, float)) and not isinstance(node.value, bool)
+    if isinstance(node, ast.UnaryOp):
+        return is_number(node.operand)
+    if isinstance(node, ast.BinOp):
+        return is_number(node.left) or is_number(node.right)
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+        return node.func.id in ("float", "int")
+    return False
+
+
+def test_no_unit_suffixes():
+    """N4: public names and their arguments carry no unit suffix."""
+    offenders = set()
+    for name, obj in public_objects().items():
+        if UNIT_SUFFIX.search(name.lower()):
+            offenders.add(name)
+        try:
+            arguments = inspect.signature(obj).parameters
+        except (TypeError, ValueError):
+            continue
+        offenders |= {f"{name}({arg})" for arg in arguments if UNIT_SUFFIX.search(arg)}
+    check_count(len(offenders), SUFFIXED_COUNT)
+
+
+def test_numbers_live_in_constants():
+    """A6: named numbers are defined in a constants module only."""
+    found = 0
+    for path in PACKAGE_DIR.rglob("*.py"):
+        if path.name == "constants.py":
+            continue
+        for node in ast.parse(path.read_text()).body:
+            if isinstance(node, ast.Assign):
+                target, value = node.targets[0], node.value
+            elif isinstance(node, ast.AnnAssign) and node.value is not None:
+                target, value = node.target, node.value
+            else:
+                continue
+            if isinstance(target, ast.Name) and target.id.isupper() and is_number(value):
+                found += 1
+    check_count(found, LOOSE_NUMBER_COUNT)
 
 
 def test_top_level_is_small():

@@ -33,6 +33,6 @@ L3. A new concern gets its own `design-<concern>` skill and an index row. No cat
 L4. Prune: propose merging or deleting a rule that is superseded or never applied (P3).
 L5. Keep it curt: a rule is at most two lines, a skill has at most two do/not
     examples and stays under ~40 lines, and history goes in the log.
-L6. `tests/test_design_rules.py` (A1, D1, N5) and ruff (D5) enforce the
+L6. `tests/test_design_rules.py` (A1, A6, D1, N4, N5) and ruff (D5) enforce the
     checkable rules. A rule and its check change together, under one approval.
 L7. Design rules live in the skills, where they are committed and shared. They never go in personal memory.

@@ -13,3 +13,5 @@ G3. An example does one task in a few calls through the organizing object,
 G4. `llms.txt` at the repo root is one page: the top-level API, the unit
     convention, and links. Update it whenever the A1 list changes.
 G5. The README shows the one-screen workflow and nothing outside the top level.
+G6. `docs/units.md` gives the base units, every multiplier, and how to convert
+    in and out, in two lines of code. The README, the quickstart and `llms.txt` link to it.

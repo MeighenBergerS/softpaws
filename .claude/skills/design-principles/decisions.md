@@ -4,11 +4,30 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 ## Open
 
-- **Units (N4).** Either drop the `_gev`/`_km`/`_cm2` suffixes from public
-  names and state one unit system once, or keep the suffixes.
-- **Name of the organizing object (O2).** `Detector` is taken by the paper's
-  fit container in `response/site_models.py`, so that class must be renamed or
-  made private first.
+Nothing open.
+
+## 2026-09-18: Units, one constants file, Detector as the central object (N4, A4, A6, O1-O3, D5, G6)
+
+- N4: public names and arguments lose their unit suffixes. The code computes
+  in GeV, cm, s and rad, the field's flux and cross-section conventions, so
+  the physics needs no conversion factors. Users pass values with Geant4-style
+  multipliers from `softpaws.constants` (`1.0 * km`). This was chosen over
+  fixed per-quantity units, where a wrong-unit number fails silently, and
+  over astropy Quantity, which is heavy and trips up newcomers.
+- A6: every named number (units, physical constants, calibrated parameters,
+  defaults) lives in `src/softpaws/constants.py`. Records and tabulated curves
+  stay where they are.
+- D5: docstrings give the dimension (`[length]`), not a unit. G6:
+  `docs/units.md` explains the scheme, and the README, the quickstart and
+  `llms.txt` link to it.
+- O2/O3: `Detector` is the central object, and analyses are its methods; the
+  separate organizing object is dropped. The paper's fit container
+  `response.site_models.Detector` becomes `SiteFit` and leaves the public API (A2).
+- Checks (L6): ratchets in `test_design_rules.py`, with baselines of 259
+  suffixed names and arguments (N4) and 74 named numbers outside the
+  constants file (A6).
+
+Approved by the user.
 
 ## 2026-09-18: Protected .claude/agents/ (P4)
 

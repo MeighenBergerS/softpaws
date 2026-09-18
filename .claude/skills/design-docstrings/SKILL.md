@@ -14,7 +14,8 @@ D3. Caveats: only the ones that change a typical user's answer, one line
 D4. A public function has `Parameters`, `Returns` and one `Examples` doctest.
     A private helper has the summary line only.
 D5. Format is numpydoc. The text starts on the opening-quote line, each
-    section underline matches its header, units go in `[brackets]`, code goes
+    section underline matches its header, the dimension goes in brackets
+    (`[energy]`, `[length]`, `[area]`; see `docs/units.md`), code goes
     in ``double backticks``, and each `Raises` entry reads "Raised if ...".
     Math uses `.. math::`.
 
@@ -22,12 +23,12 @@ Do:
 
 ```python
 def effective_area(self, energy, zenith):
-    """Effective area for muon-neutrino tracks [cm^2].
+    """Effective area for muon-neutrino tracks [area].
 
     Parameters
     ----------
     energy : np.ndarray
-        Neutrino energy [GeV].
+        Neutrino energy [energy].
     ...
 ```
 

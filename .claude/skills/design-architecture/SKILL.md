@@ -13,7 +13,10 @@ A2. A name is public only if a user workflow needs it. A name that one script
     uses lives with that script, or is private.
 A3. One source of truth. A quantity or helper is defined once and imported,
     never copied into an example or a script.
-A4. Dependencies flow one way: `data`, `detectors`, `fluxes` -> `transport` ->
-    `response` -> `comparison`. The organizing object sits on top of all of
-    them, and nothing imports it.
+A4. Dependencies flow one way: `constants` -> `data`, `detectors`, `fluxes` ->
+    `transport` -> `response` -> `comparison`. `Detector` sits on top of all
+    of them, and nothing imports it.
 A5. Group modules by concept, never by paper section or example number.
+A6. Every named number lives in `src/softpaws/constants.py`: units, physical
+    constants, calibrated parameters and defaults. Site and optics records and
+    tabulated curves stay with their modules or data files.

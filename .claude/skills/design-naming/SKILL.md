@@ -13,7 +13,8 @@ N2. An option is an argument, never a new name.
     Not: `sky_averaged_effective_area_cm2`, `band_averaged_effective_area_cm2`.
 N3. The same concept has the same argument name everywhere: `energy`,
     `zenith`, `declination`, `years`, `threshold`.
-N4. Units are open (see `decisions.md`). Until they are decided, keep the
-    existing convention: a unit suffix on the name, and `[unit]` in the docstring.
+N4. No unit suffixes on public names or arguments. The code computes in GeV,
+    cm, s and rad. Users multiply by units from `softpaws.constants`
+    (`radius=1.0 * km`) and divide to read a result out (`aeff / m**2`).
 N5. Field-standard abbreviations are fine (`aeff`, `psf`). Project jargon is
     not (`ladder`, `halo`, `ceiling`, `rung`).
