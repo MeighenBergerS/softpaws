@@ -10,6 +10,12 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
   fit container in `response/site_models.py`, so that class must be renamed or
   made private first.
 
+## 2026-09-18: Protected .claude/agents/ (P4)
+
+The `repo-auditor` subagent's file sets what the audit does and which tools
+it gets, so it needs approval like the skills and hooks. Added to P4, to
+CLAUDE.md, and to `permissions.ask`. Approved by the user.
+
 ## 2026-09-18: Added the Repo Audit (RA1-RA4)
 
 Every 14 days, a `SessionStart` hook (`repo_audit_due.py`, only on new

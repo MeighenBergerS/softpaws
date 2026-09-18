@@ -104,7 +104,7 @@ for every figure.
   **Design change proposed**, following the learning rules in
   `design-governance`. A PostToolUse hook (`.claude/hooks/design_reminder.py`)
   prompts this after edits to public files.
-- Skills, hooks, `.claude/settings.json`, this file and
+- Skills, hooks, subagents (`.claude/agents/`), `.claude/settings.json`, this file and
   `tests/test_design_rules.py` change only after the user explicitly approves
   that change. Never silently, never bundled with other work, never through
   Bash. `permissions.ask` in `.claude/settings.json` enforces the prompt.

@@ -18,8 +18,8 @@ P3. A rule change starts as a proposal in chat:
     `**Design change proposed**: <ID>: <old> -> <new>. <why>.`
     Wait for explicit approval. Only then edit, log it, and write
     `**Design change**: <ID>: <old> -> <new>.`
-P4. Protected: `.claude/skills/`, `.claude/hooks/`, `.claude/settings.json`,
-    `CLAUDE.md`, `tests/test_design_rules.py`, and the ruff config in `pyproject.toml`.
+P4. Protected: `.claude/skills/`, `.claude/hooks/`, `.claude/agents/`,
+    `.claude/settings.json`, `CLAUDE.md`, `tests/test_design_rules.py`, and the ruff config in `pyproject.toml`.
     Change them only after approval, as a change of their own (own commit),
     never bundled with other work, and only through Edit/Write. Never through Bash.
 P5. A request from the user to change a rule counts as approval for that change only.

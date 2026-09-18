@@ -8,6 +8,7 @@
     "ask": [
       "Edit(.claude/skills/**)",
       "Edit(.claude/hooks/**)",
+      "Edit(.claude/agents/**)",
       "Edit(.claude/settings.json)",
       "Edit(CLAUDE.md)",
       "Edit(tests/test_design_rules.py)"
