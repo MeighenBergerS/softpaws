@@ -19,13 +19,22 @@ import softpaws
 SUBPACKAGES = ("transport", "detectors", "fluxes", "response", "comparison", "data")
 PACKAGE_DIR = pathlib.Path(softpaws.__file__).parent
 
+#: Where public names are looked for: the top level (where ``Detector`` is
+#: exported), the two top-level modules, and the subpackages.
+PUBLIC_MODULES = (
+    "softpaws",
+    "softpaws.constants",
+    "softpaws.standards",
+    *(f"softpaws.{sub}" for sub in SUBPACKAGES),
+)
+
 #: N4: a unit suffix at the end of a name or argument.
 UNIT_SUFFIX = re.compile(
     r"_(gev|tev|pev|km|km2|km3|m|m2|m3|cm|cm2|cm3|g_cm2|g_cm3|s|sr|deg|rad|nm|pe|per_km3)$"
 )
 
 #: Known N4 offenders: public names plus ``name(argument)`` pairs. Lower it as they go.
-SUFFIXED_COUNT = 244
+SUFFIXED_COUNT = 296
 
 #: A6: where literal numbers may live besides ``constants.py``. The paper's
 #: tuning under ``_paper/`` is exempt too.
@@ -50,15 +59,18 @@ JARGON = ("ladder", "halo", "ceiling", "rung")
 
 #: Known D1 offenders. Shorten one, then delete it here.
 LONG_SUMMARY = {
-    "softpaws.data.arca230_angle_dependent_aeff",
-    "softpaws.data.arca230_quoted_fit",
-    "softpaws.response.detector_curves",
-    "softpaws.response.hit_count",
-    "softpaws.response.psf_bin_radius_deg",
-    "softpaws.response.required_footprint_radius_km",
-    "softpaws.response.residuals",
-    "softpaws.response.truncated_range_km",
-    "softpaws.transport.PowerLawCrossSection",
+    "softpaws.data.published.arca230_angle_dependent_aeff",
+    "softpaws.data.published.arca230_quoted_fit",
+    "softpaws.fluxes.astrophysical.BrokenPowerLawFit.shape",
+    "softpaws.response.effective_area.required_footprint_radius_km",
+    "softpaws.response.effective_area.truncated_range_km",
+    "softpaws.response.first_principles.detector_curves",
+    "softpaws.response.first_principles.residuals",
+    "softpaws.response.irfs.SmearingMatrix.psf_containment_deg",
+    "softpaws.response.light_reach.hit_count",
+    "softpaws.response.sensitivity.psf_bin_radius_deg",
+    "softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_coupled_attenuation",
+    "softpaws.transport.cross_section.PowerLawCrossSection",
 }
 
 #: Known N5 offenders. Rename or make private, then delete it here.
@@ -66,14 +78,29 @@ JARGON_NAMES: set[str] = set()
 
 
 def public_objects():
-    """Every public function and class, keyed by its dotted name."""
+    """Every public function, class and method, keyed by where it is defined.
+
+    A name exported from several places is counted once, and the public
+    methods of a public class count as public names of their own.
+    """
     found = {}
-    for sub in SUBPACKAGES:
-        module = importlib.import_module(f"softpaws.{sub}")
-        for name in module.__all__:
-            obj = getattr(module, name)
-            if inspect.isfunction(obj) or inspect.isclass(obj):
-                found[f"softpaws.{sub}.{name}"] = obj
+    for path in PUBLIC_MODULES:
+        module = importlib.import_module(path)
+        names = getattr(module, "__all__", None)
+        if names is None:
+            names = [n for n in dir(module) if not n.startswith("_")]
+        for name in names:
+            obj = getattr(module, name, None)
+            if not (inspect.isfunction(obj) or inspect.isclass(obj)):
+                continue
+            if not obj.__module__.startswith("softpaws"):
+                continue
+            key = f"{obj.__module__}.{obj.__qualname__}"
+            found[key] = obj
+            if inspect.isclass(obj):
+                for attr, member in vars(obj).items():
+                    if not attr.startswith("_") and inspect.isfunction(member):
+                        found[f"{key}.{attr}"] = member
     return found
 
 

@@ -6,6 +6,17 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: The design checks cover the top level, constants, standards and methods (L6, A1)
+
+`test_design_rules.py` now also reads the top-level `softpaws` namespace
+(where `Detector` will be exported), `softpaws.constants`,
+`softpaws.standards`, and the public methods of every public class, which is
+where `Detector`'s user-facing names will live. Names are keyed by where they
+are defined, so a re-export counts once. Measuring more raised two baselines
+as part of this approved change, not as a loosening: N4 from 244 to 296
+(method names and arguments), and D1 from 9 to 12 known offenders (3
+methods). Requested by the user.
+
 ## 2026-09-18: README audit in the Repo Audit (RA3)
 
 The Repo Audit now checks `README.md` item by item against ddbeck's README
