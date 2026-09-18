@@ -27,7 +27,7 @@ import corner
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.response import reduced
+from softpaws._paper import reduced
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
@@ -52,7 +52,7 @@ LABELS = [r"$\log_{10}(E_{\mathrm{thr}}/\mathrm{GeV})$", r"$\Lambda$ [m]"]
 STYLES = ["-", "--", "-", ":"]
 
 #: Reach each site's own optics predict [m]; see
-#: :data:`softpaws.response.reduced.PREDICTED_REACH_M`.
+#: :data:`softpaws._paper.reduced.PREDICTED_REACH_M`.
 PREDICTED_M = reduced.PREDICTED_REACH_M
 
 #: Chains as ``{site: (n, 2) array of [log10 E_thr, Lambda in m]}``, with the

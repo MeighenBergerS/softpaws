@@ -48,6 +48,7 @@ from softpaws.response.declination import (
     fit_light_reach,
     zenith_band_weights,
 )
+from softpaws.response.published import published_effective_area_cm2
 from softpaws.response.sensitivity import (
     DEFAULT_BIN_RADIUS_DEG,
     N_EVENTS_LIMIT,
@@ -62,7 +63,6 @@ from softpaws.response.sensitivity import (
     sensitivity_upper_limit,
     single_event_sensitivity,
 )
-from softpaws.response.site_models import published_effective_area_cm2
 from softpaws.transport.earth import zenith_grid
 
 _HERE = pathlib.Path(__file__).parent

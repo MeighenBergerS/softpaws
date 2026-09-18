@@ -111,7 +111,7 @@ def test_sky_average_is_the_weighted_mean_of_its_directions():
 
 def test_fit_published_reach_matches_the_manual_fit():
     """The wrapper is the published curve, its sky, and the reach scan."""
-    from softpaws.response.site_models import published_effective_area_cm2
+    from softpaws.response.published import published_effective_area_cm2
     from softpaws.transport.earth import zenith_grid
 
     log10_e = np.arange(4.0, 8.01, 0.25)

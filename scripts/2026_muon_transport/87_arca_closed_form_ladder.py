@@ -11,7 +11,7 @@ two instrument numbers of example 77.
 The figure shows every rung as a ratio to the full response, labelled on the
 curve; the areas themselves lie too close to read. The four rungs are
 cumulative, so the last one is Eq. (aeff) and the example asserts that it
-reproduces :func:`softpaws.response.site_models.water_model` exactly.
+reproduces :func:`softpaws._paper.site_fit.water_model` exactly.
 
 Usage
 -----
@@ -25,8 +25,8 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws._paper import site_fit as sm
 from softpaws.constants import CM_PER_KM, RHO_WATER_G_CM3
-from softpaws.response import site_models as sm
 from softpaws.transport.attenuation import survival_probability
 from softpaws.transport.muon_range import truncated_muon_range_km, two_medium_range_ratio
 from softpaws.transport.soft_volume import light_reach_radius_km
@@ -79,7 +79,7 @@ def arca_response(
 ) -> np.ndarray:
     """ARCA230's sky-averaged effective area [cm^2] with three switches.
 
-    The assembly of :func:`softpaws.response.site_models.water_model`, with
+    The assembly of :func:`softpaws._paper.site_fit.water_model`, with
     each closed-form piece swapped in when its switch is off: pure absorption
     for the ladder, the frozen water range capped at the upstream column for
     the medium, and no second source for the tau channel.
@@ -122,7 +122,9 @@ def arca_response(
                 _EX85.closed_form_range_km(muon_energy, threshold)[:, :, None],
                 muon_column_km[None, None, :],
             )
-        radius = light_reach_radius_km(SITE.radius_km, muon_energy, reach_km, sm.REACH_PIVOT_GEV)
+        radius = light_reach_radius_km(
+            SITE.radius_km, muon_energy, reach_km, sm.SITE_FIT_REACH_PIVOT_GEV
+        )
         area_km2 = sm.water_projected_area_km2(SITE, theta_deg[None, None, :], radius[:, :, None])
         v_det_km3 = SITE.n_blocks * np.pi * radius**2 * SITE.height_km
         volume_km3 = area_km2 * length + v_det_km3[:, :, None]

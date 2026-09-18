@@ -34,12 +34,12 @@ import numpy as np
 
 from softpaws.detectors import TRIDENT_2025
 
-from .site_models import (
+from .site_fit import (
     ARCA_LOG10_E,
     LAMBDA_BGR18,
     PARAM_NAMES,
     PRIORS,
-    Detector,
+    SiteFit,
     WaterSite,
     arca_zenith_grid,
     water_columns,
@@ -146,13 +146,13 @@ def full_theta(
 
 
 def deviance(
-    detector: Detector, theta: np.ndarray, sigma_ln: float
+    detector: SiteFit, theta: np.ndarray, sigma_ln: float
 ) -> tuple[float, np.ndarray | None]:
     """Chi-square of one parameter vector against a published curve.
 
     Parameters
     ----------
-    detector : Detector
+    detector : SiteFit
         The site, whose ``mask`` selects the nodes that enter.
     theta : np.ndarray, shape (5,)
         The parameter vector.
@@ -176,7 +176,7 @@ def deviance(
 
 
 def reduced_log_probability(
-    detector: Detector,
+    detector: SiteFit,
     free_names: tuple[str, ...],
     fixed: dict[str, float],
     sigma_ln: float,
@@ -185,7 +185,7 @@ def reduced_log_probability(
 
     Parameters
     ----------
-    detector : Detector
+    detector : SiteFit
         The site, whose ``priors`` box the free parameters.
     free_names : tuple of str
         Names of the free parameters.
@@ -212,7 +212,7 @@ def reduced_log_probability(
 
 
 def fit(
-    detector: Detector,
+    detector: SiteFit,
     free_names: tuple[str, ...],
     fixed: dict[str, float],
     sigma_ln: float,
@@ -229,7 +229,7 @@ def fit(
 
     Parameters
     ----------
-    detector : Detector
+    detector : SiteFit
         The site.
     free_names : tuple of str
         Names of the free parameters.
@@ -366,8 +366,8 @@ def reach_separation_sigma(chains: dict[str, np.ndarray]) -> list[tuple[str, str
 
 
 def attach_reduced_chains(
-    detectors: list[Detector], chains_path: pathlib.Path
-) -> list[Detector]:
+    detectors: list[SiteFit], chains_path: pathlib.Path
+) -> list[SiteFit]:
     """Give each detector the five-column form of its two-parameter chain.
 
     The reduced fit samples only the threshold and the reach, so the other
@@ -375,14 +375,14 @@ def attach_reduced_chains(
 
     Parameters
     ----------
-    detectors : list of Detector
+    detectors : list of SiteFit
         Sites to fill in, each of which must have a chain in the archive.
     chains_path : pathlib.Path
         The ``npz`` archive the reduced fit wrote.
 
     Returns
     -------
-    detectors : list of Detector
+    detectors : list of SiteFit
         The same objects, with ``chain`` set.
     """
     data = np.load(chains_path)
@@ -599,7 +599,7 @@ def trident_2025_detector(
     cos_max: float = 0.5,
     log10_e_min: float = 5.0,
     path: pathlib.Path | None = None,
-) -> tuple[Detector, int]:
+) -> tuple[SiteFit, int]:
     """The 2025 map, cell by cell, as one detector for the reduced fit.
 
     Only the cells where the published selection is flat are kept,
@@ -618,7 +618,7 @@ def trident_2025_detector(
 
     Returns
     -------
-    detector : Detector
+    detector : SiteFit
         TRIDENT, with every kept cell as one node of a flattened curve.
     n_cells : int
         Number of cells that survived both cuts.
@@ -645,7 +645,7 @@ def trident_2025_detector(
     priors = dict(PRIORS["ARCA230"])
     priors["reach_km"] = PARAM_BOUNDS["reach_km"]
     priors["eps_0"] = PARAM_BOUNDS["eps_0"]
-    detector = Detector(
+    detector = SiteFit(
         name="TRIDENT",
         log10_e=np.tile(log10_e, int(rows.sum())),
         observed=observed,
@@ -663,7 +663,7 @@ def trident_2025_average_detector(
     cos_max: float = 0.5,
     log10_e_min: float | None = None,
     path: pathlib.Path | None = None,
-) -> tuple[Detector, np.ndarray, dict[str, float]]:
+) -> tuple[SiteFit, np.ndarray, dict[str, float]]:
     """The 2025 map averaged over its flat-selection cells, with its posterior.
 
     The map's cells carry their simulation's statistics as a checkerboard of a
@@ -685,7 +685,7 @@ def trident_2025_average_detector(
 
     Returns
     -------
-    detector : Detector
+    detector : SiteFit
         TRIDENT, with the smoothed band average as its published curve and the
         five-column form of the chain.
     allsky_cm2 : np.ndarray
@@ -735,7 +735,7 @@ def trident_2025_average_detector(
     priors = dict(PRIORS["ARCA230"])
     priors["reach_km"] = PARAM_BOUNDS["reach_km"]
     priors["eps_0"] = PARAM_BOUNDS["eps_0"]
-    detector = Detector(
+    detector = SiteFit(
         name="TRIDENT",
         log10_e=log10_e,
         observed=smoothed,

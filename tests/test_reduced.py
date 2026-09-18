@@ -1,4 +1,4 @@
-"""Tests for the reduced response of :mod:`softpaws.response.reduced`.
+"""Tests for the reduced response of :mod:`softpaws._paper.reduced`.
 
 The pinned numbers come from the results the pre-cleanup examples 77, 78, 81
 and 82 wrote to ``examples/output``: the deviances of
@@ -13,8 +13,8 @@ import pathlib
 import numpy as np
 import pytest
 
-from softpaws.response import reduced as rd
-from softpaws.response import site_models as sm
+from softpaws._paper import reduced as rd
+from softpaws._paper import site_fit as sm
 
 #: The deterministic range is integrated on a fixed lattice rather than on a
 #: grid refined to each descent, which converged it and moved the model by up
@@ -87,7 +87,7 @@ def test_full_theta_overwrites_only_the_free_parameters():
 
 
 def test_deviance_rejects_a_model_that_returns_nothing_positive():
-    detector = sm.Detector(
+    detector = sm.SiteFit(
         name="stub",
         log10_e=np.array([5.0, 6.0]),
         observed=np.array([1.0, 2.0]),
@@ -102,7 +102,7 @@ def test_deviance_rejects_a_model_that_returns_nothing_positive():
 
 
 def test_deviance_is_the_log_residual_chi_square():
-    detector = sm.Detector(
+    detector = sm.SiteFit(
         name="stub",
         log10_e=np.array([5.0, 6.0]),
         observed=np.array([np.e, 1.0]),
@@ -118,7 +118,7 @@ def test_deviance_is_the_log_residual_chi_square():
 
 
 def test_log_probability_rejects_outside_the_prior_box():
-    detector = sm.Detector(
+    detector = sm.SiteFit(
         name="stub",
         log10_e=np.array([5.0]),
         observed=np.array([1.0]),
@@ -144,7 +144,7 @@ def test_attach_reduced_chains(tmp_path):
     rows = np.array([[3.5, 0.007], [3.6, 0.008]])
     np.savez(tmp_path / "chains.npz", **{f"{s}_2p_chain": rows for s in rd.REDUCED_SITES})
     detectors = [
-        sm.Detector(
+        sm.SiteFit(
             name=name,
             log10_e=np.zeros(1),
             observed=np.zeros(1),

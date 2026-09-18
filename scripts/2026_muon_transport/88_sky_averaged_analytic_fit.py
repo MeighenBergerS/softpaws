@@ -47,9 +47,9 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws._paper import reduced
+from softpaws._paper import site_fit as sm
 from softpaws.constants import CM_PER_KM, RHO_WATER_G_CM3
-from softpaws.response import reduced
-from softpaws.response import site_models as sm
 from softpaws.transport.attenuation import survival_probability
 from softpaws.transport.earth import prem_column
 from softpaws.transport.soft_volume import light_reach_radius_km
@@ -182,7 +182,7 @@ def factorized_predictors(trident_log10_e: np.ndarray) -> dict:
         eps_0, log10_e_thr, _, lam, reach_km = theta
         muon = (1.0 - MEAN_INELASTICITY) * ic_energy
         length = _EX85.closed_form_range_km(muon, 10.0**log10_e_thr)
-        radius = light_reach_radius_km(sm.IC_RADIUS_KM, muon, reach_km, sm.REACH_PIVOT_GEV)
+        radius = light_reach_radius_km(sm.IC_RADIUS_KM, muon, reach_km, sm.SITE_FIT_REACH_PIVOT_GEV)
         if naive:
             length, radius = 0.0 * length, sm.IC_RADIUS_KM + 0.0 * radius
         area = mean_projected_area_km2(radius, sm.IC_HEIGHT_KM, 1, sm.IC_SIDE_COEFF)
@@ -217,7 +217,9 @@ def factorized_predictors(trident_log10_e: np.ndarray) -> dict:
             eps_0, log10_e_thr, _, lam, reach_km = theta
             muon = (1.0 - MEAN_INELASTICITY) * energy
             length = _EX85.closed_form_range_km(muon, 10.0**log10_e_thr)
-            radius = light_reach_radius_km(site.radius_km, muon, reach_km, sm.REACH_PIVOT_GEV)
+            radius = light_reach_radius_km(
+                site.radius_km, muon, reach_km, sm.SITE_FIT_REACH_PIVOT_GEV
+            )
             if naive:
                 length, radius = 0.0 * length, site.radius_km + 0.0 * radius
             area = mean_projected_area_km2(

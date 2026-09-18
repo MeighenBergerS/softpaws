@@ -39,8 +39,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize
 
-from softpaws.response import reduced
-from softpaws.response import site_models as sm
+from softpaws._paper import reduced
+from softpaws._paper import site_fit as sm
 from softpaws.transport.source import MEAN_INELASTICITY
 
 _HERE = pathlib.Path(__file__).parent

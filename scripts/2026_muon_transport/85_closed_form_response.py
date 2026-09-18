@@ -17,7 +17,7 @@ band, the multiplicative decomposition into the three restored pieces, the
 one-kernel water range against the running spliced one, the rock factor, and the
 worked value of both responses at 1 PeV. The closed form is rebuilt here
 switch by switch, and with every switch on it reproduces
-:func:`softpaws.response.site_models.icecube_model` to four digits, which the
+:func:`softpaws._paper.site_fit.icecube_model` to four digits, which the
 example asserts.
 
 Usage
@@ -31,9 +31,9 @@ import pathlib
 
 import numpy as np
 
+from softpaws._paper import reduced
+from softpaws._paper import site_fit as sm
 from softpaws.constants import CM_PER_KM
-from softpaws.response import reduced
-from softpaws.response import site_models as sm
 from softpaws.transport.attenuation import flavour_transmission, survival_probability
 from softpaws.transport.coefficients import log_loss_moments
 from softpaws.transport.earth import prem_column
@@ -150,7 +150,7 @@ def response_per_declination(
         else:
             length = closed_form_range_km(muon, e_thr)
             rock = np.ones((ENERGY_GEV.size, muon.shape[1], DEC_DEG.size))
-        radius = light_reach_radius_km(sm.IC_RADIUS_KM, muon, reach_km, sm.REACH_PIVOT_GEV)
+        radius = light_reach_radius_km(sm.IC_RADIUS_KM, muon, reach_km, sm.SITE_FIT_REACH_PIVOT_GEV)
         sigma = sm.tilted_cc(energies, sm.LAMBDA_BGR18)
         cap = (np.pi * radius**2 * length)[:, :, None] * rock * COS_THETA[None, None, :]
         side = (sm.IC_SIDE_COEFF * radius * sm.IC_HEIGHT_KM * length)[:, :, None] \

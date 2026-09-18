@@ -24,7 +24,7 @@ import pathlib
 
 import numpy as np
 
-from softpaws.response import site_models as sm
+from softpaws._paper import site_fit as sm
 from softpaws.transport.attenuation import survival_probability
 from softpaws.transport.earth import prem_column
 

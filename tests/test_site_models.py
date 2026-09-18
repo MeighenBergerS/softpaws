@@ -1,4 +1,4 @@
-"""Tests for the per-site forward models of :mod:`softpaws.response.site_models`.
+"""Tests for the per-site forward models of :mod:`softpaws._paper.site_fit`.
 
 Every pinned number was computed once from the pre-cleanup examples 33 and 56
 at the commit tagged ``pre-cleanup``, at the best-fit points of the cached
@@ -13,8 +13,8 @@ import pathlib
 import numpy as np
 import pytest
 
+from softpaws._paper import site_fit as sm
 from softpaws.detectors import ARCA230, ICECUBE, PONE, TRIDENT
-from softpaws.response import site_models as sm
 
 DATA_DIR = pathlib.Path(__file__).parents[1] / "src" / "softpaws" / "data" / "dataverse_files"
 
@@ -44,7 +44,7 @@ def test_parameter_names_split_into_three_groups():
 def test_pinned_constants():
     assert sm.LAMBDA_BGR18 == 0.4538
     assert sm.LAMBDA_PIVOT_GEV == 1.0e6
-    assert sm.REACH_PIVOT_GEV == 1.0e6
+    assert sm.SITE_FIT_REACH_PIVOT_GEV == 1.0e6
     assert sm.F_TAU == 1.0
     assert sm.REACH_EXAMPLE28_KM == 0.0193
     assert sm.SMEARING_LOG10_E_THR == 2.85

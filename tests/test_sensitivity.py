@@ -9,10 +9,10 @@ point-source ceiling the declination module used to carry on its own.
 import numpy as np
 import pytest
 
+from softpaws._paper import site_fit as sm
 from softpaws.detectors import ARCA230, GVD, ICECUBE, PONE, TRIDENT
 from softpaws.response import declination as dec
 from softpaws.response import sensitivity as sens
-from softpaws.response import site_models as sm
 
 LOG10_E = np.linspace(4.0, 8.0, 17)
 ENERGY = 10.0**LOG10_E

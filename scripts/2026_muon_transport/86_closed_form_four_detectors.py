@@ -33,9 +33,9 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws._paper import reduced
+from softpaws._paper import site_fit as sm
 from softpaws.constants import CM_PER_KM, RHO_WATER_G_CM3
-from softpaws.response import reduced
-from softpaws.response import site_models as sm
 from softpaws.transport.attenuation import survival_probability
 from softpaws.transport.earth import prem_column
 from softpaws.transport.soft_volume import light_reach_radius_km
@@ -91,7 +91,7 @@ def closed_form_water(
 ) -> np.ndarray:
     """Eq. (aeffcf) averaged over a water site's sky, on :data:`sm.ARCA_LOG10_E`.
 
-    The same assembly as :func:`softpaws.response.site_models.water_model`
+    The same assembly as :func:`softpaws._paper.site_fit.water_model`
     with the closed-form pieces in place of the full ones: pure absorption
     for the arrival, the frozen water range capped at the upstream column for
     the length, and no tau channel.
@@ -108,7 +108,7 @@ def closed_form_water(
     length = np.minimum(
         _EX85.closed_form_range_km(muon, threshold)[:, None], muon_column_km[None, :]
     )
-    radius = light_reach_radius_km(site.radius_km, muon, reach_km, sm.REACH_PIVOT_GEV)
+    radius = light_reach_radius_km(site.radius_km, muon, reach_km, sm.SITE_FIT_REACH_PIVOT_GEV)
     area_km2 = sm.water_projected_area_km2(site, theta_deg[None, :], radius[:, None])
     v_det_km3 = site.n_blocks * np.pi * radius**2 * site.height_km
     volume_km3 = area_km2 * length + v_det_km3[:, None]
@@ -145,7 +145,7 @@ def closed_form_trident(theta: np.ndarray, log10_e: np.ndarray, cos_max: float) 
     return np.average(np.array(curves), axis=0, weights=d_cos[rows])
 
 
-def closed_form(detector: sm.Detector, theta: np.ndarray) -> np.ndarray:
+def closed_form(detector: sm.SiteFit, theta: np.ndarray) -> np.ndarray:
     """The closed form on the detector's own grid and sky average."""
     if detector.name == "IceCube":
         return closed_form_icecube(theta)

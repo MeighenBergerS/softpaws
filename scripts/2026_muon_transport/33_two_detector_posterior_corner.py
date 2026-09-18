@@ -78,6 +78,7 @@ import corner
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws._paper import site_fit as site_models
 from softpaws.comparison.likelihood import B_SCALE_MEAN, B_SCALE_STD
 from softpaws.comparison.posterior import (
     credible_interval,
@@ -90,7 +91,6 @@ from softpaws.comparison.posterior import (
     sample_posterior,
 )
 from softpaws.data.published import KM3NET_DIR
-from softpaws.response import site_models
 from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV
 
 _HERE = pathlib.Path(__file__).parent
@@ -104,7 +104,7 @@ _DEFAULT_OUT_DIR = _HERE / "output"
 SITE_COLORS = {"IceCube": "C0", "ARCA230": "C1"}
 
 # ---------------------------------------------------------------------------
-# The model now lives in softpaws.response.site_models. Everything below is
+# The model now lives in softpaws._paper.site_fit. Everything below is
 # re-exported so the sibling examples that load this script by path keep
 # resolving; Phase 3 of the cleanup retires that helper and this block with it.
 # ---------------------------------------------------------------------------
@@ -119,7 +119,7 @@ LABELS = site_models.PARAM_LABELS
 
 LAMBDA_BGR18 = site_models.LAMBDA_BGR18
 LAMBDA_PIVOT_GEV = site_models.LAMBDA_PIVOT_GEV
-REACH_PIVOT_GEV = site_models.REACH_PIVOT_GEV
+REACH_PIVOT_GEV = site_models.SITE_FIT_REACH_PIVOT_GEV
 F_TAU = site_models.F_TAU
 B_SCALE_FLOOR = site_models.B_SCALE_FLOOR
 REACH_EXAMPLE28_KM = site_models.REACH_EXAMPLE28_KM
@@ -148,7 +148,7 @@ ARCA_FIT_BAND = site_models.ARCA_FIT_BAND
 ARCA_N_ZENITH = site_models.ARCA_N_ZENITH
 ARCA_N_RUNG = site_models.ARCA_N_RUNG
 
-Detector = site_models.Detector
+Detector = site_models.SiteFit
 icecube_upgoing = site_models.icecube_upgoing
 arca230_trigger = site_models.arca230_trigger
 icecube_ladders = site_models.icecube_ladders
@@ -188,7 +188,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def check_truncation() -> None:
-    """Print :func:`softpaws.response.site_models.truncation_table`."""
+    """Print :func:`softpaws._paper.site_fit.truncation_table`."""
     print(f"\n{'log10(E_mu)':>12} {'X / L':>7} {'exact':>9} {'closed':>9} {'ratio':>7}")
     for row in site_models.truncation_table():
         print(
@@ -530,7 +530,7 @@ def make_figure(detectors: list[Detector], out_path: pathlib.Path) -> None:
 def build_detectors(data_dir: pathlib.Path) -> list[Detector]:
     """Load both published curves and bind each to its forward model.
 
-    A thin wrapper on :mod:`softpaws.response.site_models` that reports
+    A thin wrapper on :mod:`softpaws._paper.site_fit` that reports
     progress, since the two ladders take a few seconds each.
     """
     start = np.array(

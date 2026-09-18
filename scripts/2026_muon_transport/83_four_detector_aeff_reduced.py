@@ -24,7 +24,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.response import reduced
+from softpaws._paper import reduced
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

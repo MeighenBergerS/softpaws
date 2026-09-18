@@ -53,8 +53,8 @@ import corner
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws._paper import site_fit as site_models
 from softpaws.comparison.posterior import global_compatibility, leave_one_out_compatibility
-from softpaws.response import site_models
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
@@ -78,7 +78,7 @@ SITE_COLORS = {"IceCube": "#7570b3", "ARCA230": "#1b9e77", "P-ONE": "#d95f02",
                "TRIDENT": "#e7298a"}
 
 # ---------------------------------------------------------------------------
-# The water-site model now lives in softpaws.response.site_models. The names
+# The water-site model now lives in softpaws._paper.site_fit. The names
 # below are re-exported so the sibling examples that load this script by path
 # keep resolving; Phase 3 of the cleanup retires that helper and this block.
 # ---------------------------------------------------------------------------
@@ -113,7 +113,7 @@ def parse_args() -> argparse.Namespace:
 def build_detectors(data_dir: pathlib.Path) -> list:
     """Example 33's two detectors plus P-ONE and TRIDENT.
 
-    A thin wrapper on :mod:`softpaws.response.site_models` that reports
+    A thin wrapper on :mod:`softpaws._paper.site_fit` that reports
     progress, since every ladder takes a few seconds.
     """
     detectors = _EX33.build_detectors(data_dir)

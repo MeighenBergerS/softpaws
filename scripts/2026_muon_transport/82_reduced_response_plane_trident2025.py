@@ -24,7 +24,7 @@ import pathlib
 
 import numpy as np
 
-from softpaws.response import reduced
+from softpaws._paper import reduced
 
 _HERE = pathlib.Path(__file__).parent
 _DEFAULT_OUT_DIR = _HERE / "output"
@@ -61,7 +61,7 @@ def trident_2025_detector():
     """The 2025 map's flat-selection cells as one detector, and the cell count.
 
     A thin wrapper on
-    :func:`softpaws.response.reduced.trident_2025_detector`.
+    :func:`softpaws._paper.reduced.trident_2025_detector`.
     """
     return reduced.trident_2025_detector(COS_MAX, LOG10_E_MIN)
 

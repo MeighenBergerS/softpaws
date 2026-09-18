@@ -13,7 +13,7 @@ parameter vector, :data:`PARAM_NAMES`:
     Effective log-log slope of the charged-current cross section.
 ``reach_km``
     Light reach, as the extra radius the body gains per e-fold of muon
-    energy above :data:`REACH_PIVOT_GEV`.
+    energy above :data:`SITE_FIT_REACH_PIVOT_GEV`.
 
 The first two and the last are instrument numbers, the middle two are
 properties of the loss kernel and of the Earth. Two independent fits
@@ -72,7 +72,7 @@ from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
 
 from ..constants import CM_PER_KM, PUBLISHED_WATER_LOG10_E, RHO_WATER_G_CM3
-from .published import (
+from ..response.published import (
     PUBLISHED_SKY,
     TRIDENT_BAND_WEIGHTS,
     arca230_trigger,
@@ -120,10 +120,10 @@ __all__ = [
     "PRIORS",
     "PUBLISHED_SKY",
     "REACH_EXAMPLE28_KM",
-    "REACH_PIVOT_GEV",
+    "SITE_FIT_REACH_PIVOT_GEV",
     "SMEARING_LOG10_E_THR",
     "TRIDENT_BAND_WEIGHTS",
-    "Detector",
+    "SiteFit",
     "WaterSite",
     "arca230_trigger",
     "arca_columns",
@@ -195,7 +195,7 @@ LAMBDA_PIVOT_GEV = 1.0e6
 #: ``eps_0`` carries the normalization and ``reach_km`` carries only the shape.
 #: The same value at every site, without which two ``Lambda`` marginals would
 #: not be on the same footing even as marginals.
-REACH_PIVOT_GEV = 1.0e6
+SITE_FIT_REACH_PIVOT_GEV = 1.0e6
 
 #: Tau-neutrino fraction of the astrophysical flux, fixed by oscillations over
 #: astrophysical baselines and so not a fit parameter.
@@ -490,7 +490,9 @@ def icecube_model(
         length = stochastic_muon_range_km(
             muon_energy.ravel(), threshold, b_scale=b_scale
         ).reshape(muon_energy.shape)
-        radius = light_reach_radius_km(IC_RADIUS_KM, muon_energy, reach_km, REACH_PIVOT_GEV)
+        radius = light_reach_radius_km(
+            IC_RADIUS_KM, muon_energy, reach_km, SITE_FIT_REACH_PIVOT_GEV
+        )
         sigma = tilted_cc(energies, lam)
         # Each geometry term carries its own declination average; see
         # icecube_ladders. V_det is isotropic and rides on the plain one.
@@ -881,7 +883,9 @@ def water_model(
             )
             * rock
         )
-        radius = light_reach_radius_km(site.radius_km, muon_energy, reach_km, REACH_PIVOT_GEV)
+        radius = light_reach_radius_km(
+            site.radius_km, muon_energy, reach_km, SITE_FIT_REACH_PIVOT_GEV
+        )
         area_km2 = water_projected_area_km2(site, theta_deg[None, None, :], radius[:, :, None])
         v_det_km3 = site.n_blocks * np.pi * radius**2 * site.height_km
         volume_km3 = area_km2 * length + v_det_km3[:, :, None]
@@ -929,7 +933,7 @@ def arca_model(
 
 
 @dataclass
-class Detector:
+class SiteFit:
     """One detector's published curve, forward model, priors and results.
 
     Attributes
@@ -993,7 +997,7 @@ def default_start() -> np.ndarray:
 
 def build_icecube_detector(
     data_dir: pathlib.Path, start: np.ndarray | None = None
-) -> Detector:
+) -> SiteFit:
     """IceCube's upgoing DR2 table bound to :func:`icecube_model`.
 
     Parameters
@@ -1005,13 +1009,13 @@ def build_icecube_detector(
 
     Returns
     -------
-    detector : Detector
+    detector : SiteFit
         IceCube, at analysis level, with its transmission ladders bound in.
     """
     observed = icecube_upgoing(data_dir)
     mask = (IC_LOG10_E >= IC_FIT_BAND[0]) & (IC_LOG10_E <= IC_FIT_BAND[1])
     ladders = icecube_ladders()
-    return Detector(
+    return SiteFit(
         name="IceCube",
         log10_e=IC_LOG10_E,
         observed=observed,
@@ -1023,7 +1027,7 @@ def build_icecube_detector(
     )
 
 
-def build_arca_detector(start: np.ndarray | None = None) -> Detector:
+def build_arca_detector(start: np.ndarray | None = None) -> SiteFit:
     """ARCA230's trigger-level curve bound to :func:`arca_model`.
 
     Parameters
@@ -1033,7 +1037,7 @@ def build_arca_detector(start: np.ndarray | None = None) -> Detector:
 
     Returns
     -------
-    detector : Detector
+    detector : SiteFit
         ARCA230, at trigger level, with its transmission ladders bound in.
     """
     observed = arca230_trigger()
@@ -1044,7 +1048,7 @@ def build_arca_detector(start: np.ndarray | None = None) -> Detector:
     )
     zenith_weights, neutrino_column, muon_column_km = arca_columns()
     ladders = arca_ladders(neutrino_column)
-    return Detector(
+    return SiteFit(
         name="ARCA230",
         log10_e=ARCA_LOG10_E,
         observed=observed,
@@ -1062,7 +1066,7 @@ def build_water_detector(
     site: WaterSite,
     start: np.ndarray | None = None,
     observed: np.ndarray | None = None,
-) -> Detector:
+) -> SiteFit:
     """One water site's published sky average bound to :func:`water_model`.
 
     Parameters
@@ -1077,7 +1081,7 @@ def build_water_detector(
 
     Returns
     -------
-    detector : Detector
+    detector : SiteFit
         The site, with its columns and transmission ladders bound in.
     """
     if observed is None:
@@ -1091,7 +1095,7 @@ def build_water_detector(
     ladders = water_ladders(site, neutrino_column)
     priors = dict(PRIORS["ARCA230"])
     priors["reach_km"] = site.reach_prior
-    return Detector(
+    return SiteFit(
         name=site.name,
         log10_e=ARCA_LOG10_E,
         observed=observed,
@@ -1107,7 +1111,7 @@ def build_water_detector(
 
 def build_detectors(
     data_dir: pathlib.Path, start: np.ndarray | None = None
-) -> list[Detector]:
+) -> list[SiteFit]:
     """The two reference sites, IceCube and ARCA230.
 
     The two curves are deliberately not at the same selection level. IceCube is
@@ -1125,7 +1129,7 @@ def build_detectors(
 
     Returns
     -------
-    detectors : list of Detector
+    detectors : list of SiteFit
         IceCube first, then ARCA230.
     """
     return [build_icecube_detector(data_dir, start), build_arca_detector(start)]
@@ -1133,7 +1137,7 @@ def build_detectors(
 
 def build_four_detectors(
     data_dir: pathlib.Path, start: np.ndarray | None = None
-) -> list[Detector]:
+) -> list[SiteFit]:
     """The two reference sites plus P-ONE and TRIDENT.
 
     Parameters
@@ -1145,7 +1149,7 @@ def build_four_detectors(
 
     Returns
     -------
-    detectors : list of Detector
+    detectors : list of SiteFit
         IceCube, ARCA230, P-ONE, TRIDENT.
     """
     detectors = build_detectors(data_dir, start)

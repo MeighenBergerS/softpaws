@@ -25,7 +25,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from softpaws.response import reduced
+from softpaws._paper import reduced
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
@@ -45,7 +45,7 @@ _EX56 = _EX77._EX56
 _EX33 = _EX77._EX33
 
 # ---------------------------------------------------------------------------
-# The map model now lives in softpaws.response.reduced. The names below are
+# The map model now lives in softpaws._paper.reduced. The names below are
 # re-exported so the sibling examples that load this script by path keep
 # resolving; Phase 3 of the cleanup retires that helper and this block.
 # ---------------------------------------------------------------------------

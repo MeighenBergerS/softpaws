@@ -40,7 +40,7 @@ calculation of Palmisano et al. (arXiv:2607.13143) is covered separately in
 | Two-channel rate with `B_τ→μ M(A) V_τ` (Sec. III.C, `eq:totalrate`) and the tau's regenerating Earth transmission (Sec. III.D) | `response.effective_area.ic_effective_area_tau_channel`, `arca_effective_area` with `flavour="tau"`, `transport.attenuation.flavour_transmission` |
 | Regeneration ladder `dφ_k/dX = -N_A σ_tot(E_k) φ_k + N_A σ_NC(E_{k-1}) φ_{k-1}` (Sec. III.D, `eq:ladder`) | `transport.attenuation.regenerated_transmission` (one diagonalization, evaluated at every column) |
 | Reach ansatz `R_eff(E) = max[0, R_det + Λ ln(E/E_piv)]` (Sec. III.B, `eq:reach`) | `transport.soft_volume.light_reach_radius_km`, fitted in `response.reduced.fit` and predicted from the optics in `response.light_reach` (App. B.1) |
-| Tabulated effective area `A_eff(E_ν, Ω) = n_N Σ_k w_k σ_CC(E_k) [A_proj L(E_k) + V_det]` (Sec. IV, `eq:aeff`) and its one-line form (Sec. IV.C, `eq:recipe`) | `response.effective_area.ic_effective_area_regenerated`, `arca_effective_area`, `response.site_models`, `response.reduced` (two instrument numbers per site), `response.first_principles` (reach derived, nothing fitted) |
+| Tabulated effective area `A_eff(E_ν, Ω) = n_N Σ_k w_k σ_CC(E_k) [A_proj L(E_k) + V_det]` (Sec. IV, `eq:aeff`) and its one-line form (Sec. IV.C, `eq:recipe`) | `response.effective_area.ic_effective_area_regenerated`, `arca_effective_area`, `_paper.site_fit` (private), `_paper.reduced` (private) (two instrument numbers per site), `response.first_principles` (reach derived, nothing fitted) |
 | Point-source limit `φ_0^lim(δ) = N_lim / (T ∫ dE A_eff (E/E_piv)^{-γ})` with the Feldman-Cousins average over background-only outcomes (Sec. V.A, `eq:pslim`) | `response.sensitivity.power_law_sensitivity`, `sensitivity_upper_limit`, `optimized_window_sensitivity` |
 | Potential density with transform `1/Φ(s)` (Sec. V.B, App. A.2, `eq:potential`) | `comparison.event_energy.potential_density`, `energy_posterior` |
 
@@ -234,10 +234,10 @@ re-exported by `transport.attenuation`) is the column the regeneration ladder
 | Sec. II.D, App. A.3 (drift-diffusion expansion as a limit, identities, `A_die`) | Implemented and reproduced numerically (`phi_fokker_planck`, `phi_drift`, `soft_volume_drift`), see §1 above and [the transport-exponent notes](exact_soft_volume.md) §8 |
 | Sec. II.E, II.F, App. A.2 (range to threshold, running kernel, splice, two media, variance, validation against PROPOSAL) | Implemented (`transport.muon_range`, `transport.coefficients.log_loss_moments`). The PROPOSAL range comparison is `scripts/2026_muon_transport/39_range_moment_estimator.py`. |
 | Sec. III.A (effective volume, `R_ν`) | Implemented as printed ("Form C", §2.1) |
-| Sec. III.B, App. B.1 (reach ansatz, predicted from the optics) | Implemented (`transport.soft_volume.light_reach_radius_km`, `response.light_reach`, `response.reduced`) |
+| Sec. III.B, App. B.1 (reach ansatz, predicted from the optics) | Implemented (`transport.soft_volume.light_reach_radius_km`, `response.light_reach`, `_paper.reduced` (private)) |
 | Sec. III.C, App. A.4 (tau-induced tracks) | Implemented (`transport.tau`, `response.effective_area.ic_effective_area_tau_channel`, `arca_effective_area`) |
 | Sec. III.D (regeneration ladder, flavour transmission) | Implemented (`transport.attenuation.regenerated_transmission`, `flavour_transmission`) |
-| Sec. IV, IV.C, App. B (tabulated effective areas, two instrument numbers per site, one-line response) | Implemented (`response.effective_area`, `response.site_models`, `response.reduced`, `response.first_principles`, `detectors`) |
+| Sec. IV, IV.C, App. B (tabulated effective areas, two instrument numbers per site, one-line response) | Implemented (`response.effective_area`, `_paper.site_fit` (private), `_paper.reduced` (private), `response.first_principles`, `detectors`) |
 | Sec. IV.A (loss-model error budget) | Implemented (`transport.loss_ensemble`) |
 | Sec. IV.B, IV.D, App. C (declination bands, the event sample) | Implemented (`response.declination`, `response.irfs`, `comparison.rates`, `comparison.events`), with scripts 46, 74 and 76 |
 | Sec. V.A, App. C.1 (point-source limit) | Implemented (`response.sensitivity`), with script 84 |

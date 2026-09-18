@@ -25,7 +25,7 @@ UNIT_SUFFIX = re.compile(
 )
 
 #: Known N4 offenders: public names plus ``name(argument)`` pairs. Lower it as they go.
-SUFFIXED_COUNT = 259
+SUFFIXED_COUNT = 244
 
 #: A6: where literal numbers may live besides ``constants.py``. The paper's
 #: tuning under ``_paper/`` is exempt too.
@@ -37,7 +37,7 @@ A6_EXEMPT = {
 }
 
 #: Known A6 offenders: literal numbers defined anywhere else. Lower it as they go.
-LOOSE_NUMBER_COUNT = 13
+LOOSE_NUMBER_COUNT = 0
 
 #: A1: the top level holds the names a typical analysis needs, and no more.
 MAX_TOP_LEVEL = 20
@@ -62,11 +62,7 @@ LONG_SUMMARY = {
 }
 
 #: Known N5 offenders. Rename or make private, then delete it here.
-JARGON_NAMES = {
-    "softpaws.response.arca_ladders",
-    "softpaws.response.icecube_ladders",
-    "softpaws.response.water_ladders",
-}
+JARGON_NAMES: set[str] = set()
 
 
 def public_objects():
