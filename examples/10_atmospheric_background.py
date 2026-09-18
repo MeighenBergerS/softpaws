@@ -16,10 +16,10 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import SECONDS_PER_YEAR
 from softpaws.detectors import ICECUBE
 from softpaws.fluxes import ICECUBE_TRACKS_2022, SHIPPED_TABLE, AtmosphericFlux, load_mceq_table
 from softpaws.response import sky_averaged_effective_area_cm2
-from softpaws.utils.constants import SECONDS_PER_YEAR
 
 OUT = Path(__file__).parent / "output"
 STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX

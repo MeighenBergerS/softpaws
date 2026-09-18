@@ -52,7 +52,8 @@ from softpaws.transport.muon_range import (
 from softpaws.transport.soft_volume import eroded_prism_target_km2
 from softpaws.transport.source import mean_inelasticity, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM, M_PER_KM, RHO_WATER_G_CM3
+
+from ..constants import CM_PER_KM, M_PER_KM, RHO_WATER_G_CM3
 
 __all__ = [
     "ANCHORS",

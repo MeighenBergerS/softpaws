@@ -26,7 +26,14 @@ import functools
 import numpy as np
 from scipy.special import gammainc, polygamma
 
-from ..utils.constants import RHO_WATER_G_CM3
+from ..constants import (
+    _CSDA_NODES_PER_DECADE,
+    _CURVE_LOG10_HI,
+    _CURVE_LOG10_LO,
+    DEFAULT_IONIZATION_MATCH_GEV,
+    DEFAULT_MUON_THRESHOLD_GEV,
+    RHO_WATER_G_CM3,
+)
 from .coefficients import (
     DEFAULT_SOURCE,
     critical_energy_gev,
@@ -48,20 +55,6 @@ __all__ = [
     "two_medium_muon_range_km",
     "two_medium_range_ratio",
 ]
-
-# Muon energy below which a track no longer passes an IceCube-like through-going
-# selection. Used as the lower limit of the muon range in
-# :func:`range_target_volume_km3`; the resulting volume depends on it only
-# logarithmically.
-DEFAULT_MUON_THRESHOLD_GEV = 1.0e3
-
-# Matching energy between the two regimes of :func:`stochastic_muon_range_km`:
-# radiative and stochastic above, deterministic and ionizing below. It has to sit
-# well above the critical energy ``E_c ~ 600`` GeV, where the scale-invariant
-# kernel that the first-passage derivation assumes stops describing the losses,
-# and low enough that the radiative treatment still covers most of the range.
-# 10 TeV is 17 E_c and leaves one decade to the default threshold.
-DEFAULT_IONIZATION_MATCH_GEV = 1.0e4
 
 
 def muon_range_km(
@@ -159,25 +152,6 @@ def _log_loss_moments_at(
     d_mu = diffusion_coefficient(energy_gev, density_g_cm3, source)
     kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
     return kappa * polygamma(1, p + 1.0), -kappa * polygamma(2, p + 1.0)
-
-
-#: Energy span of the cached depth curves [log10 GeV]. The lower edge sits
-#: below any threshold ever asked for and the upper one above the ``10^12``
-#: bracket of :func:`_near_entry_energy_gev`, so every descent is a difference
-#: of two points inside the span. Widening it does not move a single value,
-#: since the node spacing is fixed at ``1 / nodes_per_decade`` and not by the
-#: endpoints.
-_CURVE_LOG10_LO = 0.0
-_CURVE_LOG10_HI = 15.0
-
-#: Lattice density of the deterministic curve. The radiative one takes its own
-#: from ``running_nodes_per_decade``, whose integrand ``1 / Phi'(0; E)`` is
-#: nearly flat in ``lnE``. This one is not: ``E / (a_mu + b_mu E)`` rises
-#: exponentially in ``lnE`` below the critical energy and flattens above it, so
-#: it wants the finer lattice. At this density the deterministic range is
-#: converged to 5e-7, which the earlier grid -- refined to the span of each
-#: descent and so finest close to threshold -- reached only to 3e-5.
-_CSDA_NODES_PER_DECADE = 3072
 
 
 @functools.lru_cache(maxsize=32)

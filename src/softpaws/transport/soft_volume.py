@@ -59,7 +59,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..utils.constants import RHO_WATER_G_CM3
+from ..constants import RHO_WATER_G_CM3
 from .coefficients import (
     DEFAULT_SOURCE,
     critical_energy_gev,

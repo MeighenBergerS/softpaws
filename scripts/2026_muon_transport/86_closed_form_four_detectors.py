@@ -33,13 +33,13 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import CM_PER_KM, RHO_WATER_G_CM3
 from softpaws.response import reduced
 from softpaws.response import site_models as sm
 from softpaws.transport.attenuation import survival_probability
 from softpaws.transport.earth import prem_column
 from softpaws.transport.soft_volume import light_reach_radius_km
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

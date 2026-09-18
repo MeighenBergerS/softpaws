@@ -6,6 +6,7 @@ import pathlib
 import numpy as np
 import pytest
 
+from softpaws.constants import CM_PER_KM
 from softpaws.detectors import (
     ARCA21,
     ARCA230,
@@ -18,7 +19,6 @@ from softpaws.detectors import (
     Site,
     get_site,
 )
-from softpaws.utils.constants import CM_PER_KM
 
 GEOMETRY = json.loads(
     (pathlib.Path(__file__).parent / "regression" / "baseline.json").read_text()

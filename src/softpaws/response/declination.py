@@ -30,6 +30,19 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+from ..constants import (
+    CM_PER_KM,
+    COMMON_LOG10_E,
+    DEFAULT_EMIN_GEV,
+    N_COS_THETA,
+    N_HOUR_ANGLE,
+    N_RUNG,
+    N_SUB_BAND,
+    REACH_FRACTIONS,
+    REACH_PIVOT_GEV,
+    REACH_REFERENCE_GEV,
+    RUNG_DECADES,
+)
 from ..detectors import Optics, Site
 from ..transport.attenuation import flavour_transmission, regenerated_transmission
 from ..transport.cross_section import CrossSection
@@ -42,7 +55,6 @@ from ..transport.muon_range import (
 from ..transport.soft_volume import eroded_prism_target_km2, light_reach_radius_km
 from ..transport.source import MEAN_INELASTICITY, mean_inelasticity, nucleon_number_density
 from ..transport.tau import BR_TAU_TO_MU, MEAN_Z
-from ..utils.constants import CM_PER_KM
 from .effective_area import default_cross_section
 from .first_principles import column_profile, rock_range_ratio
 from .light_reach import effective_body_km
@@ -83,30 +95,6 @@ __all__ = [
     "polar_band_directions",
     "zenith_band_weights",
 ]
-
-#: Neutrino energies every curve here is returned on [log10 GeV].
-COMMON_LOG10_E = np.linspace(3.0, 8.0, 26)
-
-#: Directions sampled inside each published declination band.
-N_SUB_BAND = 5
-
-#: Zenith bands a source's daily sweep is histogrammed into.
-N_COS_THETA = 180
-
-#: Hour angles sampled over a sidereal day.
-N_HOUR_ANGLE = 192
-
-#: Rungs of the neutral-current regeneration ladder, and the decades it spans.
-N_RUNG = 32
-RUNG_DECADES = 4.0
-
-#: Bottom of the analysis window [GeV]. This is what decides whether a
-#: sensitivity carries declination information: raise it and the Earth-absorbed
-#: high-energy end, where the declination dependence lives, is all that is left.
-DEFAULT_EMIN_GEV = 1.0e5
-
-#: Energy at which a fitted light reach vanishes [GeV].
-REACH_PIVOT_GEV = 10.0**9.67
 
 
 def directional_effective_area_cm2(
@@ -270,16 +258,6 @@ def sky_averaged_effective_area_cm2(
         site, np.cos(np.deg2rad(theta_deg)), threshold_gev, **kwargs
     )
     return per_direction @ weights
-
-
-#: Effective radius at :data:`REACH_REFERENCE_GEV` that :func:`fit_light_reach`
-#: scans, as a fraction of the instrumented footprint radius. The range covers
-#: a detector that responds to two thirds of its footprint at 1 PeV and one
-#: that already responds past it.
-REACH_FRACTIONS = np.linspace(0.6, 1.2, 13)
-
-#: Energy the scanned fraction is quoted at [GeV].
-REACH_REFERENCE_GEV = 1.0e6
 
 
 def fit_light_reach(

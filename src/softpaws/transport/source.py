@@ -12,19 +12,14 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..utils.constants import AVOGADRO_PER_MOL, RHO_WATER_G_CM3
-
-# UHE CC cross-section power law, sigma_CC = sigma0 (E / E0)^lambda
-# (Palmisano et al., arXiv:2607.13143, Eq. 2.5). sigma0 matches the MadGraph result at E0 = 10 PeV
-# with the default LHAPDF set; lambda ~ 0.4 follows the small-x PDF behaviour.
-SIGMA0_CM2 = 1.48e-33
-E0_CROSS_GEV = 1.0e7  # 10 PeV
-DEFAULT_LAMBDA = 0.4
-
-# Average CC (DIS) inelasticity <y_w>; near-elastic at UHE (Section 2.3). This is
-# the asymptotic value, reached above ~10 PeV; use mean_inelasticity() wherever
-# the answer is wanted over a range of energies.
-MEAN_INELASTICITY = 0.2
+from ..constants import (
+    AVOGADRO_PER_MOL,
+    DEFAULT_LAMBDA,
+    E0_CROSS_GEV,
+    MEAN_INELASTICITY,
+    RHO_WATER_G_CM3,
+    SIGMA0_CM2,
+)
 
 # Mean CC inelasticity against energy, <y_w>(E), for nu_N. Tabulated from Gandhi,
 # Quigg, Reno and Sarcevic, Phys. Rev. D 58 (1998) 093009 [hep-ph/9807264],

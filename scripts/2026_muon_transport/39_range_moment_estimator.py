@@ -92,6 +92,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import CM_PER_KM, RHO_WATER_G_CM3
 from softpaws.transport.coefficients import (
     diffusion_coefficient,
     drift_coefficient,
@@ -99,7 +100,6 @@ from softpaws.transport.coefficients import (
     proposal_loss_spectrum,
     proposal_parametrizations,
 )
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
@@ -344,7 +344,7 @@ def propagate_to_energy(
     fixed in energy rather than as a fraction of the production energy, so that
     the whole scan stays in the radiative regime. PROPOSAL reports the
     propagated distance in cm of its own medium, converted here to km of water
-    equivalent at :data:`~softpaws.utils.constants.RHO_WATER_G_CM3` so that the
+    equivalent at :data:`~softpaws.constants.RHO_WATER_G_CM3` so that the
     result is directly comparable to kernel moments in km^-1.
 
     Parameters

@@ -27,12 +27,9 @@ from collections.abc import Callable, Sequence
 
 import numpy as np
 
+from ..constants import _BISECTION_STEPS
 from ..data.container import EventSet
 from ..response.irfs import EffectiveArea, SmearingMatrix
-
-# Bisection steps used by fit_scale_factor_with_background. Each step halves the
-# bracket, so this reaches the floating-point resolution of the upper bound.
-_BISECTION_STEPS = 80
 
 
 def observed_counts(

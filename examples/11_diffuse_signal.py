@@ -17,6 +17,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import SECONDS_PER_YEAR
 from softpaws.detectors import ARCA230, ICECUBE, PONE, TRIDENT
 from softpaws.fluxes import ICECUBE_TRACKS_2022
 from softpaws.response import (
@@ -26,7 +27,6 @@ from softpaws.response import (
     single_event_sensitivity,
     sky_averaged_effective_area_cm2,
 )
-from softpaws.utils.constants import SECONDS_PER_YEAR
 
 OUT = Path(__file__).parent / "output"
 STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX

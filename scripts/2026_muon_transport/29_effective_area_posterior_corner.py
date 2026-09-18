@@ -89,6 +89,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from softpaws.comparison.likelihood import B_SCALE_MEAN, B_SCALE_STD
+from softpaws.constants import CM_PER_KM
 from softpaws.data.icecube import (
     livetime_weighted_effective_area,
 )
@@ -98,7 +99,6 @@ from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, stochastic
 from softpaws.transport.soft_volume import light_reach_radius_km
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

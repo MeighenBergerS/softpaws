@@ -27,7 +27,7 @@ from typing import Any
 
 import numpy as np
 
-from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
+from ..constants import CM_PER_KM, E_GRID, N_MOMENTS, RHO_WATER_G_CM3
 from .coefficients import KernelScaling, loss_spectrum_y_grid, proposal_parametrizations
 
 __all__ = [
@@ -45,12 +45,6 @@ __all__ = [
 
 logger = logging.getLogger(__name__)
 
-#: Energy grid of the budget [GeV], the shipped table's range.
-E_GRID = np.logspace(2.0, 10.0, 33)
-
-#: Moment orders kept: the first log-loss moment (the drift, the
-#: energy-reconstruction scale) and the second (the fluctuation scale).
-N_MOMENTS = 2
 
 #: Variant label -> (channel it swaps, name of the parametrization).
 #: Constructors live in :func:`variant_parametrization` to keep the PROPOSAL

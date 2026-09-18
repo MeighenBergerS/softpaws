@@ -10,6 +10,7 @@ arXiv:2607.13143).
 import numpy as np
 import pytest
 
+from softpaws.constants import AVOGADRO_PER_MOL, CM_PER_KM, RHO_WATER_G_CM3
 from softpaws.response.soft_volume import (
     FLUX_PIVOT_GEV,
     GAMMA_EFF_BOUNDS,
@@ -25,7 +26,6 @@ from softpaws.transport.source import (
     cc_cross_section,
     nucleon_number_density,
 )
-from softpaws.utils.constants import AVOGADRO_PER_MOL, CM_PER_KM, RHO_WATER_G_CM3
 
 GAMMA_IC = 2.38
 PHI0_IC = 0.63

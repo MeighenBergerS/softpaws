@@ -3,8 +3,8 @@
 import numpy as np
 import pytest
 
+from softpaws.constants import CM_PER_KM, EARTH_RADIUS_KM
 from softpaws.transport import attenuation, earth
-from softpaws.utils.constants import CM_PER_KM, EARTH_RADIUS_KM
 
 
 def test_reexports_survive():

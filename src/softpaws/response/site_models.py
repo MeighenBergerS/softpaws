@@ -70,7 +70,8 @@ from softpaws.transport.muon_range import (
 from softpaws.transport.soft_volume import light_reach_radius_km
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
+
+from ..constants import CM_PER_KM, RHO_WATER_G_CM3
 
 __all__ = [
     "ARCA230_WATER_SITE",

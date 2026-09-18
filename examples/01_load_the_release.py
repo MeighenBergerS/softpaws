@@ -14,6 +14,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import SECONDS_PER_YEAR
 from softpaws.data import (
     IC86_SEASONS,
     dr2_dir,
@@ -22,7 +23,6 @@ from softpaws.data import (
     load_events,
     total_livetime_s,
 )
-from softpaws.utils.constants import SECONDS_PER_YEAR
 
 OUT = Path(__file__).parent / "output"
 STYLE = [Path(__file__).parents[1] / "styles" / name  # the paper's style, without LaTeX

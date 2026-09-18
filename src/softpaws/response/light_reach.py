@@ -44,7 +44,20 @@ from scipy.special import gammainc
 from softpaws.detectors import ANCHOR_NM, Optics
 from softpaws.transport.coefficients import drift_coefficient
 from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV
-from softpaws.utils.constants import M_PER_KM, RHO_WATER_G_CM3
+
+from ..constants import (
+    _D_STEP,
+    _HIT_DISTANCE_M,
+    _REACH_OFFSET_M,
+    DEFAULT_MIN_MODULES,
+    EM_TRACK_LENGTH_M_PER_GEV,
+    FINE_STRUCTURE,
+    HLC_PARTNERS,
+    M_PER_KM,
+    PROJECTED_FRACTION,
+    RHO_WATER_G_CM3,
+    WAVELENGTH_NM,
+)
 
 __all__ = [
     "DEFAULT_MIN_MODULES",
@@ -68,40 +81,6 @@ __all__ = [
     "muon_threshold_gev",
     "reach_offset_m",
 ]
-
-#: Fine-structure constant, for the Frank-Tamm yield.
-FINE_STRUCTURE = 7.2973525693e-3
-
-#: Wavelengths every optical integral runs over [nm]. Wide enough that the
-#: photocathode and the medium, not the grid, decide where the band ends.
-WAVELENGTH_NM = np.linspace(280.0, 680.0, 201)
-
-#: Charged track length in an electromagnetic shower [m GeV^-1], at water
-#: density. Paired with the water-density ``b_mu`` in
-#: :func:`brightness_factor`, so the product that enters the yield is density
-#: independent.
-EM_TRACK_LENGTH_M_PER_GEV = 4.0
-
-#: Coincidence partners of a single-PMT module: IceCube's HLC accepts the
-#: nearest or next-to-nearest neighbour on the same string, up or down. Part of
-#: the trigger definition, and a count, so it is not a tunable.
-HLC_PARTNERS = 4
-
-#: Modules that must register a coincident hit for the track to count. A hit is
-#: a local coincidence, an HLC pair at IceCube or two photomultipliers of one
-#: module at KM3NeT, with each receiver firing on one photoelectron at Poisson
-#: probability (:func:`hit_probability`); what a trigger then demands is a
-#: multiplicity, and IceCube's simple-majority trigger asks for eight.
-#: Everything else the condition needs is a published instrument number: the
-#: module density, the photocathode area, the efficiency curve and the medium's
-#: optics. See :func:`hit_count`.
-DEFAULT_MIN_MODULES = 8.0
-
-#: Fraction of its photocathode area a module presents to an arriving photon.
-#: A sphere uniformly covered with photocathode of area ``A`` presents ``A / 4``
-#: from every direction; a single flat photomultiplier facing one hemisphere
-#: with cosine acceptance averages to the same quarter over the full sky.
-PROJECTED_FRACTION = 0.25
 
 
 # ---------------------------------------------------------------------------
@@ -311,26 +290,12 @@ def module_charge_pe(
     return geometry * collected * brightness_factor(energy_gev)
 
 
-#: Distances the one-photoelectron radius is tabulated on [m], log spaced so the
-#: inversion stays accurate over the four decades of brightness in play.
-_HIT_DISTANCE_M = np.logspace(-1.0, 3.2, 400)
-
-#: Signed offsets the mean hit count is tabulated on [m], for the inversion in
-#: :func:`reach_offset_m`. The positive end comfortably exceeds any reach in
-#: play; the negative end only has to cover the interpolation edge, since a
-#: track the condition wants *inside* the array is handled by the multiplicity
-#: weight of :func:`effective_body_km` and the offset is clipped at zero.
-_REACH_OFFSET_M = np.linspace(-100.0, 1200.0, 261)
-
 #: The wedge kernel of :func:`hit_count` on that offset grid,
 #: ``2 d arccos(clip(x / d))``, tabulated once: the mean count at every offset
 #: is then one matrix product with the hit probabilities.
 _REACH_KERNEL = 2.0 * _HIT_DISTANCE_M[:, None] * np.arccos(
     np.clip(_REACH_OFFSET_M[None, :] / _HIT_DISTANCE_M[:, None], -1.0, 1.0))
 
-#: Trapezoid quadrature weights of the distance grid, so the count integrals
-#: reduce to matrix products against :data:`_REACH_KERNEL`.
-_D_STEP = np.diff(_HIT_DISTANCE_M)
 _D_TRAPZ = np.concatenate(
     [[0.5 * _D_STEP[0]], 0.5 * (_D_STEP[:-1] + _D_STEP[1:]), [0.5 * _D_STEP[-1]]])
 

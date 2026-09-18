@@ -64,10 +64,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize_scalar
 
+from softpaws.constants import CM_PER_KM
 from softpaws.transport.muon_range import stochastic_muon_range_km
 from softpaws.transport.soft_volume import light_reach_radius_km, prism_projected_area_km2
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
-from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

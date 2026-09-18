@@ -69,15 +69,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..utils.constants import C_KM_PER_S, M_TAU_GEV, RHO_WATER_G_CM3, TAU_LIFETIME_S
+from ..constants import BR_TAU_TO_MU, C_KM_PER_S, M_TAU_GEV, MEAN_Z, RHO_WATER_G_CM3, TAU_LIFETIME_S
 from .eigenvalue import phi_eigenvalue_at_energy, phi_symbol, two_moment_loss_spectrum
-
-# tau -> mu nu_mu nu_tau branching ratio (PDG).
-BR_TAU_TO_MU = 0.1739
-
-# <z> of the polarized tau -> mu decay spectrum (see decay_spectrum), exact:
-# z_moment(1) = 1/6 + 2/15 = 3/10.
-MEAN_Z = 0.3
 
 
 def decay_spectrum(z: float | np.ndarray) -> np.ndarray:

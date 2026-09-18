@@ -12,6 +12,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from ..constants import FLUX_PIVOT_GEV, FLUX_UNIT
+
 __all__ = [
     "FLUX_PIVOT_GEV",
     "FLUX_UNIT",
@@ -26,12 +28,6 @@ __all__ = [
     "broken_power_law_shape",
     "power_law_flux",
 ]
-
-#: Pivot energy of every normalization here [GeV].
-FLUX_PIVOT_GEV = 1.0e5
-
-#: Unit of the normalizations, ``1e-18 GeV^-1 cm^-2 s^-1 sr^-1``.
-FLUX_UNIT = 1.0e-18
 
 
 def power_law_flux(

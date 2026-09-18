@@ -65,6 +65,7 @@ from functools import partial
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import RHO_WATER_G_CM3
 from softpaws.transport.coefficients import (
     diffusion_coefficient,
     drift_coefficient,
@@ -77,7 +78,6 @@ from softpaws.transport.eigenvalue import (
     phi_fokker_planck,
     two_moment_loss_spectrum,
 )
-from softpaws.utils.constants import RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

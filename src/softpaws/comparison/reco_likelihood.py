@@ -45,6 +45,21 @@ from softpaws.fluxes import (
     load_mceq_table,
 )
 
+from ..constants import (
+    FC_R_SCAN,
+    FC_R_TRUE,
+    LOG10_E_GRID,
+    MODEL_SYS,
+    N_MU_GRID,
+    N_TAU_GRID,
+    PHI_MU_GRID,
+    PHI_TAU_GRID,
+    PHI_TAU_SCAN,
+    R_GRID,
+    RECO_EDGES,
+    TAU_DECAY_X,
+)
+
 __all__ = [
     "ANCHORS",
     "CHANNELS",
@@ -90,17 +105,8 @@ logger = logging.getLogger(__name__)
 PIVOT_PHI0 = ICECUBE_COMBINED_2023.phi0 * FLUX_UNIT
 PIVOT_GAMMA = ICECUBE_COMBINED_2023.gamma
 
-#: Reconstructed-energy grid the fold projects onto, and the window the fit
-#: uses. The grid is wider than the window so the fold conserves counts.
-RECO_EDGES = np.arange(1.0, 8.51, 0.25)
 FIT_RECO = (4.25, 7.5)
 
-#: Fractional model-shape systematic per bin. The percent-level residuals of
-#: the folded model would otherwise dominate the likelihood through the
-#: highest-statistics atmospheric bins; each bin's deviance is scaled by
-#: ``1 + (MODEL_SYS^2) mu``, which de-weights exactly those bins and leaves
-#: the Poisson-limited tail untouched.
-MODEL_SYS = 0.10
 
 #: Gaussian priors on the atmospheric normalizations, the standard breakers
 #: of the prompt-astro degeneracy: hadronic-model spread on both. An earlier
@@ -117,8 +123,6 @@ PROMPT_PRIOR = (1.0, 0.25)
 #: zero).
 GAMMA_BOUNDS = (1.5, 4.0)
 
-#: Fine true-energy grid of the model responses.
-LOG10_E_GRID = np.linspace(3.0, 8.5, 111)
 
 #: Spectral-index grid the astrophysical folds are cached on; the profile
 #: interpolates between its nodes, which is what makes the pseudo-experiment
@@ -129,36 +133,6 @@ GAMMA_GRID = np.linspace(GAMMA_BOUNDS[0], GAMMA_BOUNDS[1], 51)
 #: muon and a ``nu_tau -> tau -> mu`` one.
 CHANNELS = ("mu", "tau")
 
-#: Quadrature nodes on the muon energy fraction ``x`` of ``tau -> mu nu nu``
-#: (unpolarized spectrum ``f(x) = 5/3 - 3x^2 + 4x^3/3``, mean 0.35), used to
-#: shift the ``nu_mu``-simulation smearing onto the tau channel.
-TAU_DECAY_X = np.linspace(0.025, 0.975, 20)
-
-#: Flavour-ratio scan grid. The full range is safe only because the
-#: ``nu_mu`` flux is anchored: without the anchor, tracks cannot tell the
-#: two channel templates apart by shape and the fit relabels the whole
-#: astrophysical excess as tau at several times the measured flux for free.
-R_GRID = np.linspace(0.0, 1.0, 41)
-
-#: Feldman-Cousins calibration: truth points the toy distributions are built
-#: at, and the ratio grid each toy's global minimum is scanned on. Truths
-#: stop at 0.9: they carry the anchored ``nu_mu`` flux, so the tau flux
-#: diverges at ``r = 1``; the last threshold is held beyond.
-FC_R_TRUE = np.linspace(0.0, 0.9, 10)
-FC_R_SCAN = np.linspace(0.0, 1.0, 11)
-
-#: Flux plane [combined-fit per-flavour flux units]. The scan reaches the
-#: unconstrained minimum, which lies outside the physical range.
-PHI_MU_GRID = np.linspace(0.0, 1.6, 33)
-PHI_TAU_GRID = np.linspace(0.0, 8.0, 33)
-
-#: Count plane: expected astrophysical tracks in the fit window from each
-#: channel, the shape profiled.
-N_MU_GRID = np.linspace(0.0, 160.0, 33)
-N_TAU_GRID = np.linspace(0.0, 100.0, 33)
-
-#: Tau-flux scan at the anchored ``nu_mu`` flux [combined-fit units].
-PHI_TAU_SCAN = np.linspace(0.0, 6.0, 61)
 
 #: IceCube's 9.5-year northern-tracks fit (arXiv:2111.10299): the index and
 #: the ``nu_mu`` normalization [GeV^-1 cm^-2 s^-1 sr^-1 at 100 TeV], the

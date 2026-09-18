@@ -36,6 +36,7 @@ import emcee
 import numpy as np
 from scipy.optimize import brentq
 
+from ..constants import GAMMA_TRUTH, PHI0_TRUTH
 from ..response.soft_volume import SoftVolumeResponse, tau_induced_expected_counts
 from ..transport.source import DEFAULT_LAMBDA, E0_CROSS_GEV
 
@@ -49,11 +50,6 @@ D_SCALE_MEDIAN, D_SCALE_LOGSTD = 1.5, 0.6  # d_scale ~ lognormal, truncated > 0
 
 # The SM reference cross-section slope, used for R = sigma / sigma_SM.
 LAMBDA_SM = DEFAULT_LAMBDA
-
-# Paper best-fit diffuse flux (Table 2, diffusion model), injected as the ground
-# truth for the Asimov datasets driving the Section 4 figures.
-PHI0_TRUTH = 0.63
-GAMMA_TRUTH = 2.38
 
 
 def asimov_dataset(config: "FitConfig", phi0: float = PHI0_TRUTH, gamma: float = GAMMA_TRUTH,

@@ -47,6 +47,16 @@ import functools
 import numpy as np
 from scipy.special import gammaln
 
+from ..constants import (
+    BACKGROUND_CACHE_STEP,
+    CONFIDENCE_LEVEL,
+    DEFAULT_BIN_RADIUS_DEG,
+    EXACT_BACKGROUND_MAX,
+    LN10,
+    N_EVENTS_LIMIT,
+    OPTIMAL_CONTAINMENT,
+    PIVOT_ENERGY_GEV,
+)
 from ..fluxes.atmospheric import AtmosphericFlux, table_declination_deg
 
 __all__ = [
@@ -68,48 +78,6 @@ __all__ = [
     "sensitivity_upper_limit",
     "single_event_sensitivity",
 ]
-
-#: Events a background-free search excludes at 90% confidence (Feldman-Cousins,
-#: zero observed on zero background).
-N_EVENTS_LIMIT = 2.44
-
-#: Pivot energy of a quoted power-law flux [GeV].
-PIVOT_ENERGY_GEV = 1.0e5
-
-#: Natural logarithm of ten, the width of a decade in ``ln(E)``.
-LN10 = float(np.log(10.0))
-
-#: Confidence level the Feldman-Cousins construction is built at.
-CONFIDENCE_LEVEL = 0.9
-
-#: Radius of the bin a point-source background is counted in [deg]. About the
-#: angular resolution a through-going track is reconstructed to above a TeV,
-#: which is what sets how much sky an unbinned search has to look through.
-#: A measured point-spread function replaces it wherever one is available.
-DEFAULT_BIN_RADIUS_DEG = 1.0
-
-#: Background above which the exact construction is replaced by its large-count
-#: form. The construction below costs memory linear in the background, because
-#: it holds every count a Poisson of that mean can deliver, so an unbounded one
-#: is not merely slow. By here the average upper limit is a straight line in
-#: ``sqrt(b)`` to better than a per cent, and :func:`sensitivity_upper_limit`
-#: continues along that line instead.
-EXACT_BACKGROUND_MAX = 200.0
-
-#: Relative spacing the background is rounded to before the exact construction
-#: is cached. A window scan asks for thousands of backgrounds that differ in
-#: the fourth figure, and every distinct one is a construction from scratch,
-#: so without this the cache never hits. The average upper limit grows no
-#: faster than the root of the background, so a grid this fine moves it by
-#: under half of this, which is far below anything else in the answer.
-BACKGROUND_CACHE_STEP = 0.005
-
-#: Containment of the point-spread function that makes the best counting bin.
-#: For a Gaussian the radius maximizing signal over the root of the background
-#: is ``1.585 sigma``, and the 68% containment radius is ``1.510 sigma``, so
-#: taking the published containment as the bin is the optimum to 5% with
-#: nothing fitted.
-OPTIMAL_CONTAINMENT = 0.68
 
 
 def _exposure(livetime_s: float, solid_angle_sr: float | None) -> float:

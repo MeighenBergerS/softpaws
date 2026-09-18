@@ -87,7 +87,7 @@ src/softpaws/
 ├── response/      Effective areas: light reach, first principles, declination
 ├── comparison/    Likelihoods, posteriors, the event benchmark, event energies
 ├── data/          Loaders for the IceCube release and the published curves
-└── utils/         Constants and unit conversions
+└── constants.py   Units, physical constants and defaults
 examples/          Twelve tutorials, 01 to 12; output in examples/output/
 scripts/
 ├── 2026_muon_transport/   One script per paper figure, table and number

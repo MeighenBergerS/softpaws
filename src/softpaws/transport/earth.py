@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..utils.constants import CM_PER_KM, EARTH_RADIUS_KM, RHO_EARTH_MEAN_G_CM3
+from ..constants import CM_PER_KM, EARTH_RADIUS_KM, MAX_UPSTREAM_KM, RHO_EARTH_MEAN_G_CM3
 
 __all__ = [
     "MAX_UPSTREAM_KM",
@@ -31,12 +31,6 @@ __all__ = [
     "representative_column",
     "zenith_grid",
 ]
-
-#: Longest medium column a muon is given upstream of the detector [km]. Below
-#: the horizon the muon is born in rock, which never runs out, and this caps
-#: the near-horizon overburden so that no integral runs to infinity. It exceeds
-#: every muon range in the problem, so results are insensitive to it.
-MAX_UPSTREAM_KM = 100.0
 
 
 def earth_chord_length_km(declination_deg: float | np.ndarray) -> np.ndarray:
@@ -63,7 +57,7 @@ def mean_density_column(declination_deg: float | np.ndarray) -> np.ndarray:
     """Column depth of a constant mean-density Earth chord.
 
     ``X(dec) = rho_mean * L(dec)`` with the Earth mean density
-    :data:`~softpaws.utils.constants.RHO_EARTH_MEAN_G_CM3`. This is the
+    :data:`~softpaws.constants.RHO_EARTH_MEAN_G_CM3`. This is the
     closed-form column; :func:`prem_column` is the layered refinement.
 
     Parameters
@@ -139,7 +133,7 @@ def prem_density(radius_km: float | np.ndarray) -> np.ndarray:
     ----------
     radius_km : float or np.ndarray
         Radius from the Earth center [km]. Radii beyond
-        :data:`~softpaws.utils.constants.EARTH_RADIUS_KM` return zero (vacuum).
+        :data:`~softpaws.constants.EARTH_RADIUS_KM` return zero (vacuum).
 
     Returns
     -------

@@ -8,6 +8,13 @@ closed-form representative column and the per-event effective solid angle.
 import numpy as np
 import pytest
 
+from softpaws.constants import (
+    AVOGADRO_PER_MOL,
+    CM_PER_KM,
+    EARTH_RADIUS_KM,
+    RHO_EARTH_MEAN_G_CM3,
+    RHO_WATER_G_CM3,
+)
 from softpaws.transport.attenuation import (
     TOTAL_TO_CC_RATIO,
     earth_chord_length_km,
@@ -21,13 +28,6 @@ from softpaws.transport.attenuation import (
     total_cross_section,
 )
 from softpaws.transport.source import cc_cross_section
-from softpaws.utils.constants import (
-    AVOGADRO_PER_MOL,
-    CM_PER_KM,
-    EARTH_RADIUS_KM,
-    RHO_EARTH_MEAN_G_CM3,
-    RHO_WATER_G_CM3,
-)
 
 E_1PEV = 1.0e6  # GeV
 

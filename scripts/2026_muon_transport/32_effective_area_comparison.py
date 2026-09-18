@@ -50,6 +50,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import RHO_WATER_G_CM3
 from softpaws.data.published import arca230_trigger_level_aeff, icecube_dr2_aeff, interpolate_aeff
 from softpaws.detectors import ARCA230, ICECUBE, MAX_UPSTREAM_KM
 from softpaws.response import effective_area as engine
@@ -62,7 +63,6 @@ from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
 from softpaws.transport.earth import zenith_grid as earth_zenith_grid
 from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
 from softpaws.transport.source import MEAN_INELASTICITY
-from softpaws.utils.constants import RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

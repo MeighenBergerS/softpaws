@@ -33,6 +33,7 @@ from collections.abc import Callable
 import numpy as np
 from scipy.special import erfc, polygamma
 
+from ..constants import _GIL_PELAEZ_CHUNK
 from .eigenvalue import (
     phi_symbol,
     phi_symbol_three_moment,
@@ -316,13 +317,6 @@ def survival_from_density(
     dens = np.asarray(density, dtype=float)
     cdf = np.concatenate([[0.0], np.cumsum(0.5 * (dens[1:] + dens[:-1]) * np.diff(w))])
     return 1.0 - np.interp(w_query, w, cdf)
-
-
-# Chunk size for the Gil-Pelaez quadrature. The integrand is an (n_ell, n_k)
-# complex array, so a bare outer product over a fine ``k`` grid runs to
-# gigabytes; chunking over ``k`` bounds it at this many nodes at a time while
-# leaving the accumulated result bitwise-comparable to within quadrature error.
-_GIL_PELAEZ_CHUNK = 4096
 
 
 def log_loss_cdf(

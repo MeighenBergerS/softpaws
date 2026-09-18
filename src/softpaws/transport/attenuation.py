@@ -60,12 +60,15 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from ..utils.constants import (
+from ..constants import (
     AVOGADRO_PER_MOL,
     CM_PER_KM,
+    NC_MEAN_INELASTICITY,
+    NC_REGENERATION_LEVELS,
     RHO_WATER_G_CM3,
+    TAU_TO_NUTAU_ENERGY_FRACTION,
 )
-from ..utils.constants import TOTAL_TO_CC_RATIO as _TOTAL_TO_CC_RATIO
+from ..constants import TOTAL_TO_CC_RATIO as _TOTAL_TO_CC_RATIO
 from .earth import (  # noqa: F401  (re-exported; these lived here before transport.earth)
     earth_chord_length_km,
     mean_density_column,
@@ -247,18 +250,6 @@ def effective_solid_angle(
 # Neutral-current regeneration
 # ---------------------------------------------------------------------------
 
-# Mean neutral-current inelasticity at UHE. The NC and CC inelasticity
-# distributions have very similar shapes above a TeV; this is the NC mean,
-# slightly above the CC :data:`~softpaws.transport.source.MEAN_INELASTICITY`
-# because NC samples a marginally harder part of the same parton kinematics.
-NC_MEAN_INELASTICITY = 0.25
-
-# Rungs of the down-scattering ladder. Each rung is a factor (1 - <y>) in
-# energy, so the default reaches 0.25% of the injected energy -- far below the
-# point where the surviving neutrino can still make a selectable muon, so the
-# result is insensitive to adding more.
-NC_REGENERATION_LEVELS = 24
-
 
 def regenerated_transmission(
     energy_gev: float,
@@ -354,12 +345,6 @@ def regenerated_transmission(
     coefficients = np.linalg.solve(vectors, start)
     weights = vectors @ (np.exp(np.outer(eigenvalues, columns)) * coefficients[:, None])
     return energies, np.clip(np.real(weights), 0.0, None)
-
-
-# Mean fraction of the tau energy carried away by the regenerated tau neutrino
-# in tau -> nu_tau X. Distinct from softpaws.transport.tau.MEAN_Z, which is the
-# fraction carried by the *muon* in the leptonic channel.
-TAU_TO_NUTAU_ENERGY_FRACTION = 0.4
 
 
 def flavour_transmission(

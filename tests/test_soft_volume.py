@@ -9,6 +9,7 @@ Section 2.3.
 import numpy as np
 import pytest
 
+from softpaws.constants import CM_PER_KM, RHO_ICE_G_CM3, RHO_WATER_G_CM3
 from softpaws.response.soft_volume import SoftVolumeResponse
 from softpaws.transport.coefficients import (
     critical_energy_gev,
@@ -36,7 +37,6 @@ from softpaws.transport.source import (
     cc_cross_section,
     nucleon_number_density,
 )
-from softpaws.utils.constants import CM_PER_KM, RHO_ICE_G_CM3, RHO_WATER_G_CM3
 
 E_1PEV = 1.0e6  # GeV
 E_100PEV = 1.0e8  # GeV

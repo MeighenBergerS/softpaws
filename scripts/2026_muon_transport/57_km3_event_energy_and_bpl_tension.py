@@ -61,12 +61,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from softpaws.comparison import event_energy as ee
+from softpaws.constants import CM_PER_KM, RHO_WATER_G_CM3
 from softpaws.fluxes import ICECUBE_BPL_2025, ICECUBE_TRACKS_2022, broken_power_law_shape
 from softpaws.transport.coefficients import (
     diffusion_coefficient,
     drift_coefficient,
 )
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

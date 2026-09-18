@@ -38,6 +38,7 @@ import numpy as np
 from scipy.integrate import cumulative_trapezoid
 from scipy.optimize import brentq
 
+from ..constants import ARCA_LOG10_E, CM_PER_KM, IC_LOG10_E, N_DEC, N_ZENITH, RHO_WATER_G_CM3
 from ..detectors import ARCA230, ICECUBE, MAX_UPSTREAM_KM
 from ..transport.attenuation import flavour_transmission, regenerated_transmission
 from ..transport.coefficients import diffusion_coefficient, drift_coefficient
@@ -48,7 +49,6 @@ from ..transport.muon_range import muon_range_km, truncated_muon_range_km
 from ..transport.soft_volume import light_reach_radius_km, prism_projected_area_km2
 from ..transport.source import MEAN_INELASTICITY, nucleon_number_density
 from ..transport.tau import BR_TAU_TO_MU, MEAN_Z
-from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 __all__ = [
     "ARCA_FIT_BAND",
@@ -74,28 +74,16 @@ __all__ = [
     "truncated_range_km",
 ]
 
-#: Neutrino-energy grid of the IceCube curves [log10 GeV]: 0.2 dex from 1 TeV
-#: to 100 PeV, the span of the DR2 effective-area table.
-IC_LOG10_E = np.linspace(3.0, 8.0, 26)
 
 #: Band of :data:`IC_LOG10_E` the IceCube reach law is calibrated over
 #: [log10 GeV]. Below 100 TeV the DR2 selection is still turning on.
 IC_FIT_BAND = (5.0, 7.8)
 
-#: Number of declination slices of the upgoing hemisphere.
-N_DEC = 60
-
-#: Neutrino-energy grid of the water-site curves [log10 GeV]: 0.2 dex from
-#: 10 TeV to 10 EeV, the span of the ARCA figures.
-ARCA_LOG10_E = np.arange(4.0, 10.01, 0.2)
 
 #: Band of :data:`ARCA_LOG10_E` the ARCA230 reach law is calibrated over
 #: [log10 GeV]. The digitized trigger curve saturates at the edge of the
 #: published figure in its last tenth of a decade, so the fit stops short.
 ARCA_FIT_BAND = (4.0, 7.5)
-
-#: Number of equal-``cos(theta)`` slices of the sky.
-N_ZENITH = 90
 
 
 @functools.lru_cache(maxsize=1)

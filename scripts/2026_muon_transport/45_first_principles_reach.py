@@ -143,6 +143,7 @@ from dataclasses import replace
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import M_PER_KM
 from softpaws.detectors import (
     ANCHOR_NM,
     ARCA_OPTICS,
@@ -189,7 +190,6 @@ from softpaws.response.light_reach import (
     reach_offset_m,
 )
 from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
-from softpaws.utils.constants import M_PER_KM
 
 #: Names the scripts that load this one by path reach for. Listing them keeps
 #: the re-exports explicit; the definitions live in the library.

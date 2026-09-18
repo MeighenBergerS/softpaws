@@ -56,8 +56,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm as gauss
 
+from softpaws.constants import CM_PER_KM  # noqa: F401  (unit note below)
 from softpaws.transport.coefficients import proposal_loss_spectrum
-from softpaws.utils.constants import CM_PER_KM  # noqa: F401  (unit note below)
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

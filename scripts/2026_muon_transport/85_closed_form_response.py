@@ -31,6 +31,7 @@ import pathlib
 
 import numpy as np
 
+from softpaws.constants import CM_PER_KM
 from softpaws.response import reduced
 from softpaws.response import site_models as sm
 from softpaws.transport.attenuation import flavour_transmission, survival_probability
@@ -39,7 +40,6 @@ from softpaws.transport.earth import prem_column
 from softpaws.transport.muon_range import stochastic_muon_range_km, two_medium_range_ratio
 from softpaws.transport.soft_volume import light_reach_radius_km
 from softpaws.transport.source import MEAN_INELASTICITY, nucleon_number_density
-from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _DEFAULT_CHAINS = _HERE / "output" / "77_chains_sigma05.npz"

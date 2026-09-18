@@ -58,11 +58,11 @@ from dataclasses import replace
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import CM_PER_KM
 from softpaws.response import declination as _declination
 from softpaws.response import first_principles as _first_principles
 from softpaws.transport.coefficients import proposal_parametrizations
 from softpaws.transport.muon_range import muon_range_km, stochastic_muon_range_km
-from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

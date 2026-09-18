@@ -63,6 +63,8 @@ from collections.abc import Callable
 
 import numpy as np
 
+from ..constants import CM_PER_KM, RHO_WATER_G_CM3
+
 # The flux pivot and the single power law live in softpaws.fluxes; the names
 # stay importable from here.
 from ..fluxes.astrophysical import FLUX_PIVOT_GEV, power_law_flux  # noqa: E402, F401
@@ -92,7 +94,6 @@ from ..transport.source import (
     nucleon_number_density,
 )
 from ..transport.tau import tau_to_muon_ratio
-from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 # Range the local effective spectral index is clipped to in
 # :meth:`SoftVolumeResponse.expected_counts_from_flux`. Wherever a tabulated flux

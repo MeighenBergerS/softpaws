@@ -101,6 +101,7 @@ from softpaws.comparison.likelihood import (
     atmospheric_template,
     poisson_log_likelihood,
 )
+from softpaws.constants import RHO_WATER_G_CM3
 from softpaws.data.published import (
     arca21_bright_track_aeff,
     arca230_trigger_level_aeff,
@@ -115,7 +116,6 @@ from softpaws.transport.earth import neutrino_column_g_cm2, overburden_km
 from softpaws.transport.earth import zenith_grid as earth_zenith_grid
 from softpaws.transport.muon_range import DEFAULT_MUON_THRESHOLD_GEV, stochastic_muon_range_km
 from softpaws.transport.source import MEAN_INELASTICITY
-from softpaws.utils.constants import RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

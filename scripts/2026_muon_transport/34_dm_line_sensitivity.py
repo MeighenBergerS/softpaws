@@ -108,6 +108,7 @@ import pathlib
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import CM_PER_KM
 from softpaws.detectors import ARCA230, GEN2, GVD, PONE, TRIDENT, Site
 from softpaws.transport.attenuation import flavour_transmission
 from softpaws.transport.cross_section import bgr18_cross_section
@@ -119,7 +120,6 @@ from softpaws.transport.source import (
     nucleon_number_density,
 )
 from softpaws.transport.tau import BR_TAU_TO_MU, MEAN_Z
-from softpaws.utils.constants import CM_PER_KM
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"

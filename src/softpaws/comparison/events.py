@@ -31,6 +31,7 @@ import numpy as np
 from softpaws.data.loader import parse_aeff
 from softpaws.data.paths import dr2_dir, require
 
+from ..constants import ATM_ERR
 from .reco_likelihood import (
     LOG10_E_GRID,
     TRACKS_GAMMA,
@@ -56,9 +57,6 @@ __all__ = [
 #: ``nu_mu`` and ``nu_tau`` channels alike (1:1:1).
 ASTRO_PHI, ASTRO_PHI_ERR = TRACKS_PHI_MU
 ASTRO_GAMMA, ASTRO_GAMMA_ERR = TRACKS_GAMMA
-
-#: Hadronic-model spread carried as the atmospheric normalization error.
-ATM_ERR = 0.25
 
 
 def astro_flux(

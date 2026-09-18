@@ -20,8 +20,8 @@ import numpy as np
 
 from softpaws.transport.earth import MAX_UPSTREAM_KM, neutrino_column_g_cm2, overburden_km
 from softpaws.transport.soft_volume import prism_projected_area_km2
-from softpaws.utils.constants import RHO_ICE_G_CM3, RHO_LAKE_G_CM3, RHO_WATER_G_CM3
 
+from ..constants import RHO_ICE_G_CM3, RHO_LAKE_G_CM3, RHO_WATER_G_CM3
 from .optics import ARCA_OPTICS, ICECUBE_OPTICS, Optics
 
 __all__ = [

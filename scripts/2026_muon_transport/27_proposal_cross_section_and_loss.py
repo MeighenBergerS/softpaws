@@ -61,6 +61,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
+from softpaws.constants import CM_PER_KM, RHO_WATER_G_CM3
 from softpaws.transport.coefficients import (
     diffusion_coefficient,
     drift_coefficient,
@@ -84,7 +85,6 @@ from softpaws.transport.loss_distribution import (
     loss_density_three_moment,
     survival_from_density,
 )
-from softpaws.utils.constants import CM_PER_KM, RHO_WATER_G_CM3
 
 _HERE = pathlib.Path(__file__).parent
 _STYLE = _HERE.parents[1] / "styles" / "beacom_conformal.mplstyle"
@@ -193,7 +193,7 @@ def proposal_moments(energy_gev: float) -> tuple[float, float]:
     -------
     b_mu, d_mu : float
         Drift and diffusion coefficients [km^-1] at
-        :data:`~softpaws.utils.constants.RHO_WATER_G_CM3`.
+        :data:`~softpaws.constants.RHO_WATER_G_CM3`.
     """
     import proposal as pp
 

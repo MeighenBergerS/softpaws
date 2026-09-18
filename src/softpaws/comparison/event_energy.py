@@ -20,6 +20,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy.stats import norm
 
+from ..constants import AVOGADRO_PER_MOL, CM_PER_KM, EARTH_RADIUS_KM, RHO_WATER_G_CM3
 from ..transport.coefficients import (
     diffusion_coefficient,
     drift_coefficient,
@@ -32,7 +33,6 @@ from ..transport.loss_distribution import (
     loss_density_three_moment,
 )
 from ..transport.source import mean_inelasticity
-from ..utils.constants import AVOGADRO_PER_MOL, CM_PER_KM, EARTH_RADIUS_KM, RHO_WATER_G_CM3
 
 __all__ = [
     "KM3_230213A",

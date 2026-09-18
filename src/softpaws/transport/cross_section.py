@@ -48,7 +48,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy.interpolate import make_smoothing_spline
 
-from ..utils.constants import TOTAL_TO_CC_RATIO
+from ..constants import TOTAL_TO_CC_RATIO
 from .source import DEFAULT_LAMBDA, E0_CROSS_GEV, SIGMA0_CM2
 
 # Neutral-to-charged current ratio of the analytic model. The tabulated BGR18
@@ -141,7 +141,7 @@ class PowerLawCrossSection(CrossSection):
             Anchor energy [GeV].
         total_to_cc : float, optional
             Ratio of the total to the charged-current cross section;
-            see :data:`softpaws.utils.constants.TOTAL_TO_CC_RATIO`.
+            see :data:`softpaws.constants.TOTAL_TO_CC_RATIO`.
         """
         self.lam = lam
         self.sigma0_cm2 = sigma0_cm2

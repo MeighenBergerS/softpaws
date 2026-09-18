@@ -13,10 +13,10 @@ import pathlib
 import numpy as np
 import pytest
 
+from softpaws.constants import RHO_ICE_G_CM3
 from softpaws.detectors import ARCA230, ARCA_OPTICS, ICECUBE_OPTICS
 from softpaws.response import first_principles as fp
 from softpaws.transport.earth import overburden_km
-from softpaws.utils.constants import RHO_ICE_G_CM3
 
 PAPER_SCRIPTS = pathlib.Path(__file__).parents[1] / "scripts" / "2026_muon_transport"
 EXAMPLE_45 = PAPER_SCRIPTS / "45_first_principles_reach.py"

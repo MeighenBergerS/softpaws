@@ -35,7 +35,7 @@ from collections.abc import Callable
 import numpy as np
 from scipy.special import digamma, gamma, loggamma, polygamma
 
-from ..utils.constants import RHO_WATER_G_CM3
+from ..constants import _Q_DIGAMMA_LIMIT, RHO_WATER_G_CM3
 from .coefficients import DEFAULT_SOURCE, diffusion_coefficient, drift_coefficient
 from .source import DEFAULT_LAMBDA
 
@@ -220,12 +220,6 @@ def phi_symbol(
     kappa = np.asarray(kappa, dtype=float)
     p = np.asarray(p, dtype=float)
     return kappa * (digamma(s + p + 1.0) - digamma(p + 1.0))
-
-
-# Below this |q| the two Beta functions of the three-moment symbol cancel to
-# working precision and the q -> 0 digamma limit is used instead. The limit is
-# accurate to O(q), so the switch costs at most ~1e-6 relative.
-_Q_DIGAMMA_LIMIT = 1.0e-6
 
 
 def phi_symbol_three_moment(

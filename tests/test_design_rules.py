@@ -32,13 +32,12 @@ SUFFIXED_COUNT = 259
 A6_EXEMPT = {
     "constants.py",
     "standards.py",
-    "utils/constants.py",
     "detectors/sites.py",
     "detectors/optics.py",
 }
 
 #: Known A6 offenders: literal numbers defined anywhere else. Lower it as they go.
-LOOSE_NUMBER_COUNT = 87
+LOOSE_NUMBER_COUNT = 16
 
 #: A1: the top level holds the names a typical analysis needs, and no more.
 MAX_TOP_LEVEL = 20

@@ -53,7 +53,7 @@ from typing import Callable
 
 import numpy as np
 
-from ..utils.constants import CM_PER_KM, RHO_WATER_G_CM3
+from ..constants import _TABLE1_N_MOMENTS, CM_PER_KM, IONIZATION_A_GEV_CM2_G, RHO_WATER_G_CM3
 
 # ---------------------------------------------------------------------------
 # Table 1 of Palmisano et al. (arXiv:2607.13143): total QED coefficients for muons in water
@@ -64,9 +64,6 @@ _REF_LOG10_E = np.array([6.0, 8.0])  # log10(E / GeV) for 1 PeV and 100 PeV
 _REF_B_MU = np.array([0.35, 0.40])  # drift [km^-1]
 _REF_D_MU = np.array([0.0766, 0.0982])  # diffusion [km^-1]
 
-# Table 1 stops at two moments, so the third-moment column has no Table 1
-# counterpart; see third_moment_coefficient.
-_TABLE1_N_MOMENTS = 2
 
 # ---------------------------------------------------------------------------
 # PROPOSAL-computed table, shipped with the package.
@@ -105,7 +102,7 @@ def _load_proposal_table(source: str = PROPOSAL_SOURCE) -> tuple[np.ndarray, ...
     -------
     columns : tuple of np.ndarray
         ``log10(E / GeV)`` followed by the tabulated ``y``-moments [km^-1] at
-        :data:`~softpaws.utils.constants.RHO_WATER_G_CM3` -- ``b_mu``, ``d_mu``
+        :data:`~softpaws.constants.RHO_WATER_G_CM3` -- ``b_mu``, ``d_mu``
         and, for tables built since the third moment was added, ``t_mu``.
 
     Raises
@@ -125,7 +122,6 @@ def _load_proposal_table(source: str = PROPOSAL_SOURCE) -> tuple[np.ndarray, ...
         table = np.loadtxt(path, delimiter=",")
         _proposal_tables[source] = (np.log10(table[:, 0]), *table[:, 1:].T)
     return _proposal_tables[source]
-
 
 
 # ---------------------------------------------------------------------------
@@ -161,7 +157,7 @@ _KERNEL_SCALING: KernelScaling | None = None
 #: Bumped whenever the installed scaling changes, so that anything caching a
 #: quantity built from the coefficients can key on it and drop a stale entry.
 #: :func:`kernel_scaling_token` reads it.
-_KERNEL_SCALING_TOKEN = 0
+_kernel_scaling_token = 0
 
 
 def kernel_scaling_token() -> int:
@@ -177,7 +173,7 @@ def kernel_scaling_token() -> int:
     token : int
         The current value, meaningful only by comparison with an earlier one.
     """
-    return _KERNEL_SCALING_TOKEN
+    return _kernel_scaling_token
 
 
 def set_kernel_scaling(scaling: KernelScaling | None) -> None:
@@ -193,9 +189,9 @@ def set_kernel_scaling(scaling: KernelScaling | None) -> None:
     scaling : KernelScaling or None
         The factors to apply, or ``None`` for the shipped table.
     """
-    global _KERNEL_SCALING, _KERNEL_SCALING_TOKEN
+    global _KERNEL_SCALING, _kernel_scaling_token
     _KERNEL_SCALING = scaling
-    _KERNEL_SCALING_TOKEN += 1
+    _kernel_scaling_token += 1
 
 
 def kernel_scaling() -> KernelScaling | None:
@@ -331,7 +327,7 @@ def proposal_loss_spectrum(
     PROPOSAL's ``differential_crosssection`` is per unit column density, per
     component, so the rate per unit length is the mass-fraction-weighted sum over
     components times the mass density. The result is rescaled to
-    :data:`~softpaws.utils.constants.RHO_WATER_G_CM3`, matching the convention of
+    :data:`~softpaws.constants.RHO_WATER_G_CM3`, matching the convention of
     the shipped tables: a rate per km of water-equivalent column, whatever the
     medium, so that media compare at equal column depth.
 
@@ -427,7 +423,7 @@ def build_proposal_table(
     table : np.ndarray, shape (n, 7)
         Columns of energy [GeV], the ``y``-moments ``b_mu``, ``d_mu``, ``t_mu``,
         and the log-loss moments ``Phi'(0)``, ``-Phi''(0)``, ``Phi'''(0)``, all
-        [km^-1] at :data:`~softpaws.utils.constants.RHO_WATER_G_CM3`.
+        [km^-1] at :data:`~softpaws.constants.RHO_WATER_G_CM3`.
 
     Raises
     ------
@@ -512,13 +508,6 @@ def build_proposal_table(
         ),
     )
     return table
-
-# Ionization (Bethe) energy loss for muons in water, a_mu ~ 2.0e-3 GeV cm^2 g^-1
-# (PDG muon tables; it varies only logarithmically from 1 GeV to 100 TeV). Table 1
-# tabulates the radiative b_mu and d_mu alone, which is all the soft-volume drift
-# limit needs. The constant term is needed to close the loss law
-# ``-dE/dx = a_mu + b_mu E`` at low energy, and so to define the muon range.
-IONIZATION_A_GEV_CM2_G = 2.0e-3
 
 
 def drift_coefficient(
