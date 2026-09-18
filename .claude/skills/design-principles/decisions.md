@@ -10,6 +10,17 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
   fit container in `response/site_models.py`, so that class must be renamed or
   made private first.
 
+## 2026-09-18: Required PR template (PR2, PR7)
+
+The template has three required sections (What and why, How to check it,
+Effect on results) and a checklist of judgment calls only. Anything CI
+already checks is left off. "Effect on results" exists because a PR can
+shift a number the paper relies on. The checklist also asks that the branch
+be up to date with `main`; CONTRIBUTING.md explains how, for newcomers to git.
+AI use is a checkbox (the author understands and tested every line), not a
+NumPy-style named disclosure. `pr-template.yml` fails a PR with an empty
+required section; GitHub itself never enforces templates. Approved by the user.
+
 ## 2026-09-18: Exception to C1 in 89e3feb
 
 The docstring commit also carries the deletion of

@@ -1,0 +1,22 @@
+name: pr-template
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  description:
+    name: PR description is filled in
+    # Bots such as Dependabot write their own descriptions.
+    if: github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # The description goes through an environment variable, never into the
+      # command line, so its text cannot be run as shell.
+      - run: python .github/scripts/check_pr_template.py
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}

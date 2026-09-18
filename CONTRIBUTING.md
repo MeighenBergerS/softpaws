@@ -79,6 +79,20 @@ responsible for it, so understand and test every line. Don't list an AI tool
 as an author, co-author or signer in commits or pull requests. The project
 discloses its own AI use once, in the README.
 
+## Keeping Your Branch Up to Date
+
+Before review, bring your branch up to date with `main`. The easiest way is
+the **Update branch** button on the pull request page. From the command line:
+
+```sh
+git pull --rebase origin main
+git push --force-with-lease
+```
+
+If git reports a conflict, edit the files it names, then run `git add` on
+each one and `git rebase --continue`. To give up and return to where you
+started, run `git rebase --abort`. Ask in the pull request if you get stuck.
+
 ## Setting Up the Development Environment
 
 Install the package in editable mode with dev dependencies:

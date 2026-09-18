@@ -7,9 +7,11 @@ description: How to scope and describe a softpaws pull request. Load before open
 
 PR1. One concern per PR, and small: one self-contained change, not a whole
      feature. Keep refactors apart from behaviour changes.
-PR2. The title follows C2. The description says what and why, how it was
-     tested, and where to start reviewing, and links the issue.
+PR2. The title follows C2. The description fills in every section of
+     `.github/PULL_REQUEST_TEMPLATE.md`, with "None" for results that don't change.
 PR3. Review your own diff first. CI is green, and no unrelated changes ride along.
 PR4. List any design rule changed or excepted, as in the template.
 PR5. No AI attribution in the title, the body or the commits (`workflow-ai-disclosure`).
 PR6. Open, push or merge only when the user asks.
+PR7. CI (`pr-template.yml`) fails a PR whose "What and why", "How to check it"
+     or "Effect on results" is empty.
