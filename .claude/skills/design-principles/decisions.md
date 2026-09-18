@@ -6,6 +6,25 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: A6 refined, standards.py (A7), utils/ replaced (A4)
+
+- A6 now covers literal numbers and arithmetic on literals, including
+  default grids such as `np.linspace(3.0, 8.0, 26)`. Three kinds stay put:
+  values computed by package code (`B_SCALE_FLOOR`, record-derived depths),
+  numbers that define a published record or table (`sites.py`, `optics.py`),
+  and paper tuning (the private `_paper/`). The check was refined to match,
+  and its baseline rose from 74 to 87 because it now sees the grids.
+  `_KERNEL_SCALING_TOKEN` is runtime state, not a constant, so it is renamed
+  in lower case.
+- A7: `standards.py` holds the current best-fit values from the paper's fits,
+  each naming its script, so users never run a fit first. `constants.py`
+  holds fixed numbers, `standards.py` fitted ones, and `_paper/` the tuning.
+- A4: `softpaws/utils/`, which held only `constants.py`, is replaced by a
+  top-level `softpaws/constants.py`, and the Architecture section of
+  CLAUDE.md is updated to match.
+
+Approved by the user.
+
 ## 2026-09-18: Units, one constants file, Detector as the central object (N4, A4, A6, O1-O3, D5, G6)
 
 - N4: public names and arguments lose their unit suffixes. The code computes

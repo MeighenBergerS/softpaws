@@ -27,8 +27,18 @@ UNIT_SUFFIX = re.compile(
 #: Known N4 offenders: public names plus ``name(argument)`` pairs. Lower it as they go.
 SUFFIXED_COUNT = 259
 
-#: Known A6 offenders: named numbers defined outside a constants module. Lower it as they go.
-LOOSE_NUMBER_COUNT = 74
+#: A6: where literal numbers may live besides ``constants.py``. The paper's
+#: tuning under ``_paper/`` is exempt too.
+A6_EXEMPT = {
+    "constants.py",
+    "standards.py",
+    "utils/constants.py",
+    "detectors/sites.py",
+    "detectors/optics.py",
+}
+
+#: Known A6 offenders: literal numbers defined anywhere else. Lower it as they go.
+LOOSE_NUMBER_COUNT = 87
 
 #: A1: the top level holds the names a typical analysis needs, and no more.
 MAX_TOP_LEVEL = 20
@@ -84,17 +94,37 @@ def check_count(found, known):
     assert found == known, f"Fixed some, lower the baseline from {known} to {found}"
 
 
-def is_number(node):
-    """Whether an assignment's value is a number or arithmetic on numbers."""
+def is_literal(node):
+    """Whether a value is a literal number, or arithmetic on literals and constants.
+
+    Values computed by package code (a call into softpaws, an attribute of a
+    record, an array) are results, not constants, and are left out (A6).
+    """
     if isinstance(node, ast.Constant):
         return isinstance(node.value, (int, float)) and not isinstance(node.value, bool)
+    if isinstance(node, ast.Name):
+        return node.id.isupper()
+    if isinstance(node, ast.Attribute):
+        return isinstance(node.value, ast.Name) and node.value.id == "np"
     if isinstance(node, ast.UnaryOp):
-        return is_number(node.operand)
+        return is_literal(node.operand)
     if isinstance(node, ast.BinOp):
-        return is_number(node.left) or is_number(node.right)
-    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
-        return node.func.id in ("float", "int")
+        return is_literal(node.left) and is_literal(node.right)
+    if isinstance(node, ast.Call) and not node.keywords:
+        func = node.func
+        known = (isinstance(func, ast.Name) and func.id in ("float", "int")) or (
+            isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name)
+            and func.value.id == "np"
+        )
+        return known and all(is_literal(arg) for arg in node.args)
     return False
+
+
+def has_literal(node):
+    """A literal that contains at least one number, so a bare alias is not counted."""
+    return is_literal(node) and any(
+        isinstance(n, ast.Constant) or isinstance(n, ast.Attribute) for n in ast.walk(node)
+    )
 
 
 def test_no_unit_suffixes():
@@ -112,10 +142,11 @@ def test_no_unit_suffixes():
 
 
 def test_numbers_live_in_constants():
-    """A6: named numbers are defined in a constants module only."""
+    """A6: literal named numbers are defined in ``constants.py`` only."""
     found = 0
     for path in PACKAGE_DIR.rglob("*.py"):
-        if path.name == "constants.py":
+        relative = path.relative_to(PACKAGE_DIR).as_posix()
+        if relative in A6_EXEMPT or relative.startswith("_paper/"):
             continue
         for node in ast.parse(path.read_text()).body:
             if isinstance(node, ast.Assign):
@@ -124,7 +155,7 @@ def test_numbers_live_in_constants():
                 target, value = node.target, node.value
             else:
                 continue
-            if isinstance(target, ast.Name) and target.id.isupper() and is_number(value):
+            if isinstance(target, ast.Name) and target.id.isupper() and has_literal(value):
                 found += 1
     check_count(found, LOOSE_NUMBER_COUNT)
 

@@ -55,8 +55,14 @@ mkdocs serve
 Data flows one direction through the subpackages of `src/softpaws/`:
 
 ```
-data/  +  detectors/  +  fluxes/  →  transport/  →  response/  →  comparison/
+constants, standards  →  data/  +  detectors/  +  fluxes/  →  transport/  →  response/  →  comparison/
 ```
+
+- **`constants.py`**: every fixed number: the units (the code computes in
+  GeV, cm, s and rad; users multiply by `km`, `PeV`, `deg`, ...), physical
+  constants, calibrated parameters and defaults.
+- **`standards.py`**: the current best-fit values from the paper's fits, each
+  naming the script that produced it, so no user has to run a fit first.
 
 - **`data/`** — loaders for the IceCube releases and for the published curves
   of the other detectors. The tabulated inputs that ship with the package (the
@@ -80,8 +86,6 @@ data/  +  detectors/  +  fluxes/  →  transport/  →  response/  →  comparis
   effective area and smearing matrix on the same footing.
 - **`comparison/`** — likelihoods, posterior statistics, the no-fit event
   benchmark against DR2, and single-track energy reconstruction.
-- **`utils/`** — physical constants, unit conversions, shared helpers used
-  across the other subpackages.
 
 `examples/` holds twelve numbered tutorials, `01` to `12`, writing to
 `examples/output/` (gitignored except for `.gitkeep`).
