@@ -6,6 +6,15 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: README audit in the Repo Audit (RA3)
+
+The Repo Audit now checks `README.md` item by item against ddbeck's README
+checklist (github.com/ddbeck/readme-checklist) and against G5 and G6, with
+pass or fail and a line of evidence per item. Its "test your install steps"
+item is covered by running every Python block in the README with the repo's
+venv (RA3 step 2), because the subagent can only read. "Set a reminder" is
+the audit itself, and "tell ddbeck" is left out. Requested by the user.
+
 ## 2026-09-18: Standards ship as JSON and can be rebuilt (A7)
 
 The standards are the two instrument numbers per site from script 77 at

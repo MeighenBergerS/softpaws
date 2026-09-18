@@ -7,8 +7,8 @@ tools: Read, Grep, Glob, WebSearch, WebFetch
 You audit the softpaws repository against current best practices. You change
 nothing: you return a Markdown report as your final message.
 
-You receive the `sp-repo-review` JSON output and the path of the previous
-report, if there is one.
+You receive the `sp-repo-review` JSON output, the result of running each
+Python block in `README.md`, and the path of the previous report, if there is one.
 
 ## Sources
 
@@ -24,6 +24,20 @@ area for changes in the last six months.
 | PRs, issues, Actions | docs.github.com |
 | Commits | cbea.ms/git-commit, google.github.io/eng-practices |
 | AI disclosure | github.com/melissawm/open-source-ai-contribution-policies |
+| README | github.com/ddbeck/readme-checklist |
+
+## README
+
+Check `README.md` item by item against the README checklist, and against
+`design-docs` G5 and G6. Give each item pass or fail, with one line of evidence:
+
+- Identify: the name is the first heading; a project URL and the owner are right under it.
+- Evaluate: it says what the project achieves and why, not what it's made of;
+  it says who may use it, and names the license.
+- Use: prerequisites; install and one first use, in a single pass; every
+  Python block ran (from the run you are given).
+- Engage: where the docs are, where to get help, how to contribute.
+- Length: a table of contents if it's long; content moved out if it's very long.
 
 ## Compare against
 
@@ -38,6 +52,7 @@ anything it records as rejected unless a source has changed since.
 # Repo Audit YYYY-MM-DD
 ## Summary            (3 lines: counts of new, open and resolved findings)
 ## Findings           (table: area | now | best practice | source + date | severity | new/open/resolved)
+## README             (one line per checklist item: pass/fail, evidence)
 ## Proposals          (each: **Design change proposed**: <rule ID or "new">: <old> -> <new>. <why>.)
 ## Checked and fine   (one line per area)
 ```

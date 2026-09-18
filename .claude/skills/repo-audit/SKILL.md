@@ -16,8 +16,11 @@ RA3. Approved:
      1. Create the venv if missing (`python3 -m venv .audit/.venv`, then
         `.audit/.venv/bin/pip install -q 'sp-repo-review[cli]'`), and run
         `.audit/.venv/bin/sp-repo-review . --format json`.
-     2. Hand that output and the latest earlier report to the `repo-auditor` subagent.
-     3. Write its report to `.audit/<today>.md`, set `last_run` to today, and drop `snooze_until`.
-     4. In chat, at most ~10 lines: the counts, the top findings, and each
+     2. Run each Python block in `README.md` with the repo's `.venv/bin/python`
+        (absolute path, symlink not resolved), from a temporary directory, and
+        note whether each one ran and what it printed.
+     3. Hand both outputs and the latest earlier report to the `repo-auditor` subagent.
+     4. Write its report to `.audit/<today>.md`, set `last_run` to today, and drop `snooze_until`.
+     5. In chat, at most ~10 lines: the counts, the top findings, and each
         proposal as **Design change proposed**.
 RA4. The audit changes nothing outside `.audit/`. Adopting a proposal follows `design-governance`.
