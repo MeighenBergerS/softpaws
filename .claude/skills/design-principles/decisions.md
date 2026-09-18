@@ -6,6 +6,15 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-18: C5 checks what's staged as its own step; exception to C1 in 2f164e0
+
+`2f164e0` also carries the staged move of `utils/constants.py`, so that
+commit alone is a tree whose imports fail; `08937e6` repairs it straight
+after. The user chose to leave it. It was the second slip of this kind:
+printing what's staged in the same command as the commit did not catch it.
+C5 now requires checking what's staged in a separate step before
+committing. Approved by the user.
+
 ## 2026-09-18: Tightening a check rides with the fix (P6)
 
 P4 (protected files get their own commit) and C1 (the tests pass at every
