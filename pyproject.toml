@@ -95,6 +95,7 @@ softpaws = [
     "data/km3net/uhe_release/**/*.json",
     "data/km3net/uhe_release/**/*.md",
     "data/pone/*.csv",
+    "data/standards.json",
     "data/trident/*.csv",
     "data/xsec/**/*.csv",
 ]

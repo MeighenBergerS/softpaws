@@ -83,6 +83,7 @@ from ..response.published import (
     published_effective_area_cm2,
     trident_allsky_cm2,
 )
+from ..standards import FIT_PARAMETERS
 
 __all__ = [
     "ARCA230_WATER_SITE",
@@ -162,7 +163,7 @@ CROSS_SECTION = bgr18_cross_section()
 # ---------------------------------------------------------------------------
 
 #: The full parameter vector, in the order every ``theta`` array carries.
-PARAM_NAMES = ("eps_0", "log10_e_thr", "b_scale", "lam", "reach_km")
+PARAM_NAMES = FIT_PARAMETERS
 
 #: Drawn as a corner. ``b_scale`` and ``lam`` are shared physics;
 #: ``log10_e_thr`` is an instrument number on a common scale, kept here
