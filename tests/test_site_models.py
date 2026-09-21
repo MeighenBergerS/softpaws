@@ -48,7 +48,8 @@ def test_pinned_constants():
     assert sm.F_TAU == 1.0
     assert sm.REACH_EXAMPLE28_KM == 0.0193
     assert sm.SMEARING_LOG10_E_THR == 2.85
-    assert sm.B_SCALE_FLOOR == pytest.approx(0.28747283844399724, rel=1e-12)
+    # Read off the shipped PROPOSAL table, so a rebuild of it moves this by ~1e-6.
+    assert sm.B_SCALE_FLOOR == pytest.approx(0.28747283844399724, rel=1e-5)
 
 
 def test_priors_share_the_physics_box():

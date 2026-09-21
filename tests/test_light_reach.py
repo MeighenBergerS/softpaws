@@ -76,8 +76,10 @@ SITES = {
 
 
 def _same(got, want):
+    # The pins hold the library to today's values, at a tolerance that admits
+    # a rebuild of the shipped PROPOSAL tables (~1e-6) and nothing else.
     np.testing.assert_allclose(np.asarray(got, dtype=float), np.asarray(want, dtype=float),
-                               rtol=1e-10, atol=0.0)
+                               rtol=1e-5, atol=0.0)
 
 
 def test_brightness_factor():

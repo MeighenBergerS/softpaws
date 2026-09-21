@@ -16,9 +16,12 @@ Two sources are available, selected by the ``source`` argument:
     reproduces their numbers.
 ``"proposal"`` (the default)
     A table computed with PROPOSAL (Koehne et al., arXiv:1809.07740) over
-    ``10^2`` to ``10^10`` GeV, summing bremsstrahlung, ``e+e-`` pair production
+    ``10^2`` to ``10^16`` GeV, summing bremsstrahlung, ``e+e-`` pair production
     and the photonuclear channel. Built by :func:`build_proposal_table` and
-    shipped under ``src/softpaws/data/coefficients/``.
+    shipped under ``src/softpaws/data/coefficients/``. Above ``10^11`` GeV the
+    photonuclear channel dominates and keeps growing, and ALLM97 is an
+    extrapolation of the HERA fit there: the drift doubles between ``10^10``
+    and ``10^14`` GeV on that extrapolation alone.
 ``"proposal_rock"``
     The same table in PROPOSAL's standard rock (``Z = 11``, ``A = 22``,
     ``rho = 2.65``), stored per km of *water-equivalent* column so it compares
@@ -35,12 +38,15 @@ reaches 15% at 1 TeV, with the sign reversed. Since ``Phi(1) = b_mu`` exactly
 and the IceCube spectrum sits at ``A ~ 1``, the soft volume goes as ``1/b_mu``
 and inherits those differences directly.
 
-The Landau-Pomeranchuk-Migdal effect is deliberately *not* included: checked
-against PROPOSAL's own LPM switch, the suppression of muon radiative losses is
-below ``10^-5`` even at ``10^10`` GeV, three decades above the top of the range
-used here. LPM does matter for the electromagnetic showers the radiated photons
-initiate, but that is a detector-response effect, and for this comparison it
-lives inside the published IceCube response rather than in the transport.
+The Landau-Pomeranchuk-Migdal suppression of the radiative losses is switched
+on in the shipped tables (``lpm=True`` in :func:`proposal_parametrizations`).
+It is invisible where the telescopes operate -- below ``10^-5`` at ``10^10``
+GeV -- and only bites at the top of the table, where it takes 11% off the
+bremsstrahlung drift in water at ``10^14`` GeV and 68% at ``10^16``, which is
+a few percent of the total since photonuclear losses dominate there. Pair
+production is suppressed by under 1% even at ``10^16`` GeV. LPM also matters
+for the electromagnetic showers the radiated photons initiate, but that is a
+detector-response effect and lives inside the published IceCube response.
 """
 
 from __future__ import annotations
@@ -260,7 +266,7 @@ def _interpolate(
     return np.interp(log10_e, *reference)
 
 
-def proposal_parametrizations() -> dict[str, object]:
+def proposal_parametrizations(medium: str = "Water", lpm: bool = True) -> dict[str, object]:
     """The three radiative channels the shipped table is built from.
 
     Bremsstrahlung and ``e+e-`` pair production (both Kelner-Kokoulin-Petrukhin)
@@ -270,6 +276,16 @@ def proposal_parametrizations() -> dict[str, object]:
 
     Requires the optional ``proposal`` dependency.
 
+    Parameters
+    ----------
+    medium : str, optional
+        A ``proposal.medium`` class name, which the LPM suppression needs
+        since it depends on the density. Defaults to ``"Water"``.
+    lpm : bool, optional
+        Switch on the Landau-Pomeranchuk-Migdal suppression of bremsstrahlung
+        and pair production. Defaults to ``True``; see the module docstring
+        for where it matters.
+
     Returns
     -------
     parametrizations : dict
@@ -277,9 +293,21 @@ def proposal_parametrizations() -> dict[str, object]:
     """
     import proposal as pp
 
+    if lpm:
+        particle = pp.particle.MuMinusDef()
+        target = getattr(pp.medium, medium)()
+        bremsstrahlung = pp.parametrization.bremsstrahlung.KelnerKokoulinPetrukhin(
+            True, particle, target
+        )
+        pair_production = pp.parametrization.pairproduction.KelnerKokoulinPetrukhin(
+            True, particle, target
+        )
+    else:
+        bremsstrahlung = pp.parametrization.bremsstrahlung.KelnerKokoulinPetrukhin(False)
+        pair_production = pp.parametrization.pairproduction.KelnerKokoulinPetrukhin(False)
     return {
-        "bremsstrahlung": pp.parametrization.bremsstrahlung.KelnerKokoulinPetrukhin(False),
-        "pair production": pp.parametrization.pairproduction.KelnerKokoulinPetrukhin(False),
+        "bremsstrahlung": bremsstrahlung,
+        "pair production": pair_production,
         "photonuclear": pp.parametrization.photonuclear.AbramowiczLevinLevyMaor97(
             pp.parametrization.photonuclear.ShadowButkevichMikheyev()
         ),
@@ -320,7 +348,7 @@ def loss_spectrum_y_grid(
 
 
 def proposal_loss_spectrum(
-    energy_gev: float, y: np.ndarray, medium: str = "Water"
+    energy_gev: float, y: np.ndarray, medium: str = "Water", lpm: bool = True
 ) -> dict[str, np.ndarray]:
     """PROPOSAL's differential loss rate ``dGamma/dy``, per channel.
 
@@ -345,6 +373,8 @@ def proposal_loss_spectrum(
         A ``proposal.medium`` class name, ``"Water"`` (the default), ``"Ice"``
         or ``"StandardRock"``. Ice and water coincide per unit column; standard
         rock sits 20 to 30% above them through its ``Z^2/A``.
+    lpm : bool, optional
+        Switch on the LPM suppression; see :func:`proposal_parametrizations`.
 
     Returns
     -------
@@ -355,7 +385,8 @@ def proposal_loss_spectrum(
     import proposal as pp
 
     particle = pp.particle.MuMinusDef()
-    medium = getattr(pp.medium, medium)()
+    medium_name = medium
+    medium = getattr(pp.medium, medium_name)()
     energy_mev = energy_gev * 1.0e3
 
     # PROPOSAL's atomic_number is the atomic mass, so these are mass fractions.
@@ -363,7 +394,7 @@ def proposal_loss_spectrum(
     scale = CM_PER_KM * RHO_WATER_G_CM3 / medium.mass_density
 
     spectrum: dict[str, np.ndarray] = {}
-    for label, param in proposal_parametrizations().items():
+    for label, param in proposal_parametrizations(medium_name, lpm).items():
         rate = np.zeros_like(y)
         for component in medium.components:
             limits = param.kinematic_limits(particle, component, energy_mev)
@@ -383,9 +414,10 @@ def proposal_loss_spectrum(
 def build_proposal_table(
     path: str | pathlib.Path | None = None,
     log10_e_min: float = 2.0,
-    log10_e_max: float = 10.0,
+    log10_e_max: float = 16.0,
     points_per_decade: int = 8,
     medium: str = "Water",
+    lpm: bool = True,
 ) -> np.ndarray:
     """Tabulate the first three ``y``-moments with PROPOSAL and write them to disk.
 
@@ -410,13 +442,17 @@ def build_proposal_table(
         :data:`PROPOSAL_TABLE_PATH` for water and
         :data:`PROPOSAL_ROCK_TABLE_PATH` for standard rock.
     log10_e_min, log10_e_max : float, optional
-        Range of the table in ``log10(E / GeV)``. The default upper limit stays
-        below the energy where PROPOSAL's own interpolation tables break down.
+        Range of the table in ``log10(E / GeV)``. PROPOSAL's interpolation
+        tables normally stop at ``10^11`` GeV; their ceiling is raised to the
+        top of the table for the duration of the build, which regenerates them
+        under PROPOSAL's table path on first use.
     points_per_decade : int, optional
         Sampling density.
     medium : str, optional
         A ``proposal.medium`` class name; see :func:`proposal_loss_spectrum`.
         Defaults to ``"Water"``.
+    lpm : bool, optional
+        Switch on the LPM suppression; see :func:`proposal_parametrizations`.
 
     Returns
     -------
@@ -442,10 +478,18 @@ def build_proposal_table(
     # v_cut = 1 puts every loss in the continuous part; the third flag switches
     # on the second moment (dE2dx), which is zero without it.
     cuts = pp.EnergyCutSettings(np.inf, 1, True)
-    cross_sections = [
-        pp.crosssection.make_crosssection(p, particle, medium, cuts, True)
-        for p in proposal_parametrizations().values()
-    ]
+    # PROPOSAL interpolates dEdx and dE2dx on tables that stop at its
+    # ``upper_energy_lim`` (MeV); lift that to the top of this table while the
+    # cross sections are built, and put it back afterwards.
+    ceiling = pp.InterpolationSettings.upper_energy_lim
+    pp.InterpolationSettings.upper_energy_lim = max(ceiling, 10.0 ** (log10_e_max + 3.0))
+    try:
+        cross_sections = [
+            pp.crosssection.make_crosssection(p, particle, medium, cuts, True)
+            for p in proposal_parametrizations(medium_name, lpm).values()
+        ]
+    finally:
+        pp.InterpolationSettings.upper_energy_lim = ceiling
 
     n_points = int(round((log10_e_max - log10_e_min) * points_per_decade)) + 1
     energy_gev = np.logspace(log10_e_min, log10_e_max, n_points)
@@ -470,7 +514,7 @@ def build_proposal_table(
     t_mu = np.empty_like(energy_gev)
     phi_moments = np.empty((energy_gev.size, 3))
     for i, energy in enumerate(energy_gev):
-        spectrum = proposal_loss_spectrum(energy, y, medium_name)["total"]
+        spectrum = proposal_loss_spectrum(energy, y, medium_name, lpm)["total"]
         for order, reference in ((1, b_mu[i]), (2, d_mu[i])):
             quadrature = np.trapezoid(y**order * spectrum, y)
             # 0.1% with PROPOSAL's shipped interpolation tables; freshly generated
@@ -496,7 +540,8 @@ def build_proposal_table(
             f"Muon transport coefficients from PROPOSAL in {medium_name} "
             f"(rho = {medium.mass_density} g/cm^3), per km of water-equivalent "
             f"column at rho = {RHO_WATER_G_CM3} g/cm^3.\n"
-            "Bremsstrahlung + e+e- pair production (Kelner-Kokoulin-Petrukhin) + "
+            "Bremsstrahlung + e+e- pair production (Kelner-Kokoulin-Petrukhin"
+            f"{', with LPM suppression' if lpm else ''}) + "
             "photonuclear (ALLM97, Butkevich-Mikheyev shadowing); no ionization.\n"
             "b_mu = <y>, d_mu = <y^2>, t_mu = <y^3> per unit length.\n"
             "The last three are the log-loss moments the first-passage range needs, "

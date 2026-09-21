@@ -204,14 +204,14 @@ DEFAULT_MUON_THRESHOLD_GEV = 1.0e3
 DEFAULT_IONIZATION_MATCH_GEV = 1.0e4
 
 #: Energy span of the cached depth curves [log10 GeV]. The lower edge sits
-#: below any threshold ever asked for and the upper one above the ``10^12``
-#: bracket of :func:`_near_entry_energy_gev`, so every descent is a difference
-#: of two points inside the span. Widening it does not move a single value,
+#: below any threshold ever asked for and the upper one at the top of the
+#: shipped coefficient tables, so every descent is a difference of two points
+#: inside the span. Widening it does not move a single value,
 #: since the node spacing is fixed at ``1 / nodes_per_decade`` and not by the
 #: endpoints.
 _CURVE_LOG10_LO = 0.0
 
-_CURVE_LOG10_HI = 15.0
+_CURVE_LOG10_HI = 16.0
 
 #: Lattice density of the deterministic curve. The radiative one takes its own
 #: from ``running_nodes_per_decade``, whose integrand ``1 / Phi'(0; E)`` is
