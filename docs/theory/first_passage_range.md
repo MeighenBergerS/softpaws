@@ -248,3 +248,30 @@ is a model-side addition rather than a like-for-like term, and it assumes
   `softpaws.transport.source.inelasticity_factor`.
   The true CC inelasticity runs with energy and has real spread, which smears `w⋆`
   by roughly its own width.
+
+## 11. The loss law along the descent
+
+Sections 3 to 6 hold the kernel fixed at the production energy, and Sec. 10
+notes that the *range* is then short by up to 11% at 100 PeV. For the *law*
+`P(w)` of a single track the same freezing is far worse once the muon falls
+through decades where the drift changes: from `10^14` GeV the photonuclear
+drift is twice its `10^10` GeV value, so a kernel read at the top of the
+descent overstates the mean log-loss over 34 km of water by a factor of 2.5.
+
+The subordinator of Sec. 3 generalizes to an additive process whose exponent
+accumulates along the mean descent `dlnE/dl = −Φ′(0; E)`,
+
+```
+Ψ(s; ℓ) = ∫_0^ℓ dl Φ(s; E(l)) = ∫_0^{v(ℓ)} dv Φ(s; ε e^{−v}) / Φ′(0; ε e^{−v}),
+```
+
+with `v(ℓ)` the mean log-loss at depth `ℓ`, so that
+`E[e^{−sW(ℓ)}] = e^{−Ψ(s; ℓ)}` and `P(w)` follows by the same inversion as
+before. The kernel at each energy is the three-moment family of Sec. 8 read
+from the shipped table, and `Φ′(0; E)` is that family's own mean rate, so the
+mean of the resulting law is exactly `v(ℓ)`. Below the ionization matching
+energy of Sec. 10 the kernel is held fixed, as the range does.
+
+In code this is `softpaws.transport.loss_distribution.running_log_loss_symbol`
+for the exponent and `loss_density_running` for the law; the frozen forms
+`loss_density_three_moment` and `loss_density` remain for a kernel read once.

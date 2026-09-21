@@ -18,13 +18,18 @@ from softpaws.transport.coefficients import (
 from softpaws.transport.eigenvalue import (
     phi_eigenvalue,
     phi_symbol,
+    phi_symbol_three_moment,
+    three_moment_loss_spectrum,
     two_moment_loss_spectrum,
 )
 from softpaws.transport.loss_distribution import (
+    _three_moment_mean_rate,
     gaussian_survival,
     invert_log_loss_symbol,
     loss_density,
+    loss_density_running,
     loss_density_three_moment,
+    running_log_loss_symbol,
     survival_from_density,
 )
 
@@ -205,3 +210,75 @@ def test_inversion_rejects_aliasing_grid():
     w = np.linspace(1e-4, 40.0, 20_000)
     with pytest.raises(ValueError, match="aliases the inversion"):
         invert_log_loss_symbol(w, 2.0, lambda s: phi_symbol(s, kappa, p), n_k=2**14)
+
+
+# ---------------------------------------------------------------------------
+# The kernel followed down the descent
+# ---------------------------------------------------------------------------
+
+
+def test_three_moment_mean_rate_is_the_symbol_derivative():
+    # Phi'(0) in closed form against a finite difference of the symbol, at an
+    # energy where q is well away from its digamma limit.
+    kappa, q, p = three_moment_loss_spectrum(B_MU, D_MU, T_MU)
+    step = 1.0e-6
+    numeric = (
+        phi_symbol_three_moment(step, float(kappa), float(q), float(p))
+        - phi_symbol_three_moment(0.0, float(kappa), float(q), float(p))
+    ) / step
+    assert float(_three_moment_mean_rate(kappa, q, p)) == pytest.approx(float(numeric), rel=1e-4)
+
+
+def test_running_symbol_vanishes_at_zero_depth_and_grows_with_depth():
+    psi = running_log_loss_symbol(1.0, [0.0, 1.0, 2.0], E_100PEV)
+    assert psi.shape == (3,)
+    assert psi[0] == 0.0
+    assert 0.0 < psi[1].real < psi[2].real
+
+
+def test_running_symbol_rejects_bad_input():
+    with pytest.raises(ValueError, match="energy_gev"):
+        running_log_loss_symbol(1.0, 1.0, 0.0)
+    with pytest.raises(ValueError, match="ell_km"):
+        running_log_loss_symbol(1.0, -1.0, E_100PEV)
+    with pytest.raises(ValueError, match="floor_gev"):
+        running_log_loss_symbol(1.0, 1.0, E_100PEV, floor_gev=0.0)
+
+
+def test_running_density_normalized_and_matches_frozen_on_a_short_path():
+    # Over a path where the muon sheds a third of an e-fold the kernel barely
+    # moves, so the running law must reproduce the frozen one.
+    ell = 0.5
+    w = np.linspace(0.0, 30.0, 1_500)
+    running = loss_density_running(w, ell, E_100PEV)
+    frozen = loss_density_three_moment(w, ell, B_MU, D_MU, T_MU)
+    assert np.trapezoid(running, w) == pytest.approx(1.0)
+    assert np.all(running >= 0.0)
+    assert np.trapezoid(w * running, w) == pytest.approx(np.trapezoid(w * frozen, w), rel=5e-3)
+
+
+def test_running_density_mean_is_the_symbol_derivative():
+    # The mean of the inverted law is -dPsi/ds at zero, i.e. the mean log-loss
+    # accumulated along the descent, which ties the density to the symbol.
+    ell = 10.0
+    step = 1.0e-5
+    psi = running_log_loss_symbol(np.array([step, 0.0]), ell, E_100PEV)
+    from_symbol = float((psi[0] - psi[1]).real) / step
+    w = np.linspace(0.0, 60.0, 3_000)
+    density = loss_density_running(w, ell, E_100PEV)
+    assert np.trapezoid(w * density, w) == pytest.approx(from_symbol, rel=1e-3)
+
+
+def test_running_kernel_loses_less_than_frozen_from_the_top_of_the_table():
+    # From 1e14 GeV the drift halves on the way down, so freezing it at the
+    # top overstates the loss; the running law keeps far more energy.
+    energy = 1.0e14
+    ell = 34.0
+    w = np.linspace(0.0, 120.0, 4_000)
+    b, d, t = (
+        float(f(energy)[0])
+        for f in (drift_coefficient, diffusion_coefficient, third_moment_coefficient)
+    )
+    frozen = loss_density_three_moment(w, ell, b, d, t)
+    running = loss_density_running(w, ell, energy)
+    assert np.trapezoid(w * running, w) < 0.5 * np.trapezoid(w * frozen, w)

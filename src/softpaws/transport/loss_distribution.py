@@ -31,9 +31,20 @@ from __future__ import annotations
 from collections.abc import Callable
 
 import numpy as np
-from scipy.special import erfc, polygamma
+from scipy.special import digamma, erfc, gamma, polygamma
 
-from ..constants import _GIL_PELAEZ_CHUNK
+from ..constants import (
+    _GIL_PELAEZ_CHUNK,
+    _Q_DIGAMMA_LIMIT,
+    DEFAULT_IONIZATION_MATCH_GEV,
+    RHO_WATER_G_CM3,
+)
+from .coefficients import (
+    DEFAULT_SOURCE,
+    diffusion_coefficient,
+    drift_coefficient,
+    third_moment_coefficient,
+)
 from .eigenvalue import (
     phi_symbol,
     phi_symbol_three_moment,
@@ -166,6 +177,205 @@ def loss_density_three_moment(
         lambda s: phi_symbol_three_moment(s, float(kappa), float(q), float(p)),
         n_k,
     )
+
+
+def _three_moment_mean_rate(kappa, q, p) -> np.ndarray:
+    """``Phi'(0) = <-ln(1-y)>`` of the three-moment family [km^-1]."""
+    kappa = np.asarray(kappa, dtype=float)
+    q = np.asarray(q, dtype=float)
+    p = np.asarray(p, dtype=float)
+    small = np.abs(q) < _Q_DIGAMMA_LIMIT
+    # Gamma(q) and the digamma difference both change sign with q; their
+    # product does not, so they are formed directly rather than through
+    # loggamma. The q -> 0 limit is the two-moment trigamma form.
+    safe_q = np.where(small, 1.0, q)
+    full = (
+        kappa
+        * gamma(safe_q)
+        * gamma(p + 1.0)
+        / gamma(safe_q + p + 1.0)
+        * (digamma(safe_q + p + 1.0) - digamma(p + 1.0))
+    )
+    return np.where(small, kappa * polygamma(1, p + 1.0), full)
+
+
+def running_log_loss_symbol(
+    s: complex | np.ndarray,
+    ell_km: float | np.ndarray,
+    energy_gev: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+    floor_gev: float = DEFAULT_IONIZATION_MATCH_GEV,
+    nodes_per_decade: int = 48,
+) -> np.ndarray:
+    r"""Laplace exponent of the log-loss with the kernel followed down the track.
+
+    ``Psi(s; ell) = int_0^ell dl Phi(s; E(l))`` along the mean descent
+    ``dlnE / dl = -Phi'(0; E)``, so ``E[exp(-s W(ell))] = exp(-Psi(s; ell))``;
+    see ``docs/theory/first_passage_range.md``, Sec. 11.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable, real or complex.
+    ell_km : float or np.ndarray
+        Propagated column depth(s) ``ell`` [km], zero or positive.
+    energy_gev : float
+        Muon energy at production [GeV], where the descent starts.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "proposal_rock"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    floor_gev : float, optional
+        Energy below which the kernel is held fixed [GeV]. The scale-invariant
+        kernel stops describing the losses near the critical energy, so the
+        descent is followed only to here. Defaults to
+        :data:`~softpaws.constants.DEFAULT_IONIZATION_MATCH_GEV`.
+    nodes_per_decade : int, optional
+        Lattice density of the descent in ``log10 E``.
+
+    Returns
+    -------
+    exponent : np.ndarray
+        ``Psi(s; ell)`` [dimensionless], of shape ``ell_km.shape + s.shape``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``energy_gev`` or ``floor_gev`` is not positive, if any
+        ``ell_km`` is negative, or if ``nodes_per_decade`` is below one.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from softpaws.transport.loss_distribution import running_log_loss_symbol
+    >>> psi = running_log_loss_symbol(1.0, [0.0, 2.0], 1.0e8)
+    >>> psi.shape, float(psi[0])
+    ((2,), 0.0)
+    """
+    energy_gev = float(energy_gev)
+    floor_gev = float(floor_gev)
+    if energy_gev <= 0.0:
+        raise ValueError(f"energy_gev must be positive, got {energy_gev}")
+    if floor_gev <= 0.0:
+        raise ValueError(f"floor_gev must be positive, got {floor_gev}")
+    if nodes_per_decade < 1:
+        raise ValueError(f"nodes_per_decade must be at least 1, got {nodes_per_decade}")
+    s_shape = np.shape(s)
+    s_arr = np.atleast_1d(np.asarray(s))
+    ell = np.asarray(ell_km, dtype=float)
+    if np.any(ell < 0.0):
+        raise ValueError("ell_km must be zero or positive")
+
+    top, bottom = np.log10(energy_gev), np.log10(floor_gev)
+    if top > bottom:
+        n_nodes = int(np.ceil((top - bottom) * nodes_per_decade)) + 1
+        log10_grid = np.linspace(top, bottom, n_nodes)
+    else:
+        # Born at or below the floor: the kernel stays at the birth energy.
+        log10_grid = np.array([top])
+    grid = 10.0**log10_grid
+    kappa, q, p = three_moment_loss_spectrum(
+        drift_coefficient(grid, density_g_cm3, source),
+        diffusion_coefficient(grid, density_g_cm3, source),
+        third_moment_coefficient(grid, density_g_cm3, source),
+    )
+    rate = _three_moment_mean_rate(kappa, q, p)
+    symbols = np.stack(
+        [
+            np.asarray(phi_symbol_three_moment(s_arr, float(k), float(qq), float(pp)))
+            for k, qq, pp in zip(kappa, q, p, strict=True)
+        ]
+    )
+
+    # Trapezoid in v = ln(eps / E) of dl = dv / Phi'(0) and of Phi dl.
+    dv = np.log(10.0) * np.abs(np.diff(log10_grid))
+    inverse = 1.0 / rate
+    depth = dv * 0.5 * (inverse[:-1] + inverse[1:])
+    slab = dv[:, None] * 0.5 * (
+        symbols[:-1] / rate[:-1, None] + symbols[1:] / rate[1:, None]
+    )
+    cumulative_depth = np.concatenate([[0.0], np.cumsum(depth)])
+    cumulative = np.concatenate(
+        [np.zeros((1, s_arr.size), dtype=symbols.dtype), np.cumsum(slab, axis=0)]
+    )
+
+    out = np.empty(ell.shape + s_arr.shape, dtype=symbols.dtype)
+    for index in np.ndindex(ell.shape):
+        length = ell[index]
+        if length >= cumulative_depth[-1]:
+            # Past the floor: the remainder runs on the kernel held there.
+            out[index] = cumulative[-1] + (length - cumulative_depth[-1]) * symbols[-1]
+            continue
+        j = int(np.searchsorted(cumulative_depth, length, side="right")) - 1
+        fraction = (length - cumulative_depth[j]) / depth[j]
+        out[index] = cumulative[j] + fraction * slab[j]
+    return out.reshape(ell.shape + s_shape)
+
+
+def loss_density_running(
+    w_grid: np.ndarray,
+    ell_km: float,
+    energy_gev: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+    floor_gev: float = DEFAULT_IONIZATION_MATCH_GEV,
+    nodes_per_decade: int = 48,
+    n_k: int = 2**14,
+) -> np.ndarray:
+    """Density ``P(w)`` of the log-loss with the kernel followed down the track.
+
+    :func:`loss_density_three_moment` reads the loss moments once, at the
+    production energy; this reads them along the mean descent instead
+    (:func:`running_log_loss_symbol`), which matters when the muon falls
+    through decades where the drift changes.
+
+    Parameters
+    ----------
+    w_grid : np.ndarray
+        Uniformly spaced grid of log-loss values ``w = ln(eps / E)`` (>= 0).
+    ell_km : float
+        Propagated column depth ``ell`` [km].
+    energy_gev : float
+        Muon energy at production [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "proposal_rock"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    floor_gev : float, optional
+        Energy below which the kernel is held fixed [GeV]; see
+        :func:`running_log_loss_symbol`.
+    nodes_per_decade : int, optional
+        Lattice density of the descent in ``log10 E``.
+    n_k : int, optional
+        Number of nodes on the ``k`` grid of the inversion.
+
+    Returns
+    -------
+    density : np.ndarray
+        Probability density ``P(w)``, normalized to unit area over ``w_grid``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from softpaws.transport.loss_distribution import loss_density_running
+    >>> w = np.linspace(0.0, 20.0, 800)
+    >>> density = loss_density_running(w, 3.0, 1.0e8)
+    >>> round(float(np.trapezoid(density, w)), 6)
+    1.0
+    """
+    ell_km = float(ell_km)
+    if ell_km < 0.0:
+        raise ValueError(f"ell_km must be zero or positive, got {ell_km}")
+
+    def symbol(s):
+        return running_log_loss_symbol(
+            s, ell_km, energy_gev, density_g_cm3, source, floor_gev, nodes_per_decade
+        )
+
+    return invert_log_loss_symbol(w_grid, 1.0, symbol, n_k)
 
 
 def loss_density(
