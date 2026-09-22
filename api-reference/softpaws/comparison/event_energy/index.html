@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/comparison/event_energy/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>event_energy - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "event_energy";
+        var mkdocs_page_input_path = "api-reference/softpaws/comparison/event_energy.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/comparison/event_energy/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >comparison</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">comparison</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">event_energy</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.TrackEvent">TrackEvent</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.energy_likelihood">energy_likelihood</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.energy_posterior">energy_posterior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.interaction_unity_energy_gev">interaction_unity_energy_gev</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.lognormal_measurement">lognormal_measurement</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.parent_energy_posterior">parent_energy_posterior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.posterior_summary">posterior_summary</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.potential_density">potential_density</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.quantile">quantile</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.sea_path_km">sea_path_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.survival_through_column">survival_through_column</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.event_energy.two_layer_column_g_cm2">two_layer_column_g_cm2</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">comparison</li>
+      <li class="breadcrumb-item active">event_energy</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.comparison.event_energy" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.comparison.event_energy</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>The neutrino energy behind one observed muon track.</p>
+<p>A track detector measures a muon energy somewhere along the muon's descent
+from the neutrino interaction, an unknown distance upstream. The arrival
+kernel of the transport, integrated over that distance, gives the potential
+density <code>u(w)</code>: how much column a muon spends at each log loss <code>w</code> on its
+way down. Folded with the measurement it gives the event's energy
+likelihood, and with a flux prior, the cross section and the survival
+through the matter in front of the detector, the neutrino-energy posterior.</p>
+<p>The functions here are those of the KM3-230213A analysis (Section V B of the
+paper) and of the single-track reconstructions that precede it.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="TrackEvent
+
+
+  
+      dataclass
+   (softpaws.comparison.event_energy.TrackEvent)" href="#softpaws.comparison.event_energy.TrackEvent">TrackEvent</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>One observed muon track and the matter in front of the detector.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="energy_likelihood (softpaws.comparison.event_energy.energy_likelihood)" href="#softpaws.comparison.event_energy.energy_likelihood">energy_likelihood</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The event's energy likelihood <code>l(E_nu) = int dw u(w) L(eps e^-w)</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="energy_posterior (softpaws.comparison.event_energy.energy_posterior)" href="#softpaws.comparison.event_energy.energy_posterior">energy_posterior</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Normalized neutrino-energy posterior on a <code>log10 E</code> grid.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="interaction_unity_energy_gev (softpaws.comparison.event_energy.interaction_unity_energy_gev)" href="#softpaws.comparison.event_energy.interaction_unity_energy_gev">interaction_unity_energy_gev</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Energy at which a column is one interaction length.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="lognormal_measurement (softpaws.comparison.event_energy.lognormal_measurement)" href="#softpaws.comparison.event_energy.lognormal_measurement">lognormal_measurement</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Lognormal likelihood of a measured energy, as a density in <code>ln E</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="parent_energy_posterior (softpaws.comparison.event_energy.parent_energy_posterior)" href="#softpaws.comparison.event_energy.parent_energy_posterior">parent_energy_posterior</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Parent-energy posterior of one muon seen after a known column.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="posterior_summary (softpaws.comparison.event_energy.posterior_summary)" href="#softpaws.comparison.event_energy.posterior_summary">posterior_summary</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mode, median and central interval of a posterior on a <code>log10 E</code> grid.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="potential_density (softpaws.comparison.event_energy.potential_density)" href="#softpaws.comparison.event_energy.potential_density">potential_density</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Potential density <code>u(w) = int_0^inf P(w | X) dX</code> on a log-loss grid.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="quantile (softpaws.comparison.event_energy.quantile)" href="#softpaws.comparison.event_energy.quantile">quantile</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The <code>q</code>-quantile of a density tabulated on an ascending grid.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="sea_path_km (softpaws.comparison.event_energy.sea_path_km)" href="#softpaws.comparison.event_energy.sea_path_km">sea_path_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Path from a detector to the surface of its medium at a given elevation [km].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="survival_through_column (softpaws.comparison.event_energy.survival_through_column)" href="#softpaws.comparison.event_energy.survival_through_column">survival_through_column</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutrino survival through a column of isoscalar matter.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="two_layer_column_g_cm2 (softpaws.comparison.event_energy.two_layer_column_g_cm2)" href="#softpaws.comparison.event_energy.two_layer_column_g_cm2">two_layer_column_g_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Matter column from a detector to the surface through a two-layer Earth.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.comparison.event_energy.TrackEvent" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">TrackEvent</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">TrackEvent(name: str, muon_energy_gev: float, muon_energy_90_gev: tuple[float, float], elevation_deg: float, depth_km: float, traversed_column_kmwe: float, water_before_detector_km: float, reference: str = '')</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>One observed muon track and the matter in front of the detector.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>name</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Event name.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>muon_energy_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Central estimate of the muon energy at the detector [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>muon_energy_90_gev</code></b>
+                  (<code>tuple of float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Lower and upper edge of the 90% interval on the muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>elevation_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Elevation of the arrival direction above the local horizon [deg];
+negative is below.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector depth below the surface of the medium [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>traversed_column_kmwe</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Column the neutrino traverses to the detector [km water equivalent].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>water_before_detector_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Water in front of the detector along the arrival direction [km]; the
+muon is born inside it for any parent energy of interest.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reference</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Where the numbers come from.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.comparison.event_energy.TrackEvent.traversed_column_g_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">traversed_column_g_cm2</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">traversed_column_g_cm2: float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The traversed column in <code>g cm^-2</code>.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.energy_likelihood" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">energy_likelihood</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">energy_likelihood(u: ndarray, w_grid: ndarray, energy_nu: float | ndarray, measurement: Callable[[ndarray], ndarray], accept_gev: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The event's energy likelihood <code>l(E_nu) = int dw u(w) L(eps e^-w)</code>.</p>
+<p>The integral runs over the log loss on the kernel's own grid, so the
+integrable spike of the exact <code>u</code> at <code>w -&gt; 0</code> is sampled identically
+for every <code>E_nu</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>u</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Potential density on <code>w_grid</code>, from :func:<code>potential_density</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Log-loss grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_nu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>measurement</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Likelihood of the muon measurement as a function of <code>log10 E_mu</code>,
+a density in <code>ln E</code>; see :func:<code>lognormal_measurement</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>accept_gev</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy below which the selection does not count a muon [GeV].
+When given, the result is divided by the muons the selection
+accepts, <code>int u dw</code> over <code>E_mu &gt;= accept_gev</code>, which is the
+conditional density a rate comparison needs alongside the effective
+area. <code>None</code> returns the unnormalized fold, which is what the
+energy posterior takes alongside the cross section.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>likelihood</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The likelihood at each <code>energy_nu</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def energy_likelihood(
+    u: np.ndarray,
+    w_grid: np.ndarray,
+    energy_nu: float | np.ndarray,
+    measurement: Callable[[np.ndarray], np.ndarray],
+    accept_gev: float | None = None,
+) -&gt; np.ndarray:
+    """The event's energy likelihood ``l(E_nu) = int dw u(w) L(eps e^-w)``.
+
+    The integral runs over the log loss on the kernel's own grid, so the
+    integrable spike of the exact ``u`` at ``w -&gt; 0`` is sampled identically
+    for every ``E_nu``.
+
+    Parameters
+    ----------
+    u : np.ndarray
+        Potential density on ``w_grid``, from :func:`potential_density`.
+    w_grid : np.ndarray
+        Log-loss grid.
+    energy_nu : float or np.ndarray
+        Neutrino energies [GeV].
+    measurement : callable
+        Likelihood of the muon measurement as a function of ``log10 E_mu``,
+        a density in ``ln E``; see :func:`lognormal_measurement`.
+    accept_gev : float or None, optional
+        Muon energy below which the selection does not count a muon [GeV].
+        When given, the result is divided by the muons the selection
+        accepts, ``int u dw`` over ``E_mu &gt;= accept_gev``, which is the
+        conditional density a rate comparison needs alongside the effective
+        area. ``None`` returns the unnormalized fold, which is what the
+        energy posterior takes alongside the cross section.
+
+    Returns
+    -------
+    likelihood : np.ndarray
+        The likelihood at each ``energy_nu``.
+    """
+    energy_nu = np.atleast_1d(np.asarray(energy_nu, dtype=float))
+    w_grid = np.asarray(w_grid, dtype=float)
+    eps = (1.0 - np.squeeze(mean_inelasticity(energy_nu))) * energy_nu
+    log10_e_mu = (np.log(eps)[:, None] - w_grid[None, :]) / np.log(10.0)
+    value = np.trapezoid(u[None, :] * measurement(log10_e_mu), w_grid, axis=1)
+    if accept_gev is None:
+        return value
+    cdf = np.concatenate([[0.0], np.cumsum(0.5 * (u[1:] + u[:-1]) * np.diff(w_grid))])
+    w_accept = np.log(eps / accept_gev)
+    total = np.where(
+        w_accept &lt;= w_grid[-1],
+        np.interp(w_accept, w_grid, cdf),
+        cdf[-1] + (w_accept - w_grid[-1]) * u[-1],
+    )
+    return value / np.clip(total, 1.0e-300, None)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.energy_posterior" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">energy_posterior</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">energy_posterior(likelihood: ndarray, log10_enu: ndarray, flux_shape: Callable[[ndarray], ndarray], cross_section: CrossSection, survival: ndarray | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Normalized neutrino-energy posterior on a <code>log10 E</code> grid.</p>
+<p>The weight is the flux shape times the charged-current cross section
+times the survival, and the posterior is a density in <code>log10 E</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>likelihood</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Energy likelihood on <code>10**log10_enu</code>, from :func:<code>energy_likelihood</code>
+without <code>accept_gev</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_enu</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino-energy grid [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flux_shape</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Flux prior as a function of energy [GeV], up to normalization.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section model.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>survival</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Survival factor on the grid; <code>None</code> for no attenuation.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>posterior</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Density in <code>log10 E</code>, unit area on the grid.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def energy_posterior(
+    likelihood: np.ndarray,
+    log10_enu: np.ndarray,
+    flux_shape: Callable[[np.ndarray], np.ndarray],
+    cross_section: CrossSection,
+    survival: np.ndarray | None = None,
+) -&gt; np.ndarray:
+    """Normalized neutrino-energy posterior on a ``log10 E`` grid.
+
+    The weight is the flux shape times the charged-current cross section
+    times the survival, and the posterior is a density in ``log10 E``.
+
+    Parameters
+    ----------
+    likelihood : np.ndarray
+        Energy likelihood on ``10**log10_enu``, from :func:`energy_likelihood`
+        without ``accept_gev``.
+    log10_enu : np.ndarray
+        Neutrino-energy grid [log10 GeV].
+    flux_shape : callable
+        Flux prior as a function of energy [GeV], up to normalization.
+    cross_section : CrossSection
+        Cross-section model.
+    survival : np.ndarray or None, optional
+        Survival factor on the grid; ``None`` for no attenuation.
+
+    Returns
+    -------
+    posterior : np.ndarray
+        Density in ``log10 E``, unit area on the grid.
+    """
+    energy = 10.0 ** np.asarray(log10_enu, dtype=float)
+    weight = flux_shape(energy) * cross_section.cc(energy)
+    if survival is not None:
+        weight = weight * survival
+    p = likelihood * weight * energy
+    return p / np.trapezoid(p, log10_enu)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.interaction_unity_energy_gev" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">interaction_unity_energy_gev</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">interaction_unity_energy_gev(column_g_cm2: float, cross_section: CrossSection) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Energy at which a column is one interaction length.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>column_g_cm2</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Traversed column [g cm^-2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section model.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>energy_gev</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The energy [GeV], or infinity if the column is thinner than one
+interaction length up to <code>10^12</code> GeV.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def interaction_unity_energy_gev(column_g_cm2: float, cross_section: CrossSection) -&gt; float:
+    """Energy at which a column is one interaction length.
+
+    Parameters
+    ----------
+    column_g_cm2 : float
+        Traversed column [g cm^-2].
+    cross_section : CrossSection
+        Cross-section model.
+
+    Returns
+    -------
+    energy_gev : float
+        The energy [GeV], or infinity if the column is thinner than one
+        interaction length up to ``10^12`` GeV.
+    """
+    target = 1.0 / (AVOGADRO_PER_MOL * column_g_cm2)
+    grid = np.logspace(6.0, 12.0, 400)
+    sigma = cross_section.cc(grid) + cross_section.nc(grid)
+    if sigma[-1] &lt; target:
+        return np.inf
+    return float(np.exp(np.interp(np.log(target), np.log(sigma), np.log(grid))))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.lognormal_measurement" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">lognormal_measurement</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">lognormal_measurement(log10_e: ndarray, central_gev: float, interval_90_gev: tuple[float, float]) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Lognormal likelihood of a measured energy, as a density in <code>ln E</code>.</p>
+<p>The width is set by the 90% interval, taken symmetric in the logarithm.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Trial energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>central_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Central estimate [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>interval_90_gev</code></b>
+                  (<code>tuple of float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Lower and upper edge of the 90% interval [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Likelihood density in <code>ln E</code> at each trial energy.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def lognormal_measurement(
+    log10_e: np.ndarray, central_gev: float, interval_90_gev: tuple[float, float]
+) -&gt; np.ndarray:
+    """Lognormal likelihood of a measured energy, as a density in ``ln E``.
+
+    The width is set by the 90% interval, taken symmetric in the logarithm.
+
+    Parameters
+    ----------
+    log10_e : np.ndarray
+        Trial energies [log10 GeV].
+    central_gev : float
+        Central estimate [GeV].
+    interval_90_gev : tuple of float
+        Lower and upper edge of the 90% interval [GeV].
+
+    Returns
+    -------
+    density : np.ndarray
+        Likelihood density in ``ln E`` at each trial energy.
+    """
+    sigma = np.log(interval_90_gev[1] / interval_90_gev[0]) / (2.0 * norm.isf(0.05))
+    return norm.pdf(np.asarray(log10_e) * np.log(10.0), loc=np.log(central_gev), scale=sigma)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.parent_energy_posterior" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">parent_energy_posterior</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">parent_energy_posterior(muon_energy_gev: float, ell_km: float, gamma: float, n_w: int = 2400) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Parent-energy posterior of one muon seen after a known column.</p>
+<p>For a muon of energy <code>E</code> measured after <code>ell_km</code> of medium, the parent
+energy is <code>eps = E e^w</code> with <code>w</code> the log loss, and a power-law flux
+prior weights it by <code>e^{-gamma w}</code>. Both the exact loss law and its
+Fokker-Planck form are returned, each normalized to unit area in <code>w</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>muon_energy_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Measured muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Column the muon crossed [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index of the flux prior.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_w</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>2400</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of grid points in <code>w</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>result</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>"w"</code> the log-loss grid, <code>"eps"</code> the parent energies [GeV],
+<code>"exact"</code> and <code>"fp"</code> the two posteriors, and <code>"b_mu"</code>,
+<code>"d_mu"</code> the coefficients used [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def parent_energy_posterior(
+    muon_energy_gev: float, ell_km: float, gamma: float, n_w: int = 2400
+) -&gt; dict[str, np.ndarray]:
+    """Parent-energy posterior of one muon seen after a known column.
+
+    For a muon of energy ``E`` measured after ``ell_km`` of medium, the parent
+    energy is ``eps = E e^w`` with ``w`` the log loss, and a power-law flux
+    prior weights it by ``e^{-gamma w}``. Both the exact loss law and its
+    Fokker-Planck form are returned, each normalized to unit area in ``w``.
+
+    Parameters
+    ----------
+    muon_energy_gev : float
+        Measured muon energy [GeV].
+    ell_km : float
+        Column the muon crossed [km].
+    gamma : float
+        Spectral index of the flux prior.
+    n_w : int, optional
+        Number of grid points in ``w``.
+
+    Returns
+    -------
+    result : dict
+        ``"w"`` the log-loss grid, ``"eps"`` the parent energies [GeV],
+        ``"exact"`` and ``"fp"`` the two posteriors, and ``"b_mu"``,
+        ``"d_mu"`` the coefficients used [km^-1].
+    """
+    b_mu = float(np.squeeze(drift_coefficient(muon_energy_gev)))
+    d_mu = float(np.squeeze(diffusion_coefficient(muon_energy_gev)))
+    mean = (b_mu + d_mu / 2.0) * ell_km
+    w = np.linspace(1e-4, mean + 9.0 * np.sqrt(d_mu * ell_km), n_w)
+    prior = np.exp(-gamma * w)
+    post_exact = prior * loss_density(w, ell_km, b_mu, d_mu)
+    post_fp = prior * loss_density_gaussian(w, ell_km, b_mu, d_mu)
+    post_exact /= np.trapezoid(post_exact, w)
+    post_fp /= np.trapezoid(post_fp, w)
+    return {
+        "w": w,
+        "eps": muon_energy_gev * np.exp(w),
+        "exact": post_exact,
+        "fp": post_fp,
+        "b_mu": b_mu,
+        "d_mu": d_mu,
+    }</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.posterior_summary" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">posterior_summary</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">posterior_summary(posterior: ndarray, log10_enu: ndarray, level: float = 0.9) -&gt; tuple[float, float, float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mode, median and central interval of a posterior on a <code>log10 E</code> grid.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>posterior</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Density in <code>log10 E</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_enu</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The grid [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>level</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.9</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Probability content of the interval.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>mode, median, low, high : float</code>
+              –
+              <div class="doc-md-description">
+                <p>All in GeV.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def posterior_summary(
+    posterior: np.ndarray, log10_enu: np.ndarray, level: float = 0.90
+) -&gt; tuple[float, float, float, float]:
+    """Mode, median and central interval of a posterior on a ``log10 E`` grid.
+
+    Parameters
+    ----------
+    posterior : np.ndarray
+        Density in ``log10 E``.
+    log10_enu : np.ndarray
+        The grid [log10 GeV].
+    level : float, optional
+        Probability content of the interval.
+
+    Returns
+    -------
+    mode, median, low, high : float
+        All in GeV.
+    """
+    log10_enu = np.asarray(log10_enu, dtype=float)
+    cdf = np.concatenate(
+        [[0.0], np.cumsum(0.5 * (posterior[1:] + posterior[:-1]) * np.diff(log10_enu))]
+    )
+    tail = 0.5 * (1.0 - level)
+    lo, med, hi = np.interp([tail, 0.5, 1.0 - tail], cdf, log10_enu)
+    mode = log10_enu[int(np.argmax(posterior))]
+    return tuple(10.0**v for v in (mode, med, lo, hi))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.potential_density" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">potential_density</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">potential_density(kind: str, w_grid: ndarray, kernel_energy_gev: float = 100000000.0, x_max_km: float = 30.0, n_x: int = 120, n_k: int = 2 ** 13, n_moments: int = 3) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Potential density <code>u(w) = int_0^inf P(w | X) dX</code> on a log-loss grid.</p>
+<p>The column a muon spends at each log loss <code>w</code> on its way down, per unit
+<code>w</code> [km]. The kernel is frozen at <code>kernel_energy_gev</code>; it is scale
+invariant, and the drift moves by about 4% per decade there.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>kind</code></b>
+                  (<code>(&#39;exact&#39;, &#39;gaussian&#39;, &#39;csda&#39;)</code>, default:
+                      <code>&#34;exact&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p><code>"exact"</code> is the subordinator (the loss law itself), <code>"gaussian"</code>
+the Fokker-Planck form, <code>"csda"</code> the mean loss, which gives
+<code>1 / b_mu</code> exactly.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Log-loss grid [dimensionless]. It must hold the whole loss law of the
+deepest slab, mean <code>b x_max</code> plus its spread, because the loss
+density renormalizes on the grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>kernel_energy_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>100000000.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy the loss coefficients are read at [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>x_max_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>30.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Deepest slab integrated [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_x</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>120</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of slabs.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>2 ** 13</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fourier nodes of the loss density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_moments</code></b>
+                  (<code>(2, 3)</code>, default:
+                      <code>2</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Loss family behind <code>"exact"</code>: 3 is the three-moment family whose
+hard edge matches PROPOSAL's tail; 2 the two-moment digamma family,
+8% low on the first log-loss moment.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>u</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Potential density on <code>w_grid</code> [km per unit <code>w</code>].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>kind</code> is not one of the three names.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def potential_density(
+    kind: str,
+    w_grid: np.ndarray,
+    kernel_energy_gev: float = 1.0e8,
+    x_max_km: float = 30.0,
+    n_x: int = 120,
+    n_k: int = 2**13,
+    n_moments: int = 3,
+) -&gt; np.ndarray:
+    """Potential density ``u(w) = int_0^inf P(w | X) dX`` on a log-loss grid.
+
+    The column a muon spends at each log loss ``w`` on its way down, per unit
+    ``w`` [km]. The kernel is frozen at ``kernel_energy_gev``; it is scale
+    invariant, and the drift moves by about 4% per decade there.
+
+    Parameters
+    ----------
+    kind : {"exact", "gaussian", "csda"}
+        ``"exact"`` is the subordinator (the loss law itself), ``"gaussian"``
+        the Fokker-Planck form, ``"csda"`` the mean loss, which gives
+        ``1 / b_mu`` exactly.
+    w_grid : np.ndarray
+        Log-loss grid [dimensionless]. It must hold the whole loss law of the
+        deepest slab, mean ``b x_max`` plus its spread, because the loss
+        density renormalizes on the grid.
+    kernel_energy_gev : float, optional
+        Energy the loss coefficients are read at [GeV].
+    x_max_km : float, optional
+        Deepest slab integrated [km].
+    n_x : int, optional
+        Number of slabs.
+    n_k : int, optional
+        Fourier nodes of the loss density.
+    n_moments : {2, 3}, optional
+        Loss family behind ``"exact"``: 3 is the three-moment family whose
+        hard edge matches PROPOSAL's tail; 2 the two-moment digamma family,
+        8% low on the first log-loss moment.
+
+    Returns
+    -------
+    u : np.ndarray
+        Potential density on ``w_grid`` [km per unit ``w``].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``kind`` is not one of the three names.
+    """
+    if kind not in ("exact", "gaussian", "csda"):
+        raise ValueError(f"kind must be 'exact', 'gaussian' or 'csda', got {kind!r}.")
+    b = float(np.squeeze(drift_coefficient(kernel_energy_gev)))
+    d = float(np.squeeze(diffusion_coefficient(kernel_energy_gev)))
+    t = float(np.squeeze(third_moment_coefficient(kernel_energy_gev)))
+    w_grid = np.asarray(w_grid, dtype=float)
+    if kind == "csda":
+        return np.full(w_grid.size, 1.0 / b)
+    x_grid = np.linspace(0.0, x_max_km, n_x + 1)[1:]
+    u = np.zeros(w_grid.size)
+    for x in x_grid:
+        if kind == "exact" and n_moments == 3:
+            u += loss_density_three_moment(w_grid, float(x), b, d, t, n_k=n_k)
+        elif kind == "exact":
+            u += loss_density(w_grid, float(x), b, d, n_k=n_k)
+        else:
+            u += loss_density_gaussian(w_grid, float(x), b, d)
+    # The first slab, X in (0, dX): the loss is small and the density sharply
+    # peaked, so it is taken as its trapezoid end point rather than resolved.
+    return u * (x_grid[1] - x_grid[0])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.quantile" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">quantile</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">quantile(w: ndarray, density: ndarray, q: float) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The <code>q</code>-quantile of a density tabulated on an ascending grid.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Density on the grid; it need not be normalized.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>q</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Probability in <code>[0, 1]</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>value</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The quantile.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def quantile(w: np.ndarray, density: np.ndarray, q: float) -&gt; float:
+    """The ``q``-quantile of a density tabulated on an ascending grid.
+
+    Parameters
+    ----------
+    w : np.ndarray
+        Grid.
+    density : np.ndarray
+        Density on the grid; it need not be normalized.
+    q : float
+        Probability in ``[0, 1]``.
+
+    Returns
+    -------
+    value : float
+        The quantile.
+    """
+    cdf = np.concatenate([[0.0], np.cumsum(0.5 * (density[1:] + density[:-1]) * np.diff(w))])
+    cdf /= cdf[-1]
+    return float(np.interp(q, cdf, w))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.sea_path_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">sea_path_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">sea_path_km(elevation_deg: float, depth_km: float, earth_radius_km: float = EARTH_RADIUS_KM) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Path from a detector to the surface of its medium at a given elevation [km].</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>elevation_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Elevation of the direction above the local horizon [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector depth below the surface [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>earth_radius_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.EARTH_RADIUS_KM">EARTH_RADIUS_KM</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the surface [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>path_km</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Straight-line path to the surface [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def sea_path_km(
+    elevation_deg: float, depth_km: float, earth_radius_km: float = EARTH_RADIUS_KM
+) -&gt; float:
+    """Path from a detector to the surface of its medium at a given elevation [km].
+
+    Parameters
+    ----------
+    elevation_deg : float
+        Elevation of the direction above the local horizon [deg].
+    depth_km : float
+        Detector depth below the surface [km].
+    earth_radius_km : float, optional
+        Radius of the surface [km].
+
+    Returns
+    -------
+    path_km : float
+        Straight-line path to the surface [km].
+    """
+    r0 = earth_radius_km - depth_km
+    s = np.sin(np.deg2rad(elevation_deg))
+    return float(-r0 * s + np.sqrt((r0 * s) ** 2 + earth_radius_km**2 - r0**2))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.survival_through_column" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">survival_through_column</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">survival_through_column(energy_nu: float | ndarray, column_g_cm2: float, cross_section: CrossSection) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutrino survival through a column of isoscalar matter.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_nu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_g_cm2</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Traversed column [g cm^-2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section model; charged and neutral current both remove the
+neutrino from the beam.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>survival</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Survival probability in <code>[0, 1]</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def survival_through_column(
+    energy_nu: float | np.ndarray, column_g_cm2: float, cross_section: CrossSection
+) -&gt; np.ndarray:
+    """Neutrino survival through a column of isoscalar matter.
+
+    Parameters
+    ----------
+    energy_nu : float or np.ndarray
+        Neutrino energies [GeV].
+    column_g_cm2 : float
+        Traversed column [g cm^-2].
+    cross_section : CrossSection
+        Cross-section model; charged and neutral current both remove the
+        neutrino from the beam.
+
+    Returns
+    -------
+    survival : np.ndarray
+        Survival probability in ``[0, 1]``.
+    """
+    sigma = cross_section.cc(energy_nu) + cross_section.nc(energy_nu)
+    return np.exp(-AVOGADRO_PER_MOL * sigma * column_g_cm2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.event_energy.two_layer_column_g_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">two_layer_column_g_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">two_layer_column_g_cm2(elevation_deg: float, depth_km: float, seabed_depth_km: float, rho_sea_g_cm3: float = 1.03, rho_rock_g_cm3: float = 2.65, ds_km: float = 0.05, earth_radius_km: float = EARTH_RADIUS_KM) -&gt; tuple[float, float, float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Matter column from a detector to the surface through a two-layer Earth.</p>
+<p>Rock below the seabed, sea above it, on a curved Earth, with the ray
+leaving the detector at <code>elevation_deg</code> above the local horizontal.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>elevation_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Elevation of the direction above the local horizon [deg]; negative
+is below.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector depth below the sea surface [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seabed_depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Seabed depth below the sea surface [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rho_sea_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.03</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Densities of the two layers [g cm^-3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rho_rock_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.03</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Densities of the two layers [g cm^-3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ds_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.05</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Step of the path integration [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>earth_radius_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.EARTH_RADIUS_KM">EARTH_RADIUS_KM</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the sea surface [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>total_g_cm2</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Total column [g cm^-2].</p>
+              </div>
+            </li>
+            <li>
+                  <code>water_km, rock_km : float</code>
+              –
+              <div class="doc-md-description">
+                <p>Path lengths in each layer [km].</p>
+              </div>
+            </li>
+            <li>
+<b><code>path_km</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Total path length [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/event_energy.py</code></summary>
+              <pre class="highlight"><code class="language-python">def two_layer_column_g_cm2(
+    elevation_deg: float,
+    depth_km: float,
+    seabed_depth_km: float,
+    rho_sea_g_cm3: float = 1.03,
+    rho_rock_g_cm3: float = 2.65,
+    ds_km: float = 0.05,
+    earth_radius_km: float = EARTH_RADIUS_KM,
+) -&gt; tuple[float, float, float, float]:
+    """Matter column from a detector to the surface through a two-layer Earth.
+
+    Rock below the seabed, sea above it, on a curved Earth, with the ray
+    leaving the detector at ``elevation_deg`` above the local horizontal.
+
+    Parameters
+    ----------
+    elevation_deg : float
+        Elevation of the direction above the local horizon [deg]; negative
+        is below.
+    depth_km : float
+        Detector depth below the sea surface [km].
+    seabed_depth_km : float
+        Seabed depth below the sea surface [km].
+    rho_sea_g_cm3, rho_rock_g_cm3 : float, optional
+        Densities of the two layers [g cm^-3].
+    ds_km : float, optional
+        Step of the path integration [km].
+    earth_radius_km : float, optional
+        Radius of the sea surface [km].
+
+    Returns
+    -------
+    total_g_cm2 : float
+        Total column [g cm^-2].
+    water_km, rock_km : float
+        Path lengths in each layer [km].
+    path_km : float
+        Total path length [km].
+    """
+    r0 = earth_radius_km - depth_km
+    r_bed = earth_radius_km - seabed_depth_km
+    sin_a = np.sin(np.deg2rad(elevation_deg))
+    water = rock = 0.0
+    s = 0.0
+    while True:
+        s += ds_km
+        r = np.sqrt(r0**2 + s**2 + 2.0 * r0 * s * sin_a)
+        if r &gt;= earth_radius_km:
+            break
+        if r &gt; r_bed:
+            water += ds_km
+        else:
+            rock += ds_km
+        if s &gt; 3.0e3:  # not a chord this function is meant for
+            break
+    total = (water * rho_sea_g_cm3 + rock * rho_rock_g_cm3) * CM_PER_KM
+    return total, water, rock, s</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="comparison"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../events/" class="btn btn-neutral float-right" title="events">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../events/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

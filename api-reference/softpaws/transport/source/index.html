@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/source/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>source - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "source";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/source.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/source/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">source</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.source.cc_cross_section">cc_cross_section</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.source.inelasticity_factor">inelasticity_factor</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.source.mean_inelasticity">mean_inelasticity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.source.nucleon_number_density">nucleon_number_density</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">source</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.source" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.source</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Weak source ingredients: neutrino CC cross section and target density.</p>
+<p>These feed the weak collisional term that sources muons in the transport
+equation. In the reduced drift-limit picture of Palmisano et al.
+(arXiv:2607.13143, Sections 2.2 and 2.3) the weak-rate density at observed muon
+energy <code>E</code> is
+<code>n_N * sigma_CC(E) * phi_nu(E)</code>, which multiplies the target volume to give
+the event rate.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc_cross_section (softpaws.transport.source.cc_cross_section)" href="#softpaws.transport.source.cc_cross_section">cc_cross_section</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutrino-nucleon CC cross section (Eq. 2.5).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="inelasticity_factor (softpaws.transport.source.inelasticity_factor)" href="#softpaws.transport.source.inelasticity_factor">inelasticity_factor</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Weak-vertex inelasticity factor <code>I(A) = &lt;(1 - y_w)^A&gt;</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mean_inelasticity (softpaws.transport.source.mean_inelasticity)" href="#softpaws.transport.source.mean_inelasticity">mean_inelasticity</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mean charged-current inelasticity <code>&lt;y_w&gt;</code> at a given energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="nucleon_number_density (softpaws.transport.source.nucleon_number_density)" href="#softpaws.transport.source.nucleon_number_density">nucleon_number_density</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Target nucleon number density of the medium.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.source.cc_cross_section" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc_cross_section</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">cc_cross_section(energy_gev: float | ndarray, lam: float = DEFAULT_LAMBDA) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutrino-nucleon CC cross section (Eq. 2.5).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV]. In the reduced drift limit this is evaluated at
+the observed muon energy, since <code>&lt;y_w&gt;</code> is small.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sigma</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>CC cross section per nucleon [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>This single power law is anchored at <code>E0 = 10 PeV</code> and is intended for the
+UHE regime. Below a few PeV the true cross section flattens relative to the
+<code>lambda = 0.4</code> extrapolation, so treat sub-PeV values as approximate.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/source.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cc_cross_section(
+    energy_gev: float | np.ndarray,
+    lam: float = DEFAULT_LAMBDA,
+) -&gt; np.ndarray:
+    """Neutrino-nucleon CC cross section (Eq. 2.5).
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV]. In the reduced drift limit this is evaluated at
+        the observed muon energy, since ``&lt;y_w&gt;`` is small.
+    lam : float, optional
+        Cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+
+    Returns
+    -------
+    sigma : np.ndarray
+        CC cross section per nucleon [cm^2].
+
+    Notes
+    -----
+    This single power law is anchored at ``E0 = 10 PeV`` and is intended for the
+    UHE regime. Below a few PeV the true cross section flattens relative to the
+    ``lambda = 0.4`` extrapolation, so treat sub-PeV values as approximate.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    return SIGMA0_CM2 * (energy / E0_CROSS_GEV) ** lam</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.source.inelasticity_factor" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">inelasticity_factor</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">inelasticity_factor(spectral_index_value: float | ndarray, mean_inelasticity: float = MEAN_INELASTICITY) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Weak-vertex inelasticity factor <code>I(A) = &lt;(1 - y_w)^A&gt;</code>.</p>
+<p>The muon is born with only a fraction <code>1 - y_w</code> of the neutrino energy, so
+the source picks up the spectrum-weighted average
+<code>I(A) = &lt;(1 - y_w)^A&gt;_P</code> (the method paper, Sec. II C,
+<code>docs/theory/exact_soft_volume.md</code>). This factor multiplies both the
+inside and the soft contributions in the master formula.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A = gamma - lambda - 1</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>mean_inelasticity</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.MEAN_INELASTICITY">MEAN_INELASTICITY</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Mean CC inelasticity <code>&lt;y_w&gt;</code>. Defaults to :data:<code>MEAN_INELASTICITY</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>factor</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>I(A)</code>, of order <code>0.8</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>With only the mean <code>&lt;y_w&gt;</code> available, the inelasticity distribution
+<code>P(y_w)</code> is modelled as a delta at its mean, giving
+<code>I(A) = (1 - &lt;y_w&gt;)^A</code>. This is exact at <code>A = 1</code> (<code>I(1) = 1 - &lt;y_w&gt;</code>,
+the only value Palmisano et al. use) and a mild approximation elsewhere;
+supply a full <code>P(y_w)</code> average to improve it away from <code>A = 1</code>.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/source.py</code></summary>
+              <pre class="highlight"><code class="language-python">def inelasticity_factor(
+    spectral_index_value: float | np.ndarray,
+    mean_inelasticity: float = MEAN_INELASTICITY,
+) -&gt; np.ndarray:
+    """Weak-vertex inelasticity factor ``I(A) = &lt;(1 - y_w)^A&gt;``.
+
+    The muon is born with only a fraction ``1 - y_w`` of the neutrino energy, so
+    the source picks up the spectrum-weighted average
+    ``I(A) = &lt;(1 - y_w)^A&gt;_P`` (the method paper, Sec. II C,
+    ``docs/theory/exact_soft_volume.md``). This factor multiplies both the
+    inside and the soft contributions in the master formula.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A = gamma - lambda - 1``.
+    mean_inelasticity : float, optional
+        Mean CC inelasticity ``&lt;y_w&gt;``. Defaults to :data:`MEAN_INELASTICITY`.
+
+    Returns
+    -------
+    factor : np.ndarray
+        ``I(A)``, of order ``0.8``.
+
+    Notes
+    -----
+    With only the mean ``&lt;y_w&gt;`` available, the inelasticity distribution
+    ``P(y_w)`` is modelled as a delta at its mean, giving
+    ``I(A) = (1 - &lt;y_w&gt;)^A``. This is exact at ``A = 1`` (``I(1) = 1 - &lt;y_w&gt;``,
+    the only value Palmisano et al. use) and a mild approximation elsewhere;
+    supply a full ``P(y_w)`` average to improve it away from ``A = 1``.
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    return (1.0 - mean_inelasticity) ** a</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.source.mean_inelasticity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">mean_inelasticity</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">mean_inelasticity(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mean charged-current inelasticity <code>&lt;y_w&gt;</code> at a given energy.</p>
+<p>:data:<code>MEAN_INELASTICITY</code> is the asymptotic value and is right above ~10 PeV.
+Five decades lower it is wrong by more than a factor of two, and a muon range
+grows like <code>ln[(1 - y_w) E / E_thr]</code>, so freezing it inflates the range --
+and any effective area built on one -- at the low-energy end of a tabulated
+response. This interpolates the tabulated dependence in <code>log10(E)</code> and
+holds the end values outside the table.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>mean_y</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Mean inelasticity, falling from ~0.48 near 100 GeV to ~0.09 at
+<code>10^12</code> GeV.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>These are the <code>nu_N</code> values. Antineutrinos scatter with a larger <code>&lt;y_w&gt;</code>
+below ~100 TeV, where the valence contribution still distinguishes the two,
+and the difference washes out above it; that split is not carried here.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; float(mean_inelasticity(1.0e4)[0])
+0.421
+&gt;&gt;&gt; bool(mean_inelasticity(1.0e4) &gt; mean_inelasticity(1.0e7))
+True</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/source.py</code></summary>
+              <pre class="highlight"><code class="language-python">def mean_inelasticity(energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Mean charged-current inelasticity ``&lt;y_w&gt;`` at a given energy.
+
+    :data:`MEAN_INELASTICITY` is the asymptotic value and is right above ~10 PeV.
+    Five decades lower it is wrong by more than a factor of two, and a muon range
+    grows like ``ln[(1 - y_w) E / E_thr]``, so freezing it inflates the range --
+    and any effective area built on one -- at the low-energy end of a tabulated
+    response. This interpolates the tabulated dependence in ``log10(E)`` and
+    holds the end values outside the table.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+
+    Returns
+    -------
+    mean_y : np.ndarray
+        Mean inelasticity, falling from ~0.48 near 100 GeV to ~0.09 at
+        ``10^12`` GeV.
+
+    Notes
+    -----
+    These are the ``nu_N`` values. Antineutrinos scatter with a larger ``&lt;y_w&gt;``
+    below ~100 TeV, where the valence contribution still distinguishes the two,
+    and the difference washes out above it; that split is not carried here.
+
+    Examples
+    --------
+    &gt;&gt;&gt; float(mean_inelasticity(1.0e4)[0])
+    0.421
+    &gt;&gt;&gt; bool(mean_inelasticity(1.0e4) &gt; mean_inelasticity(1.0e7))
+    True
+    """
+    log10_e = np.atleast_1d(np.log10(np.asarray(energy_gev, dtype=float)))
+    return np.interp(log10_e, _INELASTICITY_LOG10_E, _INELASTICITY_MEAN)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.source.nucleon_number_density" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">nucleon_number_density</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">nucleon_number_density(density_g_cm3: float = RHO_WATER_G_CM3) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Target nucleon number density of the medium.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Medium mass density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>n_nucleon</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Nucleon number density [cm^-3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Uses <code>n = rho * N_A</code>, i.e. approximately one nucleon per atomic mass unit
+(<code>A / molar mass ~ 1 g/mol</code>). The CC cross section is defined per nucleon,
+so this is the matching target density.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/source.py</code></summary>
+              <pre class="highlight"><code class="language-python">def nucleon_number_density(density_g_cm3: float = RHO_WATER_G_CM3) -&gt; float:
+    """Target nucleon number density of the medium.
+
+    Parameters
+    ----------
+    density_g_cm3 : float, optional
+        Medium mass density [g cm^-3]. Defaults to water.
+
+    Returns
+    -------
+    n_nucleon : float
+        Nucleon number density [cm^-3].
+
+    Notes
+    -----
+    Uses ``n = rho * N_A``, i.e. approximately one nucleon per atomic mass unit
+    (``A / molar mass ~ 1 g/mol``). The CC cross section is defined per nucleon,
+    so this is the matching target density.
+    """
+    return density_g_cm3 * AVOGADRO_PER_MOL</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../soft_volume/" class="btn btn-neutral float-left" title="soft_volume"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../tau/" class="btn btn-neutral float-right" title="tau">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../soft_volume/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../tau/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

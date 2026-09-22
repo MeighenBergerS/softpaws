@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/standards/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>standards - softpaws</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "standards";
+        var mkdocs_page_input_path = "api-reference/softpaws/standards.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/standards/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../..">
+    <img src="../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">standards</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#softpaws.standards.make_standards">make_standards</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#softpaws.standards.use">use</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+      <li class="breadcrumb-item active">standards</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.standards" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.standards</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Current best-fit values, so a user never has to run a fit first.</p>
+<p>Each site has two numbers its instrument sets: the muon threshold of its
+selection and its light reach, given as a median with a 68% range. They ship
+in <code>data/standards.json</code> with the fit they come from. :func:<code>make_standards</code>
+rebuilds such a file from a fit result, and :func:<code>use</code> switches to one. The
+<code>SOFTPAWS_STANDARDS</code> environment variable does the same at import.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from softpaws import standards
+from softpaws.constants import m
+round(standards.REACH["ARCA230"] / m, 1)
+44.5</p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="make_standards (softpaws.standards.make_standards)" href="#softpaws.standards.make_standards">make_standards</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Write a standards file from a two-number fit result, and return it.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="use (softpaws.standards.use)" href="#softpaws.standards.use">use</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load the standards from <code>path</code>, or the shipped ones for <code>None</code>.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.standards.make_standards" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">make_standards</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">make_standards(fit_result: str | PathLike, out: str | PathLike, script: str = '') -&gt; dict</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Write a standards file from a two-number fit result, and return it.</p>
+<p>The fit result is the JSON the two-number response fit writes: per site,
+a <code>best</code> vector ordered as :data:<code>FIT_PARAMETERS</code> and the 16th, 50th and
+84th percentiles of <code>log10_e_thr</code> and <code>reach_km</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>fit_result</code></b>
+                  (<code><span title="str">str</span> or <span title="os.PathLike">PathLike</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The fit's JSON output.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>out</code></b>
+                  (<code><span title="str">str</span> or <span title="os.PathLike">PathLike</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Where to write the standards file.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>script</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>The command that produced the fit, recorded in the file's source.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>standards</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>What was written.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if a site has no two-number fit, or if the sites were fitted
+with different fixed physics.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; make_standards("77_reduced_fit_sigma05.json", "mine.json")
+&gt;&gt;&gt; use("mine.json")</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/standards.py</code></summary>
+              <pre class="highlight"><code class="language-python">def make_standards(
+    fit_result: str | os.PathLike, out: str | os.PathLike, script: str = ""
+) -&gt; dict:
+    """Write a standards file from a two-number fit result, and return it.
+
+    The fit result is the JSON the two-number response fit writes: per site,
+    a ``best`` vector ordered as :data:`FIT_PARAMETERS` and the 16th, 50th and
+    84th percentiles of ``log10_e_thr`` and ``reach_km``.
+
+    Parameters
+    ----------
+    fit_result : str or os.PathLike
+        The fit's JSON output.
+    out : str or os.PathLike
+        Where to write the standards file.
+    script : str, optional
+        The command that produced the fit, recorded in the file's source.
+
+    Returns
+    -------
+    standards : dict
+        What was written.
+
+    Raises
+    ------
+    ValueError
+        Raised if a site has no two-number fit, or if the sites were fitted
+        with different fixed physics.
+
+    Examples
+    --------
+    &gt;&gt;&gt; make_standards("77_reduced_fit_sigma05.json", "mine.json")  # doctest: +SKIP
+    &gt;&gt;&gt; use("mine.json")  # doctest: +SKIP
+    """
+    fit_result = pathlib.Path(fit_result)
+    sites, fixed = {}, None
+    for name, entry in json.loads(fit_result.read_text()).items():
+        if TWO_NUMBER_FIT not in entry:
+            raise ValueError(f"{fit_result}: {name} has no {TWO_NUMBER_FIT!r} result.")
+        best = dict(zip(FIT_PARAMETERS, entry[TWO_NUMBER_FIT]["best"], strict=True))
+        quantiles = entry[TWO_NUMBER_FIT]["quantiles"]
+        site_fixed = {"b_scale": best["b_scale"], "cross_section_slope": best["lam"]}
+        if fixed not in (None, site_fixed):
+            raise ValueError(f"{fit_result}: {name} was fitted with other fixed physics.")
+        fixed = site_fixed
+        sites[name] = {
+            "efficiency": best["eps_0"],
+            "threshold_gev": [10.0**q for q in quantiles["log10_e_thr"]],
+            "reach_m": [q * km / m for q in quantiles["reach_km"]],
+        }
+    standards = {
+        "source": {
+            "fit": fit_result.name,
+            "script": script,
+            "made": datetime.date.today().isoformat(),
+        },
+        "fixed": fixed,
+        "sites": sites,
+    }
+    pathlib.Path(out).write_text(json.dumps(standards, indent=2) + "\n")
+    return standards</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.standards.use" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">use</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">use(path: str | PathLike | None = None) -&gt; None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load the standards from <code>path</code>, or the shipped ones for <code>None</code>.</p>
+<p>The module's dictionaries are updated in place, so names imported from
+here before the call see the new values.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="os.PathLike">PathLike</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>A file written by :func:<code>make_standards</code>. <code>None</code> loads :data:<code>SHIPPED</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the file is not a standards file.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; use("my_standards.json")
+&gt;&gt;&gt; use()  # back to the shipped values</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/standards.py</code></summary>
+              <pre class="highlight"><code class="language-python">def use(path: str | os.PathLike | None = None) -&gt; None:
+    """Load the standards from ``path``, or the shipped ones for ``None``.
+
+    The module's dictionaries are updated in place, so names imported from
+    here before the call see the new values.
+
+    Parameters
+    ----------
+    path : str or os.PathLike or None, optional
+        A file written by :func:`make_standards`. ``None`` loads :data:`SHIPPED`.
+
+    Raises
+    ------
+    ValueError
+        Raised if the file is not a standards file.
+
+    Examples
+    --------
+    &gt;&gt;&gt; use("my_standards.json")  # doctest: +SKIP
+    &gt;&gt;&gt; use()  # back to the shipped values
+    """
+    path = pathlib.Path(path) if path is not None else SHIPPED
+    data = json.loads(path.read_text())
+    try:
+        sites, fixed, source = data["sites"], data["fixed"], data["source"]
+        loaded = {
+            name: (site["threshold_gev"], site["reach_m"], site["efficiency"])
+            for name, site in sites.items()
+        }
+    except (KeyError, TypeError) as missing:
+        raise ValueError(f"{path} is not a standards file: no {missing}.") from None
+    for table in (THRESHOLD, THRESHOLD_68, REACH, REACH_68, EFFICIENCY, FIXED, SOURCE):
+        table.clear()
+    for name, ((t_lo, t_mid, t_hi), (r_lo, r_mid, r_hi), efficiency) in loaded.items():
+        THRESHOLD[name], THRESHOLD_68[name] = t_mid * GeV, (t_lo * GeV, t_hi * GeV)
+        REACH[name], REACH_68[name] = r_mid * m, (r_lo * m, r_hi * m)
+        EFFICIENCY[name] = efficiency
+    FIXED.update(fixed)
+    SOURCE.update(source, file=str(path))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../response/soft_volume/" class="btn btn-neutral float-left" title="soft_volume"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../transport/" class="btn btn-neutral float-right" title="transport">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../response/soft_volume/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../transport/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../js/popper.min.js"></script>
+      <script src="../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../js/clipboard.js"></script>
+      <script src="../../../js/extra.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

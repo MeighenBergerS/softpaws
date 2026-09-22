@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/comparison/rates/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>rates - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "rates";
+        var mkdocs_page_input_path = "api-reference/softpaws/comparison/rates.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/comparison/rates/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >comparison</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">rates</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.fit_component_scales">fit_component_scales</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.fit_scale_factor">fit_scale_factor</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.fit_scale_factor_with_background">fit_scale_factor_with_background</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.implied_efficiency">implied_efficiency</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.irf_expected_counts">irf_expected_counts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.irf_expected_counts_directional">irf_expected_counts_directional</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.observed_counts">observed_counts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.rates.soft_volume_smeared_counts">soft_volume_smeared_counts</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">comparison</li>
+      <li class="breadcrumb-item active">rates</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.comparison.rates" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.comparison.rates</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Observed vs. predicted reconstructed-energy track counts.</p>
+<p>Puts the published-IRF forward model (:mod:<code>softpaws.response.irfs</code>) and the
+soft-volume forward model (:mod:<code>softpaws.response.soft_volume</code>) on a common
+footing, in reconstructed-energy bins comparable to the observed IceTracks-DR2
+event histogram: the IRF path is migrated from true neutrino energy to
+reconstructed energy via the smearing matrix's :meth:<code>~softpaws.response.irfs.
+SmearingMatrix.energy_response_matrix</code>, and the soft-volume path already
+predicts <em>muon energy at the detector</em>, which is used directly as the
+reconstructed-energy proxy (Palmisano et al., arXiv:2607.13143, Section 2.1).</p>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The soft-volume drift limit implemented in
+:mod:<code>softpaws.transport.soft_volume</code> assumes an unattenuated neutrino flux
+(Eq. 2.21 takes <code>D_nu = 1</code>), which is only realistic for the downgoing
+hemisphere. The published effective area, by contrast, already has Earth
+attenuation baked in for every direction. Comparisons here should therefore be
+restricted to the downgoing hemisphere (<code>dec &lt; 0</code> at IceCube) until the
+transport path grows an explicit attenuation model; see
+<code>docs/theory/soft_volume.md</code>.</p>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="fit_component_scales (softpaws.comparison.rates.fit_component_scales)" href="#softpaws.comparison.rates.fit_component_scales">fit_component_scales</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Joint Poisson maximum-likelihood normalizations of several templates.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="fit_scale_factor (softpaws.comparison.rates.fit_scale_factor)" href="#softpaws.comparison.rates.fit_scale_factor">fit_scale_factor</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Single-parameter normalization that best matches a template to data.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="fit_scale_factor_with_background (softpaws.comparison.rates.fit_scale_factor_with_background)" href="#softpaws.comparison.rates.fit_scale_factor_with_background">fit_scale_factor_with_background</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Signal normalization on top of a fixed background prediction.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="implied_efficiency (softpaws.comparison.rates.implied_efficiency)" href="#softpaws.comparison.rates.implied_efficiency">implied_efficiency</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Efficiency implied by comparing the idealized and IRF fit normalizations.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="irf_expected_counts (softpaws.comparison.rates.irf_expected_counts)" href="#softpaws.comparison.rates.irf_expected_counts">irf_expected_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Predicted reconstructed-energy track counts from the IRF path.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="irf_expected_counts_directional (softpaws.comparison.rates.irf_expected_counts_directional)" href="#softpaws.comparison.rates.irf_expected_counts_directional">irf_expected_counts_directional</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>IRF-path counts for a flux that also depends on direction.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="observed_counts (softpaws.comparison.rates.observed_counts)" href="#softpaws.comparison.rates.observed_counts">observed_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Histogram of observed reconstructed energies within a declination band.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="soft_volume_smeared_counts (softpaws.comparison.rates.soft_volume_smeared_counts)" href="#softpaws.comparison.rates.soft_volume_smeared_counts">soft_volume_smeared_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Migrate a soft-volume true-count spectrum through the IceCube smearing table.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.fit_component_scales" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fit_component_scales</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">fit_component_scales(observed: ndarray, templates: Sequence[ndarray], log10_e_edges: ndarray, log10_e_min_fit: float = 4.0, n_iterations: int = 500, tol: float = 1e-12) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Joint Poisson maximum-likelihood normalizations of several templates.</p>
+<p>Generalizes :func:<code>fit_scale_factor</code> to a prediction that is a sum of
+independently normalized components, <code>N_i = sum_c k_c t_{ci}</code> -- an
+astrophysical signal plus an atmospheric background whose normalization is
+left free, say, as an analysis does when the background model carries its own
+(large) flux uncertainty. Unlike :func:<code>fit_scale_factor_with_background</code>,
+which holds the background at its predicted normalization, every component
+here floats.</p>
+<p>Solved by the expectation-maximization iteration for Poisson mixtures,</p>
+<p>.. math:: k_c \leftarrow k_c\,\frac{\sum_i o_i t_{ci} / N_i}
+    {\sum_i t_{ci}},</p>
+<p>whose fixed point satisfies the likelihood equations for all components at
+once and which never leaves the physical region <code>k_c &gt;= 0</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>observed</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts per bin (see :func:<code>observed_counts</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>templates</code></b>
+                  (<code>sequence of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>Predicted counts per bin for each component, at some reference
+normalization. All of shape <code>(n_bins,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in <code>log10(E/GeV)</code>, used only to select the fit range.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_min_fit</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>4.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Lower edge of the fit range in <code>log10(E/GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_iterations</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>500</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Maximum number of iterations.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>tol</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1e-12</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Relative change in every scale below which the iteration stops.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>scales</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_components">n_components</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Best-fit multiplicative scale factor for each template.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if any template sums to zero or less in the fit range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def fit_component_scales(
+    observed: np.ndarray,
+    templates: Sequence[np.ndarray],
+    log10_e_edges: np.ndarray,
+    log10_e_min_fit: float = 4.0,
+    n_iterations: int = 500,
+    tol: float = 1e-12,
+) -&gt; np.ndarray:
+    r"""Joint Poisson maximum-likelihood normalizations of several templates.
+
+    Generalizes :func:`fit_scale_factor` to a prediction that is a sum of
+    independently normalized components, ``N_i = sum_c k_c t_{ci}`` -- an
+    astrophysical signal plus an atmospheric background whose normalization is
+    left free, say, as an analysis does when the background model carries its own
+    (large) flux uncertainty. Unlike :func:`fit_scale_factor_with_background`,
+    which holds the background at its predicted normalization, every component
+    here floats.
+
+    Solved by the expectation-maximization iteration for Poisson mixtures,
+
+    .. math:: k_c \\leftarrow k_c\\,\\frac{\\sum_i o_i t_{ci} / N_i}
+        {\\sum_i t_{ci}},
+
+    whose fixed point satisfies the likelihood equations for all components at
+    once and which never leaves the physical region ``k_c &gt;= 0``.
+
+    Parameters
+    ----------
+    observed : np.ndarray, shape (n_bins,)
+        Observed counts per bin (see :func:`observed_counts`).
+    templates : sequence of np.ndarray
+        Predicted counts per bin for each component, at some reference
+        normalization. All of shape ``(n_bins,)``.
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Bin edges in ``log10(E/GeV)``, used only to select the fit range.
+    log10_e_min_fit : float, optional
+        Lower edge of the fit range in ``log10(E/GeV)``.
+    n_iterations : int, optional
+        Maximum number of iterations.
+    tol : float, optional
+        Relative change in every scale below which the iteration stops.
+
+    Returns
+    -------
+    scales : np.ndarray, shape (n_components,)
+        Best-fit multiplicative scale factor for each template.
+
+    Raises
+    ------
+    ValueError
+        Raised if any template sums to zero or less in the fit range.
+    """
+    centers = 0.5 * (log10_e_edges[:-1] + log10_e_edges[1:])
+    mask = centers &gt;= log10_e_min_fit
+
+    stack = np.array([np.asarray(t, dtype=float)[mask] for t in templates])  # (n_comp, n_fit)
+    data = np.asarray(observed, dtype=float)[mask]
+
+    totals = stack.sum(axis=1)
+    if np.any(totals &lt;= 0.0):
+        raise ValueError("Every template must sum to more than zero in the fit range.")
+
+    scales = np.full(stack.shape[0], data.sum() / (stack.shape[0] * totals))
+    for _ in range(n_iterations):
+        predicted = scales @ stack
+        safe = np.where(predicted &gt; 0.0, predicted, 1.0)
+        weights = np.where(predicted &gt; 0.0, data / safe, 0.0)
+        updated = scales * (stack @ weights) / totals
+        if np.all(np.abs(updated - scales) &lt;= tol * np.maximum(scales, 1.0)):
+            scales = updated
+            break
+        scales = updated
+    return scales</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.fit_scale_factor" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fit_scale_factor</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">fit_scale_factor(observed: ndarray, template: ndarray, log10_e_edges: ndarray, log10_e_min_fit: float = 4.0) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Single-parameter normalization that best matches a template to data.</p>
+<p>For a template that scales linearly with the flux normalization (as both
+forward models do) and Poisson-distributed observed counts with no
+background, the maximum-likelihood scale factor for bins in the fit range
+is the simple ratio of summed counts, <code>sum(observed) / sum(template)</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>observed</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts per bin (see :func:<code>observed_counts</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>template</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Predicted counts per bin at some reference flux normalization.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in <code>log10(E/GeV)</code>, used only to select the fit range.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_min_fit</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>4.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Lower edge of the fit range in <code>log10(E/GeV)</code>. Defaults to 10 TeV,
+matching the IceCube diffuse-flux analysis (Palmisano et al.,
+arXiv:2607.13143, Section 4.1).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>scale</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Best-fit multiplicative scale factor.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the template sums to zero or less in the fit range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def fit_scale_factor(
+    observed: np.ndarray,
+    template: np.ndarray,
+    log10_e_edges: np.ndarray,
+    log10_e_min_fit: float = 4.0,
+) -&gt; float:
+    """Single-parameter normalization that best matches a template to data.
+
+    For a template that scales linearly with the flux normalization (as both
+    forward models do) and Poisson-distributed observed counts with no
+    background, the maximum-likelihood scale factor for bins in the fit range
+    is the simple ratio of summed counts, ``sum(observed) / sum(template)``.
+
+    Parameters
+    ----------
+    observed : np.ndarray, shape (n_bins,)
+        Observed counts per bin (see :func:`observed_counts`).
+    template : np.ndarray, shape (n_bins,)
+        Predicted counts per bin at some reference flux normalization.
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Bin edges in ``log10(E/GeV)``, used only to select the fit range.
+    log10_e_min_fit : float, optional
+        Lower edge of the fit range in ``log10(E/GeV)``. Defaults to 10 TeV,
+        matching the IceCube diffuse-flux analysis (Palmisano et al.,
+        arXiv:2607.13143, Section 4.1).
+
+    Returns
+    -------
+    scale : float
+        Best-fit multiplicative scale factor.
+
+    Raises
+    ------
+    ValueError
+        Raised if the template sums to zero or less in the fit range.
+    """
+    centers = 0.5 * (log10_e_edges[:-1] + log10_e_edges[1:])
+    mask = centers &gt;= log10_e_min_fit
+
+    template_sum = template[mask].sum()
+    if template_sum &lt;= 0:
+        raise ValueError("Template sums to zero or less in the fit range; cannot fit a scale.")
+
+    return float(observed[mask].sum() / template_sum)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.fit_scale_factor_with_background" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fit_scale_factor_with_background</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">fit_scale_factor_with_background(observed: ndarray, template: ndarray, background: ndarray, log10_e_edges: ndarray, log10_e_min_fit: float = 4.0) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Signal normalization on top of a fixed background prediction.</p>
+<p>The background-free :func:<code>fit_scale_factor</code> has a closed-form solution; with
+an additive background held at its predicted normalization the Poisson
+maximum likelihood for the signal scale <code>k</code> is instead the root of</p>
+<p>.. math:: \sum_i s_i\left(\frac{o_i}{k\,s_i + b_i} - 1\right) = 0,</p>
+<p>which is monotonically decreasing in <code>k</code> and is solved here by bisection.
+Use this when the fit range reaches down into the background-dominated part
+of the spectrum, where :func:<code>fit_scale_factor</code> would absorb the background
+into the signal normalization.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>observed</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts per bin (see :func:<code>observed_counts</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>template</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Predicted signal counts per bin at some reference flux normalization.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>background</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Predicted background counts per bin, held fixed.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in <code>log10(E/GeV)</code>, used only to select the fit range.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_min_fit</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>4.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Lower edge of the fit range in <code>log10(E/GeV)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>scale</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Best-fit multiplicative scale factor on <code>template</code>. Zero if the
+background alone already over-predicts the data everywhere in the fit
+range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the template sums to zero or less in the fit range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def fit_scale_factor_with_background(
+    observed: np.ndarray,
+    template: np.ndarray,
+    background: np.ndarray,
+    log10_e_edges: np.ndarray,
+    log10_e_min_fit: float = 4.0,
+) -&gt; float:
+    r"""Signal normalization on top of a fixed background prediction.
+
+    The background-free :func:`fit_scale_factor` has a closed-form solution; with
+    an additive background held at its predicted normalization the Poisson
+    maximum likelihood for the signal scale ``k`` is instead the root of
+
+    .. math:: \\sum_i s_i\\left(\\frac{o_i}{k\\,s_i + b_i} - 1\\right) = 0,
+
+    which is monotonically decreasing in ``k`` and is solved here by bisection.
+    Use this when the fit range reaches down into the background-dominated part
+    of the spectrum, where :func:`fit_scale_factor` would absorb the background
+    into the signal normalization.
+
+    Parameters
+    ----------
+    observed : np.ndarray, shape (n_bins,)
+        Observed counts per bin (see :func:`observed_counts`).
+    template : np.ndarray, shape (n_bins,)
+        Predicted signal counts per bin at some reference flux normalization.
+    background : np.ndarray, shape (n_bins,)
+        Predicted background counts per bin, held fixed.
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Bin edges in ``log10(E/GeV)``, used only to select the fit range.
+    log10_e_min_fit : float, optional
+        Lower edge of the fit range in ``log10(E/GeV)``.
+
+    Returns
+    -------
+    scale : float
+        Best-fit multiplicative scale factor on ``template``. Zero if the
+        background alone already over-predicts the data everywhere in the fit
+        range.
+
+    Raises
+    ------
+    ValueError
+        Raised if the template sums to zero or less in the fit range.
+    """
+    centers = 0.5 * (log10_e_edges[:-1] + log10_e_edges[1:])
+    mask = centers &gt;= log10_e_min_fit
+
+    signal = np.asarray(template, dtype=float)[mask]
+    bkg = np.asarray(background, dtype=float)[mask]
+    data = np.asarray(observed, dtype=float)[mask]
+
+    if signal.sum() &lt;= 0:
+        raise ValueError("Template sums to zero or less in the fit range; cannot fit a scale.")
+
+    def score(scale: float) -&gt; float:
+        predicted = scale * signal + bkg
+        # A bin predicting nothing where something was seen pulls the scale up
+        # without bound; one predicting nothing where nothing was seen is inert.
+        if np.any((predicted &lt;= 0.0) &amp; (data &gt; 0.0)):
+            return np.inf
+        safe = np.where(predicted &gt; 0.0, predicted, 1.0)
+        return float(np.sum(signal * (np.where(predicted &gt; 0.0, data / safe, 0.0) - 1.0)))
+
+    if score(0.0) &lt;= 0.0:
+        return 0.0
+
+    # Dropping the background can only raise the fitted scale, so the
+    # background-free solution of fit_scale_factor brackets the root from above.
+    upper = float(data.sum() / signal.sum())
+    lower = 0.0
+    for _ in range(_BISECTION_STEPS):
+        middle = 0.5 * (lower + upper)
+        if score(middle) &gt; 0.0:
+            lower = middle
+        else:
+            upper = middle
+    return 0.5 * (lower + upper)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.implied_efficiency" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">implied_efficiency</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">implied_efficiency(observed: ndarray, soft_template: ndarray, irf_template: ndarray, log10_e_edges: ndarray, log10_e_min_fit: float = 4.0) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Efficiency implied by comparing the idealized and IRF fit normalizations.</p>
+<p>Both templates are evaluated at the same reference flux normalization, so
+their best-fit scale factors (:func:<code>fit_scale_factor</code>) are directly
+comparable. The ratio <code>scale_soft / scale_irf</code> is the flux normalization
+the idealized soft-volume detector needs, relative to what the
+efficiency-and-acceptance-aware IRF path needs, to describe the same data.
+This is the data-driven analogue of the efficiency factor
+<code>eps_IC-TG = phi0 / phi0_IceCube</code> defined in Palmisano et al.,
+arXiv:2607.13143, Eq. 1.4.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>observed</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts per bin (see :func:<code>observed_counts</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>soft_template</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Soft-volume predicted counts at the reference flux normalization.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>irf_template</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>IRF predicted counts at the same reference flux normalization.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in <code>log10(E/GeV)</code>, used only to select the fit range.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_min_fit</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>4.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Lower edge of the fit range in <code>log10(E/GeV)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>efficiency</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Implied efficiency <code>scale_soft / scale_irf</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def implied_efficiency(
+    observed: np.ndarray,
+    soft_template: np.ndarray,
+    irf_template: np.ndarray,
+    log10_e_edges: np.ndarray,
+    log10_e_min_fit: float = 4.0,
+) -&gt; float:
+    """Efficiency implied by comparing the idealized and IRF fit normalizations.
+
+    Both templates are evaluated at the same reference flux normalization, so
+    their best-fit scale factors (:func:`fit_scale_factor`) are directly
+    comparable. The ratio ``scale_soft / scale_irf`` is the flux normalization
+    the idealized soft-volume detector needs, relative to what the
+    efficiency-and-acceptance-aware IRF path needs, to describe the same data.
+    This is the data-driven analogue of the efficiency factor
+    ``eps_IC-TG = phi0 / phi0_IceCube`` defined in Palmisano et al.,
+    arXiv:2607.13143, Eq. 1.4.
+
+    Parameters
+    ----------
+    observed : np.ndarray, shape (n_bins,)
+        Observed counts per bin (see :func:`observed_counts`).
+    soft_template : np.ndarray, shape (n_bins,)
+        Soft-volume predicted counts at the reference flux normalization.
+    irf_template : np.ndarray, shape (n_bins,)
+        IRF predicted counts at the same reference flux normalization.
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Bin edges in ``log10(E/GeV)``, used only to select the fit range.
+    log10_e_min_fit : float, optional
+        Lower edge of the fit range in ``log10(E/GeV)``.
+
+    Returns
+    -------
+    efficiency : float
+        Implied efficiency ``scale_soft / scale_irf``.
+    """
+    scale_soft = fit_scale_factor(observed, soft_template, log10_e_edges, log10_e_min_fit)
+    scale_irf = fit_scale_factor(observed, irf_template, log10_e_edges, log10_e_min_fit)
+    return scale_soft / scale_irf</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.irf_expected_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">irf_expected_counts</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">irf_expected_counts(aeff: EffectiveArea, smearing: SmearingMatrix, log10_e_reco_edges: ndarray, dec_min: float, dec_max: float, flux_fn: Callable[[ndarray], ndarray], livetime_s: float, n_subdivisions: int = 16) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Predicted reconstructed-energy track counts from the IRF path.</p>
+<p>For each true-energy/declination group of the smearing table restricted to
+<code>[dec_min, dec_max]</code>, computes the expected number of true muon-neutrino
+events, <code>A_eff * (solid angle) * (integrated flux) * livetime</code>, then
+migrates it into reconstructed-energy bins using that group's row of
+<code>smearing.energy_response_matrix</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="EffectiveArea (softpaws.response.irfs.EffectiveArea)" href="../../response/irfs/#softpaws.response.irfs.EffectiveArea">EffectiveArea</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area for the same season as <code>smearing</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>smearing</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="SmearingMatrix (softpaws.response.irfs.SmearingMatrix)" href="../../response/irfs/#softpaws.response.irfs.SmearingMatrix">SmearingMatrix</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Smearing matrix for one season; its own (true-energy, declination)
+bin grid sets the integration grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_reco_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges in <code>log10(E/GeV)</code>, matching the
+binning used for :func:<code>observed_counts</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Minimum declination [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maximum declination [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flux_fn</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Differential neutrino flux, <code>flux_fn(E_nu_gev) -&gt; dphi/dE</code> in
+<code>GeV^-1 cm^-2 s^-1 sr^-1</code>. See
+:func:<code>~softpaws.response.soft_volume.power_law_flux</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>16</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per true-energy bin for the flux
+integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected reconstructed-energy track counts per bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def irf_expected_counts(
+    aeff: EffectiveArea,
+    smearing: SmearingMatrix,
+    log10_e_reco_edges: np.ndarray,
+    dec_min: float,
+    dec_max: float,
+    flux_fn: Callable[[np.ndarray], np.ndarray],
+    livetime_s: float,
+    n_subdivisions: int = 16,
+) -&gt; np.ndarray:
+    """Predicted reconstructed-energy track counts from the IRF path.
+
+    For each true-energy/declination group of the smearing table restricted to
+    ``[dec_min, dec_max]``, computes the expected number of true muon-neutrino
+    events, ``A_eff * (solid angle) * (integrated flux) * livetime``, then
+    migrates it into reconstructed-energy bins using that group's row of
+    ``smearing.energy_response_matrix``.
+
+    Parameters
+    ----------
+    aeff : softpaws.response.irfs.EffectiveArea
+        Effective area for the same season as ``smearing``.
+    smearing : softpaws.response.irfs.SmearingMatrix
+        Smearing matrix for one season; its own (true-energy, declination)
+        bin grid sets the integration grid.
+    log10_e_reco_edges : np.ndarray, shape (n_reco + 1,)
+        Reconstructed-energy bin edges in ``log10(E/GeV)``, matching the
+        binning used for :func:`observed_counts`.
+    dec_min : float
+        Minimum declination [deg].
+    dec_max : float
+        Maximum declination [deg].
+    flux_fn : callable
+        Differential neutrino flux, ``flux_fn(E_nu_gev) -&gt; dphi/dE`` in
+        ``GeV^-1 cm^-2 s^-1 sr^-1``. See
+        :func:`~softpaws.response.soft_volume.power_law_flux`.
+    livetime_s : float
+        Exposure time [s].
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per true-energy bin for the flux
+        integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_reco,)
+        Expected reconstructed-energy track counts per bin.
+    """
+    return irf_expected_counts_directional(
+        aeff,
+        smearing,
+        log10_e_reco_edges,
+        dec_min,
+        dec_max,
+        lambda energy, _dec: flux_fn(energy),
+        livetime_s,
+        n_subdivisions,
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.irf_expected_counts_directional" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">irf_expected_counts_directional</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">irf_expected_counts_directional(aeff: EffectiveArea, smearing: SmearingMatrix, log10_e_reco_edges: ndarray, dec_min: float, dec_max: float, flux_fn: Callable[[ndarray, float], ndarray], livetime_s: float, n_subdivisions: int = 16) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>IRF-path counts for a flux that also depends on direction.</p>
+<p>Same calculation as :func:<code>irf_expected_counts</code> -- which is a thin wrapper
+around this one -- except that the flux is evaluated separately in every
+declination bin of the smearing table. That matters for an atmospheric flux,
+which is strongly zenith dependent (steeply falling overhead, harder near the
+horizon where the parent mesons decay before interacting); an isotropic flux
+such as the astrophysical power law does not need it.</p>
+<p>No Earth attenuation is applied here: the published effective area already
+includes it for every direction.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="EffectiveArea (softpaws.response.irfs.EffectiveArea)" href="../../response/irfs/#softpaws.response.irfs.EffectiveArea">EffectiveArea</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area for the same season as <code>smearing</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>smearing</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="SmearingMatrix (softpaws.response.irfs.SmearingMatrix)" href="../../response/irfs/#softpaws.response.irfs.SmearingMatrix">SmearingMatrix</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Smearing matrix for one season; its own (true-energy, declination)
+bin grid sets the integration grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_reco_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges in <code>log10(E/GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Minimum declination [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maximum declination [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flux_fn</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Differential neutrino flux, <code>flux_fn(E_nu_gev, dec_deg) -&gt; dphi/dE</code> in
+<code>GeV^-1 cm^-2 s^-1 sr^-1</code>, called with an array of energies and one
+scalar declination at a time.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>16</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per true-energy bin for the flux
+integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected reconstructed-energy track counts per bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def irf_expected_counts_directional(
+    aeff: EffectiveArea,
+    smearing: SmearingMatrix,
+    log10_e_reco_edges: np.ndarray,
+    dec_min: float,
+    dec_max: float,
+    flux_fn: Callable[[np.ndarray, float], np.ndarray],
+    livetime_s: float,
+    n_subdivisions: int = 16,
+) -&gt; np.ndarray:
+    """IRF-path counts for a flux that also depends on direction.
+
+    Same calculation as :func:`irf_expected_counts` -- which is a thin wrapper
+    around this one -- except that the flux is evaluated separately in every
+    declination bin of the smearing table. That matters for an atmospheric flux,
+    which is strongly zenith dependent (steeply falling overhead, harder near the
+    horizon where the parent mesons decay before interacting); an isotropic flux
+    such as the astrophysical power law does not need it.
+
+    No Earth attenuation is applied here: the published effective area already
+    includes it for every direction.
+
+    Parameters
+    ----------
+    aeff : softpaws.response.irfs.EffectiveArea
+        Effective area for the same season as ``smearing``.
+    smearing : softpaws.response.irfs.SmearingMatrix
+        Smearing matrix for one season; its own (true-energy, declination)
+        bin grid sets the integration grid.
+    log10_e_reco_edges : np.ndarray, shape (n_reco + 1,)
+        Reconstructed-energy bin edges in ``log10(E/GeV)``.
+    dec_min : float
+        Minimum declination [deg].
+    dec_max : float
+        Maximum declination [deg].
+    flux_fn : callable
+        Differential neutrino flux, ``flux_fn(E_nu_gev, dec_deg) -&gt; dphi/dE`` in
+        ``GeV^-1 cm^-2 s^-1 sr^-1``, called with an array of energies and one
+        scalar declination at a time.
+    livetime_s : float
+        Exposure time [s].
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per true-energy bin for the flux
+        integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_reco,)
+        Expected reconstructed-energy track counts per bin.
+    """
+    response = smearing.energy_response_matrix(log10_e_reco_edges)  # (n_enu, n_dec, n_reco)
+
+    dec_centers = smearing.dec_centers
+    dec_mask = (dec_centers &gt;= dec_min) &amp; (dec_centers &lt;= dec_max)
+
+    sin_dec_edges = np.sin(np.deg2rad(smearing.dec_edges))
+    solid_angle_per_dec = 2.0 * np.pi * np.diff(sin_dec_edges)  # steradians
+
+    enu_edges = smearing.log10_enu_edges
+    enu_centers = smearing.log10_enu_centers
+
+    n_reco = response.shape[2]
+    counts = np.zeros(n_reco)
+
+    for i, (lo, hi) in enumerate(zip(enu_edges[:-1], enu_edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+
+        for j in np.nonzero(dec_mask)[0]:
+            flux_integral = np.trapezoid(flux_fn(energy, float(dec_centers[j])), energy)
+            aeff_val = float(aeff(enu_centers[i], dec_centers[j])[0])
+            n_true = aeff_val * flux_integral * solid_angle_per_dec[j] * livetime_s
+            counts += n_true * response[i, j, :]
+
+    return counts</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.observed_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">observed_counts</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">observed_counts(events: EventSet, log10_e_edges: ndarray, dec_min: float, dec_max: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Histogram of observed reconstructed energies within a declination band.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>events</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="EventSet (softpaws.data.container.EventSet)" href="../../data/container/#softpaws.data.container.EventSet">EventSet</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed IceTracks-DR2 events.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges in <code>log10(E/GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Minimum declination [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maximum declination [deg].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Observed event counts per bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def observed_counts(
+    events: EventSet,
+    log10_e_edges: np.ndarray,
+    dec_min: float,
+    dec_max: float,
+) -&gt; np.ndarray:
+    """Histogram of observed reconstructed energies within a declination band.
+
+    Parameters
+    ----------
+    events : softpaws.data.container.EventSet
+        Observed IceTracks-DR2 events.
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Reconstructed-energy bin edges in ``log10(E/GeV)``.
+    dec_min : float
+        Minimum declination [deg].
+    dec_max : float
+        Maximum declination [deg].
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Observed event counts per bin.
+    """
+    subset = events.filter_dec(dec_min, dec_max)
+    counts, _ = np.histogram(subset.log10_energy, bins=log10_e_edges)
+    return counts</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.rates.soft_volume_smeared_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">soft_volume_smeared_counts</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">soft_volume_smeared_counts(true_counts_fn: Callable[[ndarray], ndarray], smearing: SmearingMatrix, log10_e_reco_edges: ndarray, dec_min: float, dec_max: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Migrate a soft-volume true-count spectrum through the IceCube smearing table.</p>
+<p>The soft-volume path predicts <em>muon energy at the detector</em> directly and, by
+default, is compared to data by using that energy as the reconstructed-energy
+proxy (see the module docstring) -- unlike the IRF path, it is never actually
+smeared. This applies the published :meth:<code>~softpaws.response.irfs.
+SmearingMatrix.energy_response_matrix</code> to the soft-volume prediction too, so
+the two paths are compared on the same reconstructed-energy footing.</p>
+<p><code>smearing</code>'s response matrix is defined on injected <em>neutrino</em> energy;
+treating the soft-volume model's muon-energy bins as if they were neutrino-
+energy bins is an approximation (E_mu ~ E_nu for a through-going track, but
+not exact), not a re-derivation of the smearing table for muon energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>true_counts_fn</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Given the smearing table's own true-energy bin edges
+(<code>smearing.log10_enu_edges</code>), returns the soft-volume expected counts
+in each of those bins over the declination band <code>[dec_min, dec_max]</code>.
+Build this from :meth:<code>~softpaws.response.soft_volume.SoftVolumeResponse.
+expected_counts</code> (or <code>expected_counts_attenuated</code>), optionally adding
+:func:<code>~softpaws.response.soft_volume.tau_induced_expected_counts</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>smearing</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="SmearingMatrix (softpaws.response.irfs.SmearingMatrix)" href="../../response/irfs/#softpaws.response.irfs.SmearingMatrix">SmearingMatrix</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Smearing matrix for one season; its true-energy/declination bin grid
+sets the migration.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_reco_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges in <code>log10(E/GeV)</code>, matching the
+binning used for :func:<code>observed_counts</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Minimum declination [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maximum declination [deg].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Smeared reconstructed-energy track counts per bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/rates.py</code></summary>
+              <pre class="highlight"><code class="language-python">def soft_volume_smeared_counts(
+    true_counts_fn: Callable[[np.ndarray], np.ndarray],
+    smearing: SmearingMatrix,
+    log10_e_reco_edges: np.ndarray,
+    dec_min: float,
+    dec_max: float,
+) -&gt; np.ndarray:
+    """Migrate a soft-volume true-count spectrum through the IceCube smearing table.
+
+    The soft-volume path predicts *muon energy at the detector* directly and, by
+    default, is compared to data by using that energy as the reconstructed-energy
+    proxy (see the module docstring) -- unlike the IRF path, it is never actually
+    smeared. This applies the published :meth:`~softpaws.response.irfs.
+    SmearingMatrix.energy_response_matrix` to the soft-volume prediction too, so
+    the two paths are compared on the same reconstructed-energy footing.
+
+    ``smearing``'s response matrix is defined on injected *neutrino* energy;
+    treating the soft-volume model's muon-energy bins as if they were neutrino-
+    energy bins is an approximation (E_mu ~ E_nu for a through-going track, but
+    not exact), not a re-derivation of the smearing table for muon energy.
+
+    Parameters
+    ----------
+    true_counts_fn : callable
+        Given the smearing table's own true-energy bin edges
+        (``smearing.log10_enu_edges``), returns the soft-volume expected counts
+        in each of those bins over the declination band ``[dec_min, dec_max]``.
+        Build this from :meth:`~softpaws.response.soft_volume.SoftVolumeResponse.
+        expected_counts` (or ``expected_counts_attenuated``), optionally adding
+        :func:`~softpaws.response.soft_volume.tau_induced_expected_counts`.
+    smearing : softpaws.response.irfs.SmearingMatrix
+        Smearing matrix for one season; its true-energy/declination bin grid
+        sets the migration.
+    log10_e_reco_edges : np.ndarray, shape (n_reco + 1,)
+        Reconstructed-energy bin edges in ``log10(E/GeV)``, matching the
+        binning used for :func:`observed_counts`.
+    dec_min : float
+        Minimum declination [deg].
+    dec_max : float
+        Maximum declination [deg].
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_reco,)
+        Smeared reconstructed-energy track counts per bin.
+    """
+    response = smearing.energy_response_matrix(log10_e_reco_edges)  # (n_enu, n_dec, n_reco)
+
+    dec_centers = smearing.dec_centers
+    dec_mask = (dec_centers &gt;= dec_min) &amp; (dec_centers &lt;= dec_max)
+    if not np.any(dec_mask):
+        return np.zeros(response.shape[2])
+
+    sin_dec_edges = np.sin(np.deg2rad(smearing.dec_edges))
+    solid_angle_per_dec = 2.0 * np.pi * np.diff(sin_dec_edges)
+
+    # The soft-volume rate does not depend on direction, so the band-averaged
+    # response is a plain solid-angle average over the declination bins in band
+    # (as in example 04's whole_sky_response), not an aeff-weighted one.
+    mean_response = np.average(
+        response[:, dec_mask, :], axis=1, weights=solid_angle_per_dec[dec_mask],
+    )  # (n_enu, n_reco)
+
+    true_counts = true_counts_fn(smearing.log10_enu_edges)  # (n_enu,)
+    return true_counts @ mean_response</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../posterior/" class="btn btn-neutral float-left" title="posterior"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../reco_likelihood/" class="btn btn-neutral float-right" title="reco_likelihood">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../posterior/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../reco_likelihood/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

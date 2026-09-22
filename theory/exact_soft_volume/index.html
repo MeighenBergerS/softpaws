@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/theory/exact_soft_volume/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>The transport exponent - softpaws</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "The transport exponent";
+        var mkdocs_page_input_path = "theory/exact_soft_volume.md";
+        var mkdocs_page_url = "/softpaws/theory/exact_soft_volume/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../..">
+    <img src="../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Theory notes</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">The transport exponent</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#1-the-one-sentence-idea">1. The one-sentence idea</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-the-transport-equation-and-the-exact-collision-operator-method-paper-sec-ii-and-app-a">2. The transport equation and the exact collision operator (method paper, Sec. II and App. A)</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#21-power-laws-are-eigenfunctions-scale-invariant-rates-the-one-assumption-of-the-method-paper-sec-iia">2.1 Power laws are eigenfunctions (scale-invariant rates, the one assumption of the method paper, Sec. II.A)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#22-mellin-transform-formal-statement-method-paper-app-a">2.2 Mellin transform (formal statement, method paper App. A)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-solving-the-transport-equation-method-paper-sec-iiia-and-app-a">3. Solving the transport equation (method paper, Sec. III.A and App. A)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-the-source-term-method-paper-sec-iic">4. The source term (method paper, Sec. II.C)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-master-solution-and-event-rate-method-paper-sec-iiia">5. Master solution and event rate (method paper, Sec. III.A)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-the-saturation-factor-1-ex-why-it-matters-method-paper-sec-iiia">6. The saturation factor (1 − e^{−Φx}) — why it matters (method paper, Sec. III.A)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-the-cross-section-pole-not-in-the-current-method-paper">7. The cross-section pole (not in the current method paper)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#8-contrast-with-the-drift-diffusion-path">8. Contrast with the drift-diffusion path</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#81-the-fokkerplanck-result-is-the-first-two-terms-method-paper-sec-iid">8.1 The Fokker–Planck result is the first two terms (method paper, Sec. II.D)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#82-exactness-identities-why-the-fit-of-palmisano-et-al-survives-method-paper-sec-iid">8.2 Exactness identities — why the fit of Palmisano et al. survives (method paper, Sec. II.D)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#83-numeric-comparison-of-a-the-table-of-the-exponent-against-its-truncations-in-the-method-paper-app-a">8.3 Numeric comparison of Φ(A) (the table of the exponent against its truncations in the method paper, App. A)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#9-evaluating-a-in-practice-method-paper-app-a1-and-a2">9. Evaluating Φ(A) in practice (method paper, App. A.1 and A.2)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#10-consequences-and-things-to-revisit-method-paper-sec-iid-and-app-a">10. Consequences and things to revisit (method paper, Sec. II.D and App. A)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#11-mapping-to-softpaws">11. Mapping to softpaws</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >softpaws</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Documentation</li>
+          <li class="breadcrumb-item">Theory notes</li>
+      <li class="breadcrumb-item active">The transport exponent</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/MeighenBergerS/softpaws/edit/master/docs/theory/exact_soft_volume.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="the-transport-exponent-physics-notes">The transport exponent — physics notes</h1>
+<p>Distilled reference for the eigenvalue solution softpaws is built on, derived
+in the method paper, Meighen-Berger, <em>Estimating High-Energy Neutrino Effective Areas from
+Muon Propagation</em> (2026). It replaces the earlier Fokker–Planck
+(drift–diffusion) expansion with an eigenvalue treatment of the QED collision
+operator, keeping every loss moment. This is the physics core of the
+<code>transport/</code> → <code>response/</code> path.</p>
+<p>Read alongside <a href="../soft_volume/">Prior work: the drift–diffusion soft volume</a>,
+which distills the earlier approach of Palmisano, Redigolo, Tammaro and Tesi
+(<a href="https://arxiv.org/abs/2607.13143">arXiv:2607.13143</a>). Their Fokker–Planck
+result is recovered here as the first two terms of the series — see
+<a href="#8-contrast-with-the-drift-diffusion-path">§8, Contrast</a>.</p>
+<p><strong>Naming convention on this page.</strong> "The method paper" is Meighen-Berger
+(2026), and the section, appendix and table references attached to it follow
+its current numbering: Roman-numbered sections I to VI and lettered appendices
+A to D, with App. A "The Transport" holding A.1 The Loss Kernel, A.2 The Range
+to Threshold, A.3 The Drift-Diffusion Limit and A.4 Tau Transport. "Palmisano
+et al." is arXiv:2607.13143, and every equation, figure, table and appendix
+number attached to that name is theirs.</p>
+<hr />
+<h2 id="1-the-one-sentence-idea">1. The one-sentence idea</h2>
+<p>The muon energy-loss operator is scale-invariant (rates depend on the fractional
+loss <code>y</code>, not on energy <code>E</code>). Scale-invariant operators are <strong>diagonalised by
+power laws</strong>, and the astrophysical source <em>is</em> a power law. So the entire
+integro-differential transport problem collapses to <strong>multiplication by a single
+number</strong> <code>Φ(A)</code> — no propagator, no kernel, no convolution, and no energy
+cutoffs. (Method paper, Sec. I and Sec. II.A.)</p>
+<p>Where Palmisano et al. expand the collision operator in small <code>y</code> to get a
+differential Fokker–Planck equation, this treatment keeps the collision operator
+exact and diagonalises it instead.</p>
+<hr />
+<h2 id="2-the-transport-equation-and-the-exact-collision-operator-method-paper-sec-ii-and-app-a">2. The transport equation and the exact collision operator (method paper, Sec. II and App. A)</h2>
+<p>Same starting point as Palmisano et al.: steady-state (<code>∂_t f = 0</code>),
+ultra-relativistic (<code>v = c = 1</code>), collinear (<code>Δθ ~ m_μ/E ≪ 1</code>, so <code>Ω</code> is a
+spectator label). The muon flux per unit energy <code>ϕ_μ(x, E)</code> along a fixed line of
+sight (<code>x</code> = column depth [km w.e.]) obeys</p>
+<pre><code>∂ϕ_μ(x,E)/∂x  =  C_QED[E; ϕ_μ]  +  S(x,E)
+</code></pre>
+<p>The QED collision operator is kept as the <strong>exact integral operator</strong> (the
+collision operator the method paper writes down at the opening of Sec. II), not
+expanded:</p>
+<pre><code>C_QED[E; ϕ_μ] = − ϕ_μ(E) ∫₀¹ dy dΓ(E,y)/dy                (loss)
+              + ∫₀¹ dy/(1−y) · dΓ(E_y,y)/dy · ϕ_μ(E_y)     (gain),   E_y ≡ E/(1−y)
+</code></pre>
+<p>with <code>dΓ/dy = n_T dσ/dy</code> the differential rate per unit length to lose fraction
+<code>y</code>. The <code>1/(1−y)</code> is the Jacobian from <code>E = (1−y)E'</code>. The gain term is evaluated
+at the <em>incoming</em> energy <code>E_y = E/(1−y)</code> (a muon arriving at <code>E</code> after losing 90%
+was radiating at <code>10E</code>). Its non-locality — <code>ϕ_μ</code> inside the integral at a
+different energy — is the entire difficulty, and is exactly what the eigenvalue
+trick avoids.</p>
+<h3 id="21-power-laws-are-eigenfunctions-scale-invariant-rates-the-one-assumption-of-the-method-paper-sec-iia">2.1 Power laws are eigenfunctions (scale-invariant rates, the one assumption of the method paper, Sec. II.A)</h3>
+<p>Substituting <code>ϕ_μ(E) = E^{−1−s}</code> and using <code>ϕ_μ(E_y) = (1−y)^{1+s} ϕ_μ(E)</code>, the
+<code>1/(1−y)</code> Jacobian cancels one power of <code>(1−y)</code> and the operator becomes diagonal:</p>
+<pre><code>C_QED[E; E^{−1−s}] = − Φ(s) · E^{−1−s}
+</code></pre>
+<p>with the <strong>exact eigenvalue function</strong> (the central object — every physical
+statement below is about this one function):</p>
+<pre><code>        ┌────────────────────────────────────────┐
+        │  Φ(s) = ∫₀¹ dy (dΓ/dy) [ 1 − (1−y)^s ]  │
+        └────────────────────────────────────────┘
+</code></pre>
+<p>The bracket <code>[1 − (1−y)^s]</code> is the net effect of a collision of severity <code>y</code> on a
+population of spectral index <code>s</code>: <code>1</code> is the muon leaving <code>E</code>, <code>(1−y)^s</code> is the
+compensating arrival from above. Hard spectrum (small <code>s</code>) → nearly complete
+compensation → small <code>Φ</code>. Steep spectrum (large <code>s</code>) → little replenishment →
+large <code>Φ</code>.</p>
+<p><strong>Finite with no cutoffs</strong> (this is the key practical win over Palmisano et al.):
+- <em>IR-finite.</em> Bremsstrahlung <code>dΓ/dy ~ κ/y</code> diverges at <code>y→0</code>, but
+  <code>1 − (1−y)^s → sy</code>, so the integrand → <code>sκ</code>, finite. The loss-term divergence
+  is cancelled by the gain term (an infinitely soft photon does nothing).
+  <strong>No <code>y_min = 10⁻⁷</code> needed.</strong>
+- <em>UV-finite.</em> As <code>y→1</code>, <code>(1−y)^s → 0</code>, bracket → 1: a catastrophic collision
+  simply removes the muon. Hard brems/photonuclear tails are integrated exactly.
+  <strong>No <code>y_cut</code> machinery needed</strong> (Appendices A and B of Palmisano et al.).</p>
+<h3 id="22-mellin-transform-formal-statement-method-paper-app-a">2.2 Mellin transform (formal statement, method paper App. A)</h3>
+<p>Define <code>ϕ̂(x,s) ≡ ∫₀^∞ dE E^s ϕ_μ(x,E)</code>. Then <code>Ĉ_QED(s) = −Φ(s) ϕ̂(s)</code>:
+multiplication, not convolution. Structurally <code>Φ(s)</code> is a Mellin symbol /
+anomalous dimension — the same object as a moment of a DGLAP splitting function.
+The Green's function is <code>e^{−Φ(s)ℓ}</code>, one number per mode; because a single
+power-law source excites exactly one <code>s</code>, you never need the inverse transform.</p>
+<hr />
+<h2 id="3-solving-the-transport-equation-method-paper-sec-iiia-and-app-a">3. Solving the transport equation (method paper, Sec. III.A and App. A)</h2>
+<p>Mellin-transforming the PDE turns the integro-differential equation into a linear
+first-order <strong>ODE in depth</strong>, mode by mode:</p>
+<pre><code>∂ϕ̂(x,s)/∂x = −Φ(s) ϕ̂(x,s) + Ŝ(x,s)
+</code></pre>
+<ul>
+<li><strong>First order in <code>x</code> ⇒ initial-value problem in depth</strong> (depth plays the role
+  of time). The <em>only</em> boundary condition allowed is <code>ϕ_μ(x=0, E) = 0</code> (no muons
+  enter at the Earth's surface, the condition <code>ϕ̂(0, s) = 0</code> the method paper
+  imposes in App. A). You cannot additionally impose a condition at the detector
+  without over-determining the system.</li>
+<li><strong>This justifies the "free flux at the surface" shortcut of Palmisano et al.</strong>
+  A perfectly absorbing detector at <code>x_det</code> affects only <code>x &gt; x_det</code>, which
+  nobody observes, so the detector never back-reacts on the flux arriving at it.
+  Not an approximation — forced by the hyperbolic structure. The method paper
+  states the boundary condition and does not spell this argument out.</li>
+<li>(Atmospheric muons violate that boundary condition for down-going directions;
+  handled as a separately measured background, not through this equation.)</li>
+</ul>
+<p>Integrating factor <code>e^{Φ(s)x}</code> gives the exact solution:</p>
+<pre><code>ϕ̂(x,s) = ∫₀ˣ dξ e^{−Φ(s)(x−ξ)} Ŝ(ξ,s)
+</code></pre>
+<p>Muons produced at depth <code>ξ</code> propagate <code>ℓ = x − ξ</code> and are attenuated by
+<code>e^{−Φ(s)ℓ}</code> — attenuation of the <em>spectral-mode amplitude</em>, not of muon number
+(QED collisions don't destroy muons). <strong>Exact so far: no expansion in <code>y</code>, no
+Fokker–Planck, no truncation.</strong></p>
+<hr />
+<h2 id="4-the-source-term-method-paper-sec-iic">4. The source term (method paper, Sec. II.C)</h2>
+<p>Built from scratch, same physics as Palmisano et al. but carried exactly. Muon
+born from <code>ν_μ</code> CC DIS with <code>ε = (1−y_w) E_ν</code>, <code>y_w</code> the weak inelasticity
+(<code>⟨y_w⟩ ≈ 0.2</code>), <code>P(y_w) = σ⁻¹ dσ/dy_w</code>:</p>
+<pre><code>S(ε) = n_N ∫₀¹ dy_w/(1−y_w) · P(y_w) · [ϕ_ν σ_νN](ε/(1−y_w))
+</code></pre>
+<p>Same <code>1/(1−y)</code> Jacobian structure as the QED gain term, same reason. With
+power-law flux <code>ϕ_ν ∝ E_ν^{−γ}</code> and power-law cross section <code>σ_νN ∝ E_ν^λ</code>,
+<code>λ ≈ 0.4</code> (both stated in the method paper, Sec. II.C), and step-function
+attenuation + constant near-detector density (the transparent-Earth idealization
+the method paper starts from in Sec. III.A), the product is a single power
+<code>ϕ_ν σ_νN ∝ E_ν^{λ−γ}</code>, and the <code>y_w</code> integral <strong>factorises off completely</strong> into
+a pure number. This defines the two key quantities:</p>
+<pre><code>        ┌──────────────────────┐   ┌──────────────────────────────┐
+        │  A ≡ γ − λ − 1        │   │  I(A) ≡ ⟨(1−y_w)^A⟩_P ≃ 0.8   │
+        └──────────────────────┘   └──────────────────────────────┘
+
+  S(ε) = n_N I(A) σ_νN(ε) ϕ_ν^⊕(ε)  ∝  ε^{λ−γ} = ε^{−1−A}
+</code></pre>
+<ul>
+<li><strong><code>A</code> is not ad hoc.</strong> It is flux steepness <code>γ</code>, minus cross-section growth <code>λ</code>,
+  minus one for the Jacobian. It measures how sharply the observable-weighted
+  population falls with energy.</li>
+<li><strong>The source is exactly the eigenfunction with <code>s = A</code>.</strong> This is the whole
+  game — skip the inverse Mellin transform entirely.</li>
+<li><strong><code>I(A)</code> is a genuine normalisation factor</strong> Palmisano et al. mostly drop.
+  <code>I(1) = 1 − ⟨y_w⟩ ≃ 0.8</code> exactly when <code>A ≈ 1</code> (no averaging approximation
+  needed).</li>
+</ul>
+<hr />
+<h2 id="5-master-solution-and-event-rate-method-paper-sec-iiia">5. Master solution and event rate (method paper, Sec. III.A)</h2>
+<p>Because the source excites exactly one mode, the ODE solves directly in energy
+space (<code>S(ε) = S₀ ε^{−1−A}</code>, <code>ξ</code>-independent under the same constant-density
+idealization):</p>
+<pre><code>        ┌──────────────────────────────────────┐
+        │  ϕ_μ(x,E) = S(E) · (1 − e^{−Φ(A)x})/Φ(A)  │
+        └──────────────────────────────────────┘
+</code></pre>
+<p>Sanity checks: <code>x→0</code> → <code>S(E)x</code> (thin slab, linear, none lost); <code>x→∞</code> →
+<code>S(E)/Φ(A)</code> (equilibrium); <code>Φ→0</code> → <code>S(E)x</code> for all <code>x</code> (no losses, whole column
+accumulates — <strong>finite</strong>, remember this one).</p>
+<p><strong>Soft volume</strong> (the second term of the track rate in the method paper,
+Sec. III.A) — the target volume that, producing muons with no propagation
+losses, would give the observed arrival rate:</p>
+<pre><code>  V_soft(E) = A_proj · I(A)/Φ(A) · (1 − e^{−Φ(A)x})
+</code></pre>
+<p>Three factors: <code>A_proj/Φ(A)</code> = area × effective range <code>1/Φ(A)</code> (range weighted by
+spectral replenishment, not the CSDA range); <code>I(A) ≃ 0.8</code>; and the <strong>saturation
+factor</strong> <code>(1 − e^{−Φx})</code> = finite upstream column.</p>
+<p><strong>Master formula</strong> (the track rate of the method paper, Sec. III.A) — two
+disjoint populations: produced inside (<code>V_det = 4/3 π R_det³</code>) and produced
+outside, arriving through the projected surface (<code>A_proj = π R_det²</code> for a
+sphere, the constant-projected-area detector the method paper takes first in
+Sec. III.A). <code>I(A)</code> multiplies both (same production vertex):</p>
+<pre><code>        ┌─────────────────────────────────────────────────────────────────────┐
+        │  dN/(dt dE dΩ) = I(A) n_N σ_νN(E) ϕ_ν^⊕(E) · [ V_det                  │
+        │                     + A_proj/Φ(A) · (1 − e^{−Φ(A)x}) ]                │
+        └─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>With <code>R_det ≃ 0.62 km</code> and <code>1/Φ ≃ 2.9 km</code>, the soft term is ~4× the instrumented
+volume — the central claim of Palmisano et al., now with the corrected
+coefficient (<code>I(A)</code> and exact <code>Φ(A)</code>).</p>
+<hr />
+<h2 id="6-the-saturation-factor-1-ex-why-it-matters-method-paper-sec-iiia">6. The saturation factor <code>(1 − e^{−Φx})</code> — why it matters (method paper, Sec. III.A)</h2>
+<p>The method paper names the saturation factor in Sec. III.A and takes the
+transparent-Earth limit <code>1/Λ_ν → 0</code> in App. A. The depth table and the <code>Φ &lt; 0</code>
+continuation below are this page's own and are not in the current method paper.</p>
+<p>The detector here is a perfect absorber (unit efficiency, no
+cuts/acceptance/threshold — the prediction is a geometric through-going rate),
+an idealization the method paper has since replaced by the two-number acceptance
+of Sec. III.B. Two reasons to keep the full saturation factor instead of the
+<code>x→∞</code> idealisation of Palmisano et al.:</p>
+<p><strong>(a) Finite depth.</strong> With <code>Φ ≃ 0.35 km⁻¹</code>:</p>
+<table>
+<thead>
+<tr>
+<th>x [km]</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>5</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1 − e^{−Φx}</code></td>
+<td>0.30</td>
+<td>0.50</td>
+<td>0.65</td>
+<td>0.82</td>
+<td>0.97</td>
+</tr>
+</tbody>
+</table>
+<p>IceCube sits ~1.95 km deep. For near-vertical down-going muons the available
+column is only that deep, so <code>x→∞</code> <strong>overestimates the rate by ~2×</strong>. Their
+<code>θ_zenith &gt; 85°</code> cut removes this region (so their diffuse fit is unaffected), but
+it matters for any all-sky or point-source application.</p>
+<p><strong>(b) It cures divergences.</strong> As <code>Φ→0</code>, <code>(1−e^{−Φx})/Φ → x</code>, finite — the <code>1/Φ</code>
+pole at <code>A→0</code> is an artifact of pretending the upstream medium is infinite.
+Keeping <code>x</code> removes it. For <code>Φ &lt; 0</code> (see §7) it continues analytically to a
+finite, positive value:</p>
+<pre><code>  (1 − e^{−Φx})/Φ  ──Φ&lt;0──→  (e^{|Φ|x} − 1)/|Φ|
+</code></pre>
+<hr />
+<h2 id="7-the-cross-section-pole-not-in-the-current-method-paper">7. The cross-section pole (not in the current method paper)</h2>
+<p>The current method paper does not carry this pole. It records only <code>Φ(0) = 0</code>
+with <code>Φ' &gt; 0</code> (Sec. II.A) and the convergence edge of the calibrated exponent at
+negative <code>A</code> (App. A.1). The derivation is kept here.</p>
+<p>The denominator <code>Φ(A)</code> crosses zero when <code>λ &gt; γ − 1</code> (i.e. <code>A &lt; 0</code>). For
+<code>γ = 2.38</code> the <strong>pole sits at <code>λ = 1.38</code></strong>. Physically, when the cross section
+grows faster than the flux falls, more distant / higher-energy parent neutrinos
+dominate and the infinite-column integral genuinely diverges (<code>(1−y)^A &gt; 1</code>, so
+<code>Φ(A) &lt; 0</code>, the observable-weighted population is no longer attenuated). This is
+not a numerical artifact — it is the signal that the <code>x→∞</code> assumption has failed.</p>
+<p><strong>Consequence for the cross-section extraction:</strong> Fig. 8 of Palmisano et al.
+quoted modes <code>λ_IC = 1.48</code> (1 yr) and <code>1.66</code> (9.5 yr) both sit <em>past</em> the pole,
+where their Eq. (4.6) returns a <em>negative</em> event count. That the distributions
+pile up at <code>λ ~ 1.2–1.7</code>, straddling the pole, looks like the pole rather than
+the data — worth redoing with the saturation factor before believing
+<code>R = σ/σ_SM ~ 10</code>. (Caveat: possible their code holds <code>λ = 0.4</code> inside <code>A</code> while
+floating it elsewhere, which would be inconsistent but avoids the sign flip.)</p>
+<hr />
+<h2 id="8-contrast-with-the-drift-diffusion-path">8. Contrast with the drift-diffusion path</h2>
+<p><code>docs/theory/soft_volume.md</code> documents the <strong>Fokker–Planck path of Palmisano et
+al.</strong>; this file documents the <strong>exact eigenvalue path</strong>. They describe the same
+physics; the exact version <em>contains</em> theirs as a truncation (method paper,
+Sec. II.D and App. A.3).</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Palmisano et al. / <a href="../soft_volume/">prior work</a> (Fokker–Planck)</th>
+<th>This derivation (exact eigenvalue)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collision operator</td>
+<td>Expanded in small <code>y</code> → drift <code>b_μ</code> + diffusion <code>d_μ</code></td>
+<td>Kept exact; diagonalised by power laws</td>
+</tr>
+<tr>
+<td>Governing solution</td>
+<td>Drift–diffusion PDE in energy (their Eq. 2.9)</td>
+<td>ODE in depth per Mellin mode; single mode <code>s = A</code></td>
+</tr>
+<tr>
+<td>Propagator</td>
+<td>Log-normal Green's function <code>G(E,x;ε,ξ)</code> (their Eq. 2.16), convolved</td>
+<td>None — multiply by <code>e^{−Φ(A)ℓ}</code>; no kernel, no convolution</td>
+</tr>
+<tr>
+<td>Attenuation constant</td>
+<td><code>b_μ</code> (drift), <code>d_μ</code> (diffusion) — first two <code>y</code>-moments</td>
+<td><code>Φ(A) = ∫ dΓ/dy [1−(1−y)^A]</code> — the <em>full</em> eigenvalue</td>
+</tr>
+<tr>
+<td>Energy cutoffs</td>
+<td>Needs <code>y_min</code> (IR) and <code>y_cut</code> (UV, their Appendices A/B)</td>
+<td>IR- and UV-finite; <strong>no cutoffs</strong></td>
+</tr>
+<tr>
+<td>Range factor</td>
+<td><code>V_soft ∝ 1/(b_μ A)</code>, with an unphysical <code>1/A</code> pole at <code>A→0</code></td>
+<td><code>V_soft ∝ I(A)(1−e^{−Φ(A)x})/Φ(A)</code>, finite everywhere</td>
+</tr>
+<tr>
+<td>Column depth</td>
+<td>Typically <code>x→∞</code></td>
+<td>Finite-<code>x</code> saturation factor <code>(1−e^{−Φx})</code> kept</td>
+</tr>
+<tr>
+<td>Normalisation <code>I(A)</code></td>
+<td>Mostly dropped (their B.5 carries <code>1+A</code>; 2.21–2.23 drop it)</td>
+<td>Kept: <code>I(A) ≃ 0.8</code></td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>Numerical Green's-function convolution</td>
+<td>Closed form once <code>Φ(A)</code> is known</td>
+</tr>
+</tbody>
+</table>
+<h3 id="81-the-fokkerplanck-result-is-the-first-two-terms-method-paper-sec-iid">8.1 The Fokker–Planck result is the first two terms (method paper, Sec. II.D)</h3>
+<p>Binomial-expanding <code>1 − (1−y)^A</code> and integrating against <code>dΓ/dy</code> (with moments
+<code>b_μ = ∫ y dΓ/dy</code>, <code>d_μ = ∫ y² dΓ/dy</code>, <code>t_μ = ∫ y³ dΓ/dy</code>):</p>
+<pre><code>  Φ(A) = A b_μ − A(A−1)/2 · d_μ + A(A−1)(A−2)/6 · t_μ − …
+</code></pre>
+<p>Truncating at second order gives exactly the <code>Φ ≃ A' b_μ</code> of Palmisano et al.
+with <code>A' = A[1 − (d_μ/2b_μ)(A−1)]</code>. <strong>The Fokker–Planck result of Palmisano et
+al. is the first two terms of the exact series.</strong></p>
+<h3 id="82-exactness-identities-why-the-fit-of-palmisano-et-al-survives-method-paper-sec-iid">8.2 Exactness identities — why the fit of Palmisano et al. survives (method paper, Sec. II.D)</h3>
+<p>The series <strong>terminates for positive integer <code>A</code></strong> (every term beyond the first
+carries a factor <code>(A−1)</code>):</p>
+<pre><code>  Φ(1) = b_μ              (since 1 − (1−y) = y identically)
+  Φ(2) = 2b_μ − d_μ       (since 1 − (1−y)² = 2y − y² identically)
+</code></pre>
+<p>Kramers–Moyal truncation at order <code>n</code> is exact for integer <code>A ≤ n</code>. IceCube's fit
+gives <code>γ = 2.38</code>, <code>λ = 0.4</code> ⇒ <strong><code>A = 0.98</code></strong>, sitting essentially <em>on</em> the <code>A = 1</code>
+exactness point. There, <code>Φ = b_μ</code> and nothing else — the entire hard tail of
+brems + photonuclear (the ~25% Appendix-B systematic of Palmisano et al., which
+the method paper resums in App. A.3) <strong>cancels identically between loss and
+gain</strong>. The residual error is <code>(A−1)·d_μ/2b_μ ≈ 0.02 × 0.11 ≈ 0.2%</code>.</p>
+<p>So the soft expansion survives <strong>not</strong> because it is marginally convergent
+(<code>d_μ/b_μ ~ 0.2</code>, the reason Palmisano et al. state) but because the expansion
+parameter is <code>(A−1)d_μ/2b_μ</code>, and IceCube's spectrum happens to sit exactly
+where it vanishes. Palmisano et al. note <code>A ≈ 1</code> twice without noticing it
+protects them.</p>
+<h3 id="83-numeric-comparison-of-a-the-table-of-the-exponent-against-its-truncations-in-the-method-paper-app-a">8.3 Numeric comparison of <code>Φ(A)</code> (the table of the exponent against its truncations in the method paper, App. A)</h3>
+<p>The method paper's table is now built on PROPOSAL's quadrature moments,
+<code>b_μ = 0.380 km⁻¹</code> at 1 PeV in water, so its rows differ in absolute value from
+the ones below, which use the earlier <code>b_μ = 0.349</code>, and its sign change sits at
+<code>A_die = 9.3</code> instead of the 10.1 quoted here.</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>Φ(A) [km⁻¹]</th>
+<th>A·b_μ (drift)</th>
+<th>A'·b_μ (Fokker–Planck)</th>
+<th>V_FP / V_exact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.14</td>
+<td>0.058</td>
+<td>0.049</td>
+<td>0.054</td>
+<td>0.93</td>
+</tr>
+<tr>
+<td>0.50</td>
+<td>0.190</td>
+<td>0.175</td>
+<td>0.184</td>
+<td>0.97</td>
+</tr>
+<tr>
+<td>0.98</td>
+<td>0.343</td>
+<td>0.342</td>
+<td>0.343</td>
+<td>0.999</td>
+</tr>
+<tr>
+<td>1.00</td>
+<td>0.349</td>
+<td>0.349</td>
+<td>0.349</td>
+<td>1.000</td>
+</tr>
+<tr>
+<td>2.00</td>
+<td>0.621</td>
+<td>0.698</td>
+<td>0.621</td>
+<td>1.000</td>
+</tr>
+<tr>
+<td>3.00</td>
+<td>0.860</td>
+<td>1.047</td>
+<td>0.817</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>4.00</td>
+<td>1.077</td>
+<td>1.396</td>
+<td>0.936</td>
+<td>0.87</td>
+</tr>
+<tr>
+<td>6.00</td>
+<td>1.532</td>
+<td>2.094</td>
+<td>0.945</td>
+<td>0.62</td>
+</tr>
+</tbody>
+</table>
+<p>Fokker–Planck agrees to &lt;1% near <code>A = 1–2</code> but degrades badly for <code>A ≳ 3</code>, and its
+<code>A'</code> (hence <code>V_soft</code>) changes sign at <code>A &gt; 1 + 2b_μ/d_μ ≈ 10.1</code>. The exact <code>Φ</code>
+grows monotonically forever, roughly <code>b_PP·A + b_B·ln A</code> (brems saturates
+logarithmically — a <code>1/y</code> spectrum with catastrophic losses can only remove a
+muon once).</p>
+<hr />
+<h2 id="9-evaluating-a-in-practice-method-paper-app-a1-and-a2">9. Evaluating <code>Φ(A)</code> in practice (method paper, App. A.1 and A.2)</h2>
+<p>Table 1 of Palmisano et al. gives only <code>b_μ</code> and <code>d_μ</code>, but <code>Φ(A)</code> needs the full
+shape of <code>dΓ/dy</code>. Two options:</p>
+<p><strong>(a) Two-parameter family</strong> calibrated to the two moments (the two-moment form
+of the method paper, App. A.1). With <code>dΓ/dy = κ (1−y)^p / y</code>:</p>
+<pre><code>  b = κ/(p+1),   d = κ/[(p+1)(p+2)]   ⇒   d/b = 1/(p+2)
+  Φ(A) = κ [ ψ(p+A+1) − ψ(p+1) ]       (ψ = digamma; closed form)
+</code></pre>
+<p>Fitting per process at 1 PeV in water: brems <code>p_B = 0.12</code> (≈ pure <code>1/y</code> tail),
+photonuclear <code>p_PN = 0.97</code>; pair production has <code>d/b ≃ 0.024</code>, so soft that two
+terms suffice:</p>
+<pre><code>  Φ(A) ≃ [A b_PP − A(A−1)/2 d_PP]                        (pair production)
+       + κ_B [ψ(A+p_B+1) − ψ(p_B+1)]                     (bremsstrahlung)
+       + κ_PN [ψ(A+p_PN+1) − ψ(p_PN+1)]                  (photonuclear)
+</code></pre>
+<p>This reproduces <code>Φ(1) = 0.34900 = b_μ</code> and <code>Φ(2) = 0.62139 = 2b_μ − d_μ</code> to five
+digits — the identities are <em>not</em> built in, so this validates the construction.
+Caveat: rows other than <code>A = 1, 2</code> inherit whatever the two-moment family gets
+wrong about third and higher moments.</p>
+<p><strong>(b) Definitive version</strong> — a single 1D quadrature of <code>Φ(A) = ∫ dΓ/dy [1−(1−y)^A]</code>
+against PROPOSAL's differential cross sections. Cheap, tabulated once.
+<code>Φ'(0) = ∫ dΓ/dy ln(1/(1−y)) ≥ b_μ</code> is the log-loss rate; <code>Φ</code> interpolates between
+it at <code>s=0</code> and <code>b_μ</code> at <code>s=1</code> — the "drift coefficient" is just <code>Φ</code> at one
+spectral index, not a universal propagation constant. The method paper takes
+this route for the log-loss moments <code>Φ'(0)</code> and <code>Φ''(0)</code> that set the range
+(App. A.2), and for <code>Φ(s)</code> itself it now uses a three-moment family matched to
+<code>b_μ</code>, <code>d_μ</code> and <code>t_μ</code>, a difference of two Beta functions (App. A.1).</p>
+<hr />
+<h2 id="10-consequences-and-things-to-revisit-method-paper-sec-iid-and-app-a">10. Consequences and things to revisit (method paper, Sec. II.D and App. A)</h2>
+<ul>
+<li><strong>Diffuse fit.</strong> Replacing <code>A'b_μ → Φ(A)</code> moves <code>V_soft</code> by &lt;1% across
+  IceCube's whole credible region <code>A = 0.98⁺⁰·¹¹₋₀.₀₉</code> — far inside their 30%
+  photonuclear uncertainty. Their fit is fine, but the protection is the
+  exactness identity, not marginal convergence (the method paper draws the same
+  conclusion in Sec. II.D). The one real shift is normalisation: including
+  <code>I(A) ≃ 0.8</code> moves the inferred efficiency <code>ε_IC-TG ≃ 0.45 → 0.56</code>, closer to
+  their geometric estimate <code>[0.37, 0.53]</code>. The efficiency shift is this page's
+  own and is not in the method paper.</li>
+<li><strong>Energy-dependent rates</strong> (the scale-invariance assumption, method paper
+  Sec. II.A). Photonuclear grows from 25%→35% of <code>b_μ</code> over 1→100 PeV. Power
+  laws stop being exact eigenfunctions, but for slow variation use the WKB form
+  <code>e^{−Φ(A)ℓ} → exp[−∫ dη Φ(A; E(η))]</code> (the content of Appendix A.1 of Palmisano
+  et al., without a kernel). The method paper follows the running kernel down a
+  track in App. A.2 and treats the photonuclear rise as a shift of the spectral
+  argument in App. A.</li>
+<li><strong>Non-power-law sources</strong> (DM line, cutoff, transient) excite many Mellin modes
+  → the <em>only</em> place you actually need the inverse transform. Then use the exact
+  propagator: accumulated loss <code>w = ln(ε/E)</code> is a compound Poisson subordinator
+  with Laplace exponent <code>Φ(s)</code> (the method paper, App. A, identifies it as a
+  subordinator but not a compound Poisson one, because the <code>1/y</code> bremsstrahlung
+  tail makes the total jump rate infinite), so <code>E[e^{−s w(ℓ)}] = e^{−ℓ Φ(s)}</code>,
+  manifestly supported on <code>w ≥ 0</code> (no spurious energy gain, no <code>θ(ε−E)</code> patch —
+  contrast the Fokker–Planck kernel's hand-imposed <code>θ(ε−E)</code> and its small
+  Gaussian <code>ε&lt;E</code> artifact).</li>
+<li><strong>Detector response</strong> (the perfect-absorber idealization of §6). Everything
+  here is a geometric through-going rate; a real <code>ε(E_μ, Ω)</code> multiplies the
+  bracket and needs the collaboration's (non-public) response maps. The method
+  paper has since replaced this with the two-number acceptance of Sec. III.B and
+  the released IceCube response of Sec. IV.D.</li>
+</ul>
+<hr />
+<h2 id="11-mapping-to-softpaws">11. Mapping to <code>softpaws</code></h2>
+<p>The exact path simplifies the numerical recipe in <a href="../soft_volume/">prior work</a> §8:</p>
+<ul>
+<li><strong><code>transport/coefficients</code></strong> — supplies <code>b_μ, d_μ</code> (<code>drift_coefficient</code>,
+  <code>diffusion_coefficient</code>) as inputs and for cross-checks via the exactness
+  identities <code>Φ(1)=b_μ</code>, <code>Φ(2)=2b_μ−d_μ</code>.</li>
+<li><strong><code>transport/eigenvalue</code></strong> provides <code>Φ(A)</code>: <code>phi_eigenvalue</code> and
+  <code>phi_symbol</code> for the closed-form two-moment digamma family (§9a),
+  <code>phi_eigenvalue_three_moment</code> and <code>phi_symbol_three_moment</code> for the
+  three-moment Beta-function family the method paper uses, and
+  <code>phi_eigenvalue_quadrature</code> for the tabulated 1D quadrature against PROPOSAL
+  cross sections (§9b). <code>spectral_index</code> builds <code>A = γ−λ−1</code>.</li>
+<li><strong><code>transport/loss_distribution</code></strong> — no Green's-function convolution needed for
+  power-law fluxes; <code>ϕ_μ(x,E) = S(E)(1−e^{−Φ(A)x})/Φ(A)</code> is closed form. The
+  subordinator propagator <code>e^{−ℓΦ(s)}</code> is kept here (<code>loss_density</code>,
+  <code>log_loss_cdf</code>) only for the non-power-law path.</li>
+<li><strong><code>transport/soft_volume</code></strong> — <code>soft_volume_exact</code> and <code>saturation_factor</code>
+  give <code>V_soft = A_proj I(A)(1−e^{−Φ(A)x})/Φ(A)</code>; keep the finite-<code>x</code>
+  saturation factor (do <strong>not</strong> default to <code>x→∞</code>). The two target volumes
+  <code>range_target_volume_km3</code> and <code>dm_line_target_volume_km3</code> stay in this module,
+  while the muon ranges they call (<code>muon_range_km</code>, <code>stochastic_muon_range_km</code>,
+  <code>two_medium_muon_range_km</code>, <code>truncated_muon_range_km</code>) live in
+  <code>transport/muon_range</code>.</li>
+<li><strong><code>transport/source</code></strong> — <code>S(ε) = n_N I(A) σ_νN(ε) ϕ_ν^⊕(ε)</code>, with
+  <code>A = γ−λ−1</code>, <code>I(A) = ⟨(1−y_w)^A⟩_P</code> (<code>inelasticity_factor</code>,
+  <code>nucleon_number_density</code>, <code>cc_cross_section</code>).</li>
+<li><strong><code>response/</code></strong> — the <code>SoftVolumeResponse</code> predictor in <code>response/soft_volume</code>
+  is the closed-form master formula of §5, alongside the IRF path in
+  <code>response/irfs</code>, same <code>flux → dN/dE dΩ</code> interface.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../reproduce/" class="btn btn-neutral float-left" title="Reproducing the paper"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../first_passage_range/" class="btn btn-neutral float-right" title="The range to threshold">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../../reproduce/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../first_passage_range/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/popper.min.js"></script>
+      <script src="../../js/tippy-bundle.umd.js"></script>
+      <script src="../../js/clipboard.js"></script>
+      <script src="../../js/extra.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

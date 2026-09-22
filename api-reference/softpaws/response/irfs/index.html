@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/response/irfs/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>irfs - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "irfs";
+        var mkdocs_page_input_path = "api-reference/softpaws/response/irfs.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/response/irfs/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >response</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">irfs</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.irfs.EffectiveArea">EffectiveArea</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.irfs.PointSpreadFunction">PointSpreadFunction</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.irfs.SmearingMatrix">SmearingMatrix</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">response</li>
+      <li class="breadcrumb-item active">irfs</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.response.irfs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.response.irfs</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Effective area and smearing matrix for IceTracks-DR2.</p>
+
+
+<details class="three-classes" open>
+  <summary>Three classes</summary>
+  <p>EffectiveArea
+    A_eff(log10_E_nu, dec) [cm²], bilinearly interpolated.
+PointSpreadFunction
+    PSF containment angle (deg), legacy simple class kept for compatibility.
+SmearingMatrix
+    Full 5-D conditional response table mapping true (E_nu, dec) to
+    reconstructed (E_reco, PSF_angle, AngErr) for signal injection.</p>
+</details>
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="EffectiveArea (softpaws.response.irfs.EffectiveArea)" href="#softpaws.response.irfs.EffectiveArea">EffectiveArea</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Tabulated effective area as a function of energy and declination.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="PointSpreadFunction (softpaws.response.irfs.PointSpreadFunction)" href="#softpaws.response.irfs.PointSpreadFunction">PointSpreadFunction</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Tabulated PSF containment angles as a function of energy and declination.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="SmearingMatrix (softpaws.response.irfs.SmearingMatrix)" href="#softpaws.response.irfs.SmearingMatrix">SmearingMatrix</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>5-D conditional response matrix for IceTracks-DR2.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.response.irfs.EffectiveArea" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">EffectiveArea</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">EffectiveArea(log10_energy_edges: ndarray, sin_dec_edges: ndarray, values: ndarray)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Tabulated effective area as a function of energy and declination.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in log10(E_nu/GeV), shape <code>(N+1,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in sin(declination), shape <code>(M+1,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>values</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area values [cm²], shape <code>(N, M)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Interpolation uses the bin centres derived from the provided edges.
+Queries outside the tabulated range are clipped to the boundary.
+Values are in cm² to match the IceTracks-DR2 CSV files and be consistent
+with the signal-rate formula (J in GeV² cm⁻⁵, σv in cm³ s⁻¹).</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; log10_e = np.linspace(2, 8, 7)
+&gt;&gt;&gt; sin_dec = np.linspace(-1, 1, 5)
+&gt;&gt;&gt; vals = np.ones((6, 4))
+&gt;&gt;&gt; aeff = EffectiveArea(log10_e, sin_dec, vals)
+&gt;&gt;&gt; float(aeff(4.0, 0.0))
+1.0</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_energy">n_energy</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino-energy bin edges [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>values</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_energy">n_energy</span>, <span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area in each bin [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_centers</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated bin centres in log10(E_nu/GeV), shape <code>(N,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_centers</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated bin centres in sin(declination), shape <code>(M,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated bin edges in sin(declination), shape <code>(M+1,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>values</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Raw tabulated effective area grid [cm²], shape <code>(N, M)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/response/irfs.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(
+    self,
+    log10_energy_edges: np.ndarray,
+    sin_dec_edges: np.ndarray,
+    values: np.ndarray,
+) -&gt; None:
+    """Wrap a binned effective-area table.
+
+    Parameters
+    ----------
+    log10_energy_edges : np.ndarray, shape (n_energy + 1,)
+        Neutrino-energy bin edges [log10 GeV].
+    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+        Declination bin edges in ``sin(dec)``.
+    values : np.ndarray, shape (n_energy, n_dec)
+        Effective area in each bin [cm^2].
+    """
+    self._log10_e_edges = np.asarray(log10_energy_edges, dtype=float)
+    self._sin_dec_edges = np.asarray(sin_dec_edges, dtype=float)
+    self._log10_e_centers = 0.5 * (log10_energy_edges[:-1] + log10_energy_edges[1:])
+    self._sin_dec_centers = 0.5 * (sin_dec_edges[:-1] + sin_dec_edges[1:])
+    self._values = np.asarray(values, dtype=float)
+    self._interp = RegularGridInterpolator(
+        (self._log10_e_centers, self._sin_dec_centers),
+        self._values,
+        method="linear",
+        bounds_error=False,
+        fill_value=None,
+    )</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.EffectiveArea.log10_energy_centers" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">log10_energy_centers</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">log10_energy_centers: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Tabulated bin centres in log10(E_nu/GeV), shape <code>(N,)</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.EffectiveArea.sin_dec_centers" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">sin_dec_centers</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">sin_dec_centers: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Tabulated bin centres in sin(declination), shape <code>(M,)</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.EffectiveArea.sin_dec_edges" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">sin_dec_edges</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">sin_dec_edges: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Tabulated bin edges in sin(declination), shape <code>(M+1,)</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.EffectiveArea.values" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">values</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">values: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Raw tabulated effective area grid [cm²], shape <code>(N, M)</code>.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.response.irfs.PointSpreadFunction" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">PointSpreadFunction</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">PointSpreadFunction(log10_energy_edges: ndarray, sin_dec_edges: ndarray, quantiles: ndarray)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Tabulated PSF containment angles as a function of energy and declination.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in log10(E/GeV), shape <code>(N+1,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Bin edges in sin(declination), shape <code>(M+1,)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>quantiles</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>PSF containment angles [deg], shape <code>(N, M)</code>.
+Typically the 68% or 50% containment radius.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; log10_e = np.linspace(2, 8, 7)
+&gt;&gt;&gt; sin_dec = np.linspace(-1, 1, 5)
+&gt;&gt;&gt; q = np.ones((6, 4)) * 0.5
+&gt;&gt;&gt; psf = PointSpreadFunction(log10_e, sin_dec, q)
+&gt;&gt;&gt; float(psf(4.0, 0.0))
+0.5</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_energy">n_energy</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino-energy bin edges [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>quantiles</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_energy">n_energy</span>, <span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Containment angle in each bin [deg].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/response/irfs.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(
+    self,
+    log10_energy_edges: np.ndarray,
+    sin_dec_edges: np.ndarray,
+    quantiles: np.ndarray,
+) -&gt; None:
+    """Wrap a binned table of angular-error quantiles.
+
+    Parameters
+    ----------
+    log10_energy_edges : np.ndarray, shape (n_energy + 1,)
+        Neutrino-energy bin edges [log10 GeV].
+    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+        Declination bin edges in ``sin(dec)``.
+    quantiles : np.ndarray, shape (n_energy, n_dec)
+        Containment angle in each bin [deg].
+    """
+    self._log10_e_centers = 0.5 * (log10_energy_edges[:-1] + log10_energy_edges[1:])
+    self._sin_dec_centers = 0.5 * (sin_dec_edges[:-1] + sin_dec_edges[1:])
+    self._quantiles = np.asarray(quantiles, dtype=float)
+    self._interp = RegularGridInterpolator(
+        (self._log10_e_centers, self._sin_dec_centers),
+        self._quantiles,
+        method="linear",
+        bounds_error=False,
+        fill_value=None,
+    )</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.response.irfs.SmearingMatrix" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">SmearingMatrix</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">SmearingMatrix(raw: ndarray)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>5-D conditional response matrix for IceTracks-DR2.</p>
+<p>Maps true neutrino (log10_E_nu, dec) to the joint distribution over
+reconstructed (log10_E_reco, PSF_angle, AngErr) via the
+<code>Fractional_Counts</code> column of the IceTracks-DR2 smearing CSV.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>raw</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Raw 11-column array loaded from <code>&lt;season&gt;_smearing.csv</code>.
+Columns: log10(E_nu)_min/max, dec_min/max [deg],
+log10(E_reco)_min/max, PSF_min/max [deg],
+AngErr_min/max [deg], Fractional_Counts.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The table has 14 true-energy bins × 30 declination bins = 420 groups,
+each with 8 000 conditional response entries.  The constructor indexes
+the flat table and pre-computes per-group CDFs so that
+:meth:<code>sample</code> runs in O(N) time.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from softpaws.data.loader import load_irfs
+&gt;&gt;&gt; irfs = load_irfs("src/softpaws/data/dataverse_files/irfs", "IC86_I")
+&gt;&gt;&gt; sm = irfs["smearing"]
+&gt;&gt;&gt; rng = np.random.default_rng(0)
+&gt;&gt;&gt; e, psf, ae = sm.sample(np.array([3.5]), np.array([0.0]), rng)</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>raw</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_rows">n_rows</span>, 7))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Rows of the released smearing file: the true-energy and
+declination bin edges, the reconstructed-energy and
+angular-error bin edges, and the fractional counts.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="energy_response_matrix (softpaws.response.irfs.SmearingMatrix.energy_response_matrix)" href="#softpaws.response.irfs.SmearingMatrix.energy_response_matrix">energy_response_matrix</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Marginal energy migration P(E_reco_bin | E_nu_bin, dec_bin).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="psf_containment_deg (softpaws.response.irfs.SmearingMatrix.psf_containment_deg)" href="#softpaws.response.irfs.SmearingMatrix.psf_containment_deg">psf_containment_deg</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Containment radius of the point spread, per true-energy and declination bin.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="sample (softpaws.response.irfs.SmearingMatrix.sample)" href="#softpaws.response.irfs.SmearingMatrix.sample">sample</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Sample reconstructed properties for given true-neutrino events.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>dec_centers</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin centres [deg], shape (n_dec,).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges [deg], shape (n_dec+1,).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_enu_centers</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>True-energy bin centres [log10(GeV)], shape (n_enu,).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_enu_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>True-energy bin edges [log10(GeV)], shape (n_enu+1,).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/response/irfs.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(self, raw: np.ndarray) -&gt; None:
+    """Parse a smearing table into its bin structure and probabilities.
+
+    Parameters
+    ----------
+    raw : np.ndarray, shape (n_rows, 7)
+        Rows of the released smearing file: the true-energy and
+        declination bin edges, the reconstructed-energy and
+        angular-error bin edges, and the fractional counts.
+    """
+    # ---- discover bin structure ----------------------------------------
+    enu_bins = np.unique(raw[:, :2], axis=0)   # (N_enu, 2)
+    dec_bins = np.unique(raw[:, 2:4], axis=0)  # (N_dec, 2)
+
+    self._log10_enu_min: np.ndarray = enu_bins[:, 0]
+    self._log10_enu_max: np.ndarray = enu_bins[:, 1]
+    self._dec_min: np.ndarray = dec_bins[:, 0]
+    self._dec_max: np.ndarray = dec_bins[:, 1]
+    self._n_enu: int = len(enu_bins)
+    self._n_dec: int = len(dec_bins)
+
+    n_groups = self._n_enu * self._n_dec
+    if raw.shape[0] % n_groups != 0:
+        raise ValueError(
+            f"Smearing table has {raw.shape[0]} rows but "
+            f"{self._n_enu} E_nu bins × {self._n_dec} dec bins = {n_groups} groups "
+            f"do not divide evenly."
+        )
+    self._n_per_group: int = raw.shape[0] // n_groups
+
+    # ---- sort rows into (n_enu, n_dec, n_per_group) order --------------
+    # Assign bin indices to each row
+    i_enu = np.searchsorted(self._log10_enu_min, raw[:, 0], side="right") - 1
+    i_dec = np.searchsorted(self._dec_min, raw[:, 2], side="right") - 1
+    i_enu = np.clip(i_enu, 0, self._n_enu - 1)
+    i_dec = np.clip(i_dec, 0, self._n_dec - 1)
+
+    # Flat group index + position within group (for stable sort)
+    group_idx = i_enu * self._n_dec + i_dec
+    within_idx = np.zeros(len(raw), dtype=int)
+    seen = {}
+    for k, g in enumerate(group_idx):
+        within_idx[k] = seen.get(g, 0)
+        seen[g] = within_idx[k] + 1
+
+    sort_order = np.lexsort((within_idx, group_idx))
+    # Keep only the 7 response columns: Ereco_min/max, PSF_min/max, AngErr_min/max, Frac
+    data_sorted = raw[sort_order, 4:]  # (N_total, 7)
+
+    self._data = data_sorted.reshape(
+        self._n_enu, self._n_dec, self._n_per_group, 7
+    ).astype(float)
+
+    # ---- pre-compute normalised CDFs per group -------------------------
+    fracs = self._data[:, :, :, 6]                          # (n_enu, n_dec, n_per)
+    totals = fracs.sum(axis=2, keepdims=True)
+    totals = np.where(totals &gt; 0, totals, 1.0)
+    self._cdf = np.cumsum(fracs / totals, axis=2)           # (n_enu, n_dec, n_per)</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.SmearingMatrix.dec_centers" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">dec_centers</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">dec_centers: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Declination bin centres [deg], shape (n_dec,).</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.SmearingMatrix.dec_edges" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">dec_edges</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">dec_edges: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Declination bin edges [deg], shape (n_dec+1,).</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.SmearingMatrix.log10_enu_centers" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">log10_enu_centers</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">log10_enu_centers: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>True-energy bin centres [log10(GeV)], shape (n_enu,).</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.response.irfs.SmearingMatrix.log10_enu_edges" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">log10_enu_edges</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">log10_enu_edges: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>True-energy bin edges [log10(GeV)], shape (n_enu+1,).</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.irfs.SmearingMatrix.energy_response_matrix" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">energy_response_matrix</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">energy_response_matrix(log10_reco_edges: ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Marginal energy migration P(E_reco_bin | E_nu_bin, dec_bin).</p>
+<p>Marginalises over PSF angle and AngErr, summing <code>Fractional_Counts</code>
+for all smearing-table entries whose reconstructed energy mid-point
+falls inside each output reco bin.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_reco_edges</code></b>
+                  (<code>(<span title="ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed energy bin edges in log10(E/GeV).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>matrix</code></b>(                  <code>(<span title="ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_enu">n_enu</span>, <span title="n_dec">n_dec</span>, <span title="n_reco">n_reco</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Probability of reconstructing in each reco bin.  Values may sum
+to &lt; 1 along axis 2 when <code>log10_reco_edges</code> do not cover the
+full smearing-table E_reco range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/irfs.py</code></summary>
+              <pre class="highlight"><code class="language-python">def energy_response_matrix(self, log10_reco_edges: np.ndarray) -&gt; np.ndarray:
+    """Marginal energy migration P(E_reco_bin | E_nu_bin, dec_bin).
+
+    Marginalises over PSF angle and AngErr, summing ``Fractional_Counts``
+    for all smearing-table entries whose reconstructed energy mid-point
+    falls inside each output reco bin.
+
+    Parameters
+    ----------
+    log10_reco_edges : ndarray, shape (n_reco+1,)
+        Reconstructed energy bin edges in log10(E/GeV).
+
+    Returns
+    -------
+    matrix : ndarray, shape (n_enu, n_dec, n_reco)
+        Probability of reconstructing in each reco bin.  Values may sum
+        to &lt; 1 along axis 2 when ``log10_reco_edges`` do not cover the
+        full smearing-table E_reco range.
+    """
+    n_reco = len(log10_reco_edges) - 1
+    ereco_mid = 0.5 * (self._data[:, :, :, 0] + self._data[:, :, :, 1])
+    fracs     = self._data[:, :, :, 6]
+
+    matrix = np.zeros((self._n_enu, self._n_dec, n_reco))
+    for i_r in range(n_reco):
+        lo, hi = log10_reco_edges[i_r], log10_reco_edges[i_r + 1]
+        in_bin = (ereco_mid &gt;= lo) &amp; (ereco_mid &lt; hi)
+        matrix[:, :, i_r] = np.sum(fracs * in_bin, axis=2)
+
+    return matrix</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.irfs.SmearingMatrix.psf_containment_deg" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">psf_containment_deg</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">psf_containment_deg(quantile: float = 0.68) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Containment radius of the point spread, per true-energy and declination bin.</p>
+<p>The released table carries a <code>PSF_angle</code> bin with every row, so the
+angular resolution is a weighted quantile of that column inside each
+group. It is the number a point-source search needs and an effective
+area does not: how much sky has to be looked through to keep a source,
+which falls as the energy rises and the track leaves more light.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>quantile</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.68</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Containment to return. See
+:data:<code>~softpaws.response.sensitivity.OPTIMAL_CONTAINMENT</code> for why
+68% is the one a counting bin wants.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>containment_deg</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_enu">n_enu</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Angle containing <code>quantile</code> of the reconstructed events [deg].
+<code>NaN</code> in bins the release leaves empty.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/irfs.py</code></summary>
+              <pre class="highlight"><code class="language-python">def psf_containment_deg(self, quantile: float = 0.68) -&gt; np.ndarray:
+    """Containment radius of the point spread, per true-energy and declination bin.
+
+    The released table carries a ``PSF_angle`` bin with every row, so the
+    angular resolution is a weighted quantile of that column inside each
+    group. It is the number a point-source search needs and an effective
+    area does not: how much sky has to be looked through to keep a source,
+    which falls as the energy rises and the track leaves more light.
+
+    Parameters
+    ----------
+    quantile : float, optional
+        Containment to return. See
+        :data:`~softpaws.response.sensitivity.OPTIMAL_CONTAINMENT` for why
+        68% is the one a counting bin wants.
+
+    Returns
+    -------
+    containment_deg : np.ndarray, shape (n_enu, n_dec)
+        Angle containing ``quantile`` of the reconstructed events [deg].
+        ``NaN`` in bins the release leaves empty.
+    """
+    angle = 0.5 * (self._data[:, :, :, 2] + self._data[:, :, :, 3])
+    weight = self._data[:, :, :, 6]
+    order = np.argsort(angle, axis=2)
+    angle = np.take_along_axis(angle, order, axis=2)
+    cumulative = np.cumsum(np.take_along_axis(weight, order, axis=2), axis=2)
+
+    total = cumulative[:, :, -1]
+    with np.errstate(divide="ignore", invalid="ignore"):
+        cdf = cumulative / total[:, :, None]
+    # The first node at or past the quantile, and the one before it, so the
+    # answer is interpolated rather than rounded to a bin edge.
+    upper = np.argmax(cdf &gt;= quantile, axis=2)
+    lower = np.maximum(upper - 1, 0)
+    take = lambda a, i: np.take_along_axis(a, i[:, :, None], axis=2)[:, :, 0]  # noqa: E731
+    cdf_lo, cdf_hi = take(cdf, lower), take(cdf, upper)
+    angle_lo, angle_hi = take(angle, lower), take(angle, upper)
+    span = np.where(cdf_hi &gt; cdf_lo, cdf_hi - cdf_lo, 1.0)
+    result = angle_lo + (angle_hi - angle_lo) * (quantile - cdf_lo) / span
+    return np.where(total &gt; 0.0, result, np.nan)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.irfs.SmearingMatrix.sample" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">sample</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">sample(log10_E_nu: ndarray, dec: ndarray, rng: Generator) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Sample reconstructed properties for given true-neutrino events.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_E_nu</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="N">N</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>True neutrino log10(E_nu / GeV).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="N">N</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>True neutrino declination [deg] (approximately the source dec).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rng</code></b>
+                  (<code><span title="numpy.random.Generator">Generator</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>NumPy random generator.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log10_E_reco</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="N">N</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Reconstructed muon energy proxy log10(E_reco / GeV).</p>
+              </div>
+            </li>
+            <li>
+<b><code>psf_angle</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="N">N</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Angular opening between true and reconstructed direction [deg].</p>
+              </div>
+            </li>
+            <li>
+<b><code>ang_err</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="N">N</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Per-event estimated angular uncertainty σ [deg].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/irfs.py</code></summary>
+              <pre class="highlight"><code class="language-python">def sample(
+    self,
+    log10_E_nu: np.ndarray,
+    dec: np.ndarray,
+    rng: np.random.Generator,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Sample reconstructed properties for given true-neutrino events.
+
+    Parameters
+    ----------
+    log10_E_nu : np.ndarray, shape (N,)
+        True neutrino log10(E_nu / GeV).
+    dec : np.ndarray, shape (N,)
+        True neutrino declination [deg] (approximately the source dec).
+    rng : np.random.Generator
+        NumPy random generator.
+
+    Returns
+    -------
+    log10_E_reco : np.ndarray, shape (N,)
+        Reconstructed muon energy proxy log10(E_reco / GeV).
+    psf_angle : np.ndarray, shape (N,)
+        Angular opening between true and reconstructed direction [deg].
+    ang_err : np.ndarray, shape (N,)
+        Per-event estimated angular uncertainty σ [deg].
+    """
+    log10_E_nu = np.asarray(log10_E_nu, dtype=float)
+    dec = np.asarray(dec, dtype=float)
+    n = log10_E_nu.size
+
+    # Bin indices
+    i_enu = np.clip(
+        np.searchsorted(self._log10_enu_min, log10_E_nu, side="right") - 1,
+        0, self._n_enu - 1,
+    )
+    i_dec = np.clip(
+        np.searchsorted(self._dec_min, dec, side="right") - 1,
+        0, self._n_dec - 1,
+    )
+
+    log10_E_reco = np.empty(n)
+    psf_angle = np.empty(n)
+    ang_err = np.empty(n)
+
+    u = rng.uniform(size=n)
+    for k in range(n):
+        cdf = self._cdf[i_enu[k], i_dec[k]]
+        idx = min(int(np.searchsorted(cdf, u[k])), self._n_per_group - 1)
+        row = self._data[i_enu[k], i_dec[k], idx]
+        log10_E_reco[k] = rng.uniform(row[0], row[1])
+        psf_angle[k] = rng.uniform(row[2], row[3])
+        ang_err[k] = rng.uniform(row[4], row[5])
+
+    return log10_E_reco, psf_angle, ang_err</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../first_principles/" class="btn btn-neutral float-left" title="first_principles"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../light_reach/" class="btn btn-neutral float-right" title="light_reach">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../first_principles/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../light_reach/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

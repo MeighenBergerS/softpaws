@@ -1,0 +1,2739 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/response/first_principles/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>first_principles - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "first_principles";
+        var mkdocs_page_input_path = "api-reference/softpaws/response/first_principles.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/response/first_principles/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >response</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">first_principles</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.IsoscalarCrossSection">IsoscalarCrossSection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.arca_column_volume_km3">arca_column_volume_km3</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.arca_effective_area_cm2">arca_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.build_model">build_model</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.column_profile">column_profile</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.detector_curves">detector_curves</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.fit_reach">fit_reach</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.ic_column_volume_km3">ic_column_volume_km3</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.ic_effective_area_cm2">ic_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.residuals">residuals</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.first_principles.rock_range_ratio">rock_range_ratio</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">response</li>
+      <li class="breadcrumb-item active">first_principles</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.response.first_principles" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.response.first_principles</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Effective areas with the light reach derived and nothing fitted.</p>
+<p>The column integral of a track detector's entering term is evaluated at the
+energy the muon has where it is seen, not at the energy it was born with,
+and the instrumented body it enters is dilated by the light reach of
+:mod:<code>softpaws.response.light_reach</code> at that energy. Both terms of the can,
+the extrusion over the column and the instrumented volume, are carried
+together, so a reach that grows the body grows both, and a muon born below
+threshold contributes neither.</p>
+<p>Two detectors are assembled: IceCube, averaged over the upgoing sky with
+layered-PREM columns (:func:<code>ic_effective_area_cm2</code>), and KM3NeT/ARCA230,
+averaged over the whole sky with the finite sea-water overburden above it
+(:func:<code>arca_effective_area_cm2</code>). Each sums the <code>nu_mu</code> channel and the
+<code>nu_tau -&gt; tau -&gt; mu</code> channel (:data:<code>DEFAULT_FLAVOURS</code>) and averages
+neutrino and antineutrino, each propagated through the Earth with its own
+cross section pinned to the CSMS isoscalar values
+(:class:<code>IsoscalarCrossSection</code>, :data:<code>SPECIES</code>). :func:<code>build_model</code> is the
+whole model for one detector; :func:<code>fit_reach</code> floats a flat attenuation
+length against a published curve so that the fitted value is comparable with
+what is known about the medium.</p>
+<p>Geometry comes from :mod:<code>softpaws.detectors</code>, the Earth columns from
+:mod:<code>softpaws.transport.earth</code>, and the published energy grids from the
+effective-area engine.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="IsoscalarCrossSection (softpaws.response.first_principles.IsoscalarCrossSection)" href="#softpaws.response.first_principles.IsoscalarCrossSection">IsoscalarCrossSection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>A shipped <code>nu-p</code> table pinned to the CSMS isoscalar values.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="arca_column_volume_km3 (softpaws.response.first_principles.arca_column_volume_km3)" href="#softpaws.response.first_principles.arca_column_volume_km3">arca_column_volume_km3</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Column target volume at ARCA230, truncated at the available column [km^3].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="arca_effective_area_cm2 (softpaws.response.first_principles.arca_effective_area_cm2)" href="#softpaws.response.first_principles.arca_effective_area_cm2">arca_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Sky-averaged ARCA230 effective area, both channels [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="build_model (softpaws.response.first_principles.build_model)" href="#softpaws.response.first_principles.build_model">build_model</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The full model for one detector, threshold and reach both derived [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="column_profile (softpaws.response.first_principles.column_profile)" href="#softpaws.response.first_principles.column_profile">column_profile</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Column travelled against the energy the muon has there.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="detector_curves (softpaws.response.first_principles.detector_curves)" href="#softpaws.response.first_principles.detector_curves">detector_curves</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Published, first-principles and fitted effective areas for one detector [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="fit_reach (softpaws.response.first_principles.fit_reach)" href="#softpaws.response.first_principles.fit_reach">fit_reach</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Float a flat attenuation length against one published curve.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="ic_column_volume_km3 (softpaws.response.first_principles.ic_column_volume_km3)" href="#softpaws.response.first_principles.ic_column_volume_km3">ic_column_volume_km3</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Target volume for one production energy [km^3].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="ic_effective_area_cm2 (softpaws.response.first_principles.ic_effective_area_cm2)" href="#softpaws.response.first_principles.ic_effective_area_cm2">ic_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Upgoing-averaged IceCube effective area, both channels [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="residuals (softpaws.response.first_principles.residuals)" href="#softpaws.response.first_principles.residuals">residuals</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Geometric-mean ratio and shape scatter of <code>published / model</code> over a band.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="rock_range_ratio (softpaws.response.first_principles.rock_range_ratio)" href="#softpaws.response.first_principles.rock_range_ratio">rock_range_ratio</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Two-medium range over the single-medium one, per arrival direction.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.response.first_principles.IsoscalarCrossSection" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">IsoscalarCrossSection</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">IsoscalarCrossSection(base: CrossSection, species: str)</code></pre>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code></p>
+
+
+
+        <p>A shipped <code>nu-p</code> table pinned to the CSMS isoscalar values.</p>
+<p>Scales the base model's charged- and neutral-current channels by the
+ratio of the CSMS isoscalar value to the base value at the CSMS energies,
+interpolated in <code>log E</code> and held at the ends. Both channels scale, so
+the Earth attenuation the total sets stays consistent with the
+interaction rate.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>base</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The shipped table to correct.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>species</code></b>
+                  (<code>(&#39;nu&#39;, &#39;nubar&#39;)</code>, default:
+                      <code>&#34;nu&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which CSMS column to pin to.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p><code>local_slope</code> delegates to the base model: the correction drifts by
+~0.2 in <code>ln sigma</code> over nine e-folds of energy, a slope shift of ~0.02,
+below the smoothing spline's own uncertainty.</p>
+</details>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>base</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Model the correction is applied to.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>species</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Key of :data:<code>CSMS_PB</code>, the species to pin against.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc (softpaws.response.first_principles.IsoscalarCrossSection.cc)" href="#softpaws.response.first_principles.IsoscalarCrossSection.cc">cc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Charged-current cross section [cm^2], pinned to CSMS.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="local_slope (softpaws.response.first_principles.IsoscalarCrossSection.local_slope)" href="#softpaws.response.first_principles.IsoscalarCrossSection.local_slope">local_slope</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Local slope of the base model; see the class notes.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="nc (softpaws.response.first_principles.IsoscalarCrossSection.nc)" href="#softpaws.response.first_principles.IsoscalarCrossSection.nc">nc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutral-current cross section [cm^2], pinned to CSMS.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(self, base: CrossSection, species: str):
+    """Wrap a base model and pin it to the reference values of one species.
+
+    Parameters
+    ----------
+    base : CrossSection
+        Model the correction is applied to.
+    species : str
+        Key of :data:`CSMS_PB`, the species to pin against.
+    """
+    self._base = base
+    self._log_ratio = {}
+    for channel in ("cc", "nc"):
+        target = np.asarray(CSMS_PB[species][channel], dtype=float) * 1.0e-36
+        ours = np.array([
+            float(np.atleast_1d(getattr(base, channel)(10.0**log_e))[0])
+            for log_e in CSMS_LOG10_E
+        ])
+        self._log_ratio[channel] = np.log(target / ours)</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.first_principles.IsoscalarCrossSection.cc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">cc(energy_gev)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Charged-current cross section [cm^2], pinned to CSMS.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sigma</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Cross section per nucleon [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cc(self, energy_gev):
+    """Charged-current cross section [cm^2], pinned to CSMS.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+
+    Returns
+    -------
+    sigma : np.ndarray
+        Cross section per nucleon [cm^2].
+    """
+    return self._base.cc(energy_gev) * self._scale("cc", energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.first_principles.IsoscalarCrossSection.local_slope" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">local_slope</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">local_slope(energy_gev)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local slope of the base model; see the class notes.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>slope</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>d ln sigma / d ln E</code> of the base table.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def local_slope(self, energy_gev):
+    """Local slope of the base model; see the class notes.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+
+    Returns
+    -------
+    slope : np.ndarray
+        ``d ln sigma / d ln E`` of the base table.
+    """
+    return self._base.local_slope(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.first_principles.IsoscalarCrossSection.nc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">nc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">nc(energy_gev)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutral-current cross section [cm^2], pinned to CSMS.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sigma</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Cross section per nucleon [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def nc(self, energy_gev):
+    """Neutral-current cross section [cm^2], pinned to CSMS.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+
+    Returns
+    -------
+    sigma : np.ndarray
+        Cross section per nucleon [cm^2].
+    """
+    return self._base.nc(energy_gev) * self._scale("nc", energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.arca_column_volume_km3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">arca_column_volume_km3</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">arca_column_volume_km3(production_gev: float, threshold_gev: float, theta_deg: ndarray, available_km: ndarray, site: Optics, min_modules: float | None, n_energy: int, geometry: Site = ARCA230) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Column target volume at ARCA230, truncated at the available column [km^3].</p>
+<p>The site supplies a finite upstream column, so the length is the
+truncated first-passage range <code>E[tau ^ X]</code>. The reach enters as the
+mean projected area over the part of the column the muon can actually
+have travelled, which keeps the validated range intact and reduces to the
+plain column integral where the column is unlimited. As at IceCube, the
+instrumented volume is carried here and not added outside, so that the
+reach dilates both terms of the can and a sub-threshold muon contributes
+neither.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>production_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>theta_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Zenith samples [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>available_km</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Upstream sea-water column available in each direction [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire, or <code>None</code> for the instrumented footprint.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>geometry</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>, default:
+                      <code><span title="softpaws.detectors.ARCA230">ARCA230</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented cylinders. Defaults to :data:<code>~softpaws.detectors.ARCA230</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>volume</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Column volume [km^3], one entry per zenith.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def arca_column_volume_km3(
+    production_gev: float, threshold_gev: float, theta_deg: np.ndarray,
+    available_km: np.ndarray, site: Optics, min_modules: float | None, n_energy: int,
+    geometry: Site = ARCA230,
+) -&gt; np.ndarray:
+    """Column target volume at ARCA230, truncated at the available column [km^3].
+
+    The site supplies a finite upstream column, so the length is the
+    truncated first-passage range ``E[tau ^ X]``. The reach enters as the
+    mean projected area over the part of the column the muon can actually
+    have travelled, which keeps the validated range intact and reduces to the
+    plain column integral where the column is unlimited. As at IceCube, the
+    instrumented volume is carried here and not added outside, so that the
+    reach dilates both terms of the can and a sub-threshold muon contributes
+    neither.
+
+    Parameters
+    ----------
+    production_gev : float
+        Muon energy at production [GeV].
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    theta_deg : np.ndarray
+        Zenith samples [deg].
+    available_km : np.ndarray
+        Upstream sea-water column available in each direction [km].
+    site : Optics
+        Detector optics.
+    min_modules : float or None
+        Modules that must fire, or ``None`` for the instrumented footprint.
+    n_energy : int
+        Points in the arrival-energy quadrature.
+    geometry : Site, optional
+        Instrumented cylinders. Defaults to :data:`~softpaws.detectors.ARCA230`.
+
+    Returns
+    -------
+    volume : np.ndarray
+        Column volume [km^3], one entry per zenith.
+    """
+    radius_km = geometry.radius_km
+    height_km = geometry.height_km
+    n_blocks = geometry.n_blocks
+    density = geometry.density_g_cm3
+    cos_theta = np.cos(np.deg2rad(np.asarray(theta_deg, dtype=float)))
+    if production_gev &lt;= threshold_gev:
+        return np.zeros_like(theta_deg)
+
+    truncated = np.atleast_1d(truncated_muon_range_km(
+        production_gev, available_km, threshold_gev, kernel_evaluation="running"))
+    truncated = np.clip(truncated, 0.0, None)
+    # Below the sea floor the muon is in rock, which shortens every upgoing
+    # column; the overburden above is water throughout and is untouched.
+    ratio = rock_range_ratio(production_gev, threshold_gev, cos_theta, site,
+                             height_km, density)
+    truncated = truncated * ratio
+
+    if min_modules is None:
+        area, volume = eroded_prism_target_km2(
+            cos_theta, radius_km, height_km, site.min_track_km, None, n_blocks)
+        return area * truncated + volume
+
+    profile = column_profile(production_gev, threshold_gev, n_energy, density)
+    if profile is None:
+        return np.zeros_like(theta_deg)
+    column, energy, _ = profile
+
+    radius, height, weight = effective_body_km(radius_km, height_km, energy, site,
+                                               min_modules, None)
+    area, volume = eroded_prism_target_km2(
+        cos_theta[None, :], radius[:, None], height[:, None], site.min_track_km,
+        None, n_blocks)
+    area = weight[:, None] * area
+    clipped = np.minimum(column[:, None] * ratio[None, :], available_km[None, :])
+    span = clipped[-1]
+    mean_area = np.where(
+        span &gt; 0.0, np.trapezoid(area, clipped, axis=0) / np.where(span &gt; 0.0, span, 1.0),
+        weight[0] * eroded_prism_target_km2(cos_theta, radius_km, height_km,
+                                            site.min_track_km, None, n_blocks)[0],
+    )
+    return mean_area * truncated + weight[0] * volume[0]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.arca_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">arca_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">arca_effective_area_cm2(site: Optics, threshold_gev: float, min_modules: float | None, n_energy: int, flavours: tuple[str, ...] = DEFAULT_FLAVOURS, cross_section: CrossSection | None = None, log10_e: ndarray = ARCA_LOG10_E, geometry: Site = ARCA230, n_zenith: int = N_ZENITH) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Sky-averaged ARCA230 effective area, both channels [cm^2].</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire, or <code>None</code> for the instrumented footprint.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flavours</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.response.first_principles.DEFAULT_FLAVOURS">DEFAULT_FLAVOURS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Parent channels to sum. Defaults to :data:<code>DEFAULT_FLAVOURS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross section of the incident species, used for both the interaction
+and the Earth absorption. Defaults to :data:<code>CROSS_SECTION</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.response.effective_area.ARCA_LOG10_E">ARCA_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies to evaluate at, <code>log10(E_nu / GeV)</code>. Defaults to
+:data:<code>ARCA_LOG10_E</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>geometry</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>, default:
+                      <code><span title="softpaws.detectors.ARCA230">ARCA230</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented cylinders. Defaults to :data:<code>~softpaws.detectors.ARCA230</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_zenith</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.response.effective_area.N_ZENITH">N_ZENITH</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Equal-solid-angle zenith slices of the sky average.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on <code>log10_e</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def arca_effective_area_cm2(
+    site: Optics, threshold_gev: float, min_modules: float | None, n_energy: int,
+    flavours: tuple[str, ...] = DEFAULT_FLAVOURS, cross_section: CrossSection | None = None,
+    log10_e: np.ndarray = ARCA_LOG10_E, geometry: Site = ARCA230, n_zenith: int = N_ZENITH,
+) -&gt; np.ndarray:
+    """Sky-averaged ARCA230 effective area, both channels [cm^2].
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    min_modules : float or None
+        Modules that must fire, or ``None`` for the instrumented footprint.
+    n_energy : int
+        Points in the arrival-energy quadrature.
+    flavours : tuple of str, optional
+        Parent channels to sum. Defaults to :data:`DEFAULT_FLAVOURS`.
+    cross_section : softpaws.transport.cross_section.CrossSection, optional
+        Cross section of the incident species, used for both the interaction
+        and the Earth absorption. Defaults to :data:`CROSS_SECTION`.
+    log10_e : np.ndarray, optional
+        Neutrino energies to evaluate at, ``log10(E_nu / GeV)``. Defaults to
+        :data:`ARCA_LOG10_E`.
+    geometry : Site, optional
+        Instrumented cylinders. Defaults to :data:`~softpaws.detectors.ARCA230`.
+    n_zenith : int, optional
+        Equal-solid-angle zenith slices of the sky average.
+
+    Returns
+    -------
+    aeff : np.ndarray
+        Effective area [cm^2] on ``log10_e``.
+    """
+    xsec = CROSS_SECTION if cross_section is None else cross_section
+    theta_deg, weights = zenith_grid(n_zenith)
+    cos_theta = np.cos(np.deg2rad(theta_deg))
+    density = geometry.density_g_cm3
+    columns = neutrino_column_g_cm2(cos_theta, geometry.depth_km, density, MAX_UPSTREAM_KM)
+    available_km = overburden_km(cos_theta, geometry.depth_km, MAX_UPSTREAM_KM)
+    n_nucleon = nucleon_number_density(density)
+    log10_e = np.asarray(log10_e, dtype=float)
+    out = np.zeros(log10_e.size)
+
+    for i, e_nu in enumerate(10.0**log10_e):
+        for flavour in flavours:
+            rungs, rung_weight, muon_gev, branching = _muon_rungs(e_nu, flavour, columns, xsec)
+            rate = np.zeros((rungs.size, theta_deg.size))
+            for k, e_mu in enumerate(muon_gev):
+                volume = arca_column_volume_km3(
+                    float(e_mu), threshold_gev, theta_deg, available_km, site,
+                    min_modules, n_energy, geometry,
+                )
+                rate[k] = volume * CM_PER_KM**3
+            rate *= n_nucleon * xsec.cc(rungs)[:, None] * branching
+            out[i] += np.average((rung_weight * rate).sum(axis=0), weights=weights)
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.build_model" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">build_model</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">build_model(which: str, site: Optics, min_modules: float = DEFAULT_MIN_MODULES, n_energy: int = 40, flavours: tuple[str, ...] = DEFAULT_FLAVOURS, species: tuple[CrossSection, ...] = SPECIES, **builder_kwargs) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The full model for one detector, threshold and reach both derived [cm^2].</p>
+<p>Averaged over neutrino and antineutrino, each propagated through the
+Earth with its own cross section, since both published tables are that
+average.</p>
+<p>The light condition enters once. The range runs to the nominal threshold,
+and every track segment carries the probability that its Poisson-thinned
+hits meet the multiplicity, the weight of
+:func:<code>~softpaws.response.light_reach.effective_body_km</code>, so the threshold
+is a smooth turn-on and not a cut. Truncating the range at
+:func:<code>~softpaws.response.light_reach.muon_threshold_gev</code> as well would
+suppress the same physics twice.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>which</code></b>
+                  (<code>(&#39;IceCube&#39;, &#39;ARCA&#39;)</code>, default:
+                      <code>&#34;IceCube&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which detector to build.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.response.light_reach.DEFAULT_MIN_MODULES">DEFAULT_MIN_MODULES</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire. Defaults to
+:data:<code>~softpaws.response.light_reach.DEFAULT_MIN_MODULES</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>40</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flavours</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.response.first_principles.DEFAULT_FLAVOURS">DEFAULT_FLAVOURS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Parent channels to sum. Defaults to :data:<code>DEFAULT_FLAVOURS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>species</code></b>
+                  (<code>tuple of CrossSection</code>, default:
+                      <code><span title="softpaws.response.first_principles.SPECIES">SPECIES</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross sections averaged over. Defaults to :data:<code>SPECIES</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>**builder_kwargs</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Passed to :func:<code>ic_effective_area_cm2</code> or
+:func:<code>arca_effective_area_cm2</code>, for example <code>log10_e</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on that detector's grid.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def build_model(
+    which: str, site: Optics, min_modules: float = DEFAULT_MIN_MODULES, n_energy: int = 40,
+    flavours: tuple[str, ...] = DEFAULT_FLAVOURS,
+    species: tuple[CrossSection, ...] = SPECIES,
+    **builder_kwargs,
+) -&gt; np.ndarray:
+    """The full model for one detector, threshold and reach both derived [cm^2].
+
+    Averaged over neutrino and antineutrino, each propagated through the
+    Earth with its own cross section, since both published tables are that
+    average.
+
+    The light condition enters once. The range runs to the nominal threshold,
+    and every track segment carries the probability that its Poisson-thinned
+    hits meet the multiplicity, the weight of
+    :func:`~softpaws.response.light_reach.effective_body_km`, so the threshold
+    is a smooth turn-on and not a cut. Truncating the range at
+    :func:`~softpaws.response.light_reach.muon_threshold_gev` as well would
+    suppress the same physics twice.
+
+    Parameters
+    ----------
+    which : {"IceCube", "ARCA"}
+        Which detector to build.
+    site : Optics
+        Detector optics.
+    min_modules : float, optional
+        Modules that must fire. Defaults to
+        :data:`~softpaws.response.light_reach.DEFAULT_MIN_MODULES`.
+    n_energy : int, optional
+        Points in the arrival-energy quadrature.
+    flavours : tuple of str, optional
+        Parent channels to sum. Defaults to :data:`DEFAULT_FLAVOURS`.
+    species : tuple of CrossSection, optional
+        Cross sections averaged over. Defaults to :data:`SPECIES`.
+    **builder_kwargs
+        Passed to :func:`ic_effective_area_cm2` or
+        :func:`arca_effective_area_cm2`, for example ``log10_e``.
+
+    Returns
+    -------
+    aeff : np.ndarray
+        Effective area [cm^2] on that detector's grid.
+    """
+    build = ic_effective_area_cm2 if which == "IceCube" else arca_effective_area_cm2
+    curves = [build(site, DEFAULT_MUON_THRESHOLD_GEV, min_modules, n_energy, flavours, xsec,
+                    **builder_kwargs)
+              for xsec in species]
+    return np.mean(curves, axis=0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.column_profile" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">column_profile</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">column_profile(production_gev: float, threshold_gev: float, n_energy: int, density_g_cm3: float = RHO_WATER_G_CM3) -&gt; tuple[np.ndarray, np.ndarray, float] | None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Column travelled against the energy the muon has there.</p>
+<p>The column a muon has covered by the time it has fallen to <code>E</code> is
+<code>L(eps -&gt; E_thr) - L(E -&gt; E_thr)</code>, exact for the mean first-passage
+depth by the tower property, so the validated range function is called
+in its normal convention throughout.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>production_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Points in the quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Density of the detector medium [g cm^-3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>profile</code></b>(                  <code><span title="tuple">tuple</span> or None</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>(column [km], arrival energy [GeV], total range [km])</code>, or <code>None</code>
+when the muon is born below threshold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def column_profile(
+    production_gev: float, threshold_gev: float, n_energy: int,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+) -&gt; tuple[np.ndarray, np.ndarray, float] | None:
+    """Column travelled against the energy the muon has there.
+
+    The column a muon has covered by the time it has fallen to ``E`` is
+    ``L(eps -&gt; E_thr) - L(E -&gt; E_thr)``, exact for the mean first-passage
+    depth by the tower property, so the validated range function is called
+    in its normal convention throughout.
+
+    Parameters
+    ----------
+    production_gev : float
+        Muon energy at production [GeV].
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    n_energy : int
+        Points in the quadrature.
+    density_g_cm3 : float, optional
+        Density of the detector medium [g cm^-3].
+
+    Returns
+    -------
+    profile : tuple or None
+        ``(column [km], arrival energy [GeV], total range [km])``, or ``None``
+        when the muon is born below threshold.
+    """
+    if production_gev &lt;= threshold_gev:
+        return None
+    total = float(np.atleast_1d(
+        stochastic_muon_range_km(production_gev, threshold_gev, density_g_cm3))[0])
+    if not np.isfinite(total) or total &lt;= 0.0:
+        return None
+    energy = np.logspace(np.log10(production_gev), np.log10(threshold_gev), n_energy)
+    column = total - stochastic_muon_range_km(energy, threshold_gev, density_g_cm3)
+    return column, energy, total</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.detector_curves" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">detector_curves</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">detector_curves(which: str, site: Optics, min_modules: float, n_energy: int, published: ndarray, band: ndarray, flavours: tuple[str, ...] = DEFAULT_FLAVOURS, **builder_kwargs) -&gt; tuple[dict[str, np.ndarray], tuple[float, float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Published, first-principles and fitted effective areas for one detector [cm^2].</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>which</code></b>
+                  (<code>(&#39;IceCube&#39;, &#39;ARCA&#39;)</code>, default:
+                      <code>&#34;IceCube&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which detector to build.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>published</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Published effective area [cm^2] on the detector's grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>band</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Boolean mask of the energies the fit runs over.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flavours</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.response.first_principles.DEFAULT_FLAVOURS">DEFAULT_FLAVOURS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Parent channels to sum. Defaults to :data:<code>DEFAULT_FLAVOURS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>**builder_kwargs</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Passed to :func:<code>build_model</code>, for example <code>log10_e</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>curves</code></b>(                  <code>dict of str -&gt; np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>Keyed <code>"Published"</code>, <code>"First principles"</code> and <code>"Fitted"</code>.</p>
+              </div>
+            </li>
+            <li>
+<b><code>fit</code></b>(                  <code>tuple of float</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>(attenuation length [m], normalization)</code> from the fit.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def detector_curves(
+    which: str, site: Optics, min_modules: float, n_energy: int, published: np.ndarray,
+    band: np.ndarray, flavours: tuple[str, ...] = DEFAULT_FLAVOURS, **builder_kwargs,
+) -&gt; tuple[dict[str, np.ndarray], tuple[float, float]]:
+    """Published, first-principles and fitted effective areas for one detector [cm^2].
+
+    Parameters
+    ----------
+    which : {"IceCube", "ARCA"}
+        Which detector to build.
+    site : Optics
+        Detector optics.
+    min_modules : float
+        Modules that must fire.
+    n_energy : int
+        Points in the arrival-energy quadrature.
+    published : np.ndarray
+        Published effective area [cm^2] on the detector's grid.
+    band : np.ndarray
+        Boolean mask of the energies the fit runs over.
+    flavours : tuple of str, optional
+        Parent channels to sum. Defaults to :data:`DEFAULT_FLAVOURS`.
+    **builder_kwargs
+        Passed to :func:`build_model`, for example ``log10_e``.
+
+    Returns
+    -------
+    curves : dict of str -&gt; np.ndarray
+        Keyed ``"Published"``, ``"First principles"`` and ``"Fitted"``.
+    fit : tuple of float
+        ``(attenuation length [m], normalization)`` from the fit.
+    """
+    first_principles = build_model(which, site, min_modules, n_energy, flavours,
+                                   **builder_kwargs)
+    length_m, normalization, fitted = fit_reach(
+        which, site, min_modules, n_energy, published, band, flavours, **builder_kwargs)
+    return {
+        "Published": published,
+        "First principles": first_principles,
+        "Fitted": fitted,
+    }, (length_m, normalization)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.fit_reach" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fit_reach</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">fit_reach(which: str, site: Optics, min_modules: float, n_energy: int, published: ndarray, band: ndarray, flavours: tuple[str, ...] = DEFAULT_FLAVOURS, **builder_kwargs) -&gt; tuple[float, float, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Float a flat attenuation length against one published curve.</p>
+<p><code>Lambda</code> sets how fast the footprint grows per e-fold, which is shape
+alone, so it is fitted against the scatter about a free normalization.
+Fitting it against the level instead drives it to the bound, since no
+attenuation length can supply a normalization, and returns a number no
+medium has.</p>
+<p>The returned curve carries that free normalization, so it lands on the
+published one by construction and only its shape is a statement.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>which</code></b>
+                  (<code>(&#39;IceCube&#39;, &#39;ARCA&#39;)</code>, default:
+                      <code>&#34;IceCube&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which detector to build.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics, whose derived attenuation length starts the search.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire, held at the derived value.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>published</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Published effective area [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>band</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Boolean mask of the energies the fit runs over.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flavours</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.response.first_principles.DEFAULT_FLAVOURS">DEFAULT_FLAVOURS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Parent channels to sum. Defaults to :data:<code>DEFAULT_FLAVOURS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>**builder_kwargs</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Passed to :func:<code>build_model</code>, for example <code>log10_e</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>length_m</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Fitted attenuation length [m], to compare against the medium's optics.</p>
+              </div>
+            </li>
+            <li>
+<b><code>normalization</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Factor the fitted shape needs to reach the published level.</p>
+              </div>
+            </li>
+            <li>
+<b><code>curve</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Normalized effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def fit_reach(
+    which: str, site: Optics, min_modules: float, n_energy: int, published: np.ndarray,
+    band: np.ndarray, flavours: tuple[str, ...] = DEFAULT_FLAVOURS, **builder_kwargs,
+) -&gt; tuple[float, float, np.ndarray]:
+    """Float a flat attenuation length against one published curve.
+
+    ``Lambda`` sets how fast the footprint grows per e-fold, which is shape
+    alone, so it is fitted against the scatter about a free normalization.
+    Fitting it against the level instead drives it to the bound, since no
+    attenuation length can supply a normalization, and returns a number no
+    medium has.
+
+    The returned curve carries that free normalization, so it lands on the
+    published one by construction and only its shape is a statement.
+
+    Parameters
+    ----------
+    which : {"IceCube", "ARCA"}
+        Which detector to build.
+    site : Optics
+        Detector optics, whose derived attenuation length starts the search.
+    min_modules : float
+        Modules that must fire, held at the derived value.
+    n_energy : int
+        Points in the arrival-energy quadrature.
+    published : np.ndarray
+        Published effective area [cm^2].
+    band : np.ndarray
+        Boolean mask of the energies the fit runs over.
+    flavours : tuple of str, optional
+        Parent channels to sum. Defaults to :data:`DEFAULT_FLAVOURS`.
+    **builder_kwargs
+        Passed to :func:`build_model`, for example ``log10_e``.
+
+    Returns
+    -------
+    length_m : float
+        Fitted attenuation length [m], to compare against the medium's optics.
+    normalization : float
+        Factor the fitted shape needs to reach the published level.
+    curve : np.ndarray
+        Normalized effective area [cm^2].
+    """
+    def model_at(log10_lambda: float) -&gt; np.ndarray:
+        trial = replace(site, attenuation_override_m=10.0**log10_lambda)
+        return build_model(which, trial, min_modules, n_energy, flavours, **builder_kwargs)
+
+    def shape_cost(log10_lambda: float) -&gt; float:
+        return residuals(published, model_at(log10_lambda), band)[1]
+
+    opt = minimize_scalar(shape_cost, bounds=(1.0, 2.5), method="bounded",
+                          options={"xatol": 0.005})
+    curve = model_at(opt.x)
+    normalization = residuals(published, curve, band)[0]
+    return 10.0**opt.x, normalization, curve * normalization</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.ic_column_volume_km3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">ic_column_volume_km3</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">ic_column_volume_km3(production_gev: float, threshold_gev: float, cos_theta: ndarray, site: Optics, min_modules: float | None, n_energy: int, geometry: Site = ICECUBE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Target volume for one production energy [km^3].</p>
+<p>The entering term is the silhouette extruded upstream over the column the
+muon can cover, and the instrumented volume is the same extrusion
+continued to the back face, so the two add to the volume of the body
+extruded by <code>L</code>. Both are carried here, since a light reach dilates the
+body and so moves both of them; returning only the column term and adding
+a fixed <code>V_det</code> outside would grow one and hold the other. A muon born
+below threshold gets neither.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>production_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Arrival directions, <code>|cos theta_z|</code> of an upgoing hemisphere.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire. <code>None</code> holds the body at the instrumented one.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>geometry</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>, default:
+                      <code><span title="softpaws.detectors.ICECUBE">ICECUBE</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented prism. Defaults to :data:<code>~softpaws.detectors.ICECUBE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>volume</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Target volume [km^3], one entry per direction.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def ic_column_volume_km3(
+    production_gev: float, threshold_gev: float, cos_theta: np.ndarray,
+    site: Optics, min_modules: float | None, n_energy: int, geometry: Site = ICECUBE,
+) -&gt; np.ndarray:
+    """Target volume for one production energy [km^3].
+
+    The entering term is the silhouette extruded upstream over the column the
+    muon can cover, and the instrumented volume is the same extrusion
+    continued to the back face, so the two add to the volume of the body
+    extruded by ``L``. Both are carried here, since a light reach dilates the
+    body and so moves both of them; returning only the column term and adding
+    a fixed ``V_det`` outside would grow one and hold the other. A muon born
+    below threshold gets neither.
+
+    Parameters
+    ----------
+    production_gev : float
+        Muon energy at production [GeV].
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    cos_theta : np.ndarray
+        Arrival directions, ``|cos theta_z|`` of an upgoing hemisphere.
+    site : Optics
+        Detector optics.
+    min_modules : float or None
+        Modules that must fire. ``None`` holds the body at the instrumented one.
+    n_energy : int
+        Points in the arrival-energy quadrature.
+    geometry : Site, optional
+        Instrumented prism. Defaults to :data:`~softpaws.detectors.ICECUBE`.
+
+    Returns
+    -------
+    volume : np.ndarray
+        Target volume [km^3], one entry per direction.
+    """
+    zeros = np.zeros_like(np.asarray(cos_theta, dtype=float))
+    density = geometry.density_g_cm3
+    profile = column_profile(production_gev, threshold_gev, n_energy, density)
+    if profile is None:
+        return zeros
+    column, energy, total = profile
+    # Below the ice the muon is in rock, which shortens every upgoing column.
+    # ``ic_upgoing_columns`` hands back ``|cos theta_z| = sin(dec)`` for a
+    # hemisphere that is upgoing by construction, so the sign is restored here.
+    ratio = rock_range_ratio(
+        production_gev, threshold_gev, -np.abs(np.asarray(cos_theta, dtype=float)),
+        site, geometry.height_km, density)
+
+    if min_modules is None:
+        area, volume = eroded_prism_target_km2(
+            cos_theta, geometry.radius_km, geometry.height_km, site.min_track_km,
+            geometry.n_sides)
+        return area * total * ratio + volume
+
+    radius, height, weight = effective_body_km(
+        geometry.radius_km, geometry.height_km, energy, site, min_modules,
+        geometry.n_sides)
+    area, volume = eroded_prism_target_km2(
+        np.asarray(cos_theta, dtype=float)[None, :], radius[:, None],
+        height[:, None], site.min_track_km, geometry.n_sides,
+    )
+    # The instrumented term belongs to a vertex inside the body, which the muon
+    # leaves at essentially its production energy, so it is taken at ``energy[0]``.
+    return (np.trapezoid(weight[:, None] * area, column[:, None] * ratio[None, :], axis=0)
+            + weight[0] * volume[0])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.ic_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">ic_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">ic_effective_area_cm2(site: Optics, threshold_gev: float, min_modules: float | None, n_energy: int, flavours: tuple[str, ...] = DEFAULT_FLAVOURS, cross_section: CrossSection | None = None, log10_e: ndarray = IC_LOG10_E, geometry: Site = ICECUBE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Upgoing-averaged IceCube effective area, both channels [cm^2].</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire, or <code>None</code> for the instrumented footprint.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flavours</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.response.first_principles.DEFAULT_FLAVOURS">DEFAULT_FLAVOURS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Parent channels to sum. Defaults to :data:<code>DEFAULT_FLAVOURS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross section of the incident species, used for both the interaction
+and the Earth absorption. Defaults to :data:<code>CROSS_SECTION</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.response.effective_area.IC_LOG10_E">IC_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies to evaluate at, <code>log10(E_nu / GeV)</code>. Defaults to
+:data:<code>IC_LOG10_E</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>geometry</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>, default:
+                      <code><span title="softpaws.detectors.ICECUBE">ICECUBE</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented prism. Defaults to :data:<code>~softpaws.detectors.ICECUBE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on <code>log10_e</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def ic_effective_area_cm2(
+    site: Optics, threshold_gev: float, min_modules: float | None, n_energy: int,
+    flavours: tuple[str, ...] = DEFAULT_FLAVOURS, cross_section: CrossSection | None = None,
+    log10_e: np.ndarray = IC_LOG10_E, geometry: Site = ICECUBE,
+) -&gt; np.ndarray:
+    """Upgoing-averaged IceCube effective area, both channels [cm^2].
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    min_modules : float or None
+        Modules that must fire, or ``None`` for the instrumented footprint.
+    n_energy : int
+        Points in the arrival-energy quadrature.
+    flavours : tuple of str, optional
+        Parent channels to sum. Defaults to :data:`DEFAULT_FLAVOURS`.
+    cross_section : softpaws.transport.cross_section.CrossSection, optional
+        Cross section of the incident species, used for both the interaction
+        and the Earth absorption. Defaults to :data:`CROSS_SECTION`.
+    log10_e : np.ndarray, optional
+        Neutrino energies to evaluate at, ``log10(E_nu / GeV)``. Defaults to
+        :data:`IC_LOG10_E`.
+    geometry : Site, optional
+        Instrumented prism. Defaults to :data:`~softpaws.detectors.ICECUBE`.
+
+    Returns
+    -------
+    aeff : np.ndarray
+        Effective area [cm^2] on ``log10_e``.
+    """
+    xsec = CROSS_SECTION if cross_section is None else cross_section
+    columns, weights, cos_theta = ic_upgoing_columns()
+    # South Pole ice, not the module-level water default. `n L` is exactly
+    # density-invariant so the entering term does not care, but `V_det` is a
+    # geometric volume and scales with it.
+    n_nucleon = nucleon_number_density(geometry.density_g_cm3)
+    log10_e = np.asarray(log10_e, dtype=float)
+    out = np.zeros(log10_e.size)
+
+    for i, e_nu in enumerate(10.0**log10_e):
+        for flavour in flavours:
+            rungs, rung_weight, muon_gev, branching = _muon_rungs(e_nu, flavour, columns, xsec)
+            rate = np.zeros((rungs.size, cos_theta.size))
+            for k, e_mu in enumerate(muon_gev):
+                volume = ic_column_volume_km3(
+                    float(e_mu), threshold_gev, cos_theta, site, min_modules, n_energy,
+                    geometry,
+                )
+                rate[k] = volume * CM_PER_KM**3
+            rate *= n_nucleon * xsec.cc(rungs)[:, None] * branching
+            out[i] += np.average((rung_weight * rate).sum(axis=0), weights=weights)
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.residuals" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">residuals</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">residuals(published: ndarray, model: ndarray, band: ndarray) -&gt; tuple[float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Geometric-mean ratio and shape scatter of <code>published / model</code> over a band.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>published</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Published effective area [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>model</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Model effective area on the same grid [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>band</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Boolean mask of the energies compared.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>mean</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Geometric mean of <code>published / model</code> over the band.</p>
+              </div>
+            </li>
+            <li>
+<b><code>scatter</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Standard deviation of <code>log10(published / model)</code> over the band [dex].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def residuals(
+    published: np.ndarray, model: np.ndarray, band: np.ndarray
+) -&gt; tuple[float, float]:
+    """Geometric-mean ratio and shape scatter of ``published / model`` over a band.
+
+    Parameters
+    ----------
+    published : np.ndarray
+        Published effective area [cm^2].
+    model : np.ndarray
+        Model effective area on the same grid [cm^2].
+    band : np.ndarray
+        Boolean mask of the energies compared.
+
+    Returns
+    -------
+    mean : float
+        Geometric mean of ``published / model`` over the band.
+    scatter : float
+        Standard deviation of ``log10(published / model)`` over the band [dex].
+    """
+    valid = band &amp; np.isfinite(published) &amp; np.isfinite(model) &amp; (model &gt; 0.0)
+    res = np.log10(published[valid] / model[valid])
+    return float(10**np.mean(res)), float(np.std(res))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.first_principles.rock_range_ratio" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">rock_range_ratio</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">rock_range_ratio(production_gev: float, threshold_gev: float, cos_theta: ndarray, site: Optics, height_km: float, density_g_cm3: float, far_source: str | None = FAR_MEDIUM_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Two-medium range over the single-medium one, per arrival direction.</p>
+<p>The near column is the optical medium between the far medium and the
+centre of the instrumented body, <code>(headroom below + h/2) / |cos theta|</code>,
+in the same geometric units as every other length here, so the ratio
+multiplies the column-depth lengths of the entering term directly. It is
+1 above the horizon, where the overburden is the optical medium
+throughout, and 1 everywhere when <code>far_source</code> is <code>None</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>production_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith; <code>+1</code> is overhead.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics, for the headroom below the instrumented volume.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>height_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented height [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Density of the optical medium [g cm^-3], the unit the lengths are in.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>far_source</code></b>
+                  (<code><span title="str">str</span> or None</code>, default:
+                      <code><span title="softpaws.response.first_principles.FAR_MEDIUM_SOURCE">FAR_MEDIUM_SOURCE</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Loss table of the medium below the optical one; see
+:data:<code>FAR_MEDIUM_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>ratio</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Range ratio, one entry per direction, in <code>(0, 1]</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/first_principles.py</code></summary>
+              <pre class="highlight"><code class="language-python">def rock_range_ratio(
+    production_gev: float, threshold_gev: float, cos_theta: np.ndarray, site: Optics,
+    height_km: float, density_g_cm3: float, far_source: str | None = FAR_MEDIUM_SOURCE,
+) -&gt; np.ndarray:
+    """Two-medium range over the single-medium one, per arrival direction.
+
+    The near column is the optical medium between the far medium and the
+    centre of the instrumented body, ``(headroom below + h/2) / |cos theta|``,
+    in the same geometric units as every other length here, so the ratio
+    multiplies the column-depth lengths of the entering term directly. It is
+    1 above the horizon, where the overburden is the optical medium
+    throughout, and 1 everywhere when ``far_source`` is ``None``.
+
+    Parameters
+    ----------
+    production_gev : float
+        Muon energy at production [GeV].
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    cos_theta : np.ndarray
+        Cosine of the arrival zenith; ``+1`` is overhead.
+    site : Optics
+        Detector optics, for the headroom below the instrumented volume.
+    height_km : float
+        Instrumented height [km].
+    density_g_cm3 : float
+        Density of the optical medium [g cm^-3], the unit the lengths are in.
+    far_source : str or None, optional
+        Loss table of the medium below the optical one; see
+        :data:`FAR_MEDIUM_SOURCE`.
+
+    Returns
+    -------
+    ratio : np.ndarray
+        Range ratio, one entry per direction, in ``(0, 1]``.
+    """
+    vertical_km = site.headroom_below_m / M_PER_KM + 0.5 * height_km
+    return two_medium_range_ratio(
+        production_gev, threshold_gev, cos_theta, vertical_km, density_g_cm3,
+        far_source=far_source)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../effective_area/" class="btn btn-neutral float-left" title="effective_area"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../irfs/" class="btn btn-neutral float-right" title="irfs">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../effective_area/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../irfs/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/data/icecube/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>icecube - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "icecube";
+        var mkdocs_page_input_path = "api-reference/softpaws/data/icecube.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/data/icecube/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >data</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../hese/">hese</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">icecube</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.banded_effective_area">banded_effective_area</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.hemisphere_average">hemisphere_average</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.irf_season">irf_season</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.livetime_weighted_effective_area">livetime_weighted_effective_area</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.load_effective_area">load_effective_area</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.load_events">load_events</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.load_psf_table">load_psf_table</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.icecube.total_livetime_s">total_livetime_s</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">data</li>
+      <li class="breadcrumb-item active">icecube</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.data.icecube" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.data.icecube</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>IceCube DR2 conveniences: seasons, livetimes, and combined effective areas.</p>
+<p>The IceTracks-DR2 release ships one effective-area table per detector
+configuration and one event and uptime file per season. The helpers here
+answer the questions every analysis asks first: which seasons share a
+response, how much livetime each one carries, and what the livetime-weighted
+effective area looks like over one hemisphere on a common energy grid.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="banded_effective_area (softpaws.data.icecube.banded_effective_area)" href="#softpaws.data.icecube.banded_effective_area">banded_effective_area</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Livetime-weighted effective area keeping the declination axis.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="hemisphere_average (softpaws.data.icecube.hemisphere_average)" href="#softpaws.data.icecube.hemisphere_average">hemisphere_average</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Solid-angle-weighted average of a table over one hemisphere.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="irf_season (softpaws.data.icecube.irf_season)" href="#softpaws.data.icecube.irf_season">irf_season</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Name of the response tables a season uses.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="livetime_weighted_effective_area (softpaws.data.icecube.livetime_weighted_effective_area)" href="#softpaws.data.icecube.livetime_weighted_effective_area">livetime_weighted_effective_area</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective area over one hemisphere, averaged over seasons by livetime.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_effective_area (softpaws.data.icecube.load_effective_area)" href="#softpaws.data.icecube.load_effective_area">load_effective_area</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective-area table of one season, parsed once and cached.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_events (softpaws.data.icecube.load_events)" href="#softpaws.data.icecube.load_events">load_events</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Reconstructed events of several seasons in one container.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_psf_table (softpaws.data.icecube.load_psf_table)" href="#softpaws.data.icecube.load_psf_table">load_psf_table</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Point-spread containment against energy and declination, cached.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="total_livetime_s (softpaws.data.icecube.total_livetime_s)" href="#softpaws.data.icecube.total_livetime_s">total_livetime_s</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Good-run livetime summed over several seasons [s].</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.banded_effective_area" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">banded_effective_area</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">banded_effective_area(data_dir: str | Path | None, log10_e: ndarray, seasons: tuple[str, ...] = SEASONS) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Livetime-weighted effective area keeping the declination axis.</p>
+<p>:func:<code>livetime_weighted_effective_area</code> averages the published bands over
+a hemisphere; this is the same combination with that last step removed, so
+a model can be compared band by band. All DR2 seasons share the
+<code>sin(dec)</code> binning and only the energy binning is interpolated.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release; <code>None</code> uses :func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies the curves are returned on [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seasons</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.data.schema.SEASONS">SEASONS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Seasons to combine. Defaults to the whole release.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sin_dec_edges</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span> + 1))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Band edges in <code>sin(dec)</code>, as published.</p>
+              </div>
+            </li>
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] per energy and band, weighted by season livetime.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def banded_effective_area(
+    data_dir: str | pathlib.Path | None,
+    log10_e: np.ndarray,
+    seasons: tuple[str, ...] = SEASONS,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Livetime-weighted effective area keeping the declination axis.
+
+    :func:`livetime_weighted_effective_area` averages the published bands over
+    a hemisphere; this is the same combination with that last step removed, so
+    a model can be compared band by band. All DR2 seasons share the
+    ``sin(dec)`` binning and only the energy binning is interpolated.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses :func:`softpaws.data.paths.dr2_dir`.
+    log10_e : np.ndarray
+        Neutrino energies the curves are returned on [log10 GeV].
+    seasons : tuple of str, optional
+        Seasons to combine. Defaults to the whole release.
+
+    Returns
+    -------
+    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+        Band edges in ``sin(dec)``, as published.
+    aeff_cm2 : np.ndarray, shape (log10_e.size, n_dec)
+        Effective area [cm^2] per energy and band, weighted by season livetime.
+    """
+    log10_e = np.asarray(log10_e, dtype=float)
+    total: np.ndarray | None = None
+    sin_dec_edges: np.ndarray | None = None
+    livetime_total = 0.0
+    for season in seasons:
+        aeff = load_effective_area(data_dir, season)
+        livetime_s = _season_livetime(data_dir, season)
+        curve = np.vstack(
+            [
+                np.interp(log10_e, aeff.log10_energy_centers, aeff.values[:, j])
+                for j in range(aeff.values.shape[1])
+            ]
+        ).T
+        if total is None:
+            total = np.zeros_like(curve)
+            sin_dec_edges = aeff.sin_dec_edges
+        total += livetime_s * curve
+        livetime_total += livetime_s
+    return sin_dec_edges, total / livetime_total</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.hemisphere_average" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">hemisphere_average</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">hemisphere_average(aeff: EffectiveArea, hemisphere: str = 'upgoing') -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Solid-angle-weighted average of a table over one hemisphere.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="EffectiveArea (softpaws.response.irfs.EffectiveArea)" href="../../response/irfs/#softpaws.response.irfs.EffectiveArea">EffectiveArea</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated effective area for one season.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>hemisphere</code></b>
+                  (<code>(&#39;upgoing&#39;, &#39;downgoing&#39;)</code>, default:
+                      <code>&#34;upgoing&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p><code>"upgoing"</code> averages the <code>sin(dec) &gt; 0</code> bins, <code>"downgoing"</code> the
+<code>sin(dec) &lt; 0</code> bins. At the Pole a positive declination is below
+the horizon.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>curve</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on <code>aeff.log10_energy_centers</code>, averaged over
+the selected declination bins weighted by their width in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>hemisphere</code> is not one of the two names.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def hemisphere_average(aeff: EffectiveArea, hemisphere: str = "upgoing") -&gt; np.ndarray:
+    """Solid-angle-weighted average of a table over one hemisphere.
+
+    Parameters
+    ----------
+    aeff : EffectiveArea
+        Tabulated effective area for one season.
+    hemisphere : {"upgoing", "downgoing"}, optional
+        ``"upgoing"`` averages the ``sin(dec) &gt; 0`` bins, ``"downgoing"`` the
+        ``sin(dec) &lt; 0`` bins. At the Pole a positive declination is below
+        the horizon.
+
+    Returns
+    -------
+    curve : np.ndarray
+        Effective area [cm^2] on ``aeff.log10_energy_centers``, averaged over
+        the selected declination bins weighted by their width in ``sin(dec)``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``hemisphere`` is not one of the two names.
+    """
+    if hemisphere not in ("upgoing", "downgoing"):
+        raise ValueError(f"hemisphere must be 'upgoing' or 'downgoing', got {hemisphere!r}.")
+    centers = aeff.sin_dec_centers
+    mask = centers &gt; 0.0 if hemisphere == "upgoing" else centers &lt; 0.0
+    widths = np.diff(aeff.sin_dec_edges)[mask]
+    return np.average(aeff.values[:, mask], axis=1, weights=widths)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.irf_season" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">irf_season</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">irf_season(season: str) -&gt; str</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Name of the response tables a season uses.</p>
+<p>IC86-II and later share the IC86 files, so every <code>IC86_*</code> label maps to
+<code>"IC86"</code>; the three partial-detector seasons keep their own.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>season</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Season label, for example <code>"IC86_IV"</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>name</code></b>(                  <code><span title="str">str</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>File stem of the response tables, for example <code>"IC86"</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; irf_season("IC86_IV")
+'IC86'
+&gt;&gt;&gt; irf_season("IC79")
+'IC79'</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def irf_season(season: str) -&gt; str:
+    """Name of the response tables a season uses.
+
+    IC86-II and later share the IC86 files, so every ``IC86_*`` label maps to
+    ``"IC86"``; the three partial-detector seasons keep their own.
+
+    Parameters
+    ----------
+    season : str
+        Season label, for example ``"IC86_IV"``.
+
+    Returns
+    -------
+    name : str
+        File stem of the response tables, for example ``"IC86"``.
+
+    Examples
+    --------
+    &gt;&gt;&gt; irf_season("IC86_IV")
+    'IC86'
+    &gt;&gt;&gt; irf_season("IC79")
+    'IC79'
+    """
+    return _canonical_irf_season(season)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.livetime_weighted_effective_area" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">livetime_weighted_effective_area</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">livetime_weighted_effective_area(data_dir: str | Path | None, log10_e: ndarray, hemisphere: str = 'upgoing', seasons: tuple[str, ...] = SEASONS) -&gt; tuple[np.ndarray, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective area over one hemisphere, averaged over seasons by livetime.</p>
+<p>Each season's table is averaged over the hemisphere with
+:func:<code>hemisphere_average</code>, interpolated onto <code>log10_e</code>, and weighted
+by that season's livetime.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release; <code>None</code> uses :func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies the curve is returned on [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>hemisphere</code></b>
+                  (<code>(&#39;upgoing&#39;, &#39;downgoing&#39;)</code>, default:
+                      <code>&#34;upgoing&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Hemisphere to average over.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seasons</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.data.schema.SEASONS">SEASONS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Seasons to combine. Defaults to the whole release.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Livetime-weighted effective area on <code>log10_e</code> [cm^2].</p>
+              </div>
+            </li>
+            <li>
+<b><code>livetime_s</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Total livetime of the seasons combined [s].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def livetime_weighted_effective_area(
+    data_dir: str | pathlib.Path | None,
+    log10_e: np.ndarray,
+    hemisphere: str = "upgoing",
+    seasons: tuple[str, ...] = SEASONS,
+) -&gt; tuple[np.ndarray, float]:
+    """Effective area over one hemisphere, averaged over seasons by livetime.
+
+    Each season's table is averaged over the hemisphere with
+    :func:`hemisphere_average`, interpolated onto ``log10_e``, and weighted
+    by that season's livetime.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses :func:`softpaws.data.paths.dr2_dir`.
+    log10_e : np.ndarray
+        Neutrino energies the curve is returned on [log10 GeV].
+    hemisphere : {"upgoing", "downgoing"}, optional
+        Hemisphere to average over.
+    seasons : tuple of str, optional
+        Seasons to combine. Defaults to the whole release.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray
+        Livetime-weighted effective area on ``log10_e`` [cm^2].
+    livetime_s : float
+        Total livetime of the seasons combined [s].
+    """
+    log10_e = np.asarray(log10_e, dtype=float)
+    total = np.zeros_like(log10_e)
+    livetime_total = 0.0
+    for season in seasons:
+        aeff = load_effective_area(data_dir, season)
+        livetime_s = _season_livetime(data_dir, season)
+        curve = hemisphere_average(aeff, hemisphere)
+        total += livetime_s * np.interp(log10_e, aeff.log10_energy_centers, curve)
+        livetime_total += livetime_s
+    return total / livetime_total, livetime_total</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.load_effective_area" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_effective_area</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_effective_area(data_dir: str | Path | None, season: str) -&gt; EffectiveArea</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective-area table of one season, parsed once and cached.</p>
+<p>Only the effective-area file is read. The smearing table of the same
+season is ~600 MB and is left to :func:<code>softpaws.data.load_irfs</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release, holding <code>irfs/</code> and <code>uptime/</code>; <code>None</code>
+uses :func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>season</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Season label; see :func:<code>irf_season</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code><a class="autorefs autorefs-internal" title="EffectiveArea (softpaws.response.irfs.EffectiveArea)" href="../../response/irfs/#softpaws.response.irfs.EffectiveArea">EffectiveArea</a></code>
+)              –
+              <div class="doc-md-description">
+                <p>The parsed table.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the season's effective-area file is missing.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_effective_area(data_dir: str | pathlib.Path | None, season: str) -&gt; EffectiveArea:
+    """Effective-area table of one season, parsed once and cached.
+
+    Only the effective-area file is read. The smearing table of the same
+    season is ~600 MB and is left to :func:`softpaws.data.load_irfs`.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release, holding ``irfs/`` and ``uptime/``; ``None``
+        uses :func:`softpaws.data.paths.dr2_dir`.
+    season : str
+        Season label; see :func:`irf_season`.
+
+    Returns
+    -------
+    aeff : EffectiveArea
+        The parsed table.
+
+    Raises
+    ------
+    FileNotFoundError
+        Raised if the season's effective-area file is missing.
+    """
+    path = _root(data_dir) / "irfs" / f"{irf_season(season)}_effectiveArea.csv"
+    require(path, "IceTracks-DR2 release")
+    return _cached_effective_area(str(path.resolve()))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.load_events" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_events</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_events(data_dir: str | Path | None = None, seasons: tuple[str, ...] = IC86_SEASONS, within_uptime: bool = False) -&gt; EventSet</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Reconstructed events of several seasons in one container.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release, holding <code>events/</code> and <code>uptime/</code>; <code>None</code>
+uses :func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seasons</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.data.icecube.IC86_SEASONS">IC86_SEASONS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Seasons to load. Defaults to the eleven IC86 seasons, which share one
+response.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>within_uptime</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>If True, keep only events whose time falls inside a good-run window
+of the loaded seasons. The release files already respect the good-run
+list, so this is a check and not a selection.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>events</code></b>(                  <code><a class="autorefs autorefs-internal" title="EventSet (softpaws.data.container.EventSet)" href="../container/#softpaws.data.container.EventSet">EventSet</a></code>
+)              –
+              <div class="doc-md-description">
+                <p>The concatenated events.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_events(
+    data_dir: str | pathlib.Path | None = None,
+    seasons: tuple[str, ...] = IC86_SEASONS,
+    within_uptime: bool = False,
+) -&gt; EventSet:
+    """Reconstructed events of several seasons in one container.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release, holding ``events/`` and ``uptime/``; ``None``
+        uses :func:`softpaws.data.paths.dr2_dir`.
+    seasons : tuple of str, optional
+        Seasons to load. Defaults to the eleven IC86 seasons, which share one
+        response.
+    within_uptime : bool, optional
+        If True, keep only events whose time falls inside a good-run window
+        of the loaded seasons. The release files already respect the good-run
+        list, so this is a check and not a selection.
+
+    Returns
+    -------
+    events : EventSet
+        The concatenated events.
+    """
+    data_dir = _root(data_dir)
+    require(data_dir / "events", "IceTracks-DR2 release")
+    data = np.concatenate([load_season(data_dir / "events" / f"{s}_exp.csv") for s in seasons])
+    events = EventSet(data)
+    if within_uptime:
+        mask = np.zeros(events.n_events, dtype=bool)
+        for season in seasons:
+            for start, stop in load_uptime(data_dir / "uptime" / f"{season}_exp.csv"):
+                mask |= (events.time &gt;= start) &amp; (events.time &lt;= stop)
+        events = EventSet(events.data[mask])
+    return events</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.load_psf_table" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_psf_table</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_psf_table(path: str | Path, data_dir: str | Path | None = None, season: str = 'IC86_II', quantile: float = 0.68, recompute: bool = False) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Point-spread containment against energy and declination, cached.</p>
+<p>The released smearing file is 570 MB and takes half a minute to parse, and
+what a point-source background needs out of it is a small table, so the
+quantile is taken once and written to an <code>.npz</code> beside the other caches.
+See :meth:<code>~softpaws.response.irfs.SmearingMatrix.psf_containment_deg</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cache file.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the release. <code>None</code> uses
+:func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>season</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;IC86_II&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Season whose smearing table is read.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>quantile</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.68</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Containment to tabulate.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>recompute</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Rebuild even if <code>path</code> exists.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>table</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10_e</code> (n_e,) and <code>dec_deg</code> (n_dec,) bin centres, the
+<code>containment_deg</code> grid (n_e, n_dec), and the <code>quantile</code> taken.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_psf_table(
+    path: str | pathlib.Path,
+    data_dir: str | pathlib.Path | None = None,
+    season: str = "IC86_II",
+    quantile: float = 0.68,
+    recompute: bool = False,
+) -&gt; dict[str, np.ndarray]:
+    """Point-spread containment against energy and declination, cached.
+
+    The released smearing file is 570 MB and takes half a minute to parse, and
+    what a point-source background needs out of it is a small table, so the
+    quantile is taken once and written to an ``.npz`` beside the other caches.
+    See :meth:`~softpaws.response.irfs.SmearingMatrix.psf_containment_deg`.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Cache file.
+    data_dir : str or pathlib.Path or None, optional
+        Root of the release. ``None`` uses
+        :func:`softpaws.data.paths.dr2_dir`.
+    season : str, optional
+        Season whose smearing table is read.
+    quantile : float, optional
+        Containment to tabulate.
+    recompute : bool, optional
+        Rebuild even if ``path`` exists.
+
+    Returns
+    -------
+    table : dict of np.ndarray
+        ``log10_e`` (n_e,) and ``dec_deg`` (n_dec,) bin centres, the
+        ``containment_deg`` grid (n_e, n_dec), and the ``quantile`` taken.
+    """
+    from .loader import load_irfs
+
+    path = pathlib.Path(path)
+    if not recompute and path.exists():
+        with np.load(path) as data:
+            return {key: np.asarray(data[key]) for key in PSF_TABLE_KEYS}
+
+    smearing = load_irfs(_root(data_dir) / "irfs", season)["smearing"]
+    table = {
+        "log10_e": smearing.log10_enu_centers,
+        "dec_deg": smearing.dec_centers,
+        "containment_deg": smearing.psf_containment_deg(quantile),
+        "quantile": np.asarray(quantile),
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(path, **table)
+    return table</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.icecube.total_livetime_s" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">total_livetime_s</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">total_livetime_s(data_dir: str | Path | None = None, seasons: tuple[str, ...] = SEASONS) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Good-run livetime summed over several seasons [s].</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release; <code>None</code> uses :func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seasons</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.data.schema.SEASONS">SEASONS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Seasons to sum. Defaults to the whole release.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>livetime_s</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Total livetime [s].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/icecube.py</code></summary>
+              <pre class="highlight"><code class="language-python">def total_livetime_s(
+    data_dir: str | pathlib.Path | None = None, seasons: tuple[str, ...] = SEASONS
+) -&gt; float:
+    """Good-run livetime summed over several seasons [s].
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses :func:`softpaws.data.paths.dr2_dir`.
+    seasons : tuple of str, optional
+        Seasons to sum. Defaults to the whole release.
+
+    Returns
+    -------
+    livetime_s : float
+        Total livetime [s].
+    """
+    return float(sum(_season_livetime(data_dir, s) for s in seasons))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../hese/" class="btn btn-neutral float-left" title="hese"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../loader/" class="btn btn-neutral float-right" title="loader">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../hese/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../loader/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

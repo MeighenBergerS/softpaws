@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/response/published/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>published - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "published";
+        var mkdocs_page_input_path = "api-reference/softpaws/response/published.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/response/published/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >response</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">published</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.published.arca230_trigger">arca230_trigger</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.published.icecube_upgoing">icecube_upgoing</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.published.on_arca_grid">on_arca_grid</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.published.pone_allsky_cm2">pone_allsky_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.published.published_effective_area_cm2">published_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.published.trident_allsky_cm2">trident_allsky_cm2</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">response</li>
+      <li class="breadcrumb-item active">published</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.response.published" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.response.published</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Published effective areas, put on the model's energy grid.</p>
+<p>Each site's published curve is read from :mod:<code>softpaws.data.published</code>,
+digitized step curves are smoothed, and the result is interpolated onto the
+grid the model is evaluated on, together with the sky it is averaged over.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="arca230_trigger (softpaws.response.published.arca230_trigger)" href="#softpaws.response.published.arca230_trigger">arca230_trigger</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Digitized full-ARCA <code>nu_mu</code> effective area at trigger level.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="icecube_upgoing (softpaws.response.published.icecube_upgoing)" href="#softpaws.response.published.icecube_upgoing">icecube_upgoing</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Livetime-weighted DR2 effective area over the upgoing sky.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="on_arca_grid (softpaws.response.published.on_arca_grid)" href="#softpaws.response.published.on_arca_grid">on_arca_grid</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Put a smoothed curve on the water-site grid by log-log interpolation.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="pone_allsky_cm2 (softpaws.response.published.pone_allsky_cm2)" href="#softpaws.response.published.pone_allsky_cm2">pone_allsky_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>P-ONE's all-sky trigger-level curve, smoothed, on the water-site grid.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="published_effective_area_cm2 (softpaws.response.published.published_effective_area_cm2)" href="#softpaws.response.published.published_effective_area_cm2">published_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>One site's published effective area, on a grid, with the sky it covers.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="trident_allsky_cm2 (softpaws.response.published.trident_allsky_cm2)" href="#softpaws.response.published.trident_allsky_cm2">trident_allsky_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>TRIDENT's sky average from its three bands, on the water-site grid.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.published.arca230_trigger" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">arca230_trigger</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">arca230_trigger() -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Digitized full-ARCA <code>nu_mu</code> effective area at trigger level.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="softpaws.constants.PUBLISHED_WATER_LOG10_E.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area on :data:<code>PUBLISHED_WATER_LOG10_E</code> [cm^2], <code>NaN</code> outside the
+digitized range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def arca230_trigger() -&gt; np.ndarray:
+    """Digitized full-ARCA ``nu_mu`` effective area at trigger level.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray, shape (PUBLISHED_WATER_LOG10_E.size,)
+        Effective area on :data:`PUBLISHED_WATER_LOG10_E` [cm^2], ``NaN`` outside the
+        digitized range.
+    """
+    from softpaws.data.published import arca230_trigger_level_aeff, interpolate_aeff
+
+    return interpolate_aeff(PUBLISHED_WATER_LOG10_E, *arca230_trigger_level_aeff())</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.published.icecube_upgoing" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">icecube_upgoing</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">icecube_upgoing(data_dir: Path) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Livetime-weighted DR2 effective area over the upgoing sky.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the IceTracks-DR2 release, holding <code>irfs/</code> and <code>uptime/</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="softpaws.constants.IC_LOG10_E.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area on :data:<code>IC_LOG10_E</code> [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def icecube_upgoing(data_dir: pathlib.Path) -&gt; np.ndarray:
+    """Livetime-weighted DR2 effective area over the upgoing sky.
+
+    Parameters
+    ----------
+    data_dir : pathlib.Path
+        Root of the IceTracks-DR2 release, holding ``irfs/`` and ``uptime/``.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray, shape (IC_LOG10_E.size,)
+        Effective area on :data:`IC_LOG10_E` [cm^2].
+    """
+    from softpaws.data.published import icecube_dr2_aeff
+
+    return icecube_dr2_aeff(data_dir, IC_LOG10_E)[0]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.published.on_arca_grid" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">on_arca_grid</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">on_arca_grid(log10_e: ndarray, log10_a: ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Put a smoothed curve on the water-site grid by log-log interpolation.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> of the curve, ascending.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_a</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log10</code> of the effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="softpaws.constants.PUBLISHED_WATER_LOG10_E.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2], <code>NaN</code> outside the curve.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def on_arca_grid(log10_e: np.ndarray, log10_a: np.ndarray) -&gt; np.ndarray:
+    """Put a smoothed curve on the water-site grid by log-log interpolation.
+
+    Parameters
+    ----------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the curve, ascending.
+    log10_a : np.ndarray
+        ``log10`` of the effective area [cm^2].
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray, shape (PUBLISHED_WATER_LOG10_E.size,)
+        Effective area [cm^2], ``NaN`` outside the curve.
+    """
+    return 10.0 ** np.interp(PUBLISHED_WATER_LOG10_E, log10_e, log10_a, left=np.nan, right=np.nan)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.published.pone_allsky_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pone_allsky_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">pone_allsky_cm2() -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>P-ONE's all-sky trigger-level curve, smoothed, on the water-site grid.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="softpaws.constants.PUBLISHED_WATER_LOG10_E.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2], <code>NaN</code> outside the digitized range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def pone_allsky_cm2() -&gt; np.ndarray:
+    """P-ONE's all-sky trigger-level curve, smoothed, on the water-site grid.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray, shape (PUBLISHED_WATER_LOG10_E.size,)
+        Effective area [cm^2], ``NaN`` outside the digitized range.
+    """
+    from softpaws.data.published import pone_allsky_aeff
+
+    log10_e, aeff_cm2 = pone_allsky_aeff()
+    return on_arca_grid(*_smooth_digitized(log10_e, np.log10(aeff_cm2)))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.published.published_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">published_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">published_effective_area_cm2(site: Site, log10_e: ndarray, data_dir: Path | None = None) -&gt; tuple[np.ndarray, tuple[float, float]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>One site's published effective area, on a grid, with the sky it covers.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The detector. One of the four in :data:<code>PUBLISHED_SKY</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies to evaluate at [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the IceTracks-DR2 release, read for IceCube alone. <code>None</code>
+uses :func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Published effective area [cm^2], <code>NaN</code> outside the published range.</p>
+              </div>
+            </li>
+            <li>
+<b><code>cos_range</code></b>(                  <code>tuple of float</code>
+)              –
+              <div class="doc-md-description">
+                <p>The <code>cos(theta)</code> band the curve is averaged over.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="KeyError">KeyError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised for a site with no published curve here.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def published_effective_area_cm2(
+    site: Site, log10_e: np.ndarray, data_dir: pathlib.Path | None = None
+) -&gt; tuple[np.ndarray, tuple[float, float]]:
+    """One site's published effective area, on a grid, with the sky it covers.
+
+    Parameters
+    ----------
+    site : Site
+        The detector. One of the four in :data:`PUBLISHED_SKY`.
+    log10_e : np.ndarray
+        Neutrino energies to evaluate at [log10 GeV].
+    data_dir : pathlib.Path or None, optional
+        Root of the IceTracks-DR2 release, read for IceCube alone. ``None``
+        uses :func:`softpaws.data.paths.dr2_dir`.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray, shape (log10_e.size,)
+        Published effective area [cm^2], ``NaN`` outside the published range.
+    cos_range : tuple of float
+        The ``cos(theta)`` band the curve is averaged over.
+
+    Raises
+    ------
+    KeyError
+        Raised for a site with no published curve here.
+    """
+    from softpaws.data.published import interpolate_aeff
+
+    if site.name not in PUBLISHED_SKY:
+        raise KeyError(f"No published effective area ships for {site.name!r}.")
+    if site.name == "IceCube":
+        from softpaws.data.paths import dr2_dir
+
+        grid, aeff = IC_LOG10_E, icecube_upgoing(dr2_dir() if data_dir is None else data_dir)
+    elif site.name == "ARCA230":
+        grid, aeff = PUBLISHED_WATER_LOG10_E, arca230_trigger()
+    else:
+        grid, aeff = PUBLISHED_WATER_LOG10_E, published_curve[site.name]()
+    good = np.isfinite(aeff) &amp; (aeff &gt; 0.0)
+    return interpolate_aeff(log10_e, grid[good], aeff[good]), PUBLISHED_SKY[site.name]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.published.trident_allsky_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">trident_allsky_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">trident_allsky_cm2() -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>TRIDENT's sky average from its three bands, on the water-site grid.</p>
+<p>The three published <code>cos(theta)</code> bands are smoothed, put on the grid and
+combined with the solid-angle weights of :data:<code>TRIDENT_BAND_WEIGHTS</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="softpaws.constants.PUBLISHED_WATER_LOG10_E.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2], <code>NaN</code> outside the digitized range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def trident_allsky_cm2() -&gt; np.ndarray:
+    """TRIDENT's sky average from its three bands, on the water-site grid.
+
+    The three published ``cos(theta)`` bands are smoothed, put on the grid and
+    combined with the solid-angle weights of :data:`TRIDENT_BAND_WEIGHTS`.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray, shape (PUBLISHED_WATER_LOG10_E.size,)
+        Effective area [cm^2], ``NaN`` outside the digitized range.
+    """
+    from softpaws.data.published import TRIDENT_COS_BANDS, trident_band_aeff
+
+    bands = []
+    for cos_lo, cos_hi in TRIDENT_COS_BANDS:
+        log10_e, aeff_cm2 = trident_band_aeff(cos_lo, cos_hi)
+        bands.append(on_arca_grid(*_smooth_digitized(log10_e, np.log10(aeff_cm2))))
+    return np.sum([w * b for w, b in zip(TRIDENT_BAND_WEIGHTS, bands, strict=True)], axis=0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../light_reach/" class="btn btn-neutral float-left" title="light_reach"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../sensitivity/" class="btn btn-neutral float-right" title="sensitivity">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../light_reach/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../sensitivity/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

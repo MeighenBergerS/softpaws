@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/loss_distribution/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>loss_distribution - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "loss_distribution";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/loss_distribution.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/loss_distribution/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">loss_distribution</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.gaussian_survival">gaussian_survival</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.invert_log_loss_symbol">invert_log_loss_symbol</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.log_loss_cdf">log_loss_cdf</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.loss_density">loss_density</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.loss_density_gaussian">loss_density_gaussian</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.loss_density_running">loss_density_running</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.loss_density_three_moment">loss_density_three_moment</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.running_log_loss_symbol">running_log_loss_symbol</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_distribution.survival_from_density">survival_from_density</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">loss_distribution</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.loss_distribution" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.loss_distribution</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Full distribution of the accumulated muon log-energy loss.</p>
+<p>Where :mod:<code>softpaws.transport.eigenvalue</code> gives the single eigenvalue <code>Phi(A)</code>
+that a power-law flux excites, this module gives the whole probability law behind
+it. A muon observed at energy <code>E</code> that was produced at energy <code>eps</code> after
+propagating a column <code>ell</code> has accumulated a log-energy loss</p>
+<p>.. math:: w = \ln(\varepsilon / E) \ge 0,</p>
+<p>which, under the scale-invariant QED loss rates, is a <em>subordinator</em> (a
+non-decreasing Levy jump process) whose Laplace exponent is exactly the Mellin
+symbol of the collision operator (<code>docs/theory/exact_soft_volume.md</code>):</p>
+<p>.. math:: \mathbb{E}\bigl[e^{-s\,w(\ell)}\bigr] = e^{-\ell\,\Phi(s)}.</p>
+<p>A power-law flux <code>phi ~ E^{-1-A}</code> averages over <code>w</code> and so only ever sees the
+one number <code>Phi(A)</code> -- the regime of examples 05-08 and 12. A <strong>single</strong> event
+(such as KM3-230213A) instead samples <code>P(w)</code> once, and the heavy tail of that
+law -- the chance the parent neutrino was far more energetic than the observed
+muon -- is what the Fokker-Planck Gaussian of Palmisano et al. throws away.</p>
+<p>This module inverts <code>e^{-ell Phi(-i k)}</code> to recover <code>P(w)</code> exactly
+(:func:<code>loss_density</code>), alongside the Fokker-Planck Gaussian reference
+(:func:<code>loss_density_gaussian</code>, :func:<code>gaussian_survival</code>) it is meant to
+supersede. It reuses the same two-moment loss family as the eigenvalue path, via
+the complex-capable :func:<code>softpaws.transport.eigenvalue.phi_symbol</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="gaussian_survival (softpaws.transport.loss_distribution.gaussian_survival)" href="#softpaws.transport.loss_distribution.gaussian_survival">gaussian_survival</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Fokker-Planck tail probability <code>P(W &gt; w)</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="invert_log_loss_symbol (softpaws.transport.loss_distribution.invert_log_loss_symbol)" href="#softpaws.transport.loss_distribution.invert_log_loss_symbol">invert_log_loss_symbol</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Density <code>P(w)</code> from any subordinator symbol, by Fourier inversion.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="log_loss_cdf (softpaws.transport.loss_distribution.log_loss_cdf)" href="#softpaws.transport.loss_distribution.log_loss_cdf">log_loss_cdf</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Probability <code>P(W &lt;= w_query)</code> at each propagated depth, by Gil-Pelaez.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="loss_density (softpaws.transport.loss_distribution.loss_density)" href="#softpaws.transport.loss_distribution.loss_density">loss_density</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Exact density <code>P(w)</code> of the log-loss, by characteristic-function inversion.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="loss_density_gaussian (softpaws.transport.loss_distribution.loss_density_gaussian)" href="#softpaws.transport.loss_distribution.loss_density_gaussian">loss_density_gaussian</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Fokker-Planck (Gaussian) reference density for the log-loss.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="loss_density_running (softpaws.transport.loss_distribution.loss_density_running)" href="#softpaws.transport.loss_distribution.loss_density_running">loss_density_running</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Density <code>P(w)</code> of the log-loss with the kernel followed down the track.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="loss_density_three_moment (softpaws.transport.loss_distribution.loss_density_three_moment)" href="#softpaws.transport.loss_distribution.loss_density_three_moment">loss_density_three_moment</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Density <code>P(w)</code> of the log-loss from the three-moment loss family.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="running_log_loss_symbol (softpaws.transport.loss_distribution.running_log_loss_symbol)" href="#softpaws.transport.loss_distribution.running_log_loss_symbol">running_log_loss_symbol</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Laplace exponent of the log-loss with the kernel followed down the track.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="survival_from_density (softpaws.transport.loss_distribution.survival_from_density)" href="#softpaws.transport.loss_distribution.survival_from_density">survival_from_density</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Tail probability <code>P(W &gt; w)</code> from a tabulated density.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.gaussian_survival" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">gaussian_survival</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">gaussian_survival(w: float | ndarray, ell_km: float, b_mu: float, d_mu: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Fokker-Planck tail probability <code>P(W &gt; w)</code>.</p>
+<p>Survival function of the Gaussian reference of
+:func:<code>loss_density_gaussian</code>, <code>0.5 erfc((w - M ell) / sqrt(2 d_mu ell))</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Log-loss threshold(s) <code>w = ln(eps / E)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth <code>ell</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total drift coefficient <code>b_mu</code> [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total diffusion coefficient <code>d_mu</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>survival</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Gaussian <code>P(W &gt; w)</code>, same shape as <code>w</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def gaussian_survival(
+    w: float | np.ndarray,
+    ell_km: float,
+    b_mu: float,
+    d_mu: float,
+) -&gt; np.ndarray:
+    """Fokker-Planck tail probability ``P(W &gt; w)``.
+
+    Survival function of the Gaussian reference of
+    :func:`loss_density_gaussian`, ``0.5 erfc((w - M ell) / sqrt(2 d_mu ell))``.
+
+    Parameters
+    ----------
+    w : float or np.ndarray
+        Log-loss threshold(s) ``w = ln(eps / E)``.
+    ell_km : float
+        Propagated column depth ``ell`` [km].
+    b_mu : float
+        Total drift coefficient ``b_mu`` [km^-1].
+    d_mu : float
+        Total diffusion coefficient ``d_mu`` [km^-1].
+
+    Returns
+    -------
+    survival : np.ndarray
+        Gaussian ``P(W &gt; w)``, same shape as ``w``.
+    """
+    w = np.asarray(w, dtype=float)
+    mean = (b_mu + d_mu / 2.0) * ell_km
+    z = (w - mean) / np.sqrt(d_mu * ell_km)
+    return 0.5 * erfc(z / np.sqrt(2.0))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.invert_log_loss_symbol" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">invert_log_loss_symbol</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">invert_log_loss_symbol(w_grid: ndarray, ell_km: float, symbol: Callable[[ndarray], ndarray], n_k: int = 2 ** 14) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Density <code>P(w)</code> from any subordinator symbol, by Fourier inversion.</p>
+<p>The characteristic function of the log-loss is <code>phi_w(k) = exp(-ell Phi(-i k))</code>
+for <em>any</em> Laplace exponent <code>Phi</code>, so the inversion</p>
+<p>.. math:: P(w) = \frac{1}{2\pi}\int \phi_w(k)\,e^{-i k w}\,dk</p>
+<p>is shared by every loss family. It is evaluated deterministically on a uniform
+<code>k</code> grid whose span is fixed by the <code>w</code> spacing (<code>k_max = pi / dw</code>), which
+resolves the far tail without Monte-Carlo noise. The result is clipped at zero
+and renormalized to unit area over <code>w_grid</code>.</p>
+<p>Pass a calibrated closed form (as :func:<code>loss_density</code> and
+:func:<code>loss_density_three_moment</code> do) or a numerical <code>Phi</code> built from
+tabulated differential cross sections.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Uniformly spaced grid of log-loss values <code>w = ln(eps / E)</code> (&gt;= 0).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth <code>ell</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>symbol</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Laplace exponent <code>Phi(s)</code> [km^-1], called once with the complex array
+<code>s = -i k</code>. Must accept and return complex arrays.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>2 ** 14</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of nodes on the <code>k</code> grid.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Probability density <code>P(w)</code>, normalized to unit area over <code>w_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>n_k</code> is too small for the requested <code>w</code> span; see the
+aliasing note below.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p><code>w_grid</code> must be uniformly spaced; the <code>k</code> span is derived from its step.</p>
+<p>The <code>k</code> sum is a Riemann sum of spacing <code>dk = 2 pi / (dw n_k)</code>, so the
+density it returns is the true one periodized with period <code>2 pi / dk =
+dw n_k</code>. The <code>w</code> span must therefore fit inside one period, which for a
+grid starting near zero means <code>w_grid.size &lt; n_k</code>. Violating it does not
+fail loudly on its own -- the result is still positive and still normalizes
+to one, it is simply the wrong density -- so it is checked here instead.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def invert_log_loss_symbol(
+    w_grid: np.ndarray,
+    ell_km: float,
+    symbol: Callable[[np.ndarray], np.ndarray],
+    n_k: int = 2**14,
+) -&gt; np.ndarray:
+    r"""Density ``P(w)`` from any subordinator symbol, by Fourier inversion.
+
+    The characteristic function of the log-loss is ``phi_w(k) = exp(-ell Phi(-i k))``
+    for *any* Laplace exponent ``Phi``, so the inversion
+
+    .. math:: P(w) = \\frac{1}{2\\pi}\\int \\phi_w(k)\\,e^{-i k w}\\,dk
+
+    is shared by every loss family. It is evaluated deterministically on a uniform
+    ``k`` grid whose span is fixed by the ``w`` spacing (``k_max = pi / dw``), which
+    resolves the far tail without Monte-Carlo noise. The result is clipped at zero
+    and renormalized to unit area over ``w_grid``.
+
+    Pass a calibrated closed form (as :func:`loss_density` and
+    :func:`loss_density_three_moment` do) or a numerical ``Phi`` built from
+    tabulated differential cross sections.
+
+    Parameters
+    ----------
+    w_grid : np.ndarray
+        Uniformly spaced grid of log-loss values ``w = ln(eps / E)`` (&gt;= 0).
+    ell_km : float
+        Propagated column depth ``ell`` [km].
+    symbol : callable
+        Laplace exponent ``Phi(s)`` [km^-1], called once with the complex array
+        ``s = -i k``. Must accept and return complex arrays.
+    n_k : int, optional
+        Number of nodes on the ``k`` grid.
+
+    Returns
+    -------
+    density : np.ndarray
+        Probability density ``P(w)``, normalized to unit area over ``w_grid``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``n_k`` is too small for the requested ``w`` span; see the
+        aliasing note below.
+
+    Notes
+    -----
+    ``w_grid`` must be uniformly spaced; the ``k`` span is derived from its step.
+
+    The ``k`` sum is a Riemann sum of spacing ``dk = 2 pi / (dw n_k)``, so the
+    density it returns is the true one periodized with period ``2 pi / dk =
+    dw n_k``. The ``w`` span must therefore fit inside one period, which for a
+    grid starting near zero means ``w_grid.size &lt; n_k``. Violating it does not
+    fail loudly on its own -- the result is still positive and still normalizes
+    to one, it is simply the wrong density -- so it is checked here instead.
+    """
+    w = np.asarray(w_grid, dtype=float)
+    step = w[1] - w[0]
+    alias_period = step * n_k
+    span = w[-1] - w[0]
+    if alias_period &lt;= span:
+        raise ValueError(
+            f"n_k = {n_k} aliases the inversion over this w grid: the period "
+            f"dw * n_k = {alias_period:.3g} does not cover the span {span:.3g}. "
+            f"Raise n_k above {int(np.ceil(span / step))} or coarsen w_grid."
+        )
+    k_max = np.pi / step
+    k = np.linspace(-k_max, k_max, n_k, endpoint=False)
+    cf = np.exp(-ell_km * np.asarray(symbol(-1j * k)))
+
+    density = np.empty(w.shape[0])
+    # Chunk over w to bound the memory of the outer product cf(k) * exp(-i w k).
+    for i in range(0, w.shape[0], 200):
+        w_chunk = w[i : i + 200][:, None]
+        density[i : i + 200] = (cf[None, :] * np.exp(-1j * w_chunk * k[None, :])).sum(1).real
+    density *= (k[1] - k[0]) / (2.0 * np.pi)
+
+    density = np.clip(density, 0.0, None)
+    return density / np.trapezoid(density, w)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.log_loss_cdf" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">log_loss_cdf</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">log_loss_cdf(w_query: float, ell_km: float | ndarray, b_mu: float, d_mu: float, k_max: float = 1000.0, n_k: int = 400000, chunk: int = _GIL_PELAEZ_CHUNK) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Probability <code>P(W &lt;= w_query)</code> at each propagated depth, by Gil-Pelaez.</p>
+<p>Where :func:<code>loss_density</code> inverts the characteristic function onto a whole
+<code>w</code> grid and :func:<code>survival_from_density</code> then integrates it, this goes
+straight to the cumulative probability at a <em>single</em> <code>w</code>, using the
+Gil-Pelaez inversion formula</p>
+<p>.. math:: F(w) = \frac{1}{2} - \frac{1}{\pi}\int_0^\infty
+    \frac{\Im\bigl[e^{-i k w}\,\varphi(k)\bigr]}{k}\,dk,
+    \qquad \varphi(k) = e^{-\ell\,\Phi(-i k)}.</p>
+<p>That is what the per-neutrino-energy target volume needs
+(:func:<code>softpaws.transport.muon_range.stochastic_muon_range_km</code>): a muon
+born at <code>eps</code> is still above an analysis threshold <code>E_thr</code> after
+propagating <code>ell</code> exactly when <code>W &lt; ln(eps / E_thr)</code>, one threshold per
+energy but every depth along the column.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_query</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Log-loss threshold <code>w = ln(eps / E_thr)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth(s) <code>ell</code> [km]. Vectorized: the whole depth
+integral is one call.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Drift coefficient <code>b_mu</code> [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient <code>d_mu</code> [km^-1]. Must satisfy <code>0 &lt; d_mu &lt; b_mu</code>
+for the two-moment family to be defined.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>k_max</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1000.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Upper limit of the <code>k</code> quadrature. The symbol grows only
+logarithmically, so the characteristic function decays as a power law
+<code>k^{-ell kappa}</code> and the tail matters most at small <code>ell</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>400000</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of quadrature nodes on <code>(0, k_max]</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>chunk</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants._GIL_PELAEZ_CHUNK">_GIL_PELAEZ_CHUNK</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of <code>k</code> nodes held in memory at once. The full outer product
+would be <code>n_ell * n_k</code> complex numbers -- gigabytes for a fine grid --
+so the quadrature is accumulated in slices instead.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>cdf</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>P(W &lt;= w_query)</code> clipped to <code>[0, 1]</code>, one entry per <code>ell_km</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Agrees with :func:<code>loss_density</code> plus :func:<code>survival_from_density</code> to a few
+times <code>1e-3</code> absolute; the residual is the <code>k</code>-truncation both share.
+Unlike that route it needs no <code>w</code> grid, so it neither aliases nor forces a
+span/resolution trade-off.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def log_loss_cdf(
+    w_query: float,
+    ell_km: float | np.ndarray,
+    b_mu: float,
+    d_mu: float,
+    k_max: float = 1.0e3,
+    n_k: int = 400_000,
+    chunk: int = _GIL_PELAEZ_CHUNK,
+) -&gt; np.ndarray:
+    r"""Probability ``P(W &lt;= w_query)`` at each propagated depth, by Gil-Pelaez.
+
+    Where :func:`loss_density` inverts the characteristic function onto a whole
+    ``w`` grid and :func:`survival_from_density` then integrates it, this goes
+    straight to the cumulative probability at a *single* ``w``, using the
+    Gil-Pelaez inversion formula
+
+    .. math:: F(w) = \\frac{1}{2} - \\frac{1}{\\pi}\\int_0^\\infty
+        \\frac{\\Im\\bigl[e^{-i k w}\\,\\varphi(k)\\bigr]}{k}\\,dk,
+        \\qquad \\varphi(k) = e^{-\\ell\\,\\Phi(-i k)}.
+
+    That is what the per-neutrino-energy target volume needs
+    (:func:`softpaws.transport.muon_range.stochastic_muon_range_km`): a muon
+    born at ``eps`` is still above an analysis threshold ``E_thr`` after
+    propagating ``ell`` exactly when ``W &lt; ln(eps / E_thr)``, one threshold per
+    energy but every depth along the column.
+
+    Parameters
+    ----------
+    w_query : float
+        Log-loss threshold ``w = ln(eps / E_thr)``.
+    ell_km : float or np.ndarray
+        Propagated column depth(s) ``ell`` [km]. Vectorized: the whole depth
+        integral is one call.
+    b_mu : float
+        Drift coefficient ``b_mu`` [km^-1].
+    d_mu : float
+        Diffusion coefficient ``d_mu`` [km^-1]. Must satisfy ``0 &lt; d_mu &lt; b_mu``
+        for the two-moment family to be defined.
+    k_max : float, optional
+        Upper limit of the ``k`` quadrature. The symbol grows only
+        logarithmically, so the characteristic function decays as a power law
+        ``k^{-ell kappa}`` and the tail matters most at small ``ell``.
+    n_k : int, optional
+        Number of quadrature nodes on ``(0, k_max]``.
+    chunk : int, optional
+        Number of ``k`` nodes held in memory at once. The full outer product
+        would be ``n_ell * n_k`` complex numbers -- gigabytes for a fine grid --
+        so the quadrature is accumulated in slices instead.
+
+    Returns
+    -------
+    cdf : np.ndarray
+        ``P(W &lt;= w_query)`` clipped to ``[0, 1]``, one entry per ``ell_km``.
+
+    Notes
+    -----
+    Agrees with :func:`loss_density` plus :func:`survival_from_density` to a few
+    times ``1e-3`` absolute; the residual is the ``k``-truncation both share.
+    Unlike that route it needs no ``w`` grid, so it neither aliases nor forces a
+    span/resolution trade-off.
+    """
+    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
+    ell = np.atleast_1d(np.asarray(ell_km, dtype=float))
+    w = float(w_query)
+    step = k_max / n_k
+    # Trapezoid over k in [0, k_max]: accumulate every interior node at full
+    # weight, then halve the two endpoints. The k -&gt; 0 endpoint is removable --
+    # Phi(-ik) -&gt; -i k Phi'(0) makes the integrand tend to ell Phi'(0) - w, with
+    # Phi'(0) = kappa psi'(p + 1) the mean log-loss per unit length.
+    total = ell * (kappa * polygamma(1, p + 1.0)) - w
+    total *= 0.5
+    for start in range(1, n_k + 1, chunk):
+        k = np.arange(start, min(start + chunk, n_k + 1), dtype=float) * step
+        symbol = np.asarray(phi_symbol(-1j * k, kappa, p))
+        # exp(-ell Phi(-ik)) e^{-i k w} / k, summed over this k slice only.
+        phase = np.exp(-1j * k * w) / k
+        block = np.exp(-ell[:, None] * symbol[None, :]) * phase[None, :]
+        weights = np.ones(k.shape[0])
+        if k[-1] &gt;= k_max:
+            weights[-1] = 0.5
+        total += (np.imag(block) * weights[None, :]).sum(axis=1)
+    return np.clip(0.5 - total * step / np.pi, 0.0, 1.0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.loss_density" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">loss_density</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">loss_density(w_grid: ndarray, ell_km: float, b_mu: float, d_mu: float, n_k: int = 2 ** 14) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Exact density <code>P(w)</code> of the log-loss, by characteristic-function inversion.</p>
+<p>The characteristic function of the subordinator is
+<code>phi_w(k) = exp(-ell Phi(-i k))</code>, so</p>
+<p>.. math:: P(w) = \frac{1}{2\pi}\int \phi_w(k)\,e^{-i k w}\,dk.</p>
+<p>The integral is evaluated deterministically on a uniform <code>k</code> grid whose
+span is fixed by the <code>w</code> spacing (<code>k_max = pi / dw</code>), which resolves the
+far tail without Monte-Carlo noise. The result is clipped at zero and
+renormalized to unit area over <code>w_grid</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Uniformly spaced grid of log-loss values <code>w = ln(eps / E)</code> (&gt;= 0) at
+which to evaluate the density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth <code>ell</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total drift coefficient <code>b_mu</code> [km^-1] (see
+:func:<code>softpaws.transport.coefficients.drift_coefficient</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total diffusion coefficient <code>d_mu</code> [km^-1]. Must satisfy
+<code>0 &lt; d_mu &lt; b_mu</code> for the two-moment family to be defined.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>2 ** 14</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of nodes on the <code>k</code> grid of the inversion.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Probability density <code>P(w)</code> [dimensionless per unit <code>w</code>], normalized to
+unit area over <code>w_grid</code>, same shape as <code>w_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p><code>w_grid</code> must be uniformly spaced; the <code>k</code> span is derived from its step.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def loss_density(
+    w_grid: np.ndarray,
+    ell_km: float,
+    b_mu: float,
+    d_mu: float,
+    n_k: int = 2**14,
+) -&gt; np.ndarray:
+    r"""Exact density ``P(w)`` of the log-loss, by characteristic-function inversion.
+
+    The characteristic function of the subordinator is
+    ``phi_w(k) = exp(-ell Phi(-i k))``, so
+
+    .. math:: P(w) = \\frac{1}{2\\pi}\\int \\phi_w(k)\\,e^{-i k w}\\,dk.
+
+    The integral is evaluated deterministically on a uniform ``k`` grid whose
+    span is fixed by the ``w`` spacing (``k_max = pi / dw``), which resolves the
+    far tail without Monte-Carlo noise. The result is clipped at zero and
+    renormalized to unit area over ``w_grid``.
+
+    Parameters
+    ----------
+    w_grid : np.ndarray
+        Uniformly spaced grid of log-loss values ``w = ln(eps / E)`` (&gt;= 0) at
+        which to evaluate the density.
+    ell_km : float
+        Propagated column depth ``ell`` [km].
+    b_mu : float
+        Total drift coefficient ``b_mu`` [km^-1] (see
+        :func:`softpaws.transport.coefficients.drift_coefficient`).
+    d_mu : float
+        Total diffusion coefficient ``d_mu`` [km^-1]. Must satisfy
+        ``0 &lt; d_mu &lt; b_mu`` for the two-moment family to be defined.
+    n_k : int, optional
+        Number of nodes on the ``k`` grid of the inversion.
+
+    Returns
+    -------
+    density : np.ndarray
+        Probability density ``P(w)`` [dimensionless per unit ``w``], normalized to
+        unit area over ``w_grid``, same shape as ``w_grid``.
+
+    Notes
+    -----
+    ``w_grid`` must be uniformly spaced; the ``k`` span is derived from its step.
+    """
+    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
+    return invert_log_loss_symbol(
+        w_grid, ell_km, lambda s: phi_symbol(s, kappa, p), n_k
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.loss_density_gaussian" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">loss_density_gaussian</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">loss_density_gaussian(w_grid: ndarray, ell_km: float, b_mu: float, d_mu: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Fokker-Planck (Gaussian) reference density for the log-loss.</p>
+<p>The drift-diffusion truncation of Palmisano et al. makes <code>w</code> normal with the same first
+two moments as the exact process: mean <code>M ell</code> and variance <code>d_mu ell</code>,
+where <code>M = b_mu + d_mu / 2</code>. This is the density that :func:<code>loss_density</code>
+supersedes; it matches the exact law near the peak but decays far too fast in
+the tail.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Grid of log-loss values <code>w</code> at which to evaluate the density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth <code>ell</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total drift coefficient <code>b_mu</code> [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total diffusion coefficient <code>d_mu</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Gaussian density, same shape as <code>w_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def loss_density_gaussian(
+    w_grid: np.ndarray,
+    ell_km: float,
+    b_mu: float,
+    d_mu: float,
+) -&gt; np.ndarray:
+    """Fokker-Planck (Gaussian) reference density for the log-loss.
+
+    The drift-diffusion truncation of Palmisano et al. makes ``w`` normal with the same first
+    two moments as the exact process: mean ``M ell`` and variance ``d_mu ell``,
+    where ``M = b_mu + d_mu / 2``. This is the density that :func:`loss_density`
+    supersedes; it matches the exact law near the peak but decays far too fast in
+    the tail.
+
+    Parameters
+    ----------
+    w_grid : np.ndarray
+        Grid of log-loss values ``w`` at which to evaluate the density.
+    ell_km : float
+        Propagated column depth ``ell`` [km].
+    b_mu : float
+        Total drift coefficient ``b_mu`` [km^-1].
+    d_mu : float
+        Total diffusion coefficient ``d_mu`` [km^-1].
+
+    Returns
+    -------
+    density : np.ndarray
+        Gaussian density, same shape as ``w_grid``.
+    """
+    w = np.asarray(w_grid, dtype=float)
+    mean = (b_mu + d_mu / 2.0) * ell_km
+    var = d_mu * ell_km
+    return np.exp(-((w - mean) ** 2) / (2.0 * var)) / np.sqrt(2.0 * np.pi * var)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.loss_density_running" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">loss_density_running</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">loss_density_running(w_grid: ndarray, ell_km: float, energy_gev: float, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE, floor_gev: float = DEFAULT_IONIZATION_MATCH_GEV, nodes_per_decade: int = 48, n_k: int = 2 ** 14) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Density <code>P(w)</code> of the log-loss with the kernel followed down the track.</p>
+<p>:func:<code>loss_density_three_moment</code> reads the loss moments once, at the
+production energy; this reads them along the mean descent instead
+(:func:<code>running_log_loss_symbol</code>), which matters when the muon falls
+through decades where the drift changes.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Uniformly spaced grid of log-loss values <code>w = ln(eps / E)</code> (&gt;= 0).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth <code>ell</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;proposal_rock&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>floor_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_IONIZATION_MATCH_GEV">DEFAULT_IONIZATION_MATCH_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy below which the kernel is held fixed [GeV]; see
+:func:<code>running_log_loss_symbol</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>nodes_per_decade</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>48</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Lattice density of the descent in <code>log10 E</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>2 ** 14</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of nodes on the <code>k</code> grid of the inversion.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Probability density <code>P(w)</code>, normalized to unit area over <code>w_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from softpaws.transport.loss_distribution import loss_density_running
+&gt;&gt;&gt; w = np.linspace(0.0, 20.0, 800)
+&gt;&gt;&gt; density = loss_density_running(w, 3.0, 1.0e8)
+&gt;&gt;&gt; round(float(np.trapezoid(density, w)), 6)
+1.0</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def loss_density_running(
+    w_grid: np.ndarray,
+    ell_km: float,
+    energy_gev: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+    floor_gev: float = DEFAULT_IONIZATION_MATCH_GEV,
+    nodes_per_decade: int = 48,
+    n_k: int = 2**14,
+) -&gt; np.ndarray:
+    """Density ``P(w)`` of the log-loss with the kernel followed down the track.
+
+    :func:`loss_density_three_moment` reads the loss moments once, at the
+    production energy; this reads them along the mean descent instead
+    (:func:`running_log_loss_symbol`), which matters when the muon falls
+    through decades where the drift changes.
+
+    Parameters
+    ----------
+    w_grid : np.ndarray
+        Uniformly spaced grid of log-loss values ``w = ln(eps / E)`` (&gt;= 0).
+    ell_km : float
+        Propagated column depth ``ell`` [km].
+    energy_gev : float
+        Muon energy at production [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "proposal_rock"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    floor_gev : float, optional
+        Energy below which the kernel is held fixed [GeV]; see
+        :func:`running_log_loss_symbol`.
+    nodes_per_decade : int, optional
+        Lattice density of the descent in ``log10 E``.
+    n_k : int, optional
+        Number of nodes on the ``k`` grid of the inversion.
+
+    Returns
+    -------
+    density : np.ndarray
+        Probability density ``P(w)``, normalized to unit area over ``w_grid``.
+
+    Examples
+    --------
+    &gt;&gt;&gt; import numpy as np
+    &gt;&gt;&gt; from softpaws.transport.loss_distribution import loss_density_running
+    &gt;&gt;&gt; w = np.linspace(0.0, 20.0, 800)
+    &gt;&gt;&gt; density = loss_density_running(w, 3.0, 1.0e8)
+    &gt;&gt;&gt; round(float(np.trapezoid(density, w)), 6)
+    1.0
+    """
+    ell_km = float(ell_km)
+    if ell_km &lt; 0.0:
+        raise ValueError(f"ell_km must be zero or positive, got {ell_km}")
+
+    def symbol(s):
+        return running_log_loss_symbol(
+            s, ell_km, energy_gev, density_g_cm3, source, floor_gev, nodes_per_decade
+        )
+
+    return invert_log_loss_symbol(w_grid, 1.0, symbol, n_k)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.loss_density_three_moment" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">loss_density_three_moment</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">loss_density_three_moment(w_grid: ndarray, ell_km: float, b_mu: float, d_mu: float, t_mu: float, n_k: int = 2 ** 14) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Density <code>P(w)</code> of the log-loss from the three-moment loss family.</p>
+<p>Same inversion as :func:<code>loss_density</code>, but with the loss spectrum calibrated
+to three <code>y</code>-moments instead of two
+(:func:<code>softpaws.transport.eigenvalue.three_moment_loss_spectrum</code>). The third
+moment is what fixes the hard end of <code>dGamma/dy</code>, and with it the tail of
+<code>P(w)</code>: benchmarked against a PROPOSAL Monte Carlo this tracks the tail to
+tens of percent out to <code>eps / E ~ 50</code>, where the two-moment form is a factor
+70 low and the Fokker-Planck Gaussian is astronomically off
+(<code>examples/27_proposal_cross_section_and_loss.py</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Uniformly spaced grid of log-loss values <code>w = ln(eps / E)</code> (&gt;= 0).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth <code>ell</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>First three <code>y</code>-moments of the loss spectrum [km^-1] (see
+:mod:<code>softpaws.transport.coefficients</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>First three <code>y</code>-moments of the loss spectrum [km^-1] (see
+:mod:<code>softpaws.transport.coefficients</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>t_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>First three <code>y</code>-moments of the loss spectrum [km^-1] (see
+:mod:<code>softpaws.transport.coefficients</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>2 ** 14</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of nodes on the <code>k</code> grid of the inversion.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Probability density <code>P(w)</code>, normalized to unit area over <code>w_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def loss_density_three_moment(
+    w_grid: np.ndarray,
+    ell_km: float,
+    b_mu: float,
+    d_mu: float,
+    t_mu: float,
+    n_k: int = 2**14,
+) -&gt; np.ndarray:
+    """Density ``P(w)`` of the log-loss from the three-moment loss family.
+
+    Same inversion as :func:`loss_density`, but with the loss spectrum calibrated
+    to three ``y``-moments instead of two
+    (:func:`softpaws.transport.eigenvalue.three_moment_loss_spectrum`). The third
+    moment is what fixes the hard end of ``dGamma/dy``, and with it the tail of
+    ``P(w)``: benchmarked against a PROPOSAL Monte Carlo this tracks the tail to
+    tens of percent out to ``eps / E ~ 50``, where the two-moment form is a factor
+    70 low and the Fokker-Planck Gaussian is astronomically off
+    (``examples/27_proposal_cross_section_and_loss.py``).
+
+    Parameters
+    ----------
+    w_grid : np.ndarray
+        Uniformly spaced grid of log-loss values ``w = ln(eps / E)`` (&gt;= 0).
+    ell_km : float
+        Propagated column depth ``ell`` [km].
+    b_mu, d_mu, t_mu : float
+        First three ``y``-moments of the loss spectrum [km^-1] (see
+        :mod:`softpaws.transport.coefficients`).
+    n_k : int, optional
+        Number of nodes on the ``k`` grid of the inversion.
+
+    Returns
+    -------
+    density : np.ndarray
+        Probability density ``P(w)``, normalized to unit area over ``w_grid``.
+    """
+    kappa, q, p = three_moment_loss_spectrum(b_mu, d_mu, t_mu)
+    return invert_log_loss_symbol(
+        w_grid,
+        ell_km,
+        lambda s: phi_symbol_three_moment(s, float(kappa), float(q), float(p)),
+        n_k,
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.running_log_loss_symbol" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">running_log_loss_symbol</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">running_log_loss_symbol(s: complex | ndarray, ell_km: float | ndarray, energy_gev: float, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE, floor_gev: float = DEFAULT_IONIZATION_MATCH_GEV, nodes_per_decade: int = 48) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Laplace exponent of the log-loss with the kernel followed down the track.</p>
+<p><code>Psi(s; ell) = int_0^ell dl Phi(s; E(l))</code> along the mean descent
+<code>dlnE / dl = -Phi'(0; E)</code>, so <code>E[exp(-s W(ell))] = exp(-Psi(s; ell))</code>;
+see <code>docs/theory/first_passage_range.md</code>, Sec. 11.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>s</code></b>
+                  (<code><span title="complex">complex</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mellin variable, real or complex.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Propagated column depth(s) <code>ell</code> [km], zero or positive.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV], where the descent starts.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;proposal_rock&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>floor_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_IONIZATION_MATCH_GEV">DEFAULT_IONIZATION_MATCH_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy below which the kernel is held fixed [GeV]. The scale-invariant
+kernel stops describing the losses near the critical energy, so the
+descent is followed only to here. Defaults to
+:data:<code>~softpaws.constants.DEFAULT_IONIZATION_MATCH_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>nodes_per_decade</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>48</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Lattice density of the descent in <code>log10 E</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>exponent</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>Psi(s; ell)</code> [dimensionless], of shape <code>ell_km.shape + s.shape</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>energy_gev</code> or <code>floor_gev</code> is not positive, if any
+<code>ell_km</code> is negative, or if <code>nodes_per_decade</code> is below one.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from softpaws.transport.loss_distribution import running_log_loss_symbol
+&gt;&gt;&gt; psi = running_log_loss_symbol(1.0, [0.0, 2.0], 1.0e8)
+&gt;&gt;&gt; psi.shape, float(psi[0])
+((2,), 0.0)</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def running_log_loss_symbol(
+    s: complex | np.ndarray,
+    ell_km: float | np.ndarray,
+    energy_gev: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+    floor_gev: float = DEFAULT_IONIZATION_MATCH_GEV,
+    nodes_per_decade: int = 48,
+) -&gt; np.ndarray:
+    r"""Laplace exponent of the log-loss with the kernel followed down the track.
+
+    ``Psi(s; ell) = int_0^ell dl Phi(s; E(l))`` along the mean descent
+    ``dlnE / dl = -Phi'(0; E)``, so ``E[exp(-s W(ell))] = exp(-Psi(s; ell))``;
+    see ``docs/theory/first_passage_range.md``, Sec. 11.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable, real or complex.
+    ell_km : float or np.ndarray
+        Propagated column depth(s) ``ell`` [km], zero or positive.
+    energy_gev : float
+        Muon energy at production [GeV], where the descent starts.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "proposal_rock"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    floor_gev : float, optional
+        Energy below which the kernel is held fixed [GeV]. The scale-invariant
+        kernel stops describing the losses near the critical energy, so the
+        descent is followed only to here. Defaults to
+        :data:`~softpaws.constants.DEFAULT_IONIZATION_MATCH_GEV`.
+    nodes_per_decade : int, optional
+        Lattice density of the descent in ``log10 E``.
+
+    Returns
+    -------
+    exponent : np.ndarray
+        ``Psi(s; ell)`` [dimensionless], of shape ``ell_km.shape + s.shape``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``energy_gev`` or ``floor_gev`` is not positive, if any
+        ``ell_km`` is negative, or if ``nodes_per_decade`` is below one.
+
+    Examples
+    --------
+    &gt;&gt;&gt; import numpy as np
+    &gt;&gt;&gt; from softpaws.transport.loss_distribution import running_log_loss_symbol
+    &gt;&gt;&gt; psi = running_log_loss_symbol(1.0, [0.0, 2.0], 1.0e8)
+    &gt;&gt;&gt; psi.shape, float(psi[0])
+    ((2,), 0.0)
+    """
+    energy_gev = float(energy_gev)
+    floor_gev = float(floor_gev)
+    if energy_gev &lt;= 0.0:
+        raise ValueError(f"energy_gev must be positive, got {energy_gev}")
+    if floor_gev &lt;= 0.0:
+        raise ValueError(f"floor_gev must be positive, got {floor_gev}")
+    if nodes_per_decade &lt; 1:
+        raise ValueError(f"nodes_per_decade must be at least 1, got {nodes_per_decade}")
+    s_shape = np.shape(s)
+    s_arr = np.atleast_1d(np.asarray(s))
+    ell = np.asarray(ell_km, dtype=float)
+    if np.any(ell &lt; 0.0):
+        raise ValueError("ell_km must be zero or positive")
+
+    top, bottom = np.log10(energy_gev), np.log10(floor_gev)
+    if top &gt; bottom:
+        n_nodes = int(np.ceil((top - bottom) * nodes_per_decade)) + 1
+        log10_grid = np.linspace(top, bottom, n_nodes)
+    else:
+        # Born at or below the floor: the kernel stays at the birth energy.
+        log10_grid = np.array([top])
+    grid = 10.0**log10_grid
+    kappa, q, p = three_moment_loss_spectrum(
+        drift_coefficient(grid, density_g_cm3, source),
+        diffusion_coefficient(grid, density_g_cm3, source),
+        third_moment_coefficient(grid, density_g_cm3, source),
+    )
+    rate = _three_moment_mean_rate(kappa, q, p)
+    symbols = np.stack(
+        [
+            np.asarray(phi_symbol_three_moment(s_arr, float(k), float(qq), float(pp)))
+            for k, qq, pp in zip(kappa, q, p, strict=True)
+        ]
+    )
+
+    # Trapezoid in v = ln(eps / E) of dl = dv / Phi'(0) and of Phi dl.
+    dv = np.log(10.0) * np.abs(np.diff(log10_grid))
+    inverse = 1.0 / rate
+    depth = dv * 0.5 * (inverse[:-1] + inverse[1:])
+    slab = dv[:, None] * 0.5 * (
+        symbols[:-1] / rate[:-1, None] + symbols[1:] / rate[1:, None]
+    )
+    cumulative_depth = np.concatenate([[0.0], np.cumsum(depth)])
+    cumulative = np.concatenate(
+        [np.zeros((1, s_arr.size), dtype=symbols.dtype), np.cumsum(slab, axis=0)]
+    )
+
+    out = np.empty(ell.shape + s_arr.shape, dtype=symbols.dtype)
+    for index in np.ndindex(ell.shape):
+        length = ell[index]
+        if length &gt;= cumulative_depth[-1]:
+            # Past the floor: the remainder runs on the kernel held there.
+            out[index] = cumulative[-1] + (length - cumulative_depth[-1]) * symbols[-1]
+            continue
+        j = int(np.searchsorted(cumulative_depth, length, side="right")) - 1
+        fraction = (length - cumulative_depth[j]) / depth[j]
+        out[index] = cumulative[j] + fraction * slab[j]
+    return out.reshape(ell.shape + s_shape)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_distribution.survival_from_density" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">survival_from_density</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">survival_from_density(w_query: float | ndarray, w_grid: ndarray, density: ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Tail probability <code>P(W &gt; w)</code> from a tabulated density.</p>
+<p>Integrates <code>density</code> over <code>w_grid</code> with the trapezoidal rule and returns
+<code>1 - CDF</code> at <code>w_query</code> by linear interpolation. Used to read the exact
+tail off :func:<code>loss_density</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_query</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Log-loss threshold(s) at which to evaluate the survival probability.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Grid on which <code>density</code> is tabulated (ascending).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Probability density <code>P(w)</code> on <code>w_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>survival</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>P(W &gt; w_query)</code>, same shape as <code>w_query</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_distribution.py</code></summary>
+              <pre class="highlight"><code class="language-python">def survival_from_density(
+    w_query: float | np.ndarray,
+    w_grid: np.ndarray,
+    density: np.ndarray,
+) -&gt; np.ndarray:
+    """Tail probability ``P(W &gt; w)`` from a tabulated density.
+
+    Integrates ``density`` over ``w_grid`` with the trapezoidal rule and returns
+    ``1 - CDF`` at ``w_query`` by linear interpolation. Used to read the exact
+    tail off :func:`loss_density`.
+
+    Parameters
+    ----------
+    w_query : float or np.ndarray
+        Log-loss threshold(s) at which to evaluate the survival probability.
+    w_grid : np.ndarray
+        Grid on which ``density`` is tabulated (ascending).
+    density : np.ndarray
+        Probability density ``P(w)`` on ``w_grid``.
+
+    Returns
+    -------
+    survival : np.ndarray
+        ``P(W &gt; w_query)``, same shape as ``w_query``.
+    """
+    w = np.asarray(w_grid, dtype=float)
+    dens = np.asarray(density, dtype=float)
+    cdf = np.concatenate([[0.0], np.cumsum(0.5 * (dens[1:] + dens[:-1]) * np.diff(w))])
+    return 1.0 - np.interp(w_query, w, cdf)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../eigenvalue/" class="btn btn-neutral float-left" title="eigenvalue"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../loss_ensemble/" class="btn btn-neutral float-right" title="loss_ensemble">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../eigenvalue/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../loss_ensemble/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,3315 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/response/declination/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>declination - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "declination";
+        var mkdocs_page_input_path = "api-reference/softpaws/response/declination.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/response/declination/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >response</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">response</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">declination</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.band_averaged_effective_area_cm2">band_averaged_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.band_statistics">band_statistics</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.central_energy_range">central_energy_range</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.column_target_volume_km3">column_target_volume_km3</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.derived_band_averaged_effective_area_cm2">derived_band_averaged_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.derived_directional_effective_area_cm2">derived_directional_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.directional_effective_area_cm2">directional_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.fit_light_reach">fit_light_reach</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.fit_published_reach">fit_published_reach</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.point_source_limit">point_source_limit</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.point_source_sensitivity">point_source_sensitivity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.polar_band_directions">polar_band_directions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.sky_averaged_effective_area_cm2">sky_averaged_effective_area_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.declination.zenith_band_weights">zenith_band_weights</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">response</li>
+      <li class="breadcrumb-item active">declination</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.response.declination" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.response.declination</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Effective areas resolved by arrival direction, and what a point source sees.</p>
+<p>A published effective area is averaged over a declination band, and a point
+source is a fixed declination the sky sweeps past the detector. Both need the
+response before the direction average, which is what this module builds. Two
+families live here.</p>
+<p>The first takes the light reach as a fitted number, <code>reach_km</code> per e-fold
+about a pivot, and is the parameter-light form the tabulated comparisons of
+Section IV run on. The second takes the reach from the published optics of
+:mod:<code>softpaws.response.light_reach</code>, erodes the body by the minimum
+in-detector track and carries the Poisson multiplicity weight, which is the
+first-principles form of Section IV B.</p>
+<p>Both end in the same place: an effective area per direction, averaged inside
+each published band, and from that a background-free point-source ceiling.</p>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p><code>cos_theta = +1</code> is vertically downgoing and <code>-1</code> the nadir, as in
+:mod:<code>softpaws.transport.earth</code>. Seen from the South Pole a source at
+declination <code>dec</code> arrives at <code>cos_theta = -sin(dec)</code>, so the upgoing sky
+is <code>dec &gt; 0</code>.</p>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="band_averaged_effective_area_cm2 (softpaws.response.declination.band_averaged_effective_area_cm2)" href="#softpaws.response.declination.band_averaged_effective_area_cm2">band_averaged_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Model effective area averaged within each published declination band.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="band_statistics (softpaws.response.declination.band_statistics)" href="#softpaws.response.declination.band_statistics">band_statistics</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Level and tilt of <code>published / model</code> within each declination band.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="central_energy_range (softpaws.response.declination.central_energy_range)" href="#softpaws.response.declination.central_energy_range">central_energy_range</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Central 90% energy range of the signal a sensitivity comes from.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="column_target_volume_km3 (softpaws.response.declination.column_target_volume_km3)" href="#softpaws.response.declination.column_target_volume_km3">column_target_volume_km3</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Column target volume for one production energy and every direction [km^3].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="derived_band_averaged_effective_area_cm2 (softpaws.response.declination.derived_band_averaged_effective_area_cm2)" href="#softpaws.response.declination.derived_band_averaged_effective_area_cm2">derived_band_averaged_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Model effective area per published band, averaged over species [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="derived_directional_effective_area_cm2 (softpaws.response.declination.derived_directional_effective_area_cm2)" href="#softpaws.response.declination.derived_directional_effective_area_cm2">derived_directional_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective area per arrival direction, with the derived light reach [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="directional_effective_area_cm2 (softpaws.response.declination.directional_effective_area_cm2)" href="#softpaws.response.declination.directional_effective_area_cm2">directional_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective area per arrival direction, in the published convention.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="fit_light_reach (softpaws.response.declination.fit_light_reach)" href="#softpaws.response.declination.fit_light_reach">fit_light_reach</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Scan the one instrument number against a published effective area.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="point_source_sensitivity (softpaws.response.declination.point_source_sensitivity)" href="#softpaws.response.declination.point_source_sensitivity">point_source_sensitivity</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Flux normalization a background-free search would exclude.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="polar_band_directions (softpaws.response.declination.polar_band_directions)" href="#softpaws.response.declination.polar_band_directions">polar_band_directions</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Arrival directions sampling each published band, seen from the Pole.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="zenith_band_weights (softpaws.response.declination.zenith_band_weights)" href="#softpaws.response.declination.zenith_band_weights">zenith_band_weights</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Fraction of a sidereal day each declination spends in each zenith band.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.band_averaged_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">band_averaged_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">band_averaged_effective_area_cm2(site: Site, sin_dec_edges: ndarray, threshold_gev: float, reach_km: float | None = None, pivot_gev: float = REACH_PIVOT_GEV, log10_e: ndarray = COMMON_LOG10_E, cross_section: CrossSection | None = None, n_sub: int = N_SUB_BAND) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Model effective area averaged within each published declination band.</p>
+<p>Uniform in <code>sin(dec)</code> is uniform in solid angle, which is how the
+published band average is built.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry and medium; the band construction assumes the Pole.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Published band edges in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reach_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Growth of the light reach per e-fold [km]; <code>None</code> stays static.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.REACH_PIVOT_GEV">REACH_PIVOT_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy at which the reach vanishes [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.COMMON_LOG10_E">COMMON_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section model.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sub</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants.N_SUB_BAND">N_SUB_BAND</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Directions sampled inside each band.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2], band-averaged uniformly in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def band_averaged_effective_area_cm2(
+    site: Site,
+    sin_dec_edges: np.ndarray,
+    threshold_gev: float,
+    reach_km: float | None = None,
+    pivot_gev: float = REACH_PIVOT_GEV,
+    log10_e: np.ndarray = COMMON_LOG10_E,
+    cross_section: CrossSection | None = None,
+    n_sub: int = N_SUB_BAND,
+) -&gt; np.ndarray:
+    """Model effective area averaged within each published declination band.
+
+    Uniform in ``sin(dec)`` is uniform in solid angle, which is how the
+    published band average is built.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry and medium; the band construction assumes the Pole.
+    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+        Published band edges in ``sin(dec)``.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    reach_km : float or None, optional
+        Growth of the light reach per e-fold [km]; ``None`` stays static.
+    pivot_gev : float, optional
+        Energy at which the reach vanishes [GeV].
+    log10_e : np.ndarray, optional
+        Neutrino energies [log10 GeV].
+    cross_section : CrossSection, optional
+        Cross-section model.
+    n_sub : int, optional
+        Directions sampled inside each band.
+
+    Returns
+    -------
+    aeff : np.ndarray, shape (log10_e.size, n_dec)
+        Effective area [cm^2], band-averaged uniformly in ``sin(dec)``.
+    """
+    directions = polar_band_directions(sin_dec_edges, n_sub)
+    n_dec, n_sub = directions.shape
+    per_direction = directional_effective_area_cm2(
+        site,
+        directions.ravel(),
+        threshold_gev,
+        reach_km=reach_km,
+        pivot_gev=pivot_gev,
+        log10_e=log10_e,
+        cross_section=cross_section,
+    )
+    return per_direction.reshape(-1, n_dec, n_sub).mean(axis=2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.band_statistics" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">band_statistics</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">band_statistics(log10_e: ndarray, published: ndarray, model: ndarray, band: ndarray) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Level and tilt of <code>published / model</code> within each declination band.</p>
+<p>The level is the geometric mean of the ratio over the scored band and the
+tilt is the slope of its base-ten logarithm against <code>log10 E</code>, so a tilt
+of zero means the model has the right energy dependence in that band
+whatever its normalization.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>published</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_energy">n_energy</span>, <span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective areas [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>model</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_energy">n_energy</span>, <span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective areas [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>band</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Boolean mask of the scored energies.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>level</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Geometric-mean ratio.</p>
+              </div>
+            </li>
+            <li>
+<b><code>tilt</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Slope of <code>log10(published / model)</code> [dex per decade of energy].</p>
+              </div>
+            </li>
+            <li>
+<b><code>scatter</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Root-mean-square about the fitted line [dex].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def band_statistics(
+    log10_e: np.ndarray, published: np.ndarray, model: np.ndarray, band: np.ndarray
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Level and tilt of ``published / model`` within each declination band.
+
+    The level is the geometric mean of the ratio over the scored band and the
+    tilt is the slope of its base-ten logarithm against ``log10 E``, so a tilt
+    of zero means the model has the right energy dependence in that band
+    whatever its normalization.
+
+    Parameters
+    ----------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` grid.
+    published, model : np.ndarray, shape (n_energy, n_dec)
+        Effective areas [cm^2].
+    band : np.ndarray
+        Boolean mask of the scored energies.
+
+    Returns
+    -------
+    level : np.ndarray, shape (n_dec,)
+        Geometric-mean ratio.
+    tilt : np.ndarray, shape (n_dec,)
+        Slope of ``log10(published / model)`` [dex per decade of energy].
+    scatter : np.ndarray, shape (n_dec,)
+        Root-mean-square about the fitted line [dex].
+    """
+    x = np.asarray(log10_e, dtype=float)[band]
+    level = np.full(published.shape[1], np.nan)
+    tilt = np.full(published.shape[1], np.nan)
+    scatter = np.full(published.shape[1], np.nan)
+    for j in range(published.shape[1]):
+        y = published[band, j] / model[band, j]
+        ok = np.isfinite(y) &amp; (y &gt; 0.0)
+        if ok.sum() &lt; 3:
+            continue
+        logy = np.log10(y[ok])
+        slope, intercept = np.polyfit(x[ok], logy, 1)
+        level[j] = 10.0 ** np.mean(logy)
+        tilt[j] = slope
+        scatter[j] = float(np.std(logy - (slope * x[ok] + intercept)))
+    return level, tilt, scatter</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.central_energy_range" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">central_energy_range</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">central_energy_range(aeff_cm2: ndarray, gamma: float, emin_gev: float = DEFAULT_EMIN_GEV, log10_e: ndarray = COMMON_LOG10_E, pivot_gev: float = PIVOT_ENERGY_GEV) -&gt; tuple[float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Central 90% energy range of the signal a sensitivity comes from.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on the energy grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index of the assumed source.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>emin_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_EMIN_GEV">DEFAULT_EMIN_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Bottom of the analysis window [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.COMMON_LOG10_E">COMMON_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.response.sensitivity.PIVOT_ENERGY_GEV">PIVOT_ENERGY_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Pivot energy of the assumed flux [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>log10_lo, log10_hi : float</code>
+              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> bracketing the central 90% of the expected count.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def central_energy_range(
+    aeff_cm2: np.ndarray,
+    gamma: float,
+    emin_gev: float = DEFAULT_EMIN_GEV,
+    log10_e: np.ndarray = COMMON_LOG10_E,
+    pivot_gev: float = PIVOT_ENERGY_GEV,
+) -&gt; tuple[float, float]:
+    """Central 90% energy range of the signal a sensitivity comes from.
+
+    Parameters
+    ----------
+    aeff_cm2 : np.ndarray, shape (log10_e.size,)
+        Effective area [cm^2] on the energy grid.
+    gamma : float
+        Spectral index of the assumed source.
+    emin_gev : float, optional
+        Bottom of the analysis window [GeV].
+    log10_e : np.ndarray, optional
+        Neutrino energies [log10 GeV].
+    pivot_gev : float, optional
+        Pivot energy of the assumed flux [GeV].
+
+    Returns
+    -------
+    log10_lo, log10_hi : float
+        ``log10(E_nu / GeV)`` bracketing the central 90% of the expected count.
+    """
+    log10_e = np.asarray(log10_e, dtype=float)
+    energy = 10.0**log10_e
+    window = energy &gt;= emin_gev
+    inside = log10_e[window]
+    # Per log-decade, so the quantiles read off the axis the figure uses.
+    integrand = (aeff_cm2 * (energy / pivot_gev) ** (-gamma) * energy)[window]
+    cumulative = np.concatenate(
+        ([0.0], np.cumsum(0.5 * np.diff(inside) * (integrand[1:] + integrand[:-1])))
+    )
+    cumulative /= cumulative[-1]
+    return (
+        float(np.interp(0.05, cumulative, inside)),
+        float(np.interp(0.95, cumulative, inside)),
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.column_target_volume_km3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">column_target_volume_km3</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">column_target_volume_km3(site: Site, optics: Optics, production_gev: float, cos_theta: ndarray, available_km: ndarray, min_modules: float, halo_weight: float = 1.0, n_sides: int | None = None, n_energy: int = 40, threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Column target volume for one production energy and every direction [km^3].</p>
+<p>The first-principles construction, direction resolved: the truncated
+first-passage range against the available upstream column, the effective
+footprint evaluated at the energy the muon has where it is seen (averaged
+over the part of the column it can actually have covered), the body eroded
+by the minimum in-detector track and dilated by the light reach, the
+Poisson multiplicity weight, and the halo blended at <code>halo_weight</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry and medium.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>optics</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The same detector's optical medium and module.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>production_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>available_km</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Upstream column available in each direction [km of detector medium].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must register a coincident hit.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>halo_weight</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fraction of the reach-dilated halo the selection accepts.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sides</code></b>
+                  (<code><span title="int">int</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section of the instrumented body; <code>None</code> is a cylinder.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_energy</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>40</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Points in the arrival-energy quadrature.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV">DEFAULT_MUON_THRESHOLD_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Nominal muon threshold the range runs to [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>volume</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Target volume [km^3], one entry per direction.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def column_target_volume_km3(
+    site: Site,
+    optics: Optics,
+    production_gev: float,
+    cos_theta: np.ndarray,
+    available_km: np.ndarray,
+    min_modules: float,
+    halo_weight: float = 1.0,
+    n_sides: int | None = None,
+    n_energy: int = 40,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+) -&gt; np.ndarray:
+    """Column target volume for one production energy and every direction [km^3].
+
+    The first-principles construction, direction resolved: the truncated
+    first-passage range against the available upstream column, the effective
+    footprint evaluated at the energy the muon has where it is seen (averaged
+    over the part of the column it can actually have covered), the body eroded
+    by the minimum in-detector track and dilated by the light reach, the
+    Poisson multiplicity weight, and the halo blended at ``halo_weight``.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry and medium.
+    optics : Optics
+        The same detector's optical medium and module.
+    production_gev : float
+        Muon energy at production [GeV].
+    cos_theta : np.ndarray
+        Cosine of the arrival zenith.
+    available_km : np.ndarray
+        Upstream column available in each direction [km of detector medium].
+    min_modules : float
+        Modules that must register a coincident hit.
+    halo_weight : float, optional
+        Fraction of the reach-dilated halo the selection accepts.
+    n_sides : int or None, optional
+        Cross-section of the instrumented body; ``None`` is a cylinder.
+    n_energy : int, optional
+        Points in the arrival-energy quadrature.
+    threshold_gev : float, optional
+        Nominal muon threshold the range runs to [GeV].
+
+    Returns
+    -------
+    volume : np.ndarray
+        Target volume [km^3], one entry per direction.
+    """
+    if production_gev &lt;= threshold_gev:
+        return np.zeros_like(cos_theta)
+    truncated = np.clip(
+        np.atleast_1d(
+            truncated_muon_range_km(
+                production_gev, available_km, threshold_gev, site.density_g_cm3
+            )
+        ),
+        0.0,
+        None,
+    )
+    # Below the bedrock or the sea floor the muon is in rock, which shortens
+    # every upgoing column; downgoing directions are the optical medium alone.
+    ratio = rock_range_ratio(
+        production_gev, threshold_gev, cos_theta, optics, site.height_km, site.density_g_cm3
+    )
+    truncated = truncated * ratio
+    profile = column_profile(production_gev, threshold_gev, n_energy, site.density_g_cm3)
+    if profile is None:
+        return np.zeros_like(cos_theta)
+    column, energy, _ = profile
+
+    radius, height, weight = effective_body_km(
+        site.radius_km, site.height_km, energy, optics, min_modules, n_sides
+    )
+    area_d, vol_d = eroded_prism_target_km2(
+        cos_theta[None, :],
+        radius[:, None],
+        height[:, None],
+        optics.min_track_km,
+        n_sides,
+        site.n_blocks,
+    )
+    area_0, vol_0 = eroded_prism_target_km2(
+        cos_theta, site.radius_km, site.height_km, optics.min_track_km, n_sides, site.n_blocks
+    )
+    area = weight[:, None] * ((1.0 - halo_weight) * area_0[None, :] + halo_weight * area_d)
+    vol = (1.0 - halo_weight) * vol_0 + halo_weight * vol_d
+    clipped = np.minimum(column[:, None] * ratio[None, :], available_km[None, :])
+    span = clipped[-1]
+    mean_area = np.where(
+        span &gt; 0.0,
+        np.trapezoid(area, clipped, axis=0) / np.where(span &gt; 0.0, span, 1.0),
+        weight[0] * area_0,
+    )
+    return mean_area * truncated + weight[0] * vol[0]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.derived_band_averaged_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">derived_band_averaged_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">derived_band_averaged_effective_area_cm2(site: Site, optics: Optics, sin_dec_edges: ndarray, min_modules: float, flavours: tuple[str, ...], species: Sequence[CrossSection], inelasticity_nc: float | None = None, halo_weight: float = 1.0, efficiency: float = 1.0, log10_e: ndarray = COMMON_LOG10_E, n_sub: int = N_SUB_BAND) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Model effective area per published band, averaged over species [cm^2].</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry, medium and latitude.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>optics</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The same detector's optical medium and optical module.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Published band edges in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must register a coincident hit.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flavours</code></b>
+                  (<code>tuple of str</code>)
+              –
+              <div class="doc-md-description">
+                <p>Parent channels to sum.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>species</code></b>
+                  (<code>sequence of CrossSection</code>)
+              –
+              <div class="doc-md-description">
+                <p>Incident species averaged over, as in
+:data:<code>softpaws.response.first_principles.SPECIES</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>inelasticity_nc</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Mean neutral-current inelasticity.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>halo_weight</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fraction of the reach-dilated halo the selection accepts.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>efficiency</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Flat selection efficiency.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.COMMON_LOG10_E">COMMON_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sub</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants.N_SUB_BAND">N_SUB_BAND</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Directions sampled inside each band.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2], band-averaged uniformly in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def derived_band_averaged_effective_area_cm2(
+    site: Site,
+    optics: Optics,
+    sin_dec_edges: np.ndarray,
+    min_modules: float,
+    flavours: tuple[str, ...],
+    species: Sequence[CrossSection],
+    inelasticity_nc: float | None = None,
+    halo_weight: float = 1.0,
+    efficiency: float = 1.0,
+    log10_e: np.ndarray = COMMON_LOG10_E,
+    n_sub: int = N_SUB_BAND,
+) -&gt; np.ndarray:
+    """Model effective area per published band, averaged over species [cm^2].
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry, medium and latitude.
+    optics : Optics
+        The same detector's optical medium and optical module.
+    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+        Published band edges in ``sin(dec)``.
+    min_modules : float
+        Modules that must register a coincident hit.
+    flavours : tuple of str
+        Parent channels to sum.
+    species : sequence of CrossSection
+        Incident species averaged over, as in
+        :data:`softpaws.response.first_principles.SPECIES`.
+    inelasticity_nc : float, optional
+        Mean neutral-current inelasticity.
+    halo_weight : float, optional
+        Fraction of the reach-dilated halo the selection accepts.
+    efficiency : float, optional
+        Flat selection efficiency.
+    log10_e : np.ndarray, optional
+        Neutrino energies [log10 GeV].
+    n_sub : int, optional
+        Directions sampled inside each band.
+
+    Returns
+    -------
+    aeff : np.ndarray, shape (log10_e.size, n_dec)
+        Effective area [cm^2], band-averaged uniformly in ``sin(dec)``.
+    """
+    directions = polar_band_directions(sin_dec_edges, n_sub)
+    n_dec, n_sub = directions.shape
+    per_species = [
+        derived_directional_effective_area_cm2(
+            site,
+            optics,
+            directions.ravel(),
+            min_modules,
+            flavours,
+            xsec,
+            inelasticity_nc,
+            halo_weight,
+            efficiency,
+            log10_e,
+        )
+        for xsec in species
+    ]
+    averaged = np.mean(per_species, axis=0)
+    return averaged.reshape(-1, n_dec, n_sub).mean(axis=2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.derived_directional_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">derived_directional_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">derived_directional_effective_area_cm2(site: Site, optics: Optics, cos_theta: ndarray, min_modules: float, flavours: tuple[str, ...], cross_section: CrossSection, inelasticity_nc: float | None = None, halo_weight: float = 1.0, efficiency: float = 1.0, log10_e: ndarray = COMMON_LOG10_E) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective area per arrival direction, with the derived light reach [cm^2].</p>
+<p>The builder of :func:<code>directional_effective_area_cm2</code> with the
+first-principles machinery substituted in: the body dilated by the derived
+light reach and eroded by the minimum in-detector track, the Poisson
+multiplicity weight carrying the threshold turn-on, and the range running
+to the nominal threshold so the dimming enters once.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry, medium and latitude.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>optics</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>The same detector's optical medium and optical module.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith; <code>+1</code> is overhead.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must register a coincident hit.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flavours</code></b>
+                  (<code>tuple of str</code>)
+              –
+              <div class="doc-md-description">
+                <p>Parent channels to sum, <code>"mu"</code> and optionally <code>"tau"</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cross section of the incident species, used for the interaction and for
+the Earth absorption alike.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>inelasticity_nc</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Mean neutral-current inelasticity. <code>None</code> keeps the library default.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>halo_weight</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fraction of the reach-dilated halo the selection accepts. The
+acceptance is blended as <code>(1 - w) A_static + w A_dilated</code>, so 1 (the
+default) counts every track the light condition admits and 0 keeps the
+instrumented body only.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>efficiency</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Flat selection efficiency applied to the whole curve.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.COMMON_LOG10_E">COMMON_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, <span title="n_dir">n_dir</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def derived_directional_effective_area_cm2(
+    site: Site,
+    optics: Optics,
+    cos_theta: np.ndarray,
+    min_modules: float,
+    flavours: tuple[str, ...],
+    cross_section: CrossSection,
+    inelasticity_nc: float | None = None,
+    halo_weight: float = 1.0,
+    efficiency: float = 1.0,
+    log10_e: np.ndarray = COMMON_LOG10_E,
+) -&gt; np.ndarray:
+    """Effective area per arrival direction, with the derived light reach [cm^2].
+
+    The builder of :func:`directional_effective_area_cm2` with the
+    first-principles machinery substituted in: the body dilated by the derived
+    light reach and eroded by the minimum in-detector track, the Poisson
+    multiplicity weight carrying the threshold turn-on, and the range running
+    to the nominal threshold so the dimming enters once.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry, medium and latitude.
+    optics : Optics
+        The same detector's optical medium and optical module.
+    cos_theta : np.ndarray, shape (n_dir,)
+        Cosine of the arrival zenith; ``+1`` is overhead.
+    min_modules : float
+        Modules that must register a coincident hit.
+    flavours : tuple of str
+        Parent channels to sum, ``"mu"`` and optionally ``"tau"``.
+    cross_section : CrossSection
+        Cross section of the incident species, used for the interaction and for
+        the Earth absorption alike.
+    inelasticity_nc : float, optional
+        Mean neutral-current inelasticity. ``None`` keeps the library default.
+    halo_weight : float, optional
+        Fraction of the reach-dilated halo the selection accepts. The
+        acceptance is blended as ``(1 - w) A_static + w A_dilated``, so 1 (the
+        default) counts every track the light condition admits and 0 keeps the
+        instrumented body only.
+    efficiency : float, optional
+        Flat selection efficiency applied to the whole curve.
+    log10_e : np.ndarray, optional
+        Neutrino energies [log10 GeV].
+
+    Returns
+    -------
+    aeff : np.ndarray, shape (log10_e.size, n_dir)
+        Effective area [cm^2].
+    """
+    cos_theta = np.atleast_1d(np.asarray(cos_theta, dtype=float))
+    neutrino_column, muon_column_km = site.columns(cos_theta)
+    n_nucleon = nucleon_number_density(site.density_g_cm3)
+    energy = 10.0 ** np.asarray(log10_e, dtype=float)
+    n_sides = site.n_sides if site.shape == "prism" else None
+
+    total = np.zeros((energy.size, cos_theta.size))
+    for flavour in flavours:
+        for i, e_nu in enumerate(energy):
+            if flavour == "mu":
+                extra = {} if inelasticity_nc is None else {"mean_inelasticity": inelasticity_nc}
+                rung_energy, rung_weight = regenerated_transmission(
+                    float(e_nu), neutrino_column, cross_section, **extra
+                )
+                branching = 1.0
+                muon_gev = (1.0 - mean_inelasticity(rung_energy)) * rung_energy
+            else:
+                extra = (
+                    {} if inelasticity_nc is None else {"mean_inelasticity_nc": inelasticity_nc}
+                )
+                rung_energy, rung_weight = flavour_transmission(
+                    float(e_nu),
+                    neutrino_column,
+                    cross_section,
+                    flavour="tau",
+                    n_grid=N_RUNG,
+                    decades=RUNG_DECADES,
+                    **extra,
+                )
+                branching = BR_TAU_TO_MU
+                muon_gev = MEAN_Z * (1.0 - mean_inelasticity(rung_energy)) * rung_energy
+            rate = np.zeros((rung_energy.size, cos_theta.size))
+            for k, e_mu in enumerate(muon_gev):
+                rate[k] = column_target_volume_km3(
+                    site,
+                    optics,
+                    float(e_mu),
+                    cos_theta,
+                    muon_column_km,
+                    min_modules,
+                    halo_weight,
+                    n_sides,
+                )
+            rate *= (
+                n_nucleon * cross_section.cc(rung_energy)[:, None] * branching * CM_PER_KM**3
+            )
+            total[i] += np.sum(rung_weight * rate, axis=0)
+    return efficiency * total</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.directional_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">directional_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">directional_effective_area_cm2(site: Site, cos_theta: ndarray, threshold_gev: float, reach_km: float | None = None, pivot_gev: float = REACH_PIVOT_GEV, channels: str = 'both', log10_e: ndarray = COMMON_LOG10_E, cross_section: CrossSection | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective area per arrival direction, in the published convention.</p>
+<p>A tabulated effective area is differential in the neutrino energy, so the
+parent is monochromatic: no spectral weighting enters anywhere, and the
+length is the first-passage range rather than <code>1 / Phi(A)</code>. The assembly
+keeps the neutral-current and tau ladders and credits every rung to the
+surface energy. Nothing is averaged over direction, and the first-passage
+integral is cut at whatever column the direction actually supplies.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry and medium.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith for each direction; <code>+1</code> is overhead.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reach_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Growth of the light reach per e-fold [km]. <code>None</code>, the default, keeps
+the static instrumented radius and leaves the result parameter-free.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.REACH_PIVOT_GEV">REACH_PIVOT_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy at which the reach vanishes [GeV]. Ignored when <code>reach_km</code> is
+<code>None</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>(&#39;both&#39;, &#39;mu&#39;)</code>, default:
+                      <code>&#34;both&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p><code>"mu"</code> keeps only the <code>nu_mu</code> charged current, which is the flavour
+the DR2 tables were generated from. <code>"both"</code>, the default, adds
+<code>nu_tau -&gt; tau -&gt; mu</code>, which a through-going track cannot distinguish.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.COMMON_LOG10_E">COMMON_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section model; <code>None</code> uses
+:func:<code>softpaws.response.effective_area.default_cross_section</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, <span title="n_dir">n_dir</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] at each energy and arrival direction.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def directional_effective_area_cm2(
+    site: Site,
+    cos_theta: np.ndarray,
+    threshold_gev: float,
+    reach_km: float | None = None,
+    pivot_gev: float = REACH_PIVOT_GEV,
+    channels: str = "both",
+    log10_e: np.ndarray = COMMON_LOG10_E,
+    cross_section: CrossSection | None = None,
+) -&gt; np.ndarray:
+    """Effective area per arrival direction, in the published convention.
+
+    A tabulated effective area is differential in the neutrino energy, so the
+    parent is monochromatic: no spectral weighting enters anywhere, and the
+    length is the first-passage range rather than ``1 / Phi(A)``. The assembly
+    keeps the neutral-current and tau ladders and credits every rung to the
+    surface energy. Nothing is averaged over direction, and the first-passage
+    integral is cut at whatever column the direction actually supplies.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry and medium.
+    cos_theta : np.ndarray, shape (n_dir,)
+        Cosine of the arrival zenith for each direction; ``+1`` is overhead.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    reach_km : float or None, optional
+        Growth of the light reach per e-fold [km]. ``None``, the default, keeps
+        the static instrumented radius and leaves the result parameter-free.
+    pivot_gev : float, optional
+        Energy at which the reach vanishes [GeV]. Ignored when ``reach_km`` is
+        ``None``.
+    channels : {"both", "mu"}, optional
+        ``"mu"`` keeps only the ``nu_mu`` charged current, which is the flavour
+        the DR2 tables were generated from. ``"both"``, the default, adds
+        ``nu_tau -&gt; tau -&gt; mu``, which a through-going track cannot distinguish.
+    log10_e : np.ndarray, optional
+        Neutrino energies [log10 GeV].
+    cross_section : CrossSection, optional
+        Cross-section model; ``None`` uses
+        :func:`softpaws.response.effective_area.default_cross_section`.
+
+    Returns
+    -------
+    aeff : np.ndarray, shape (log10_e.size, n_dir)
+        Effective area [cm^2] at each energy and arrival direction.
+    """
+    cross_section = default_cross_section() if cross_section is None else cross_section
+    cos_theta = np.atleast_1d(np.asarray(cos_theta, dtype=float))
+    neutrino_column, muon_column_km = site.columns(cos_theta)
+    n_nucleon = nucleon_number_density(site.density_g_cm3)
+    energy = 10.0 ** np.asarray(log10_e, dtype=float)
+
+    ladders = [("mu", 1.0 - MEAN_INELASTICITY, 1.0)]
+    if channels == "both":
+        ladders.append(("tau", MEAN_Z * (1.0 - MEAN_INELASTICITY), BR_TAU_TO_MU))
+
+    total = np.zeros((energy.size, cos_theta.size))
+    for flavour, muon_fraction, branching in ladders:
+        # One diagonalization serves every column, so the whole set of
+        # directions costs the same as a single one.
+        rungs = [
+            flavour_transmission(
+                float(e_nu),
+                neutrino_column,
+                cross_section,
+                flavour=flavour,
+                n_grid=N_RUNG,
+                decades=RUNG_DECADES,
+            )
+            for e_nu in energy
+        ]
+        # The rock correction below the horizon is solved per direction, so it
+        # is taken for every rung of every energy at once: the entry energy
+        # belongs to the direction, and asking for one parent at a time would
+        # walk that solve again for each of them.
+        rock_all = two_medium_range_ratio(
+            muon_fraction * np.concatenate([rung[0] for rung in rungs]),
+            threshold_gev,
+            cos_theta,
+            site.below_km + 0.5 * site.height_km,
+            site.density_g_cm3,
+        )
+        cut = np.cumsum([0] + [rung[0].size for rung in rungs])
+        for i, (rung_energy, rung_weight) in enumerate(rungs):
+            muon_energy = muon_fraction * rung_energy
+            # (n_rung, n_dir): each rung's muon under each direction's column,
+            # shortened below the horizon by the rock beneath the optical medium.
+            rock = rock_all[cut[i]:cut[i + 1]]
+            length = (
+                truncated_muon_range_km(
+                    muon_energy[:, None],
+                    muon_column_km[None, :],
+                    threshold_gev,
+                    site.density_g_cm3,
+                )
+                * rock
+            )
+            radius = (
+                np.full(muon_energy.shape, site.radius_km)
+                if reach_km is None
+                else light_reach_radius_km(site.radius_km, muon_energy, reach_km, pivot_gev)
+            )
+            area_km2 = site.projected_area_km2(cos_theta[None, :], radius[:, None])
+            volume_km3 = area_km2 * length + site.detector_volume_km3(radius)[:, None]
+            rate = (
+                n_nucleon * cross_section.cc(rung_energy)[:, None] * volume_km3 * CM_PER_KM**3
+            )
+            total[i] += branching * np.sum(rung_weight * rate, axis=0)
+    return total</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.fit_light_reach" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fit_light_reach</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">fit_light_reach(site: Site, cos_theta: ndarray, weights: ndarray, published_aeff_cm2: ndarray, threshold_gev: float, log10_e: ndarray = COMMON_LOG10_E, fractions: ndarray = REACH_FRACTIONS, reference_gev: float = REACH_REFERENCE_GEV, pivot_gev: float = REACH_PIVOT_GEV, channels: str = 'both') -&gt; tuple[float, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Scan the one instrument number against a published effective area.</p>
+<p>The reach enters as <code>Lambda</code> per e-fold about a pivot, and the pivot sits
+far above the band any table covers, so a scan in <code>Lambda</code> is a scan with
+a lever arm of some eight e-folds on it. Two metres per e-fold then move a
+120 m footprint as far as twenty move a 2 km one, and no single grid serves
+both. Scanning the effective radius at <code>reference_gev</code> instead, in units
+of the footprint the site already has, puts every detector on one grid.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry and medium.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Arrival directions the published average runs over.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>weights</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Weight of each direction in that average; sums to one.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>published_aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>The published curve on the same energy grid [cm^2]. Nodes that are not
+positive and finite are skipped.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.COMMON_LOG10_E">COMMON_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies the comparison runs on [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>fractions</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.REACH_FRACTIONS">REACH_FRACTIONS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Effective radius at <code>reference_gev</code>, as a fraction of the footprint
+radius. See :data:<code>REACH_FRACTIONS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reference_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.REACH_REFERENCE_GEV">REACH_REFERENCE_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy the fraction is quoted at [GeV]. See :data:<code>REACH_REFERENCE_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.REACH_PIVOT_GEV">REACH_PIVOT_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy at which the reach vanishes [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>(&#39;both&#39;, &#39;mu&#39;)</code>, default:
+                      <code>&#34;both&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Channels summed; see :func:<code>directional_effective_area_cm2</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>reach_km</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Reach per e-fold [km] of the scanned point that fits best.</p>
+              </div>
+            </li>
+            <li>
+<b><code>residual_dex</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="fractions.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Root-mean-square of <code>log10(published / model)</code> at each scanned point,
+infinite where the reach empties the detector.</p>
+              </div>
+            </li>
+            <li>
+<b><code>models</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="fractions.size">size</span>, <span title="log10_e.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>The averaged model at each scanned point [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def fit_light_reach(
+    site: Site,
+    cos_theta: np.ndarray,
+    weights: np.ndarray,
+    published_aeff_cm2: np.ndarray,
+    threshold_gev: float,
+    log10_e: np.ndarray = COMMON_LOG10_E,
+    fractions: np.ndarray = REACH_FRACTIONS,
+    reference_gev: float = REACH_REFERENCE_GEV,
+    pivot_gev: float = REACH_PIVOT_GEV,
+    channels: str = "both",
+) -&gt; tuple[float, np.ndarray, np.ndarray]:
+    """Scan the one instrument number against a published effective area.
+
+    The reach enters as ``Lambda`` per e-fold about a pivot, and the pivot sits
+    far above the band any table covers, so a scan in ``Lambda`` is a scan with
+    a lever arm of some eight e-folds on it. Two metres per e-fold then move a
+    120 m footprint as far as twenty move a 2 km one, and no single grid serves
+    both. Scanning the effective radius at ``reference_gev`` instead, in units
+    of the footprint the site already has, puts every detector on one grid.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry and medium.
+    cos_theta : np.ndarray, shape (n_dir,)
+        Arrival directions the published average runs over.
+    weights : np.ndarray, shape (n_dir,)
+        Weight of each direction in that average; sums to one.
+    published_aeff_cm2 : np.ndarray, shape (log10_e.size,)
+        The published curve on the same energy grid [cm^2]. Nodes that are not
+        positive and finite are skipped.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    log10_e : np.ndarray, optional
+        Neutrino energies the comparison runs on [log10 GeV].
+    fractions : np.ndarray, optional
+        Effective radius at ``reference_gev``, as a fraction of the footprint
+        radius. See :data:`REACH_FRACTIONS`.
+    reference_gev : float, optional
+        Energy the fraction is quoted at [GeV]. See :data:`REACH_REFERENCE_GEV`.
+    pivot_gev : float, optional
+        Energy at which the reach vanishes [GeV].
+    channels : {"both", "mu"}, optional
+        Channels summed; see :func:`directional_effective_area_cm2`.
+
+    Returns
+    -------
+    reach_km : float
+        Reach per e-fold [km] of the scanned point that fits best.
+    residual_dex : np.ndarray, shape (fractions.size,)
+        Root-mean-square of ``log10(published / model)`` at each scanned point,
+        infinite where the reach empties the detector.
+    models : np.ndarray, shape (fractions.size, log10_e.size)
+        The averaged model at each scanned point [cm^2].
+    """
+    published = np.asarray(published_aeff_cm2, dtype=float)
+    usable = np.isfinite(published) &amp; (published &gt; 0.0)
+    if not np.any(usable):
+        raise ValueError("The published curve has no positive node to fit against.")
+    # Below the pivot the reach is negative, so a fraction under one is a
+    # positive Lambda: the array responds to less than its own footprint.
+    lever = np.log(reference_gev / pivot_gev)
+    reaches = site.radius_km * (np.asarray(fractions, dtype=float) - 1.0) / lever
+
+    models = np.empty((reaches.size, np.size(log10_e)))
+    residual = np.full(reaches.size, np.inf)
+    for i, reach_km in enumerate(reaches):
+        models[i] = (
+            directional_effective_area_cm2(
+                site, cos_theta, threshold_gev, reach_km=float(reach_km),
+                pivot_gev=pivot_gev, channels=channels, log10_e=log10_e,
+            )
+            @ np.asarray(weights, dtype=float)
+        )
+        if np.all(np.isfinite(models[i][usable]) &amp; (models[i][usable] &gt; 0.0)):
+            ratio = np.log10(published[usable] / models[i][usable])
+            residual[i] = float(np.sqrt(np.mean(ratio**2)))
+    return float(reaches[int(np.argmin(residual))]), residual, models</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.fit_published_reach" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fit_published_reach</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">fit_published_reach(site: Site, threshold_gev: float, log10_e: ndarray | None = None, fit_band: tuple[float, float] = (5.0, 7.5), n_zenith: int = 8, channels: str = 'both', data_dir=None) -&gt; tuple[float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Fit a site's light reach to its own published effective area.</p>
+<p>Looks up the published curve and the sky it was averaged over, averages
+the model over the same sky, and scans the reach with
+:func:<code>fit_light_reach</code> inside <code>fit_band</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>One of the sites with a published curve: IceCube, ARCA230, P-ONE or
+TRIDENT.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies the comparison runs on [log10 GeV]. <code>None</code> takes
+4 to 8 in steps of 0.25.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>fit_band</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>(5.0, 7.5)</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Band of <code>log10(E / GeV)</code> the fit is scored over. Published nodes
+outside the site's own range are skipped.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_zenith</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>8</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of zenith slices in the sky average.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>(&#39;both&#39;, &#39;mu&#39;)</code>, default:
+                      <code>&#34;both&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Channels summed; see :func:<code>directional_effective_area_cm2</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the IceTracks-DR2 release, read for IceCube alone.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>reach_km</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Fitted reach per e-fold of muon energy [km].</p>
+              </div>
+            </li>
+            <li>
+<b><code>residual_dex</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Root-mean-square residual of the best fit [dex].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def fit_published_reach(
+    site: Site,
+    threshold_gev: float,
+    log10_e: np.ndarray | None = None,
+    fit_band: tuple[float, float] = (5.0, 7.5),
+    n_zenith: int = 8,
+    channels: str = "both",
+    data_dir=None,
+) -&gt; tuple[float, float]:
+    """Fit a site's light reach to its own published effective area.
+
+    Looks up the published curve and the sky it was averaged over, averages
+    the model over the same sky, and scans the reach with
+    :func:`fit_light_reach` inside ``fit_band``.
+
+    Parameters
+    ----------
+    site : Site
+        One of the sites with a published curve: IceCube, ARCA230, P-ONE or
+        TRIDENT.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    log10_e : np.ndarray or None, optional
+        Neutrino energies the comparison runs on [log10 GeV]. ``None`` takes
+        4 to 8 in steps of 0.25.
+    fit_band : tuple of float, optional
+        Band of ``log10(E / GeV)`` the fit is scored over. Published nodes
+        outside the site's own range are skipped.
+    n_zenith : int, optional
+        Number of zenith slices in the sky average.
+    channels : {"both", "mu"}, optional
+        Channels summed; see :func:`directional_effective_area_cm2`.
+    data_dir : pathlib.Path or None, optional
+        Root of the IceTracks-DR2 release, read for IceCube alone.
+
+    Returns
+    -------
+    reach_km : float
+        Fitted reach per e-fold of muon energy [km].
+    residual_dex : float
+        Root-mean-square residual of the best fit [dex].
+    """
+    log10_e = REACH_FIT_LOG10_E.copy() if log10_e is None else log10_e
+    published, cos_range = published_effective_area_cm2(site, log10_e, data_dir)
+    theta_deg, weights = zenith_grid(n_zenith, cos_range)
+    band = (log10_e &gt;= fit_band[0]) &amp; (log10_e &lt;= fit_band[1])
+    reach_km, residual, _ = fit_light_reach(
+        site, np.cos(np.deg2rad(theta_deg)), weights, published[band], threshold_gev,
+        log10_e=log10_e[band], channels=channels,
+    )
+    return reach_km, float(np.min(residual))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.point_source_limit" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">point_source_limit</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">point_source_limit(site: Site, dec_deg: float | ndarray, threshold_gev: float, livetime_s: float, gamma: float = 2.0, reach_km: float | None = None, background: AtmosphericFlux | None = None, bin_radius_deg: float | ndarray = 1.0, log10_e: ndarray | None = None, n_cos_theta: int = 60, channels: str = 'both') -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Flux a point-source search reaches with one detector, per declination.</p>
+<p>A source at a fixed declination sweeps a fixed set of zeniths as the Earth
+turns, so its response is the directional effective area contracted with
+the time the source spends in each zenith band
+(:func:<code>zenith_band_weights</code>). Without a background the result is the
+background-free power-law ceiling. With an atmospheric flux, the
+background is counted direction by direction in a bin of
+<code>bin_radius_deg</code> around the source, and the energy the search starts at
+is chosen to give the best limit (see
+:func:<code>~softpaws.response.sensitivity.optimized_window_sensitivity</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry, medium and latitude.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_deg</code></b>
+                  (<code>(<span title="float">float</span> or <span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Source declinations [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>2.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index of the source.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reach_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Light reach per e-fold of muon energy [km], as from
+:func:<code>fit_published_reach</code>. <code>None</code> keeps the instrumented footprint.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>background</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="AtmosphericFlux (softpaws.fluxes.atmospheric.AtmosphericFlux)" href="../../fluxes/atmospheric/#softpaws.fluxes.atmospheric.AtmosphericFlux">AtmosphericFlux</a> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Atmospheric neutrino flux. <code>None</code> gives a background-free search.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bin_radius_deg</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Angular radius of the source bin [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV]. <code>None</code> takes 4 to 8 in steps of 0.25.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_cos_theta</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>60</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of zenith bands the daily sweep is binned into.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>(&#39;both&#39;, &#39;mu&#39;)</code>, default:
+                      <code>&#34;both&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Channels summed; see :func:<code>directional_effective_area_cm2</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>e2_flux</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>E^2 phi</code> at 100 TeV the search excludes at 90% [GeV cm^-2 s^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def point_source_limit(
+    site: Site,
+    dec_deg: float | np.ndarray,
+    threshold_gev: float,
+    livetime_s: float,
+    gamma: float = 2.0,
+    reach_km: float | None = None,
+    background: AtmosphericFlux | None = None,
+    bin_radius_deg: float | np.ndarray = 1.0,
+    log10_e: np.ndarray | None = None,
+    n_cos_theta: int = 60,
+    channels: str = "both",
+) -&gt; np.ndarray:
+    """Flux a point-source search reaches with one detector, per declination.
+
+    A source at a fixed declination sweeps a fixed set of zeniths as the Earth
+    turns, so its response is the directional effective area contracted with
+    the time the source spends in each zenith band
+    (:func:`zenith_band_weights`). Without a background the result is the
+    background-free power-law ceiling. With an atmospheric flux, the
+    background is counted direction by direction in a bin of
+    ``bin_radius_deg`` around the source, and the energy the search starts at
+    is chosen to give the best limit (see
+    :func:`~softpaws.response.sensitivity.optimized_window_sensitivity`).
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry, medium and latitude.
+    dec_deg : float or np.ndarray, shape (n_dec,)
+        Source declinations [deg].
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    livetime_s : float
+        Exposure [s].
+    gamma : float, optional
+        Spectral index of the source.
+    reach_km : float or None, optional
+        Light reach per e-fold of muon energy [km], as from
+        :func:`fit_published_reach`. ``None`` keeps the instrumented footprint.
+    background : AtmosphericFlux or None, optional
+        Atmospheric neutrino flux. ``None`` gives a background-free search.
+    bin_radius_deg : float or np.ndarray, optional
+        Angular radius of the source bin [deg].
+    log10_e : np.ndarray or None, optional
+        Neutrino energies [log10 GeV]. ``None`` takes 4 to 8 in steps of 0.25.
+    n_cos_theta : int, optional
+        Number of zenith bands the daily sweep is binned into.
+    channels : {"both", "mu"}, optional
+        Channels summed; see :func:`directional_effective_area_cm2`.
+
+    Returns
+    -------
+    e2_flux : np.ndarray, shape (n_dec,)
+        ``E^2 phi`` at 100 TeV the search excludes at 90% [GeV cm^-2 s^-1].
+    """
+    log10_e = REACH_FIT_LOG10_E.copy() if log10_e is None else log10_e
+    dec_deg = np.atleast_1d(np.asarray(dec_deg, dtype=float))
+    cos_theta, weights = zenith_band_weights(
+        site.latitude_deg, dec_deg, n_cos_theta=n_cos_theta
+    )
+    per_direction = directional_effective_area_cm2(
+        site, cos_theta, threshold_gev, reach_km=reach_km, log10_e=log10_e,
+        channels=channels,
+    )
+    swept = per_direction @ weights.T
+    if background is None:
+        return power_law_sensitivity(swept, livetime_s, gamma, log10_e)
+    density = atmospheric_background_density(
+        background, per_direction, cos_theta, weights, livetime_s, log10_e, bin_radius_deg
+    )
+    limit, _ = optimized_window_sensitivity(swept, density, livetime_s, gamma, log10_e)
+    return limit</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.point_source_sensitivity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">point_source_sensitivity</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">point_source_sensitivity(aeff_cm2: ndarray, livetime_s: float, gamma: float, emin_gev: float = DEFAULT_EMIN_GEV, log10_e: ndarray = COMMON_LOG10_E, pivot_gev: float = PIVOT_ENERGY_GEV, n_events: float = N_EVENTS_LIMIT) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Flux normalization a background-free search would exclude.</p>
+<p>For <code>phi(E) = phi_0 (E / E_piv)^-gamma</code> the expected count is linear in
+<code>phi_0</code>, so the limit is one quadrature,</p>
+<p>.. math:: \phi_0^{\rm lim} = \frac{N_{\rm lim}}
+    {T \int_{E_{\min}} \dd E\, A_{\rm eff}(E) (E/E_{\rm piv})^{-\gamma}}.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, ...))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on the energy grid, energy first.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index of the assumed source.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>emin_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_EMIN_GEV">DEFAULT_EMIN_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Bottom of the analysis window [GeV]; see :data:<code>DEFAULT_EMIN_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.COMMON_LOG10_E">COMMON_LOG10_E</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.response.sensitivity.PIVOT_ENERGY_GEV">PIVOT_ENERGY_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Pivot energy of the quoted flux [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_events</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.response.sensitivity.N_EVENTS_LIMIT">N_EVENTS_LIMIT</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Events the search excludes; see :data:<code>N_EVENTS_LIMIT</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>e2_flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>E^2 phi</code> at <code>pivot_gev</code> [GeV cm^-2 s^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>softpaws.response.sensitivity.power_law_sensitivity : The same limit for a
+    diffuse flux as well, and the implementation this calls.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def point_source_sensitivity(
+    aeff_cm2: np.ndarray,
+    livetime_s: float,
+    gamma: float,
+    emin_gev: float = DEFAULT_EMIN_GEV,
+    log10_e: np.ndarray = COMMON_LOG10_E,
+    pivot_gev: float = PIVOT_ENERGY_GEV,
+    n_events: float = N_EVENTS_LIMIT,
+) -&gt; np.ndarray:
+    r"""Flux normalization a background-free search would exclude.
+
+    For ``phi(E) = phi_0 (E / E_piv)^-gamma`` the expected count is linear in
+    ``phi_0``, so the limit is one quadrature,
+
+    .. math:: \\phi_0^{\\rm lim} = \\frac{N_{\\rm lim}}
+        {T \\int_{E_{\\min}} \\dd E\\, A_{\\rm eff}(E) (E/E_{\\rm piv})^{-\\gamma}}.
+
+    Parameters
+    ----------
+    aeff_cm2 : np.ndarray, shape (log10_e.size, ...)
+        Effective area [cm^2] on the energy grid, energy first.
+    livetime_s : float
+        Exposure [s].
+    gamma : float
+        Spectral index of the assumed source.
+    emin_gev : float, optional
+        Bottom of the analysis window [GeV]; see :data:`DEFAULT_EMIN_GEV`.
+    log10_e : np.ndarray, optional
+        Neutrino energies [log10 GeV].
+    pivot_gev : float, optional
+        Pivot energy of the quoted flux [GeV].
+    n_events : float, optional
+        Events the search excludes; see :data:`N_EVENTS_LIMIT`.
+
+    Returns
+    -------
+    e2_flux : np.ndarray
+        ``E^2 phi`` at ``pivot_gev`` [GeV cm^-2 s^-1].
+
+    See Also
+    --------
+    softpaws.response.sensitivity.power_law_sensitivity : The same limit for a
+        diffuse flux as well, and the implementation this calls.
+    """
+    return power_law_sensitivity(
+        aeff_cm2, livetime_s, gamma, log10_e, emin_gev, pivot_gev, n_events
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.polar_band_directions" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">polar_band_directions</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">polar_band_directions(sin_dec_edges: ndarray, n_sub: int = N_SUB_BAND) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Arrival directions sampling each published band, seen from the Pole.</p>
+<p>At the South Pole the hour angle drops out of the zenith relation and every
+declination maps to one fixed zenith, <code>cos(theta_z) = -sin(dec)</code>. A source
+in the northern sky is therefore permanently upgoing and one in the southern
+sky permanently downgoing, which is what makes IceCube the clean site for a
+declination-resolved test: no time averaging enters at all.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>sin_dec_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Published band edges in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sub</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants.N_SUB_BAND">N_SUB_BAND</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Directions sampled inside each band.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>cos_theta</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>, <span title="n_sub">n_sub</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Sub-sample directions within each band, uniform in <code>sin(dec)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def polar_band_directions(
+    sin_dec_edges: np.ndarray, n_sub: int = N_SUB_BAND
+) -&gt; np.ndarray:
+    """Arrival directions sampling each published band, seen from the Pole.
+
+    At the South Pole the hour angle drops out of the zenith relation and every
+    declination maps to one fixed zenith, ``cos(theta_z) = -sin(dec)``. A source
+    in the northern sky is therefore permanently upgoing and one in the southern
+    sky permanently downgoing, which is what makes IceCube the clean site for a
+    declination-resolved test: no time averaging enters at all.
+
+    Parameters
+    ----------
+    sin_dec_edges : np.ndarray, shape (n_dec + 1,)
+        Published band edges in ``sin(dec)``.
+    n_sub : int, optional
+        Directions sampled inside each band.
+
+    Returns
+    -------
+    cos_theta : np.ndarray, shape (n_dec, n_sub)
+        Sub-sample directions within each band, uniform in ``sin(dec)``.
+    """
+    sin_dec_edges = np.asarray(sin_dec_edges, dtype=float)
+    lo, hi = sin_dec_edges[:-1], sin_dec_edges[1:]
+    fraction = (np.arange(n_sub) + 0.5) / n_sub
+    sin_dec = lo[:, None] + (hi - lo)[:, None] * fraction[None, :]
+    return -sin_dec</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.sky_averaged_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">sky_averaged_effective_area_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">sky_averaged_effective_area_cm2(site: Site, threshold_gev: float, cos_range: tuple[float, float] = (-1.0, 1.0), n_zenith: int = 24, **kwargs) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective area averaged over a band of arrival directions [cm^2].</p>
+<p>Averages :func:<code>directional_effective_area_cm2</code> over <code>n_zenith</code> slices
+of equal solid angle, which is how a published table quoted over a
+hemisphere or the whole sky is built.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Site
+
+
+  
+      dataclass
+   (softpaws.detectors.Site)" href="../../detectors/#softpaws.detectors.Site">Site</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector geometry and medium.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_range</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>(-1.0, 1.0)</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Band of <code>cos(theta)</code> to average over. The default is the whole sky,
+and <code>(-1.0, 0.0)</code> is the upgoing hemisphere.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_zenith</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>24</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of zenith slices in the average.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>**kwargs</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Passed on to :func:<code>directional_effective_area_cm2</code>, for example
+<code>reach_km</code>, <code>channels</code> or <code>log10_e</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Direction-averaged effective area [cm^2] at each energy.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from softpaws.detectors import ICECUBE
+&gt;&gt;&gt; aeff = sky_averaged_effective_area_cm2(
+...     ICECUBE, 1.0e3, cos_range=(-1.0, 0.0), n_zenith=4, log10_e=np.array([6.0])
+... )
+&gt;&gt;&gt; aeff.shape
+(1,)</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def sky_averaged_effective_area_cm2(
+    site: Site,
+    threshold_gev: float,
+    cos_range: tuple[float, float] = (-1.0, 1.0),
+    n_zenith: int = 24,
+    **kwargs,
+) -&gt; np.ndarray:
+    """Effective area averaged over a band of arrival directions [cm^2].
+
+    Averages :func:`directional_effective_area_cm2` over ``n_zenith`` slices
+    of equal solid angle, which is how a published table quoted over a
+    hemisphere or the whole sky is built.
+
+    Parameters
+    ----------
+    site : Site
+        Detector geometry and medium.
+    threshold_gev : float
+        Muon selection threshold [GeV].
+    cos_range : tuple of float, optional
+        Band of ``cos(theta)`` to average over. The default is the whole sky,
+        and ``(-1.0, 0.0)`` is the upgoing hemisphere.
+    n_zenith : int, optional
+        Number of zenith slices in the average.
+    **kwargs
+        Passed on to :func:`directional_effective_area_cm2`, for example
+        ``reach_km``, ``channels`` or ``log10_e``.
+
+    Returns
+    -------
+    aeff : np.ndarray, shape (log10_e.size,)
+        Direction-averaged effective area [cm^2] at each energy.
+
+    Examples
+    --------
+    &gt;&gt;&gt; import numpy as np
+    &gt;&gt;&gt; from softpaws.detectors import ICECUBE
+    &gt;&gt;&gt; aeff = sky_averaged_effective_area_cm2(
+    ...     ICECUBE, 1.0e3, cos_range=(-1.0, 0.0), n_zenith=4, log10_e=np.array([6.0])
+    ... )
+    &gt;&gt;&gt; aeff.shape
+    (1,)
+    """
+    theta_deg, weights = zenith_grid(n_zenith, cos_range)
+    per_direction = directional_effective_area_cm2(
+        site, np.cos(np.deg2rad(theta_deg)), threshold_gev, **kwargs
+    )
+    return per_direction @ weights</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.declination.zenith_band_weights" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">zenith_band_weights</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">zenith_band_weights(latitude_deg: float, dec_deg: ndarray, n_cos_theta: int = N_COS_THETA, n_hour_angle: int = N_HOUR_ANGLE) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Fraction of a sidereal day each declination spends in each zenith band.</p>
+<p>A source at declination <code>delta</code> seen from latitude <code>phi</code> has</p>
+<p>.. math:: \cos\theta_z = \sin\phi\,\sin\delta
+    + \cos\phi\,\cos\delta\,\cos H,</p>
+<p>with the hour angle <code>H</code> sweeping uniformly over a sidereal day. Since the
+effective area depends on the arrival direction only through
+<code>cos(theta_z)</code>, binning that sweep is all the geometry a point source
+needs: the direction-averaged area is the band areas contracted with these
+weights, exactly.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>latitude_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Geographic latitude of the site [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_deg</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Source declinations [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_cos_theta</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants.N_COS_THETA">N_COS_THETA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of zenith bands.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_hour_angle</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants.N_HOUR_ANGLE">N_HOUR_ANGLE</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Hour angles sampled over the day.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>cos_theta</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_cos_theta">n_cos_theta</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Band centres in <code>cos(theta_z)</code>, descending from near <code>+1</code>.</p>
+              </div>
+            </li>
+            <li>
+<b><code>weights</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>, <span title="n_cos_theta">n_cos_theta</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Time fraction in each band; each row sums to one.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/declination.py</code></summary>
+              <pre class="highlight"><code class="language-python">def zenith_band_weights(
+    latitude_deg: float,
+    dec_deg: np.ndarray,
+    n_cos_theta: int = N_COS_THETA,
+    n_hour_angle: int = N_HOUR_ANGLE,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    r"""Fraction of a sidereal day each declination spends in each zenith band.
+
+    A source at declination ``delta`` seen from latitude ``phi`` has
+
+    .. math:: \\cos\\theta_z = \\sin\\phi\\,\\sin\\delta
+        + \\cos\\phi\\,\\cos\\delta\\,\\cos H,
+
+    with the hour angle ``H`` sweeping uniformly over a sidereal day. Since the
+    effective area depends on the arrival direction only through
+    ``cos(theta_z)``, binning that sweep is all the geometry a point source
+    needs: the direction-averaged area is the band areas contracted with these
+    weights, exactly.
+
+    Parameters
+    ----------
+    latitude_deg : float
+        Geographic latitude of the site [deg].
+    dec_deg : np.ndarray, shape (n_dec,)
+        Source declinations [deg].
+    n_cos_theta : int, optional
+        Number of zenith bands.
+    n_hour_angle : int, optional
+        Hour angles sampled over the day.
+
+    Returns
+    -------
+    cos_theta : np.ndarray, shape (n_cos_theta,)
+        Band centres in ``cos(theta_z)``, descending from near ``+1``.
+    weights : np.ndarray, shape (n_dec, n_cos_theta)
+        Time fraction in each band; each row sums to one.
+    """
+    phi = np.deg2rad(latitude_deg)
+    delta = np.deg2rad(np.atleast_1d(np.asarray(dec_deg, dtype=float)))
+    hour = np.linspace(0.0, 2.0 * np.pi, n_hour_angle, endpoint=False)
+
+    cos_theta_z = (
+        np.sin(phi) * np.sin(delta)[:, None]
+        + np.cos(phi) * np.cos(delta)[:, None] * np.cos(hour)[None, :]
+    )
+    edges = np.linspace(-1.0, 1.0, n_cos_theta + 1)
+    weights = np.vstack([np.histogram(row, bins=edges)[0] for row in cos_theta_z]).astype(float)
+    weights /= weights.sum(axis=1, keepdims=True)
+    return 0.5 * (edges[:-1] + edges[1:]), weights</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="response"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../effective_area/" class="btn btn-neutral float-right" title="effective_area">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../effective_area/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

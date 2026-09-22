@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/comparison/events/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>events - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "events";
+        var mkdocs_page_input_path = "api-reference/softpaws/comparison/events.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/comparison/events/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >comparison</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">events</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.events.astro_flux">astro_flux</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.events.combine_band">combine_band</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.events.predict">predict</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.events.published_response">published_response</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">comparison</li>
+      <li class="breadcrumb-item active">events</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.comparison.events" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.comparison.events</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>The DR2 event benchmark: a prediction with every input pinned outside.</p>
+<p>:mod:<code>softpaws.comparison.reco_likelihood</code> fits the model to the IC86 upgoing
+events with four profiled parameters. This module does the simpler and
+harder thing: it predicts the same sample with nothing fitted. The
+atmospheric background is the MCEq table at normalization one, the
+astrophysical flux is IceCube's 9.5-year tracks measurement at a 1:1:1
+composition, and the model responses are folded through the released
+smearing marginal exactly as the fit folds them.</p>
+<p>The band on the prediction is external-input uncertainty only: the hadronic
+spread on each atmospheric normalization and the tracks measurement's own
+normalization and index errors. Each source is a normalization error,
+correlated across every bin, so it adds linearly over whatever bins are
+summed and only the sources combine in quadrature -- which is what
+:func:<code>combine_band</code> does.</p>
+<p>:func:<code>published_response</code> gives the baseline the model has to be judged
+against: the same fluxes through IceCube's own released effective area. If
+both land on the data, the benchmark tests the fluxes and the smearing, not
+the transport.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="astro_flux (softpaws.comparison.events.astro_flux)" href="#softpaws.comparison.events.astro_flux">astro_flux</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Per-flavour power law on the fine grid [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="combine_band (softpaws.comparison.events.combine_band)" href="#softpaws.comparison.events.combine_band">combine_band</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>One-sigma external-input band after summing bins with <code>reduce</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="predict (softpaws.comparison.events.predict)" href="#softpaws.comparison.events.predict">predict</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Reconstructed-space components on the full reco grid, per band.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="published_response (softpaws.comparison.events.published_response)" href="#softpaws.comparison.events.published_response">published_response</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>IceCube's own DR2 effective area on the model's response grid.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.events.astro_flux" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">astro_flux</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">astro_flux(gamma: float, phi0: float = ASTRO_PHI, log10_e_grid: ndarray = LOG10_E_GRID) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Per-flavour power law on the fine grid [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="ASTRO_PHI">ASTRO_PHI</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Normalization at the 100 TeV pivot
+[GeV^-1 cm^-2 s^-1 sr^-1]; the tracks fit by default.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.comparison.reco_likelihood.LOG10_E_GRID">LOG10_E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy grid [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>flux</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_energy">n_energy</span>, 1))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Differential flux, one column so it broadcasts over the bands.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/events.py</code></summary>
+              <pre class="highlight"><code class="language-python">def astro_flux(
+    gamma: float,
+    phi0: float = ASTRO_PHI,
+    log10_e_grid: np.ndarray = LOG10_E_GRID,
+) -&gt; np.ndarray:
+    """Per-flavour power law on the fine grid [GeV^-1 cm^-2 s^-1 sr^-1].
+
+    Parameters
+    ----------
+    gamma : float
+        Spectral index.
+    phi0 : float, optional
+        Normalization at the 100 TeV pivot
+        [GeV^-1 cm^-2 s^-1 sr^-1]; the tracks fit by default.
+    log10_e_grid : np.ndarray, optional
+        Energy grid [log10 GeV].
+
+    Returns
+    -------
+    flux : np.ndarray, shape (n_energy, 1)
+        Differential flux, one column so it broadcasts over the bands.
+    """
+    energy = 10.0**log10_e_grid
+    return phi0 * (energy[:, None] / 1.0e5) ** (-gamma)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.events.combine_band" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">combine_band</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">combine_band(errors: dict, reduce: Callable) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>One-sigma external-input band after summing bins with <code>reduce</code>.</p>
+<p>Every entry of <code>errors</code> is one normalization or index error, so it is
+fully correlated across bins and its grid adds linearly under <code>reduce</code>;
+the sources then add in quadrature. Adding the per-bin grids in
+quadrature across bins instead would shrink a 25% normalization error
+by roughly the square root of the number of bins.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>errors</code></b>
+                  (<code>dict of str -&gt; np.ndarray or tuple</code>)
+              –
+              <div class="doc-md-description">
+                <p>Signed one-sigma grids per source, as returned by :func:<code>predict</code>.
+<code>"astro_gamma"</code> holds the two signed index variations, which
+change sign across the pivot and so must be reduced before taking
+their magnitude.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reduce</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maps a (reco bins, declination bands) grid to the sum wanted, for
+example <code>lambda g: g[window].sum()</code> or <code>lambda g: g.sum(axis=1)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>band</code></b>(                  <code><span title="numpy.ndarray">ndarray</span> or <span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>One-sigma band of whatever shape <code>reduce</code> returns.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/events.py</code></summary>
+              <pre class="highlight"><code class="language-python">def combine_band(errors: dict, reduce: Callable) -&gt; np.ndarray:
+    """One-sigma external-input band after summing bins with ``reduce``.
+
+    Every entry of ``errors`` is one normalization or index error, so it is
+    fully correlated across bins and its grid adds linearly under ``reduce``;
+    the sources then add in quadrature. Adding the per-bin grids in
+    quadrature across bins instead would shrink a 25% normalization error
+    by roughly the square root of the number of bins.
+
+    Parameters
+    ----------
+    errors : dict of str -&gt; np.ndarray or tuple
+        Signed one-sigma grids per source, as returned by :func:`predict`.
+        ``"astro_gamma"`` holds the two signed index variations, which
+        change sign across the pivot and so must be reduced before taking
+        their magnitude.
+    reduce : callable
+        Maps a (reco bins, declination bands) grid to the sum wanted, for
+        example ``lambda g: g[window].sum()`` or ``lambda g: g.sum(axis=1)``.
+
+    Returns
+    -------
+    band : np.ndarray or float
+        One-sigma band of whatever shape ``reduce`` returns.
+    """
+    terms = []
+    for key, grid in errors.items():
+        if key == "astro_gamma":
+            lo, hi = grid
+            terms.append(0.5 * (np.abs(reduce(lo)) + np.abs(reduce(hi))))
+        else:
+            terms.append(reduce(grid))
+    return np.sqrt(sum(term**2 for term in terms))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.events.predict" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">predict</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">predict(responses: dict[str, ndarray], atmos: dict[str, ndarray], enu_edges: ndarray, dec_edges: ndarray, marginal: ndarray, livetime_s: float, gamma: float = ASTRO_GAMMA, gamma_err: float = ASTRO_GAMMA_ERR, phi0: float = ASTRO_PHI, phi0_err: float = ASTRO_PHI_ERR, atm_err: float = ATM_ERR) -&gt; tuple[dict[str, np.ndarray], dict[str, np.ndarray | tuple]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Reconstructed-space components on the full reco grid, per band.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>responses</code></b>
+                  (<code>dict of str -&gt; np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>"mu"</code> and <code>"tau"</code> responses on (<code>LOG10_E_GRID</code>, bands) [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>atmos</code></b>
+                  (<code>dict of str -&gt; np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>"conv"</code> and <code>"prompt"</code> fluxes on the same grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>enu_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>True-energy bin edges of the smearing table [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>marginal</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Smearing marginal, as
+:func:<code>~softpaws.comparison.reco_likelihood.smearing_marginal</code>
+returns it.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="ASTRO_GAMMA">ASTRO_GAMMA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Astrophysical index and its error.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_err</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="ASTRO_GAMMA">ASTRO_GAMMA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Astrophysical index and its error.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="ASTRO_PHI">ASTRO_PHI</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Per-flavour normalization at 100 TeV and its error
+[GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0_err</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="ASTRO_PHI">ASTRO_PHI</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Per-flavour normalization at 100 TeV and its error
+[GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>atm_err</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.ATM_ERR">ATM_ERR</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fractional error on each atmospheric normalization.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>components</code></b>(                  <code>dict of str -&gt; np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>"conv"</code>, <code>"prompt"</code>, <code>"astro_mu"</code>, <code>"astro_tau"</code> on
+(reco bins, declination bands).</p>
+              </div>
+            </li>
+            <li>
+<b><code>errors</code></b>(                  <code>dict of str -&gt; np.ndarray or tuple</code>
+)              –
+              <div class="doc-md-description">
+                <p>Signed one-sigma grids per external input, same shape, each fully
+correlated across bins; combine with :func:<code>combine_band</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/events.py</code></summary>
+              <pre class="highlight"><code class="language-python">def predict(
+    responses: dict[str, np.ndarray],
+    atmos: dict[str, np.ndarray],
+    enu_edges: np.ndarray,
+    dec_edges: np.ndarray,
+    marginal: np.ndarray,
+    livetime_s: float,
+    gamma: float = ASTRO_GAMMA,
+    gamma_err: float = ASTRO_GAMMA_ERR,
+    phi0: float = ASTRO_PHI,
+    phi0_err: float = ASTRO_PHI_ERR,
+    atm_err: float = ATM_ERR,
+) -&gt; tuple[dict[str, np.ndarray], dict[str, np.ndarray | tuple]]:
+    """Reconstructed-space components on the full reco grid, per band.
+
+    Parameters
+    ----------
+    responses : dict of str -&gt; np.ndarray
+        ``"mu"`` and ``"tau"`` responses on (``LOG10_E_GRID``, bands) [cm^2].
+    atmos : dict of str -&gt; np.ndarray
+        ``"conv"`` and ``"prompt"`` fluxes on the same grid.
+    enu_edges : np.ndarray
+        True-energy bin edges of the smearing table [log10 GeV].
+    dec_edges : np.ndarray
+        Declination bin edges [deg].
+    marginal : np.ndarray
+        Smearing marginal, as
+        :func:`~softpaws.comparison.reco_likelihood.smearing_marginal`
+        returns it.
+    livetime_s : float
+        Exposure [s].
+    gamma, gamma_err : float, optional
+        Astrophysical index and its error.
+    phi0, phi0_err : float, optional
+        Per-flavour normalization at 100 TeV and its error
+        [GeV^-1 cm^-2 s^-1 sr^-1].
+    atm_err : float, optional
+        Fractional error on each atmospheric normalization.
+
+    Returns
+    -------
+    components : dict of str -&gt; np.ndarray
+        ``"conv"``, ``"prompt"``, ``"astro_mu"``, ``"astro_tau"`` on
+        (reco bins, declination bands).
+    errors : dict of str -&gt; np.ndarray or tuple
+        Signed one-sigma grids per external input, same shape, each fully
+        correlated across bins; combine with :func:`combine_band`.
+    """
+    d_omega = 2.0 * np.pi * np.diff(np.sin(np.deg2rad(dec_edges)))
+    marginal_tau = RecoLikelihood._shifted_marginal(enu_edges, marginal)
+
+    def fold(counts, tau=False):
+        return np.einsum("ij,ijk-&gt;kj", counts, marginal_tau if tau else marginal)
+
+    ones = np.ones((1, d_omega.size))
+    flux = astro_flux(gamma, phi0) * ones
+    components = {
+        "conv": fold(true_counts(responses["mu"], atmos["conv"], enu_edges,
+                                 d_omega, livetime_s)),
+        "prompt": fold(true_counts(responses["mu"], atmos["prompt"], enu_edges,
+                                   d_omega, livetime_s)),
+        "astro_mu": fold(true_counts(responses["mu"], flux, enu_edges,
+                                     d_omega, livetime_s)),
+        "astro_tau": fold(true_counts(responses["tau"], flux, enu_edges,
+                                      d_omega, livetime_s), tau=True),
+    }
+
+    astro = components["astro_mu"] + components["astro_tau"]
+    spread = []
+    for varied_gamma in (gamma - gamma_err, gamma + gamma_err):
+        flux_g = astro_flux(varied_gamma, phi0) * ones
+        varied = (fold(true_counts(responses["mu"], flux_g, enu_edges,
+                                   d_omega, livetime_s))
+                  + fold(true_counts(responses["tau"], flux_g, enu_edges,
+                                     d_omega, livetime_s), tau=True))
+        spread.append(varied - astro)
+    errors = {
+        "conv": atm_err * components["conv"],
+        "prompt": atm_err * components["prompt"],
+        "astro_norm": phi0_err / phi0 * astro,
+        "astro_gamma": (spread[0], spread[1]),
+    }
+    return components, errors</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.events.published_response" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">published_response</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">published_response(data_dir: str | Path | None, enu_edges: ndarray, dec_edges: ndarray, log10_e_grid: ndarray = LOG10_E_GRID) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>IceCube's own DR2 effective area on the model's response grid.</p>
+<p>The released <code>IC86_effectiveArea.csv</code> is an average over each (true
+energy, true declination) bin, so it is broadcast piecewise-constant
+onto <code>log10_e_grid</code> inside each smearing bin and taken at the band's
+own declination. The table is a <code>nu_mu</code> area, so the tau channel is
+zero in this response.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release; <code>None</code> uses
+:func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>enu_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>True-energy bin edges of the smearing table [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Upgoing declination bin edges [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.comparison.reco_likelihood.LOG10_E_GRID">LOG10_E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy grid the response is returned on [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>responses</code></b>(                  <code>dict of str -&gt; np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>"mu"</code> on (<code>log10_e_grid</code>, bands) [cm^2], and <code>"tau"</code> of zeros.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/events.py</code></summary>
+              <pre class="highlight"><code class="language-python">def published_response(
+    data_dir: str | pathlib.Path | None,
+    enu_edges: np.ndarray,
+    dec_edges: np.ndarray,
+    log10_e_grid: np.ndarray = LOG10_E_GRID,
+) -&gt; dict[str, np.ndarray]:
+    """IceCube's own DR2 effective area on the model's response grid.
+
+    The released ``IC86_effectiveArea.csv`` is an average over each (true
+    energy, true declination) bin, so it is broadcast piecewise-constant
+    onto ``log10_e_grid`` inside each smearing bin and taken at the band's
+    own declination. The table is a ``nu_mu`` area, so the tau channel is
+    zero in this response.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses
+        :func:`softpaws.data.paths.dr2_dir`.
+    enu_edges : np.ndarray
+        True-energy bin edges of the smearing table [log10 GeV].
+    dec_edges : np.ndarray
+        Upgoing declination bin edges [deg].
+    log10_e_grid : np.ndarray, optional
+        Energy grid the response is returned on [log10 GeV].
+
+    Returns
+    -------
+    responses : dict of str -&gt; np.ndarray
+        ``"mu"`` on (``log10_e_grid``, bands) [cm^2], and ``"tau"`` of zeros.
+    """
+    data_dir = dr2_dir() if data_dir is None else pathlib.Path(data_dir)
+    path = require(data_dir / "irfs" / "IC86_effectiveArea.csv", "IceTracks-DR2 release")
+    raw = np.genfromtxt(path, comments="#")
+    aeff = parse_aeff(raw)
+    dec_centers = 0.5 * (dec_edges[:-1] + dec_edges[1:])
+    log10_e = np.clip(log10_e_grid, enu_edges[0] + 1.0e-9, enu_edges[-1] - 1.0e-9)
+    i_enu = np.searchsorted(enu_edges, log10_e, side="right") - 1
+    table_e_centers = aeff.log10_energy_centers
+    table_sin_edges = aeff.sin_dec_edges
+    i_table_e = np.searchsorted(table_e_centers, 0.5 * (enu_edges[i_enu] + enu_edges[i_enu + 1]))
+    i_table_e = np.clip(i_table_e - 1, 0, table_e_centers.size - 1)
+    i_table_d = np.clip(np.searchsorted(table_sin_edges, np.sin(np.deg2rad(dec_centers)),
+                                        side="right") - 1, 0, table_sin_edges.size - 2)
+    mu = aeff.values[np.ix_(i_table_e, i_table_d)]
+    return {"mu": mu, "tau": np.zeros_like(mu)}</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../event_energy/" class="btn btn-neutral float-left" title="event_energy"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../feldman_cousins/" class="btn btn-neutral float-right" title="feldman_cousins">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../event_energy/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../feldman_cousins/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

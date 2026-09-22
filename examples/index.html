@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/examples/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Examples - softpaws</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Examples";
+        var mkdocs_page_input_path = "examples.md";
+        var mkdocs_page_url = "/softpaws/examples/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="..">
+    <img src="../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Examples</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#the-examples">The examples</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#what-they-reproduce">What they reproduce</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#checking-that-they-run">Checking that they run</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >softpaws</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../api-reference/softpaws/">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../api-reference/softpaws/constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../api-reference/softpaws/standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../api-reference/softpaws/transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Documentation</li>
+      <li class="breadcrumb-item active">Examples</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/MeighenBergerS/softpaws/edit/master/docs/examples.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="examples">Examples</h1>
+<p>Twelve numbered examples in <code>examples/</code> work through the package from the
+transport up. Each is a short script that reads top to bottom: a docstring
+saying what it shows, a few named inputs, and one <code>main()</code> built from public
+library calls. Each prints the numbers it computes and writes its figure to
+<code>examples/output/</code> as PDF and PNG.</p>
+<p>The figures use the paper's style, <code>styles/beacom_conformal.mplstyle</code>, with
+the <code>styles/no_latex.mplstyle</code> overlay on top. The overlay renders every label
+with Matplotlib's own mathtext, so the examples run without a LaTeX install.</p>
+<p>Run one like this:</p>
+<pre><code class="language-sh">python examples/02_transport_exponent.py
+</code></pre>
+<p>To change an input, such as the threshold, the exposure or the detectors
+compared, edit the constants at the top of the script.</p>
+<h2 id="the-examples">The examples</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Script</th>
+<th>What it shows</th>
+<th>Needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td><code>load_the_release</code></td>
+<td>The events, effective areas and uptime of the DR2 release, and how much exposure it carries</td>
+<td>DR2</td>
+</tr>
+<tr>
+<td>02</td>
+<td><code>transport_exponent</code></td>
+<td><code>Phi(A)</code> from the loss kernel, against the drift-only and second-order truncations</td>
+<td>—</td>
+</tr>
+<tr>
+<td>03</td>
+<td><code>range_and_loss_law</code></td>
+<td>The first-passage range against the mean-loss range, and why the loss tail is not Gaussian</td>
+<td>—</td>
+</tr>
+<tr>
+<td>04</td>
+<td><code>earth_attenuation</code></td>
+<td>The PREM column against arrival direction, the survival it implies, and what regeneration adds back</td>
+<td>—</td>
+</tr>
+<tr>
+<td>05</td>
+<td><code>effective_area</code></td>
+<td>Sky-averaged effective areas of four detectors from the instrumented footprint, against IceCube's published table</td>
+<td>DR2 for the comparison</td>
+</tr>
+<tr>
+<td>06</td>
+<td><code>declination_bands</code></td>
+<td>IceCube's published effective area against the model band by band, with and without the light reach</td>
+<td>DR2</td>
+</tr>
+<tr>
+<td>07</td>
+<td><code>single_event_energy</code></td>
+<td>The neutrino energy behind KM3-230213A, under three flux priors and two loss models</td>
+<td>—</td>
+</tr>
+<tr>
+<td>08</td>
+<td><code>tau_induced_tracks</code></td>
+<td>What the tau channel contributes to the track rate, and where it takes over</td>
+<td>—</td>
+</tr>
+<tr>
+<td>09</td>
+<td><code>fitting_the_light_reach</code></td>
+<td>Fitting the one instrument number that closes the gap left in example 05</td>
+<td>DR2</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>atmospheric_background</code></td>
+<td>The MCEq background against the astrophysical flux, and where they cross</td>
+<td>—</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>diffuse_signal</code></td>
+<td>The flux a new diffuse signal needs before each telescope sees it: a single event, a line and a power law</td>
+<td>DR2 for IceCube</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>point_source_signal</code></td>
+<td>The flux a point-source search reaches against declination at four sites, with the atmospheric background counted</td>
+<td>DR2 for IceCube</td>
+</tr>
+</tbody>
+</table>
+<p>Examples 02, 03, 04, 07, 08 and 10 need no downloaded data, and 05, 11 and 12
+run without it and skip IceCube. Only 01, 06 and 09 need the release.</p>
+<h2 id="what-they-reproduce">What they reproduce</h2>
+<p>Several examples land on numbers the method paper quotes, which makes them a
+quick check that an installation is sound.</p>
+<ul>
+<li>Example 02 reproduces the identities <code>Phi(1) = b_mu</code> and
+  <code>Phi(2) = 2 b_mu - d_mu</code>.</li>
+<li>Example 03 reproduces the loss-law table at a factor of 4.5: 5.9% for the
+  three-moment law against 2.0e-4 for the Gaussian.</li>
+<li>Example 07 gives 250 PeV for the median neutrino energy of KM3-230213A
+  under an <code>E^-2</code> prior.</li>
+<li>Example 09 fits a light reach of 13 m per e-fold at IceCube, which moves the
+  published-over-model level from 0.74 to 0.98.</li>
+<li>Example 12 lands on IceCube's published point-source sensitivity across the
+  northern sky, with nothing fitted beyond that one number.</li>
+</ul>
+<h2 id="checking-that-they-run">Checking that they run</h2>
+<p><code>tests/test_examples.py</code> runs every example end to end. It is marked slow:</p>
+<pre><code class="language-sh">pytest --run-slow tests/test_examples.py
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../data/" class="btn btn-neutral float-left" title="Data"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../reproduce/" class="btn btn-neutral float-right" title="Reproducing the paper">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../data/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../reproduce/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/popper.min.js"></script>
+      <script src="../js/tippy-bundle.umd.js"></script>
+      <script src="../js/clipboard.js"></script>
+      <script src="../js/extra.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

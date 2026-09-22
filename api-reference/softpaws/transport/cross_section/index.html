@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/cross_section/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>cross_section - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "cross_section";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/cross_section.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/cross_section/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">cross_section</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.cross_section.CrossSection">CrossSection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.cross_section.PowerLawCrossSection">PowerLawCrossSection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.cross_section.TabulatedCrossSection">TabulatedCrossSection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.cross_section.bgr18_cross_section">bgr18_cross_section</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">cross_section</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.cross_section" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.cross_section</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Neutrino-nucleon cross-section models.</p>
+<p>:mod:<code>softpaws.transport.source</code> provides the analytic cross section of
+Palmisano et al., a single power law <code>sigma_CC = sigma0 (E / E0)^lambda</code>
+anchored at 10 PeV (arXiv:2607.13143, Eq. 2.5). That form is what makes the closed
+form work -- a power-law flux times a power-law cross section excites exactly
+one Mellin mode <code>A = gamma - lambda - 1</code> -- and it is also what
+:func:<code>softpaws.comparison.likelihood.required_lambda</code> treats as the quantity
+being measured, so it is kept as a parametrized model here
+(:class:<code>PowerLawCrossSection</code>).</p>
+<p>Extrapolated away from its anchor, though, that power law is badly wrong: it
+overshoots a modern calculation by a factor of ~2.7 at 10 TeV and ~9 at 1 TeV,
+which is enough to dominate any comparison against the published IceCube
+effective area at those energies. :class:<code>TabulatedCrossSection</code> reads a
+tabulated calculation instead (:func:<code>softpaws.data.loader.
+load_cross_section_table</code>) and derives <code>lambda</code> from it as a <strong>local</strong> slope
+<code>lambda_eff(E) = d ln sigma_CC / d ln E</code>, which is the same
+local-power-law approximation :meth:<code>~softpaws.response.soft_volume.
+SoftVolumeResponse.expected_counts_from_flux</code> already makes on the flux side.</p>
+<p>Both value and slope come from one smoothing spline in log-log space, so they
+stay mutually consistent. A spline rather than linear interpolation because
+<code>lambda</code> feeds <code>A</code>, and differentiating a linear interpolant would give a
+piecewise-constant staircase; a smoothing rather than an interpolating spline
+because the tables are digitized, and the residual jitter would otherwise show
+up in the derivative. The cost is ~1% on the cross section itself, negligible
+against the factor-of-several errors this is here to remove.</p>
+<p>Ships with <strong>BGR18</strong> (Bertone, Gauld and Rojo, arXiv:1808.02034), tabulated for
+<code>nu_mu</code> on a proton target.</p>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The BGR18 tables are <code>nu-p</code>. Above ~1 PeV the sea-quark contribution
+dominates and <code>sigma_(nu p) ~ sigma_(nu n)</code>, so treating them as per-nucleon
+values is safe; below that, valence quarks make <code>sigma_(nu n)</code> appreciably
+larger, and the per-nucleon value for an isoscalar target (the Earth) or a
+proton-rich one (water ice, ten protons to eight neutrons) is correspondingly
+higher. Until a <code>nu-n</code> table is supplied, sub-PeV cross sections here are
+underestimates by up to a few tens of percent.</p>
+</details>
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="#softpaws.transport.cross_section.CrossSection">CrossSection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Interface shared by the analytic and tabulated cross-section models.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="PowerLawCrossSection (softpaws.transport.cross_section.PowerLawCrossSection)" href="#softpaws.transport.cross_section.PowerLawCrossSection">PowerLawCrossSection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The single power law <code>sigma_CC = sigma0 (E / E0)^lambda</code> of Palmisano et al.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="TabulatedCrossSection (softpaws.transport.cross_section.TabulatedCrossSection)" href="#softpaws.transport.cross_section.TabulatedCrossSection">TabulatedCrossSection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Cross section interpolated from tabulated CC and NC calculations.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="bgr18_cross_section (softpaws.transport.cross_section.bgr18_cross_section)" href="#softpaws.transport.cross_section.bgr18_cross_section">bgr18_cross_section</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load the tabulated cross section shipped with the package.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.transport.cross_section.CrossSection" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">CrossSection</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+
+
+        <p>Interface shared by the analytic and tabulated cross-section models.</p>
+<p>Implementations expose the charged-current cross section that sources
+muons, the total that attenuates the flux in the Earth, and the local
+log-log slope <code>lambda</code> that sets the soft volume's spectral index
+<code>A = gamma - lambda - 1</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc
+
+
+  
+      abstractmethod
+   (softpaws.transport.cross_section.CrossSection.cc)" href="#softpaws.transport.cross_section.CrossSection.cc">cc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Charged-current cross section [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="local_slope
+
+
+  
+      abstractmethod
+   (softpaws.transport.cross_section.CrossSection.local_slope)" href="#softpaws.transport.cross_section.CrossSection.local_slope">local_slope</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Local slope <code>lambda(E) = d ln sigma_CC / d ln E</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="nc
+
+
+  
+      abstractmethod
+   (softpaws.transport.cross_section.CrossSection.nc)" href="#softpaws.transport.cross_section.CrossSection.nc">nc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutral-current cross section [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="total (softpaws.transport.cross_section.CrossSection.total)" href="#softpaws.transport.cross_section.CrossSection.total">total</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Total (CC + NC) cross section [cm^2], which sets Earth attenuation.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.CrossSection.cc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">cc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Charged-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">@abstractmethod
+def cc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Charged-current cross section [cm^2]."""</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.CrossSection.local_slope" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">local_slope</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">local_slope(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local slope <code>lambda(E) = d ln sigma_CC / d ln E</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">@abstractmethod
+def local_slope(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Local slope ``lambda(E) = d ln sigma_CC / d ln E``."""</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.CrossSection.nc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">nc</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">nc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutral-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">@abstractmethod
+def nc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Neutral-current cross section [cm^2]."""</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.CrossSection.total" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">total</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">total(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Total (CC + NC) cross section [cm^2], which sets Earth attenuation.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sigma</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Total cross section per target [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def total(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Total (CC + NC) cross section [cm^2], which sets Earth attenuation.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+
+    Returns
+    -------
+    sigma : np.ndarray
+        Total cross section per target [cm^2].
+    """
+    return self.cc(energy_gev) + self.nc(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.transport.cross_section.PowerLawCrossSection" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">PowerLawCrossSection</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">PowerLawCrossSection(lam: float = DEFAULT_LAMBDA, sigma0_cm2: float = SIGMA0_CM2, e0_gev: float = E0_CROSS_GEV, total_to_cc: float = DEFAULT_TOTAL_TO_CC)</code></pre>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="#softpaws.transport.cross_section.CrossSection">CrossSection</a></code></p>
+
+
+
+        <p>The single power law <code>sigma_CC = sigma0 (E / E0)^lambda</code> of Palmisano et al.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section slope. Defaults to
+:data:<code>~softpaws.transport.source.DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma0_cm2</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.SIGMA0_CM2">SIGMA0_CM2</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross section at the anchor energy [cm^2]. Defaults to
+:data:<code>~softpaws.transport.source.SIGMA0_CM2</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e0_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.E0_CROSS_GEV">E0_CROSS_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Anchor energy [GeV]. Defaults to
+:data:<code>~softpaws.transport.source.E0_CROSS_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>total_to_cc</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.cross_section.DEFAULT_TOTAL_TO_CC">DEFAULT_TOTAL_TO_CC</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the total to the charged-current cross section. Defaults to
+:data:<code>DEFAULT_TOTAL_TO_CC</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; model = PowerLawCrossSection()
+&gt;&gt;&gt; float(model.local_slope(1.0e6)[0])
+0.4</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Slope, so that <code>sigma ~ E^lam</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma0_cm2</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.SIGMA0_CM2">SIGMA0_CM2</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Charged-current cross section at <code>e0_gev</code> [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e0_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.E0_CROSS_GEV">E0_CROSS_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Anchor energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>total_to_cc</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.cross_section.DEFAULT_TOTAL_TO_CC">DEFAULT_TOTAL_TO_CC</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the total to the charged-current cross section;
+see :data:<code>softpaws.constants.TOTAL_TO_CC_RATIO</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc (softpaws.transport.cross_section.PowerLawCrossSection.cc)" href="#softpaws.transport.cross_section.PowerLawCrossSection.cc">cc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Charged-current cross section [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="local_slope (softpaws.transport.cross_section.PowerLawCrossSection.local_slope)" href="#softpaws.transport.cross_section.PowerLawCrossSection.local_slope">local_slope</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Local slope, which for a power law is the constant <code>lambda</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="nc (softpaws.transport.cross_section.PowerLawCrossSection.nc)" href="#softpaws.transport.cross_section.PowerLawCrossSection.nc">nc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutral-current cross section [cm^2], a fixed fraction of the CC one.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(
+    self,
+    lam: float = DEFAULT_LAMBDA,
+    sigma0_cm2: float = SIGMA0_CM2,
+    e0_gev: float = E0_CROSS_GEV,
+    total_to_cc: float = DEFAULT_TOTAL_TO_CC,
+) -&gt; None:
+    """Build a power-law cross section anchored at one energy.
+
+    Parameters
+    ----------
+    lam : float, optional
+        Slope, so that ``sigma ~ E^lam``.
+    sigma0_cm2 : float, optional
+        Charged-current cross section at ``e0_gev`` [cm^2].
+    e0_gev : float, optional
+        Anchor energy [GeV].
+    total_to_cc : float, optional
+        Ratio of the total to the charged-current cross section;
+        see :data:`softpaws.constants.TOTAL_TO_CC_RATIO`.
+    """
+    self.lam = lam
+    self.sigma0_cm2 = sigma0_cm2
+    self.e0_gev = e0_gev
+    self.total_to_cc = total_to_cc</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.PowerLawCrossSection.cc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">cc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Charged-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Charged-current cross section [cm^2]."""
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    return self.sigma0_cm2 * (energy / self.e0_gev) ** self.lam</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.PowerLawCrossSection.local_slope" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">local_slope</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">local_slope(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local slope, which for a power law is the constant <code>lambda</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def local_slope(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Local slope, which for a power law is the constant ``lambda``."""
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    return np.full_like(energy, self.lam)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.PowerLawCrossSection.nc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">nc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">nc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutral-current cross section [cm^2], a fixed fraction of the CC one.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def nc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Neutral-current cross section [cm^2], a fixed fraction of the CC one."""
+    return (self.total_to_cc - 1.0) * self.cc(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.transport.cross_section.TabulatedCrossSection" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">TabulatedCrossSection</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">TabulatedCrossSection(energy_cc_gev: ndarray, sigma_cc_cm2: ndarray, energy_nc_gev: ndarray, sigma_nc_cm2: ndarray, name: str = 'tabulated')</code></pre>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="#softpaws.transport.cross_section.CrossSection">CrossSection</a></code></p>
+
+
+
+        <p>Cross section interpolated from tabulated CC and NC calculations.</p>
+<p>Each channel is represented by a smoothing spline of <code>ln sigma</code> against
+<code>ln E</code>, so the cross section and its local slope come from the same
+object. Outside the tabulated range the spline is continued as a power law
+with the boundary slope, which is continuous in both value and slope and
+avoids the runaway of a cubic extrapolation.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_cc_gev</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Charged-current table: energies [GeV] and cross sections [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma_cc_cm2</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Charged-current table: energies [GeV] and cross sections [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_nc_gev</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutral-current table, on its own energy grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma_nc_cm2</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutral-current table, on its own energy grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>name</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;tabulated&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Label for the model, used in <code>repr</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>name</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Model label.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_range_gev</code></b>
+                  (<code>tuple of float</code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated range of the charged-current table [GeV], outside which
+values are power-law continuations.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; model = bgr18_cross_section()
+&gt;&gt;&gt; bool(model.cc(1.0e6)[0] &gt; model.cc(1.0e5)[0])
+True</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_cc_gev</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Charged-current table: energies [GeV] and cross sections [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma_cc_cm2</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Charged-current table: energies [GeV] and cross sections [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_nc_gev</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The same for the neutral current.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma_nc_cm2</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The same for the neutral current.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>name</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;tabulated&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Label of the tabulation.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc (softpaws.transport.cross_section.TabulatedCrossSection.cc)" href="#softpaws.transport.cross_section.TabulatedCrossSection.cc">cc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Charged-current cross section [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="local_slope (softpaws.transport.cross_section.TabulatedCrossSection.local_slope)" href="#softpaws.transport.cross_section.TabulatedCrossSection.local_slope">local_slope</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Local slope <code>lambda(E) = d ln sigma_CC / d ln E</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="nc (softpaws.transport.cross_section.TabulatedCrossSection.nc)" href="#softpaws.transport.cross_section.TabulatedCrossSection.nc">nc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutral-current cross section [cm^2].</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(
+    self,
+    energy_cc_gev: np.ndarray,
+    sigma_cc_cm2: np.ndarray,
+    energy_nc_gev: np.ndarray,
+    sigma_nc_cm2: np.ndarray,
+    name: str = "tabulated",
+) -&gt; None:
+    """Build a cross section from tabulated charged and neutral currents.
+
+    Parameters
+    ----------
+    energy_cc_gev, sigma_cc_cm2 : np.ndarray
+        Charged-current table: energies [GeV] and cross sections [cm^2].
+    energy_nc_gev, sigma_nc_cm2 : np.ndarray
+        The same for the neutral current.
+    name : str, optional
+        Label of the tabulation.
+    """
+    self.name = name
+    self._cc = _LogLogSpline(energy_cc_gev, sigma_cc_cm2)
+    self._nc = _LogLogSpline(energy_nc_gev, sigma_nc_cm2)
+    self.energy_range_gev = (float(energy_cc_gev[0]), float(energy_cc_gev[-1]))</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.TabulatedCrossSection.cc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">cc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Charged-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Charged-current cross section [cm^2]."""
+    return self._cc.value(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.TabulatedCrossSection.local_slope" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">local_slope</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">local_slope(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local slope <code>lambda(E) = d ln sigma_CC / d ln E</code>.</p>
+<p>This is the <code>lambda</code> of the soft-volume model, so it is the <em>charged
+current</em> slope: it is CC interactions that source the muons whose
+spectrum the soft volume weights.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def local_slope(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Local slope ``lambda(E) = d ln sigma_CC / d ln E``.
+
+    This is the ``lambda`` of the soft-volume model, so it is the *charged
+    current* slope: it is CC interactions that source the muons whose
+    spectrum the soft volume weights.
+    """
+    return self._cc.slope(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.cross_section.TabulatedCrossSection.nc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">nc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">nc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutral-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def nc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Neutral-current cross section [cm^2]."""
+    return self._nc.value(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.cross_section.bgr18_cross_section" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">bgr18_cross_section</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">bgr18_cross_section(model: str = DEFAULT_TABLE_MODEL) -&gt; TabulatedCrossSection</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load the tabulated cross section shipped with the package.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>model</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code><span title="softpaws.transport.cross_section.DEFAULT_TABLE_MODEL">DEFAULT_TABLE_MODEL</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Table directory under <code>src/softpaws/data/xsec/</code>. Defaults to
+:data:<code>DEFAULT_TABLE_MODEL</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>cross_section</code></b>(                  <code><a class="autorefs autorefs-internal" title="TabulatedCrossSection (softpaws.transport.cross_section.TabulatedCrossSection)" href="#softpaws.transport.cross_section.TabulatedCrossSection">TabulatedCrossSection</a></code>
+)              –
+              <div class="doc-md-description">
+                <p>Model built from the charged- and neutral-current tables.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def bgr18_cross_section(model: str = DEFAULT_TABLE_MODEL) -&gt; TabulatedCrossSection:
+    """Load the tabulated cross section shipped with the package.
+
+    Parameters
+    ----------
+    model : str, optional
+        Table directory under ``src/softpaws/data/xsec/``. Defaults to
+        :data:`DEFAULT_TABLE_MODEL`.
+
+    Returns
+    -------
+    cross_section : TabulatedCrossSection
+        Model built from the charged- and neutral-current tables.
+    """
+    # Imported here rather than at module scope: softpaws.data.loader returns
+    # softpaws.response.irfs objects, so importing it from transport at load
+    # time would close an import cycle. Nothing here runs at import.
+    from ..data.loader import load_cross_section_table
+
+    energy_cc, sigma_cc = load_cross_section_table(model, "cc")
+    energy_nc, sigma_nc = load_cross_section_table(model, "nc")
+    return TabulatedCrossSection(energy_cc, sigma_cc, energy_nc, sigma_nc, name=model)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../coefficients/" class="btn btn-neutral float-left" title="coefficients"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cutoff_source/" class="btn btn-neutral float-right" title="cutoff_source">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../coefficients/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cutoff_source/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

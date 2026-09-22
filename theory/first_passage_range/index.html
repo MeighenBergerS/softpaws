@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/theory/first_passage_range/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>The range to threshold - softpaws</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "The range to threshold";
+        var mkdocs_page_input_path = "theory/first_passage_range.md";
+        var mkdocs_page_url = "/softpaws/theory/first_passage_range/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../..">
+    <img src="../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Theory notes</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">The range to threshold</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#1-why-a-second-length-is-needed">1. Why a second length is needed</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-the-quantity-to-compute">2. The quantity to compute</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-the-structural-fact-w-is-a-subordinator">3. The structural fact: W is a subordinator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-the-identity">4. The identity</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-closed-form-from-the-potential-measure">5. Closed form from the potential measure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-the-two-moments">6. The two moments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-why-it-is-always-shorter-than-csda">7. Why it is always shorter than CSDA</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#8-validation">8. Validation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#9-where-it-enters">9. Where it enters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#10-scope-and-caveats">10. Scope and caveats</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#11-the-loss-law-along-the-descent">11. The loss law along the descent</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >softpaws</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Documentation</li>
+          <li class="breadcrumb-item">Theory notes</li>
+      <li class="breadcrumb-item active">The range to threshold</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/MeighenBergerS/softpaws/edit/master/docs/theory/first_passage_range.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="the-monochromatic-range-as-a-first-passage-problem">The monochromatic range as a first-passage problem</h1>
+<p>Working notes behind the method paper's Sec. II E, "The Range to Threshold", and its
+App. A.2 of the same name. Everything below is exact under the same local scale-invariance
+assumption (<code>eq:scaleinv</code>, Sec. II A of the method paper) that the rest of the formalism
+rests on; nothing here is fitted. Eq. (1) below is the method paper's <code>eq:Ldef</code>, Eq. (5)
+is <code>eq:potential</code>, the two moments of §6 are <code>eq:Phimoments</code>, and Eq. (6) is <code>eq:Lclosed</code>.</p>
+<p>Implemented in <code>softpaws.transport.muon_range.stochastic_muon_range_km</code>, exercised by
+<code>scripts/2026_muon_transport/28_neutrino_energy_effective_area.py</code>, tested in
+<code>tests/test_nu_energy_response.py</code>.</p>
+<hr />
+<h2 id="1-why-a-second-length-is-needed">1. Why a second length is needed</h2>
+<p>The track-rate equation of the method paper (<code>eq:rate</code>, Sec. III A) gives the track rate
+differential in the <strong>observed muon energy</strong>, and its
+length is the spectrally-weighted <code>1/Φ(A)</code> — about 2.7 km in water at IceCube's
+diffuse spectral index. That is the right length for a power-law parent, because the source
+excites the single mode <code>s = A</code> and the propagator contributes <code>e^{-ℓΦ(A)}</code>.</p>
+<p>A published effective area is a different object. It is tabulated at fixed <strong>neutrino
+energy</strong> and integrated over every muon energy that survives the selection, so the
+parent is <em>monochromatic</em> and there is no spectral index left to weight against. The
+two conventions are not interchangeable: the IceCube DR2 smearing matrix puts the
+median reconstructed muon energy 1.6 decades below <code>E_ν</code> at 100 TeV and 3.9 decades
+below at 10 EeV, and the offset grows monotonically with energy.</p>
+<p>For a monochromatic parent the formalism is already in hand — it is the <code>s → 0</code> case
+of the method paper's App. A, "The Transport", where <code>Φ(0) = 0</code> and <code>I(0) = 1</code>. Both spectral factors switch off, so the
+length cannot come from <code>Φ(A)</code> at all. It has to come from the only other scale in the
+problem: the analysis threshold <code>E_thr</code> below which the muon is no longer selected.</p>
+<h2 id="2-the-quantity-to-compute">2. The quantity to compute</h2>
+<p>Write <code>ε = (1 - ⟨y_w⟩) E_ν</code> for the muon energy at production and <code>E(ℓ)</code> for its energy
+after propagating a distance <code>ℓ</code>. The target volume for a monochromatic parent is the
+projected area times the depth over which a muon is still selectable, plus the
+instrumented volume:</p>
+<pre><code>V(E_ν) = A_proj L(E_ν) + V_det ,
+
+L(E_ν) = ∫₀^∞ dℓ  P[ E(ℓ) &gt; E_thr ] .
+</code></pre>
+<p>In terms of the accumulated log-loss <code>W(ℓ) = ln(ε / E(ℓ))</code> this is</p>
+<pre><code>L(E_ν) = ∫₀^∞ dℓ  P[ W(ℓ) &lt; w⋆ ] ,        w⋆ ≡ ln(ε / E_thr) .            (1)
+</code></pre>
+<p>Evaluated directly, Eq. (1) is a depth integral over characteristic-function
+inversions — expensive, and it hides the structure. It does neither.</p>
+<h2 id="3-the-structural-fact-w-is-a-subordinator">3. The structural fact: <code>W</code> is a subordinator</h2>
+<p>A muon's energy only ever decreases, so <code>W(ℓ)</code> is <strong>non-decreasing</strong> in <code>ℓ</code>. Together
+with scale invariance this makes it a subordinator (a non-decreasing Lévy process)
+whose Laplace exponent is exactly the collision eigenvalue of the method paper
+(<code>eq:Phi</code>, Sec. II A):</p>
+<pre><code>E[ e^{-s W(ℓ)} ] = e^{-ℓ Φ(s)} ,     Φ(s) = ∫₀¹ dy (dΓ/dy) [1 - (1-y)^s] .   (2)
+</code></pre>
+<p>Monotonicity is the whole point. Define the <strong>first-passage depth</strong></p>
+<pre><code>τ(w) = inf { ℓ : W(ℓ) ≥ w } ,
+</code></pre>
+<p>the distance at which the muon first falls below <code>ε e^{-w}</code>. Because <code>W</code> never
+decreases, it is below <code>w</code> at depth <code>ℓ</code> if and only if it has not yet crossed <code>w</code>:</p>
+<pre><code>{ W(ℓ) &lt; w }  ⟺  { τ(w) &gt; ℓ } .                                            (3)
+</code></pre>
+<h2 id="4-the-identity">4. The identity</h2>
+<p>Substituting Eq. (3) into Eq. (1) and using <code>∫₀^∞ P[τ &gt; ℓ] dℓ = E[τ]</code>:</p>
+<pre><code>L(E_ν) = E[ τ(w⋆) ] ≡ U(w⋆) .                                              (4)
+</code></pre>
+<p><strong>The effective length is the expected first-passage depth to the threshold.</strong> This is
+the correct stochastic definition of "range" — the mean distance at which the muon
+first drops out of the selection — and it explains why the numerical answer sits close
+to, but systematically below, the CSDA range.</p>
+<h2 id="5-closed-form-from-the-potential-measure">5. Closed form from the potential measure</h2>
+<p><code>U</code> is the renewal function (potential measure) of the subordinator, and for any
+subordinator its Laplace transform follows from Eq. (2) in one line:</p>
+<pre><code>∫₀^∞ e^{-s w} U(dw) = ∫₀^∞ dℓ E[e^{-s W(ℓ)}] = ∫₀^∞ dℓ e^{-ℓ Φ(s)} = 1 / Φ(s) ,
+</code></pre>
+<p>so for the cumulative <code>U(w)</code></p>
+<pre><code>Û(s) = 1 / ( s Φ(s) ) .                                                    (5)
+</code></pre>
+<p>This is the counterpart of the soft volume's <code>1/Φ(A)</code>: there a single mode picks out
+one value of <code>Φ</code>; here the whole first-passage law is governed by the same <code>Φ</code>,
+transformed. The monochromatic and power-law cases are the same function evaluated
+differently, not two separate physical models.</p>
+<p>Expanding <code>Φ</code> about <code>s = 0</code> — legitimate because <code>Φ(0) = 0</code> and <code>Φ</code> is analytic there —</p>
+<pre><code>Φ(s) = Φ′(0) s + ½ Φ″(0) s² + O(s³) ,
+
+Û(s) = 1/(Φ′(0) s²) · [ 1 + ½ (Φ″(0)/Φ′(0)) s + O(s²) ]^{-1}
+     = 1/(Φ′(0) s²) - Φ″(0)/(2 Φ′(0)² s) + O(1) ,
+</code></pre>
+<p>and inverting term by term (<code>s^{-2} → w</code>, <code>s^{-1} → 1</code>, and <code>O(1) →</code> terms that decay
+in <code>w</code>):</p>
+<pre><code>┌────────────────────────────────────────────────────────────────────────┐
+│  L(E_ν) = ln[ (1 - ⟨y_w⟩) E_ν / E_thr ] / Φ′(0)  -  Φ″(0) / (2 Φ′(0)²) │   (6)
+└────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>Two derivatives of one special function. No inversion, no depth integral.</p>
+<h2 id="6-the-two-moments">6. The two moments</h2>
+<p>Differentiating Eq. (2) under the integral:</p>
+<pre><code> Φ′(0) = ∫₀¹ dy (dΓ/dy) ( -ln(1-y) )  = ⟨ -ln(1-y) ⟩     per unit length
+-Φ″(0) = ∫₀¹ dy (dΓ/dy) (  ln²(1-y) ) = ⟨  ln²(1-y) ⟩    per unit length
+</code></pre>
+<p>Both are finite for the same reason <code>Φ(A)</code> is: the soft <code>1/y</code> pile-up of
+bremsstrahlung is cancelled by <code>-ln(1-y) → y</code> as <code>y → 0</code>.</p>
+<p>For the two-parameter loss family <code>dΓ/dy = κ (1-y)^p / y</code> calibrated to <code>b_μ</code> and
+<code>d_μ</code>, where <code>Φ(s) = κ [ψ(s+p+1) - ψ(p+1)]</code>, these are polygamma calls:</p>
+<pre><code> Φ′(0) = κ ψ₁(p+1) ,        -Φ″(0) = κ |ψ₂(p+1)| .
+</code></pre>
+<h2 id="7-why-it-is-always-shorter-than-csda">7. Why it is always shorter than CSDA</h2>
+<p>Well above the critical energy the continuous-slowing-down range is</p>
+<pre><code>R_CSDA = ln(ε / E_thr) / b_μ ,          b_μ = ⟨y⟩ ,
+</code></pre>
+<p>so Eq. (6) is <strong>the CSDA formula with <code>⟨y⟩</code> replaced by <code>⟨-ln(1-y)⟩</code></strong>, plus a
+constant.</p>
+<p>The elementary inequality <code>-ln(1-y) ≥ y</code> on <code>(0,1)</code>, strict for <code>y &gt; 0</code>, gives
+<code>Φ′(0) ≥ b_μ</code> for <em>every</em> positive loss spectrum. The stochastic range is therefore
+always the shorter one, with no model dependence in the direction of the effect.</p>
+<p>The reason is Jensen, and it is the same "mean versus typical" statement that
+<code>scripts/2026_muon_transport/27_proposal_cross_section_and_loss.py</code> already makes in
+its "3a. Mean vs typical" report: CSDA propagates
+the <strong>logarithm of the mean energy</strong>, <code>ln E[E(ℓ)] = -b_μ ℓ</code>, whereas what controls
+threshold crossing is the <strong>mean of the logarithm</strong>, <code>E[ln E(ℓ)] = -Φ′(0) ℓ</code>. Since
+<code>E[ln E] ≤ ln E[E]</code>, the typical muon degrades faster than the mean one, and a
+threshold is crossed sooner than the CSDA range suggests. The mean is held up by rare
+muons that happened to radiate little; those are not typical, and a range is a typical
+quantity.</p>
+<h2 id="8-validation">8. Validation</h2>
+<p>Muon in water, <code>E_thr = 1 TeV</code>, the shipped PROPOSAL kernel table, as the
+library computes them today (<code>make_transport_table.py</code> in the scripts directory
+writes the same rows into the paper):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">log₁₀(E_μ/GeV)</th>
+<th style="text-align: right;"><code>b_μ = ⟨y⟩</code></th>
+<th style="text-align: right;"><code>Φ′(0) = ⟨-ln(1-y)⟩</code></th>
+<th style="text-align: right;"><code>b_μ/Φ′(0)</code></th>
+<th style="text-align: right;"><code>C = -Φ″(0)/2Φ′(0)²</code></th>
+<th style="text-align: right;"><code>L</code>, running</th>
+<th style="text-align: right;"><code>L</code>, frozen</th>
+<th style="text-align: right;"><code>R_CSDA</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">0.3424</td>
+<td style="text-align: right;">0.4283</td>
+<td style="text-align: right;">0.800</td>
+<td style="text-align: right;">0.798</td>
+<td style="text-align: right;">5.73</td>
+<td style="text-align: right;">5.53</td>
+<td style="text-align: right;">5.73</td>
+</tr>
+<tr>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">0.3626</td>
+<td style="text-align: right;">0.4610</td>
+<td style="text-align: right;">0.787</td>
+<td style="text-align: right;">0.811</td>
+<td style="text-align: right;">10.76</td>
+<td style="text-align: right;">10.36</td>
+<td style="text-align: right;">12.10</td>
+</tr>
+<tr>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">0.3797</td>
+<td style="text-align: right;">0.4869</td>
+<td style="text-align: right;">0.780</td>
+<td style="text-align: right;">0.800</td>
+<td style="text-align: right;">15.62</td>
+<td style="text-align: right;">14.78</td>
+<td style="text-align: right;">18.30</td>
+</tr>
+<tr>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">0.4000</td>
+<td style="text-align: right;">0.5164</td>
+<td style="text-align: right;">0.775</td>
+<td style="text-align: right;">0.772</td>
+<td style="text-align: right;">20.21</td>
+<td style="text-align: right;">18.64</td>
+<td style="text-align: right;">24.21</td>
+</tr>
+<tr>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">0.4265</td>
+<td style="text-align: right;">0.5549</td>
+<td style="text-align: right;">0.769</td>
+<td style="text-align: right;">0.736</td>
+<td style="text-align: right;">24.52</td>
+<td style="text-align: right;">21.80</td>
+<td style="text-align: right;">29.79</td>
+</tr>
+</tbody>
+</table>
+<p>Lengths in km of water. The frozen column evaluates Eq. (6) with the
+coefficients held at the production energy, which is the form derived above;
+the running column follows them down the track, as App. A.2 of the method
+paper does, and is the library default. Both splice on to a deterministic
+ionization segment below 10 TeV, which is why the 10 TeV row meets <code>R_CSDA</code>.</p>
+<p>Eq. (1) is itself evaluated two independent ways that agree to ~1 m in the depth
+integral: Gil-Pelaez inversion (<code>softpaws.transport.loss_distribution.log_loss_cdf</code>)
+and density inversion followed by quadrature (<code>loss_density</code> and then
+<code>survival_from_density</code>, both in <code>softpaws.transport.loss_distribution</code>).</p>
+<p>The ratio <code>L/R_CSDA</code> runs from unity at 10 TeV, where the ionization segment
+carries the range, through 0.85 at 1 PeV to 0.82 at 100 PeV, approaching the
+asymptotic <code>b_μ/Φ′(0) = 0.77</code>. Fluctuations can only remove range, so it never
+exceeds unity.</p>
+<h2 id="9-where-it-enters">9. Where it enters</h2>
+<pre><code>A_eff(E_ν) = n_N σ_CC(E_ν) [ A_proj L(E_ν) + V_det ] T(E_ν) ,
+</code></pre>
+<p>with <code>T</code> the Earth transmission. Nothing in this expression is fitted.</p>
+<p>Against the IceCube DR2 upgoing effective area, with neutral-current regeneration
+kept in <code>T</code> (<code>softpaws.transport.attenuation.regenerated_transmission</code>) and the
+<code>ν_τ → τ → μ</code> channel added (<code>softpaws.transport.attenuation.flavour_transmission</code>,
+<code>flavour="tau"</code>), the residual over
+10⁵–10⁷·⁸ GeV is 0.044 dex rms with a +0.15 dex trend across the band. The implied
+selection efficiency <code>A_eff^IC / A_eff^model</code> then runs 0.56 → 0.82 and stays below
+one everywhere, as an efficiency must — which it does not without those two terms.
+See <code>scripts/2026_muon_transport/28_neutrino_energy_effective_area.py</code>. The top decade
+is excluded
+from the statistics: the simulation behind the DR2 tables stops at 100 PeV.</p>
+<p>Note that the DR2 tables are <em>muon-neutrino</em> effective areas, so the <code>ν_τ</code> channel
+is a model-side addition rather than a like-for-like term, and it assumes
+<code>φ_ντ = φ_νμ</code> at Earth. Script 28 keeps it as a separate curve for that reason.</p>
+<h2 id="10-scope-and-caveats">10. Scope and caveats</h2>
+<ul>
+<li>Eq. (6) evaluates <code>b_μ</code> and <code>d_μ</code> at the production energy and does not follow them
+  down the track, which shortens the range by 4% at 100 TeV and 11% at 100 PeV
+  against the running form (App. A.2 of the method paper). In code this is the <code>kernel_evaluation="frozen"</code> option of
+  <code>softpaws.transport.muon_range.stochastic_muon_range_km</code> and of
+  <code>softpaws.transport.muon_range.muon_range_km</code>. Both default to <code>"running"</code>, which
+  reads the kernel along the descent as in App. A.2 of the method paper.</li>
+<li><code>E_thr</code> is a hard threshold. A soft trigger turn-on would smear <code>w⋆</code>, replacing
+  Eq. (6) by its average over the turn-on; the DR2 smearing matrix supports a hard
+  threshold well, with the 5th percentile of accepted reconstructed muon energy flat
+  at ~700 GeV across three decades of <code>E_ν</code> (log-log slope 0.02, against 1.0 for a
+  threshold scaling with neutrino energy).</li>
+<li>The <code>O(1)</code> term dropped in Eq. (6) decays in <code>w⋆</code>; the validation table shows it is
+  already below the 2 mm level at <code>w⋆ ≈ 2</code>, but Eq. (6) should not be pushed to
+  <code>ε → E_thr</code>, where <code>L → 0</code> and the expansion has no support.</li>
+<li><code>⟨y_w⟩</code> is taken as a constant delta at its mean, matching
+  <code>softpaws.transport.source.inelasticity_factor</code>.
+  The true CC inelasticity runs with energy and has real spread, which smears <code>w⋆</code>
+  by roughly its own width.</li>
+</ul>
+<h2 id="11-the-loss-law-along-the-descent">11. The loss law along the descent</h2>
+<p>Sections 3 to 6 hold the kernel fixed at the production energy, and Sec. 10
+notes that the <em>range</em> is then short by up to 11% at 100 PeV. For the <em>law</em>
+<code>P(w)</code> of a single track the same freezing is far worse once the muon falls
+through decades where the drift changes: from <code>10^14</code> GeV the photonuclear
+drift is twice its <code>10^10</code> GeV value, so a kernel read at the top of the
+descent overstates the mean log-loss over 34 km of water by a factor of 2.5.</p>
+<p>The subordinator of Sec. 3 generalizes to an additive process whose exponent
+accumulates along the mean descent <code>dlnE/dl = −Φ′(0; E)</code>,</p>
+<pre><code>Ψ(s; ℓ) = ∫_0^ℓ dl Φ(s; E(l)) = ∫_0^{v(ℓ)} dv Φ(s; ε e^{−v}) / Φ′(0; ε e^{−v}),
+</code></pre>
+<p>with <code>v(ℓ)</code> the mean log-loss at depth <code>ℓ</code>, so that
+<code>E[e^{−sW(ℓ)}] = e^{−Ψ(s; ℓ)}</code> and <code>P(w)</code> follows by the same inversion as
+before. The kernel at each energy is the three-moment family of Sec. 8 read
+from the shipped table, and <code>Φ′(0; E)</code> is that family's own mean rate, so the
+mean of the resulting law is exactly <code>v(ℓ)</code>. Below the ionization matching
+energy of Sec. 10 the kernel is held fixed, as the range does.</p>
+<p>In code this is <code>softpaws.transport.loss_distribution.running_log_loss_symbol</code>
+for the exponent and <code>loss_density_running</code> for the law; the frozen forms
+<code>loss_density_three_moment</code> and <code>loss_density</code> remain for a kernel read once.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../exact_soft_volume/" class="btn btn-neutral float-left" title="The transport exponent"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../paper_to_code/" class="btn btn-neutral float-right" title="Paper to code">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../exact_soft_volume/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../paper_to_code/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/popper.min.js"></script>
+      <script src="../../js/tippy-bundle.umd.js"></script>
+      <script src="../../js/clipboard.js"></script>
+      <script src="../../js/extra.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

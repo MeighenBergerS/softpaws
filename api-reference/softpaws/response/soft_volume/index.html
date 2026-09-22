@@ -1,0 +1,4100 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/response/soft_volume/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>soft_volume - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "soft_volume";
+        var mkdocs_page_input_path = "api-reference/softpaws/response/soft_volume.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/response/soft_volume/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >response</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">soft_volume</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.soft_volume.SoftVolumeResponse">SoftVolumeResponse</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.soft_volume.tau_induced_differential_rate">tau_induced_differential_rate</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.soft_volume.tau_induced_expected_counts">tau_induced_expected_counts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.soft_volume.tau_induced_expected_counts_attenuated">tau_induced_expected_counts_attenuated</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">response</li>
+      <li class="breadcrumb-item active">soft_volume</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.response.soft_volume" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.response.soft_volume</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Soft-volume forward model: neutrino flux to muon track rate (drift limit).</p>
+<p>This is the soft-volume counterpart to the IRF path in :mod:<code>softpaws.response.irfs</code>.
+Both map an incident neutrino flux to a predicted track rate; keeping them
+interchangeable is what enables the head-to-head comparison.</p>
+<p>In the drift limit with the approximations of Palmisano et al.
+(arXiv:2607.13143, Section 2.3), their master formula (Eq. 2.20) factorizes: the
+differential track rate at observed muon energy <code>E</code> is the target volume times
+the local weak-rate density,</p>
+<p>.. math:: \frac{dN}{dt\,dE\,d\Omega}
+    = \bigl[V_\mathrm{det} + V_\mathrm{soft}(E)\bigr]\,
+      n_N\,\sigma_\mathrm{CC}(E)\,\phi_\nu(E),</p>
+<p>where the soft volume <code>V_soft</code> carries the muon-transport enhancement (their Eq. 2.23)
+and <code>V_det</code> is the instrumented sphere. The drift closed form assumes a
+power-law neutrino flux, so this model is parametrized directly by <code>(phi0, gamma)</code>.
+A tabulated, direction-dependent flux (an atmospheric model, say) goes through
+:meth:<code>SoftVolumeResponse.expected_counts_from_flux</code> instead, which reads the
+spectral index off the flux's local slope.</p>
+<p>Two transport methods are available (<code>method</code> argument of
+:class:<code>SoftVolumeResponse</code>): <code>"drift"</code> is their leading form above, and
+<code>"exact"</code> uses the transport exponent <code>Phi(A)</code> with the <code>I(A)</code> normalization and
+a finite upstream column depth (<code>docs/theory/exact_soft_volume.md</code>). In the exact
+master formula <code>I(A)</code> multiplies both populations, so both the inside and soft
+target volumes carry it.</p>
+<p>Earth attenuation of the parent neutrino (<code>D_nu</code>, their Eq. 2.4;
+:mod:<code>softpaws.transport.attenuation</code>) is off by default (<code>D_nu = 1</code>, valid
+downgoing). Three ways to apply it, in increasing physical fidelity:</p>
+<ul>
+<li><strong>Form A</strong>, a closed-form representative column via
+  <code>attenuation_column_g_cm2</code>, multiplying the flux by a single scalar
+  <code>D_nu</code>;</li>
+<li><strong>Form B</strong>, the per-event PREM treatment of
+  :meth:<code>SoftVolumeResponse.expected_counts_attenuated</code>, still a decoupled
+  multiplicative <code>D_nu(E)</code> but with a declination-dependent column;</li>
+<li><strong>Form C</strong>, :meth:<code>SoftVolumeResponse.expected_counts_coupled_attenuation</code>,
+  which folds the attenuation directly into the soft-volume propagator
+  (Sec. III A and App. A of the method paper;
+  :func:<code>softpaws.transport.soft_volume.soft_volume_attenuated_exact</code>)
+  instead of applying it as a separate factor. Forms A/B are valid
+  approximations wherever <code>D_nu</code> varies slowly over the soft volume's own
+  ~few-<code>Phi(A)^-1</code> km-w.e. extent; Form C is the exact treatment needed
+  once the two exponentials are comparable (strongly-absorbed upgoing UHE
+  tracks).</li>
+</ul>
+<p>:meth:<code>SoftVolumeResponse.differential_rate_with_cutoff</code> implements App. H's
+recommended mitigation for the <code>A &lt; 0</code> cross-section-pole blowup
+(Sec. VII.C): a spectral cutoff <code>E0</code> on the parent flux, propagated via
+real-space convolution against the exact log-loss density
+(:mod:<code>softpaws.transport.cutoff_source</code>) rather than the ad hoc
+<code>GAMMA_EFF_BOUNDS</code> clip below, which remains the cruder safety net for the
+tabulated-flux path (:meth:<code>SoftVolumeResponse.expected_counts_from_flux</code>),
+since a tabulated flux carries no single <code>E0</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="SoftVolumeResponse (softpaws.response.soft_volume.SoftVolumeResponse)" href="#softpaws.response.soft_volume.SoftVolumeResponse">SoftVolumeResponse</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Soft-volume forward model for a spherical detector.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="tau_induced_differential_rate (softpaws.response.soft_volume.tau_induced_differential_rate)" href="#softpaws.response.soft_volume.tau_induced_differential_rate">tau_induced_differential_rate</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon-track rate from a same-normalization <code>nu_tau</code> flux.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="tau_induced_expected_counts (softpaws.response.soft_volume.tau_induced_expected_counts)" href="#softpaws.response.soft_volume.tau_induced_expected_counts">tau_induced_expected_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected tau-induced track counts per muon-energy bin.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="tau_induced_expected_counts_attenuated (softpaws.response.soft_volume.tau_induced_expected_counts_attenuated)" href="#softpaws.response.soft_volume.tau_induced_expected_counts_attenuated">tau_induced_expected_counts_attenuated</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected tau-induced track counts with per-event PREM attenuation (Form B).</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.response.soft_volume.SoftVolumeResponse" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">SoftVolumeResponse</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">SoftVolumeResponse(radius_km: float, density_g_cm3: float = RHO_WATER_G_CM3, method: str = 'drift', column_depth_km: float | None = None, attenuation_column_g_cm2: float | None = None, b_scale: float = 1.0, d_scale: float = 1.0, cross_section: CrossSection | None = None, coefficient_source: str = DEFAULT_SOURCE, light_yield_length_km: float | None = None, beta: float = 0.0)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Soft-volume forward model for a spherical detector.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical instrumented volume [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>method</code></b>
+                  (<code>(&#39;drift&#39;, &#39;diffusion&#39;, &#39;exact&#39;)</code>, default:
+                      <code>&#34;drift&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport treatment for the soft volume. <code>"drift"</code> (default) uses the
+leading form of Palmisano et al., <code>V_soft = A_proj / (b_mu A)</code>
+(their Eq. 2.23). <code>"diffusion"</code> applies their diffusion correction
+<code>1 - d_mu/(2 b_mu)</code> (their Eq. 2.25). <code>"exact"</code> uses the transport exponent
+<code>Phi(A)</code> with the <code>I(A)</code> normalization and the finite-column
+saturation factor (<code>docs/theory/exact_soft_volume.md</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Available upstream column depth <code>x</code> [km] for the exact method. <code>None</code>
+(the default) uses the infinite-column limit, which requires
+<code>Phi(A) &gt; 0</code>. Ignored by the drift and diffusion methods.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>attenuation_column_g_cm2</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Representative Earth column depth [g cm^-2] for the closed-form neutrino
+attenuation (Form A). When set, the flux is multiplied by the survival
+probability <code>D_nu(E) = exp(-N_A sigma_tot(E) X)</code> at every energy (see
+:func:<code>softpaws.transport.attenuation.representative_column</code>). <code>None</code>
+(the default) leaves the flux unattenuated (<code>D_nu = 1</code>). For the
+per-event PREM attenuation (Form B) leave this <code>None</code> and use
+:meth:<code>expected_counts_attenuated</code> instead.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+used as transport nuisance parameters in the data fits.
+Default to 1 (the theoretical values).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+used as transport nuisance parameters in the data fits.
+Default to 1 (the theoretical values).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section model. <code>None</code> (the default) uses the analytic power law
+of :func:<code>~softpaws.transport.source.cc_cross_section</code> with the <code>lam</code>
+passed to each method, which is what reproduces Palmisano et al. Supplying a
+:class:<code>~softpaws.transport.cross_section.TabulatedCrossSection</code> swaps
+in a tabulated calculation <em>and</em> makes the spectral index energy
+dependent, <code>A(E) = gamma - lambda_eff(E) - 1</code>, since a tabulated cross
+section has no single slope. Both matter: the power law overshoots a
+modern calculation by ~9x at 1 TeV, and correcting it without also
+correcting <code>lambda</code> would be inconsistent (the two partly cancel,
+because a steeper <code>lambda</code> shrinks <code>A</code> and so enlarges the soft
+volume).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>coefficient_source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation of <code>b_mu</code> and <code>d_mu</code> to use; see
+:mod:<code>softpaws.transport.coefficients</code>. Defaults to the PROPOSAL table;
+pass <code>"table1"</code> to reproduce Palmisano et al.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>light_yield_length_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>If set, replaces the static projected area <code>pi R_det^2</code> with the
+energy-growing :func:<code>~softpaws.transport.soft_volume.
+dynamic_projected_area_km2</code> in every target-volume calculation
+(not part of Palmisano et al.; see that function's docstring for the
+physical motivation and <code>examples/26_dynamic_response_effective_area.py</code>
+for a calibrated value). <code>None</code> (the default) preserves the
+static-radius behaviour used everywhere else in the package.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>beta</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Scale-breaking exponent of App. F (<code>dGamma/dy ~ E^beta</code>), for
+<code>method="exact"</code> only. Defaults to <code>0</code> (off): the package's own
+measurement (:mod:<code>softpaws.transport.coefficients</code>) finds the LPM
+suppression negligible for muons in the covered energy range, so
+there is no calibrated nonzero value shipped -- this exposes App. F's
+machinery structurally (:func:<code>softpaws.transport.soft_volume.
+scale_breaking_saturation_factor</code>) rather than asserting an unverified
+photonuclear-rise exponent.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector radius [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Medium density [g cm^-3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>method</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Selected transport method.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Upstream column depth for the exact method.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale, d_scale</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient nuisance rescalings.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cross_section</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="../../transport/cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section model, or <code>None</code> for the analytic power law.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>coefficient_source</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation in use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_nucleon_cm3</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Target nucleon number density [cm^-3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>v_det_cm3</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented sphere volume [cm^3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; resp = SoftVolumeResponse(radius_km=0.62)
+&gt;&gt;&gt; rate = resp.differential_rate(1.0e6, phi0=0.63, gamma=2.38)
+&gt;&gt;&gt; float(rate[0]) &gt; 0
+True
+&gt;&gt;&gt; exact = SoftVolumeResponse(radius_km=0.62, method="exact", column_depth_km=1.95)
+&gt;&gt;&gt; float(exact.differential_rate(1.0e6, phi0=0.63, gamma=2.38)[0]) &gt; 0
+True</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>method</code> is not one of the three names.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc_cross_section_cm2 (softpaws.response.soft_volume.SoftVolumeResponse.cc_cross_section_cm2)" href="#softpaws.response.soft_volume.SoftVolumeResponse.cc_cross_section_cm2">cc_cross_section_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Charged-current cross section from the configured model.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="differential_rate (softpaws.response.soft_volume.SoftVolumeResponse.differential_rate)" href="#softpaws.response.soft_volume.SoftVolumeResponse.differential_rate">differential_rate</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Differential track rate <code>dN / (dt dE dOmega)</code> (Eq. 2.20).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="differential_rate_with_cutoff (softpaws.response.soft_volume.SoftVolumeResponse.differential_rate_with_cutoff)" href="#softpaws.response.soft_volume.SoftVolumeResponse.differential_rate_with_cutoff">differential_rate_with_cutoff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Differential track rate for a source with a spectral cutoff (App. H).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="effective_area_cm2 (softpaws.response.soft_volume.SoftVolumeResponse.effective_area_cm2)" href="#softpaws.response.soft_volume.SoftVolumeResponse.effective_area_cm2">effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Implied effective area <code>A_eff(E) = V_target(E) n_N sigma_CC(E)</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="expected_counts (softpaws.response.soft_volume.SoftVolumeResponse.expected_counts)" href="#softpaws.response.soft_volume.SoftVolumeResponse.expected_counts">expected_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected track counts per muon-energy bin.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="expected_counts_attenuated (softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_attenuated)" href="#softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_attenuated">expected_counts_attenuated</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected track counts with per-event PREM Earth attenuation (Form B).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="expected_counts_coupled_attenuation (softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_coupled_attenuation)" href="#softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_coupled_attenuation">expected_counts_coupled_attenuation</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected track counts with attenuation coupled into the propagator (Form C).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="expected_counts_from_flux (softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_from_flux)" href="#softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_from_flux">expected_counts_from_flux</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected track counts for an arbitrary, direction-dependent flux.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="expected_counts_with_cutoff (softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_with_cutoff)" href="#softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_with_cutoff">expected_counts_with_cutoff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected track counts per muon-energy bin, with a spectral cutoff.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="spectral_slope (softpaws.response.soft_volume.SoftVolumeResponse.spectral_slope)" href="#softpaws.response.soft_volume.SoftVolumeResponse.spectral_slope">spectral_slope</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Cross-section slope <code>lambda</code> to use at each energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="target_volume_cm3 (softpaws.response.soft_volume.SoftVolumeResponse.target_volume_cm3)" href="#softpaws.response.soft_volume.SoftVolumeResponse.target_volume_cm3">target_volume_cm3</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective target volume at a given muon energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="threshold_effective_area_cm2 (softpaws.response.soft_volume.SoftVolumeResponse.threshold_effective_area_cm2)" href="#softpaws.response.soft_volume.SoftVolumeResponse.threshold_effective_area_cm2">threshold_effective_area_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective area in the published-<code>A_eff</code> convention.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="weak_rate_density (softpaws.response.soft_volume.SoftVolumeResponse.weak_rate_density)" href="#softpaws.response.soft_volume.SoftVolumeResponse.weak_rate_density">weak_rate_density</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Local weak-rate density <code>n_N sigma_CC(E) phi_nu(E)</code>.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(
+    self,
+    radius_km: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    method: str = "drift",
+    column_depth_km: float | None = None,
+    attenuation_column_g_cm2: float | None = None,
+    b_scale: float = 1.0,
+    d_scale: float = 1.0,
+    cross_section: CrossSection | None = None,
+    coefficient_source: str = DEFAULT_SOURCE,
+    light_yield_length_km: float | None = None,
+    beta: float = 0.0,
+) -&gt; None:
+    """Build the response. Every argument is described in the class docstring.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``method`` is not one of the three names.
+    """
+    if method not in ("drift", "diffusion", "exact"):
+        raise ValueError(
+            f"method must be 'drift', 'diffusion', or 'exact', got {method!r}."
+        )
+    self.radius_km = radius_km
+    self.density_g_cm3 = density_g_cm3
+    self.method = method
+    self.column_depth_km = column_depth_km
+    self.attenuation_column_g_cm2 = attenuation_column_g_cm2
+    self.b_scale = b_scale
+    self.d_scale = d_scale
+    self.cross_section = cross_section
+    self.coefficient_source = coefficient_source
+    self.light_yield_length_km = light_yield_length_km
+    self.beta = beta
+    self.n_nucleon_cm3 = nucleon_number_density(density_g_cm3)
+    radius_cm = radius_km * CM_PER_KM
+    self.v_det_cm3 = 4.0 / 3.0 * np.pi * radius_cm**3</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.cc_cross_section_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc_cross_section_cm2</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">cc_cross_section_cm2(energy_gev: float | ndarray, lam: float = DEFAULT_LAMBDA) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Charged-current cross section from the configured model.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Slope of the analytic power law; ignored when a tabulated cross
+section is configured.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sigma</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>CC cross section per nucleon [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cc_cross_section_cm2(
+    self,
+    energy_gev: float | np.ndarray,
+    lam: float = DEFAULT_LAMBDA,
+) -&gt; np.ndarray:
+    """Charged-current cross section from the configured model.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+    lam : float, optional
+        Slope of the analytic power law; ignored when a tabulated cross
+        section is configured.
+
+    Returns
+    -------
+    sigma : np.ndarray
+        CC cross section per nucleon [cm^2].
+    """
+    if self.cross_section is not None:
+        return self.cross_section.cc(energy_gev)
+    return cc_cross_section(energy_gev, lam)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.differential_rate" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">differential_rate</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">differential_rate(energy_gev: float | ndarray, phi0: float, gamma: float, lam: float = DEFAULT_LAMBDA, part: str = 'total') -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Differential track rate <code>dN / (dt dE dOmega)</code> (Eq. 2.20).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>rate</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Differential track rate [GeV^-1 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def differential_rate(
+    self,
+    energy_gev: float | np.ndarray,
+    phi0: float,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+) -&gt; np.ndarray:
+    """Differential track rate ``dN / (dt dE dOmega)`` (Eq. 2.20).
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`).
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+
+    Returns
+    -------
+    rate : np.ndarray
+        Differential track rate [GeV^-1 s^-1 sr^-1].
+    """
+    volume = self.target_volume_cm3(energy_gev, gamma, lam, part)
+    return volume * self.weak_rate_density(energy_gev, phi0, gamma, lam)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.differential_rate_with_cutoff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">differential_rate_with_cutoff</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">differential_rate_with_cutoff(energy_gev: float | ndarray, phi0: float, gamma: float, e0_cutoff_gev: float, lam: float = DEFAULT_LAMBDA, part: str = 'total', n_xi: int = 12, n_w: int = 512, n_k: int = 4096) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Differential track rate for a source with a spectral cutoff (App. H).</p>
+<p>Sec. VII.C recommends this as the physical mitigation for the
+<code>A &lt; 0</code> cross-section-pole blowup: a spectral cutoff <code>E0</code> on the
+parent flux, <code>phi_nu ~ E^-gamma e^{-E/E0}</code>, propagated by real-space
+convolution against the exact log-loss density
+(:func:<code>softpaws.transport.cutoff_source.cutoff_soft_rate_density</code>)
+rather than clipped by :data:<code>GAMMA_EFF_BOUNDS</code>. See that module's
+docstring for why this evaluates the same physical convolution App. H
+derives (Eq. H1-H3) without going through its Cahen-Mellin pole
+series, which turns out to overflow numerically in exactly the
+large-<code>x</code>, negative-<code>A</code> regime it exists to fix.</p>
+<p>The two target-volume populations pick up the cutoff differently. The
+<em>soft</em> (transported) population needs the full log-loss convolution,
+since a muon observed at <code>E</code> was produced at <code>eps = E e^w</code> for a
+whole distribution of <code>w</code>, not a single value. The <em>inside</em>
+(untransported) population needs no such convolution: a muon produced
+right at the detector has no propagator to combine the cutoff with,
+so it simply inherits the real-space source shape <code>e^{-E/E0}</code>
+directly and multiplicatively. Both reduce to the plain (uncut)
+treatment identically as <code>e0_cutoff_gev -&gt; inf</code>.</p>
+<p>The drift/diffusion coefficients <code>b_mu</code>, <code>d_mu</code> feeding the
+log-loss density are evaluated once, at the geometric mean of
+<code>energy_gev</code>, rather than per observed energy -- the same
+percent-level approximation :func:<code>softpaws.transport.soft_volume.
+muon_range_km</code> already makes, justified there and here by how slowly
+(logarithmically) the QED coefficients move with energy.</p>
+<p>Only supported for the analytic power-law cross section
+(<code>self.cross_section is None</code>): a tabulated cross section makes the
+spectral index energy dependent, which is outside the scope of this
+single-<code>A</code> expansion.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>), evaluated
+<strong>without</strong> the cutoff -- the cutoff is applied by this method,
+not beforehand.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>), evaluated
+<strong>without</strong> the cutoff -- the cutoff is applied by this method,
+not beforehand.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e0_cutoff_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral cutoff energy <code>E0</code> [GeV] of the parent neutrino flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_xi</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>12</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Quadrature sizes passed to :func:<code>~softpaws.transport.
+cutoff_source.cutoff_soft_rate_density</code> (production-depth
+samples, log-loss grid points, and log-loss inversion nodes).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_w</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>12</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Quadrature sizes passed to :func:<code>~softpaws.transport.
+cutoff_source.cutoff_soft_rate_density</code> (production-depth
+samples, log-loss grid points, and log-loss inversion nodes).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>12</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Quadrature sizes passed to :func:<code>~softpaws.transport.
+cutoff_source.cutoff_soft_rate_density</code> (production-depth
+samples, log-loss grid points, and log-loss inversion nodes).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>rate</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Differential track rate [GeV^-1 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>method != "exact"</code>, if <code>column_depth_km</code> is
+<code>None</code> (the convolution needs a finite column, like
+:func:<code>~softpaws.transport.soft_volume.saturation_factor</code>), or if
+a tabulated <code>cross_section</code> is configured.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def differential_rate_with_cutoff(
+    self,
+    energy_gev: float | np.ndarray,
+    phi0: float,
+    gamma: float,
+    e0_cutoff_gev: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+    n_xi: int = 12,
+    n_w: int = 512,
+    n_k: int = 4096,
+) -&gt; np.ndarray:
+    """Differential track rate for a source with a spectral cutoff (App. H).
+
+    Sec. VII.C recommends this as the physical mitigation for the
+    ``A &lt; 0`` cross-section-pole blowup: a spectral cutoff ``E0`` on the
+    parent flux, ``phi_nu ~ E^-gamma e^{-E/E0}``, propagated by real-space
+    convolution against the exact log-loss density
+    (:func:`softpaws.transport.cutoff_source.cutoff_soft_rate_density`)
+    rather than clipped by :data:`GAMMA_EFF_BOUNDS`. See that module's
+    docstring for why this evaluates the same physical convolution App. H
+    derives (Eq. H1-H3) without going through its Cahen-Mellin pole
+    series, which turns out to overflow numerically in exactly the
+    large-``x``, negative-``A`` regime it exists to fix.
+
+    The two target-volume populations pick up the cutoff differently. The
+    *soft* (transported) population needs the full log-loss convolution,
+    since a muon observed at ``E`` was produced at ``eps = E e^w`` for a
+    whole distribution of ``w``, not a single value. The *inside*
+    (untransported) population needs no such convolution: a muon produced
+    right at the detector has no propagator to combine the cutoff with,
+    so it simply inherits the real-space source shape ``e^{-E/E0}``
+    directly and multiplicatively. Both reduce to the plain (uncut)
+    treatment identically as ``e0_cutoff_gev -&gt; inf``.
+
+    The drift/diffusion coefficients ``b_mu``, ``d_mu`` feeding the
+    log-loss density are evaluated once, at the geometric mean of
+    ``energy_gev``, rather than per observed energy -- the same
+    percent-level approximation :func:`softpaws.transport.soft_volume.
+    muon_range_km` already makes, justified there and here by how slowly
+    (logarithmically) the QED coefficients move with energy.
+
+    Only supported for the analytic power-law cross section
+    (``self.cross_section is None``): a tabulated cross section makes the
+    spectral index energy dependent, which is outside the scope of this
+    single-``A`` expansion.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`), evaluated
+        **without** the cutoff -- the cutoff is applied by this method,
+        not beforehand.
+    e0_cutoff_gev : float
+        Spectral cutoff energy ``E0`` [GeV] of the parent neutrino flux.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+    n_xi, n_w, n_k : int, optional
+        Quadrature sizes passed to :func:`~softpaws.transport.
+        cutoff_source.cutoff_soft_rate_density` (production-depth
+        samples, log-loss grid points, and log-loss inversion nodes).
+
+    Returns
+    -------
+    rate : np.ndarray
+        Differential track rate [GeV^-1 s^-1 sr^-1].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``method != "exact"``, if ``column_depth_km`` is
+        ``None`` (the convolution needs a finite column, like
+        :func:`~softpaws.transport.soft_volume.saturation_factor`), or if
+        a tabulated ``cross_section`` is configured.
+    """
+    if self.method != "exact":
+        raise ValueError(
+            f"differential_rate_with_cutoff requires method='exact', got "
+            f"{self.method!r}."
+        )
+    if self.column_depth_km is None:
+        raise ValueError(
+            "differential_rate_with_cutoff requires a finite column_depth_km "
+            "(no infinite-column limit is defined for a cutoff source)."
+        )
+    if self.cross_section is not None:
+        raise ValueError(
+            "differential_rate_with_cutoff only supports the analytic power-law "
+            "cross section (cross_section=None); a tabulated cross section makes "
+            "A energy dependent, which this single-A expansion does not support."
+        )
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    a = spectral_index(gamma, lam)
+    e_ref = float(np.sqrt(energy.min() * energy.max()))
+    b_mu = float(
+        self.b_scale * drift_coefficient(e_ref, self.density_g_cm3, self.coefficient_source)[0]
+    )
+    d_mu = float(
+        self.d_scale
+        * diffusion_coefficient(e_ref, self.density_g_cm3, self.coefficient_source)[0]
+    )
+
+    def weak_rate_density_uncut(eps: np.ndarray) -&gt; np.ndarray:
+        sigma = self.cc_cross_section_cm2(eps, lam)
+        flux = power_law_flux(eps, phi0, gamma)
+        return self.n_nucleon_cm3 * sigma * flux
+
+    factor = float(inelasticity_factor(a))
+    inside_rate = (
+        factor * np.exp(-energy / e0_cutoff_gev) * self.v_det_cm3
+        * weak_rate_density_uncut(energy)
+    )
+
+    if part == "inside":
+        return inside_rate
+
+    # cutoff_soft_rate_density's production-depth integral carries an implicit
+    # length unit of km (from d_xi); convert that one factor to cm so it
+    # combines cleanly with the cm^2 projected area and cm^-3 rate density.
+    proj_area_cm2 = np.pi * (self.radius_km * CM_PER_KM) ** 2
+    soft_rate = factor * proj_area_cm2 * CM_PER_KM * cutoff_soft_rate_density(
+        energy, e0_cutoff_gev, self.column_depth_km, b_mu, d_mu,
+        weak_rate_density_uncut, n_xi=n_xi, n_w=n_w, n_k=n_k,
+    )
+
+    if part == "soft":
+        return soft_rate
+    if part == "total":
+        return inside_rate + soft_rate
+    raise ValueError(f"part must be 'total', 'soft', or 'inside', got {part!r}.")</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">effective_area_cm2</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">effective_area_cm2(energy_gev: float | ndarray, gamma: float, lam: float = DEFAULT_LAMBDA, part: str = 'total') -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Implied effective area <code>A_eff(E) = V_target(E) n_N sigma_CC(E)</code>.</p>
+<p>Recasts the target-volume factorization (Eq. 2.20) in the same units and
+convention as the published :class:<code>~softpaws.response.irfs.EffectiveArea</code>
+(<code>dN/dE = A_eff(E) dphi/dE</code>), so the two can be overlaid directly. Unlike
+the published table, this is fit-free but not flux-independent: the soft
+volume itself depends on the assumed spectral index <code>gamma</code> (Eq. 2.23),
+so <code>A_eff</code> here is only exact at the <code>gamma</code> it is evaluated with.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, entering only through the soft
+volume's spectral dependence.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Implied effective area [cm^2], broadcast to the shape of
+<code>energy_gev</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def effective_area_cm2(
+    self,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+) -&gt; np.ndarray:
+    """Implied effective area ``A_eff(E) = V_target(E) n_N sigma_CC(E)``.
+
+    Recasts the target-volume factorization (Eq. 2.20) in the same units and
+    convention as the published :class:`~softpaws.response.irfs.EffectiveArea`
+    (``dN/dE = A_eff(E) dphi/dE``), so the two can be overlaid directly. Unlike
+    the published table, this is fit-free but not flux-independent: the soft
+    volume itself depends on the assumed spectral index ``gamma`` (Eq. 2.23),
+    so ``A_eff`` here is only exact at the ``gamma`` it is evaluated with.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, entering only through the soft
+        volume's spectral dependence.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+
+    Returns
+    -------
+    aeff : np.ndarray
+        Implied effective area [cm^2], broadcast to the shape of
+        ``energy_gev``.
+    """
+    volume_cm3 = self.target_volume_cm3(energy_gev, gamma, lam, part)
+    sigma = self.cc_cross_section_cm2(energy_gev, lam)
+    return volume_cm3 * self.n_nucleon_cm3 * sigma</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.expected_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">expected_counts</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">expected_counts(log10_energy_edges: ndarray, phi0: float, gamma: float, livetime_s: float, solid_angle_sr: float, lam: float = DEFAULT_LAMBDA, part: str = 'total', n_subdivisions: int = 64) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected track counts per muon-energy bin.</p>
+<p>Integrates the differential rate over each energy bin and over the given
+solid angle and livetime. Angular acceptance, attenuation, and detector
+efficiency are not modelled (see <code>docs/theory/soft_volume.md</code>); the
+result is a geometric through-going estimate.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle over which the (isotropic) flux is integrated [sr].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per bin for the energy integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected number of tracks in each energy bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def expected_counts(
+    self,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    livetime_s: float,
+    solid_angle_sr: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+    n_subdivisions: int = 64,
+) -&gt; np.ndarray:
+    """Expected track counts per muon-energy bin.
+
+    Integrates the differential rate over each energy bin and over the given
+    solid angle and livetime. Angular acceptance, attenuation, and detector
+    efficiency are not modelled (see ``docs/theory/soft_volume.md``); the
+    result is a geometric through-going estimate.
+
+    Parameters
+    ----------
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`).
+    livetime_s : float
+        Exposure time [s].
+    solid_angle_sr : float
+        Solid angle over which the (isotropic) flux is integrated [sr].
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tracks in each energy bin.
+    """
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        rate = self.differential_rate(energy, phi0, gamma, lam, part)
+        counts[i] = np.trapezoid(rate, energy)
+    return counts * livetime_s * solid_angle_sr</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_attenuated" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">expected_counts_attenuated</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">expected_counts_attenuated(log10_energy_edges: ndarray, phi0: float, gamma: float, livetime_s: float, dec_min_deg: float, dec_max_deg: float, lam: float = DEFAULT_LAMBDA, part: str = 'total', n_subdivisions: int = 64, n_dec: int = 64) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected track counts with per-event PREM Earth attenuation (Form B).</p>
+<p>Folds the neutrino survival probability into the solid-angle integral
+rather than applying a single representative column. Because the target
+volume, cross section, and (isotropic) flux do not depend on direction,
+the band integral collapses to an energy-dependent effective solid angle
+:func:<code>softpaws.transport.attenuation.effective_solid_angle</code>, evaluated
+with the layered PREM column along each declination's Earth chord.</p>
+<p>Unlike :meth:<code>expected_counts</code>, the geometric <code>solid_angle_sr</code> is
+supplied implicitly by the declination band. This method must be called
+on a response <em>without</em> the closed-form column
+(<code>attenuation_column_g_cm2 is None</code>) so attenuation is not applied
+twice.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg] defining the integrated solid angle.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg] defining the integrated solid angle.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per bin for the energy integral.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_dec</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of declination samples for the effective-solid-angle integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected number of tracks in each energy bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the response also carries a closed-form attenuation column,
+which would double-count the Earth absorption.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def expected_counts_attenuated(
+    self,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    livetime_s: float,
+    dec_min_deg: float,
+    dec_max_deg: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+    n_subdivisions: int = 64,
+    n_dec: int = 64,
+) -&gt; np.ndarray:
+    """Expected track counts with per-event PREM Earth attenuation (Form B).
+
+    Folds the neutrino survival probability into the solid-angle integral
+    rather than applying a single representative column. Because the target
+    volume, cross section, and (isotropic) flux do not depend on direction,
+    the band integral collapses to an energy-dependent effective solid angle
+    :func:`softpaws.transport.attenuation.effective_solid_angle`, evaluated
+    with the layered PREM column along each declination's Earth chord.
+
+    Unlike :meth:`expected_counts`, the geometric ``solid_angle_sr`` is
+    supplied implicitly by the declination band. This method must be called
+    on a response *without* the closed-form column
+    (``attenuation_column_g_cm2 is None``) so attenuation is not applied
+    twice.
+
+    Parameters
+    ----------
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`).
+    livetime_s : float
+        Exposure time [s].
+    dec_min_deg, dec_max_deg : float
+        Declination band edges [deg] defining the integrated solid angle.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+    n_dec : int, optional
+        Number of declination samples for the effective-solid-angle integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tracks in each energy bin.
+
+    Raises
+    ------
+    ValueError
+        Raised if the response also carries a closed-form attenuation column,
+        which would double-count the Earth absorption.
+    """
+    if self.attenuation_column_g_cm2 is not None:
+        raise ValueError(
+            "expected_counts_attenuated applies per-event attenuation; build the "
+            "response with attenuation_column_g_cm2=None to avoid double-counting."
+        )
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        # Differential rate is per steradian; weight by the attenuation-folded
+        # effective solid angle at each energy before integrating over energy.
+        rate = self.differential_rate(energy, phi0, gamma, lam, part)
+        omega_eff = effective_solid_angle(
+            energy, dec_min_deg, dec_max_deg, lam, n_dec, self.cross_section,
+        )
+        counts[i] = np.trapezoid(rate * omega_eff, energy)
+    return counts * livetime_s</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_coupled_attenuation" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">expected_counts_coupled_attenuation</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">expected_counts_coupled_attenuation(log10_energy_edges: ndarray, phi0: float, gamma: float, livetime_s: float, dec_min_deg: float, dec_max_deg: float, lam: float = DEFAULT_LAMBDA, part: str = 'total', n_subdivisions: int = 64, n_dec: int = 64) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected track counts with attenuation coupled into the propagator (Form C).</p>
+<p>Unlike :meth:<code>expected_counts_attenuated</code> (Form B), which multiplies the
+soft volume by a decoupled survival probability <code>D_nu(E)</code>, this folds
+the parent neutrino's Earth attenuation directly into the same depth
+integral that produces the soft volume (Sec. III A and App. A of
+the method paper; :func:<code>softpaws.transport.soft_volume.
+soft_volume_attenuated_exact</code>). The two agree wherever <code>D_nu</code> varies
+slowly over the ~few-<code>Phi(A)^-1</code> km-w.e. range the soft volume is
+produced in, and diverge for strongly-absorbed upgoing UHE tracks,
+where the paper's whole point in deriving Eq. 11 is that the two
+exponentials are not generally separable.</p>
+<p>Because the column depth <code>x</code> (and hence the soft volume itself) now
+depends on declination, this cannot collapse to an effective-solid-
+angle trick the way :meth:<code>expected_counts_attenuated</code> does: it
+integrates over energy and declination explicitly, evaluating the
+layered PREM column at each declination sample
+(:func:<code>softpaws.transport.attenuation.prem_column</code>), expressed as a
+length at <code>self.density_g_cm3</code> (the same reference density
+<code>Phi(A)</code> and <code>Lambda_nu</code> already use).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>), evaluated
+<strong>unattenuated</strong>: attenuation is applied inside this method, not
+beforehand.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>), evaluated
+<strong>unattenuated</strong>: attenuation is applied inside this method, not
+beforehand.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg] defining the integrated solid angle.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg] defining the integrated solid angle.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per bin for the energy integral.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_dec</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of declination samples for the band integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected number of tracks in each energy bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>method != "exact"</code>, or if the response also carries a
+closed-form attenuation column, which would double-count the Earth
+absorption.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def expected_counts_coupled_attenuation(
+    self,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    livetime_s: float,
+    dec_min_deg: float,
+    dec_max_deg: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+    n_subdivisions: int = 64,
+    n_dec: int = 64,
+) -&gt; np.ndarray:
+    """Expected track counts with attenuation coupled into the propagator (Form C).
+
+    Unlike :meth:`expected_counts_attenuated` (Form B), which multiplies the
+    soft volume by a decoupled survival probability ``D_nu(E)``, this folds
+    the parent neutrino's Earth attenuation directly into the same depth
+    integral that produces the soft volume (Sec. III A and App. A of
+    the method paper; :func:`softpaws.transport.soft_volume.
+    soft_volume_attenuated_exact`). The two agree wherever ``D_nu`` varies
+    slowly over the ~few-``Phi(A)^-1`` km-w.e. range the soft volume is
+    produced in, and diverge for strongly-absorbed upgoing UHE tracks,
+    where the paper's whole point in deriving Eq. 11 is that the two
+    exponentials are not generally separable.
+
+    Because the column depth ``x`` (and hence the soft volume itself) now
+    depends on declination, this cannot collapse to an effective-solid-
+    angle trick the way :meth:`expected_counts_attenuated` does: it
+    integrates over energy and declination explicitly, evaluating the
+    layered PREM column at each declination sample
+    (:func:`softpaws.transport.attenuation.prem_column`), expressed as a
+    length at ``self.density_g_cm3`` (the same reference density
+    ``Phi(A)`` and ``Lambda_nu`` already use).
+
+    Parameters
+    ----------
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`), evaluated
+        **unattenuated**: attenuation is applied inside this method, not
+        beforehand.
+    livetime_s : float
+        Exposure time [s].
+    dec_min_deg, dec_max_deg : float
+        Declination band edges [deg] defining the integrated solid angle.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+    n_dec : int, optional
+        Number of declination samples for the band integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tracks in each energy bin.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``method != "exact"``, or if the response also carries a
+        closed-form attenuation column, which would double-count the Earth
+        absorption.
+    """
+    if self.method != "exact":
+        raise ValueError(
+            f"expected_counts_coupled_attenuation requires method='exact', got "
+            f"{self.method!r}."
+        )
+    if self.attenuation_column_g_cm2 is not None:
+        raise ValueError(
+            "expected_counts_coupled_attenuation applies its own per-direction "
+            "attenuation; build the response with attenuation_column_g_cm2=None "
+            "to avoid double-counting."
+        )
+    if part not in ("total", "soft", "inside"):
+        raise ValueError(f"part must be 'total', 'soft', or 'inside', got {part!r}.")
+
+    dec_deg = np.linspace(dec_min_deg, dec_max_deg, n_dec)
+    dec_rad = np.deg2rad(dec_deg)
+    solid_angle_weight = 2.0 * np.pi * np.cos(dec_rad)  # dOmega / d(dec)
+    columns_g_cm2 = np.array([prem_column(d) for d in dec_deg])
+    # Column depth as a length at the response's reference density, matching
+    # the units Phi(A) and Lambda_nu are evaluated in.
+    x_km = columns_g_cm2 / self.density_g_cm3 / CM_PER_KM
+
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        lam_eff = self.spectral_slope(energy, lam)
+        sigma = self.cc_cross_section_cm2(energy, lam)
+        flux = power_law_flux(energy, phi0, gamma)
+        inv_lambda_nu = 1.0 / neutrino_interaction_length_km(
+            energy, self.density_g_cm3, lam, self.cross_section
+        )
+        volume_grid_cm3 = np.empty((energy.size, dec_deg.size))
+        for j, x in enumerate(x_km):
+            v_det_eff, v_soft = soft_volume_attenuated_exact(
+                self.radius_km, energy, gamma, float(x), inv_lambda_nu,
+                lam_eff, self.density_g_cm3, self.b_scale, self.d_scale,
+                self.coefficient_source,
+            )
+            if part == "soft":
+                volume_km3 = v_soft
+            elif part == "inside":
+                volume_km3 = v_det_eff
+            else:
+                volume_km3 = v_det_eff + v_soft
+            volume_grid_cm3[:, j] = volume_km3 * CM_PER_KM**3
+        rate_grid = volume_grid_cm3 * (self.n_nucleon_cm3 * sigma * flux)[:, None]
+        band_rate = np.trapezoid(rate_grid * solid_angle_weight[None, :], dec_rad, axis=1)
+        counts[i] = np.trapezoid(band_rate, energy)
+    return counts * livetime_s</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_from_flux" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">expected_counts_from_flux</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">expected_counts_from_flux(log10_energy_edges: ndarray, flux_fn: Callable[[ndarray, ndarray], ndarray], livetime_s: float, dec_min_deg: float, dec_max_deg: float, lam: float = DEFAULT_LAMBDA, part: str = 'total', attenuate: bool = True, n_subdivisions: int = 32, n_dec: int = 32) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected track counts for an arbitrary, direction-dependent flux.</p>
+<p>Generalizes :meth:<code>expected_counts_attenuated</code> from the power law of
+:func:<code>power_law_flux</code> to a tabulated flux such as an MCEq atmospheric
+model (<code>examples/22_atmospheric_background_mceq.py</code>), which is neither
+a power law nor isotropic. The rate is still Eq. 2.20,</p>
+<p>.. math:: N_i = T \int_{\mathrm{bin}\,i}\!dE \int_\mathrm{band}\!
+    d\Omega\; A_\mathrm{eff}(E)\,\phi_\nu(E, \mathrm{dec})\,
+    D_\nu(E, \mathrm{dec}),</p>
+<p>with <code>A_eff = V_target n_N sigma_CC</code> from :meth:<code>effective_area_cm2</code>.
+The flux no longer factors out of the band integral, so unlike
+:meth:<code>expected_counts_attenuated</code> the declination integral is done
+explicitly rather than collapsed into an effective solid angle.</p>
+<p>Because the soft volume is derived for a power-law parent spectrum, the
+spectral index it needs is taken locally, as the log-log slope
+<code>gamma_eff(E) = -d ln phi / d ln E</code> of the band-integrated arriving
+flux, clipped to :data:<code>GAMMA_EFF_BOUNDS</code>. This is exact for a power law
+and a good approximation wherever the flux curves slowly compared with
+the soft volume's own energy dependence.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flux_fn</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Differential flux <code>flux_fn(E_gev, dec_deg) -&gt; dphi/dE</code> in
+<code>GeV^-1 cm^-2 s^-1 sr^-1</code>. Called with a column of energies and a
+row of declinations, so it must broadcast and return shape
+<code>(n_energy, n_dec)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>attenuate</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Whether to apply the per-direction PREM Earth survival probability
+(Form B, as in :meth:<code>expected_counts_attenuated</code>). Defaults to
+<code>True</code>. Set <code>False</code> for a flux that is already attenuated.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>32</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per bin for the energy integral.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_dec</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>32</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of declination samples for the band integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected number of tracks in each energy bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the response also carries a closed-form attenuation column
+while <code>attenuate</code> is <code>True</code>, which would double-count the Earth
+absorption.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def expected_counts_from_flux(
+    self,
+    log10_energy_edges: np.ndarray,
+    flux_fn: Callable[[np.ndarray, np.ndarray], np.ndarray],
+    livetime_s: float,
+    dec_min_deg: float,
+    dec_max_deg: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+    attenuate: bool = True,
+    n_subdivisions: int = 32,
+    n_dec: int = 32,
+) -&gt; np.ndarray:
+    r"""Expected track counts for an arbitrary, direction-dependent flux.
+
+    Generalizes :meth:`expected_counts_attenuated` from the power law of
+    :func:`power_law_flux` to a tabulated flux such as an MCEq atmospheric
+    model (``examples/22_atmospheric_background_mceq.py``), which is neither
+    a power law nor isotropic. The rate is still Eq. 2.20,
+
+    .. math:: N_i = T \\int_{\\mathrm{bin}\\,i}\\!dE \\int_\\mathrm{band}\\!
+        d\\Omega\\; A_\\mathrm{eff}(E)\\,\\phi_\\nu(E, \\mathrm{dec})\\,
+        D_\\nu(E, \\mathrm{dec}),
+
+    with ``A_eff = V_target n_N sigma_CC`` from :meth:`effective_area_cm2`.
+    The flux no longer factors out of the band integral, so unlike
+    :meth:`expected_counts_attenuated` the declination integral is done
+    explicitly rather than collapsed into an effective solid angle.
+
+    Because the soft volume is derived for a power-law parent spectrum, the
+    spectral index it needs is taken locally, as the log-log slope
+    ``gamma_eff(E) = -d ln phi / d ln E`` of the band-integrated arriving
+    flux, clipped to :data:`GAMMA_EFF_BOUNDS`. This is exact for a power law
+    and a good approximation wherever the flux curves slowly compared with
+    the soft volume's own energy dependence.
+
+    Parameters
+    ----------
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    flux_fn : callable
+        Differential flux ``flux_fn(E_gev, dec_deg) -&gt; dphi/dE`` in
+        ``GeV^-1 cm^-2 s^-1 sr^-1``. Called with a column of energies and a
+        row of declinations, so it must broadcast and return shape
+        ``(n_energy, n_dec)``.
+    livetime_s : float
+        Exposure time [s].
+    dec_min_deg, dec_max_deg : float
+        Declination band edges [deg].
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+    attenuate : bool, optional
+        Whether to apply the per-direction PREM Earth survival probability
+        (Form B, as in :meth:`expected_counts_attenuated`). Defaults to
+        ``True``. Set ``False`` for a flux that is already attenuated.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+    n_dec : int, optional
+        Number of declination samples for the band integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tracks in each energy bin.
+
+    Raises
+    ------
+    ValueError
+        Raised if the response also carries a closed-form attenuation column
+        while ``attenuate`` is ``True``, which would double-count the Earth
+        absorption.
+    """
+    if attenuate and self.attenuation_column_g_cm2 is not None:
+        raise ValueError(
+            "expected_counts_from_flux applies per-event attenuation; build the "
+            "response with attenuation_column_g_cm2=None to avoid double-counting."
+        )
+    dec_deg = np.linspace(dec_min_deg, dec_max_deg, n_dec)
+    dec_rad = np.deg2rad(dec_deg)
+    solid_angle_weight = 2.0 * np.pi * np.cos(dec_rad)  # dOmega / d(dec)
+    columns = np.array([prem_column(d) for d in dec_deg]) if attenuate else None
+
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        flux = np.asarray(flux_fn(energy[:, None], dec_deg[None, :]), dtype=float)
+        if columns is not None:
+            flux = flux * survival_probability(
+                energy[:, None], columns[None, :], lam, self.cross_section,
+            )
+        # Band-integrated arriving flux [GeV^-1 cm^-2 s^-1]; the soft volume's
+        # spectral weighting is read off its local slope.
+        band_flux = np.trapezoid(flux * solid_angle_weight[None, :], dec_rad, axis=1)
+        gamma_eff = _local_spectral_index(energy, band_flux)
+        aeff = np.array([
+            float(self.effective_area_cm2(e, g, lam, part)[0])
+            for e, g in zip(energy, gamma_eff, strict=True)
+        ])
+        counts[i] = np.trapezoid(aeff * band_flux, energy)
+    return counts * livetime_s</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_with_cutoff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">expected_counts_with_cutoff</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">expected_counts_with_cutoff(log10_energy_edges: ndarray, phi0: float, gamma: float, e0_cutoff_gev: float, livetime_s: float, solid_angle_sr: float, lam: float = DEFAULT_LAMBDA, part: str = 'total', n_subdivisions: int = 32, **cutoff_kwargs: int) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected track counts per muon-energy bin, with a spectral cutoff.</p>
+<p>Bin-integrated counterpart of :meth:<code>differential_rate_with_cutoff</code>,
+matching the bin-integration convention of :meth:<code>expected_counts</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e0_cutoff_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral cutoff energy <code>E0</code> [GeV] of the parent neutrino flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle over which the (isotropic) flux is integrated [sr].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which target-volume contribution to use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>32</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per bin for the energy integral.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>**cutoff_kwargs</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>{}</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Extra quadrature-size keywords (<code>n_xi</code>, <code>n_w</code>, <code>n_k</code>)
+forwarded to :meth:<code>differential_rate_with_cutoff</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected number of tracks in each energy bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def expected_counts_with_cutoff(
+    self,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    e0_cutoff_gev: float,
+    livetime_s: float,
+    solid_angle_sr: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+    n_subdivisions: int = 32,
+    **cutoff_kwargs: int,
+) -&gt; np.ndarray:
+    """Expected track counts per muon-energy bin, with a spectral cutoff.
+
+    Bin-integrated counterpart of :meth:`differential_rate_with_cutoff`,
+    matching the bin-integration convention of :meth:`expected_counts`.
+
+    Parameters
+    ----------
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`).
+    e0_cutoff_gev : float
+        Spectral cutoff energy ``E0`` [GeV] of the parent neutrino flux.
+    livetime_s : float
+        Exposure time [s].
+    solid_angle_sr : float
+        Solid angle over which the (isotropic) flux is integrated [sr].
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which target-volume contribution to use.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+    **cutoff_kwargs
+        Extra quadrature-size keywords (``n_xi``, ``n_w``, ``n_k``)
+        forwarded to :meth:`differential_rate_with_cutoff`.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tracks in each energy bin.
+    """
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        rate = self.differential_rate_with_cutoff(
+            energy, phi0, gamma, e0_cutoff_gev, lam, part, **cutoff_kwargs,
+        )
+        counts[i] = np.trapezoid(rate, energy)
+    return counts * livetime_s * solid_angle_sr</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.spectral_slope" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">spectral_slope</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">spectral_slope(energy_gev: float | ndarray, lam: float = DEFAULT_LAMBDA) -&gt; float | np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Cross-section slope <code>lambda</code> to use at each energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Slope of the analytic power law, returned unchanged when no
+tabulated cross section is configured.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>lam_eff</code></b>(                  <code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>lam</code> itself for the power-law model, or the tabulated model's
+local slope at each energy.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def spectral_slope(
+    self,
+    energy_gev: float | np.ndarray,
+    lam: float = DEFAULT_LAMBDA,
+) -&gt; float | np.ndarray:
+    """Cross-section slope ``lambda`` to use at each energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+    lam : float, optional
+        Slope of the analytic power law, returned unchanged when no
+        tabulated cross section is configured.
+
+    Returns
+    -------
+    lam_eff : float or np.ndarray
+        ``lam`` itself for the power-law model, or the tabulated model's
+        local slope at each energy.
+    """
+    if self.cross_section is not None:
+        return self.cross_section.local_slope(energy_gev)
+    return lam</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.target_volume_cm3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">target_volume_cm3</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">target_volume_cm3(energy_gev: float | ndarray, gamma: float, lam: float = DEFAULT_LAMBDA, part: str = 'total') -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective target volume at a given muon energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>part</code></b>
+                  (<code>(&#39;total&#39;, &#39;soft&#39;, &#39;inside&#39;)</code>, default:
+                      <code>&#34;total&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which contribution to return. <code>"inside"</code> is the instrumented
+sphere, <code>"soft"</code> the transport-enhanced soft volume, <code>"total"</code>
+their sum.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>volume</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Target volume [cm^3], broadcast to the shape of <code>energy_gev</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>For <code>method="exact"</code> the inelasticity factor <code>I(A)</code> multiplies both
+populations, so the reported <code>"inside"</code> volume is the effective
+<code>I(A) V_det</code> rather than the bare geometric sphere.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def target_volume_cm3(
+    self,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    part: str = "total",
+) -&gt; np.ndarray:
+    """Effective target volume at a given muon energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    part : {"total", "soft", "inside"}, optional
+        Which contribution to return. ``"inside"`` is the instrumented
+        sphere, ``"soft"`` the transport-enhanced soft volume, ``"total"``
+        their sum.
+
+    Returns
+    -------
+    volume : np.ndarray
+        Target volume [cm^3], broadcast to the shape of ``energy_gev``.
+
+    Notes
+    -----
+    For ``method="exact"`` the inelasticity factor ``I(A)`` multiplies both
+    populations, so the reported ``"inside"`` volume is the effective
+    ``I(A) V_det`` rather than the bare geometric sphere.
+    """
+    lam_eff = self.spectral_slope(energy_gev, lam)
+    if self.method == "exact":
+        v_soft = soft_volume_exact(
+            self.radius_km,
+            energy_gev,
+            gamma,
+            lam_eff,
+            self.column_depth_km,
+            self.density_g_cm3,
+            b_scale=self.b_scale,
+            d_scale=self.d_scale,
+            source=self.coefficient_source,
+            beta=self.beta,
+            light_yield_length_km=self.light_yield_length_km,
+        )
+        a = spectral_index(gamma, lam_eff)
+        v_det_cm3 = inelasticity_factor(a) * self.v_det_cm3
+    elif self.method == "diffusion":
+        v_soft = soft_volume_diffusion(
+            self.radius_km, energy_gev, gamma, lam_eff, self.density_g_cm3,
+            b_scale=self.b_scale, d_scale=self.d_scale,
+            source=self.coefficient_source,
+            light_yield_length_km=self.light_yield_length_km,
+        )
+        v_det_cm3 = self.v_det_cm3
+    else:
+        v_soft = soft_volume_drift(
+            self.radius_km, energy_gev, gamma, lam_eff, self.density_g_cm3,
+            b_scale=self.b_scale, source=self.coefficient_source,
+            light_yield_length_km=self.light_yield_length_km,
+        )
+        v_det_cm3 = self.v_det_cm3
+
+    v_soft_cm3 = v_soft * CM_PER_KM**3
+    # Broadcast rather than fill: with a tabulated cross section the
+    # inelasticity factor is itself energy dependent, so v_det is an array.
+    v_det_cm3 = np.zeros_like(v_soft_cm3) + v_det_cm3
+    if part == "soft":
+        return v_soft_cm3
+    if part == "inside":
+        return v_det_cm3
+    if part == "total":
+        return v_det_cm3 + v_soft_cm3
+    raise ValueError(f"part must be 'total', 'soft', or 'inside', got {part!r}.")</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.threshold_effective_area_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">threshold_effective_area_cm2</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">threshold_effective_area_cm2(energy_nu_gev: float | ndarray, threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV, lam: float = DEFAULT_LAMBDA, mean_inelasticity: float = MEAN_INELASTICITY) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective area in the published-<code>A_eff</code> convention.</p>
+<p>Like-for-like counterpart of :meth:<code>effective_area_cm2</code>, built to match
+how the IceCube instrument response is tabulated rather than how the soft
+volume is derived. Two things change:</p>
+<ul>
+<li>the argument is the <strong>true neutrino energy</strong>, not the observed muon
+  energy, with the muon born at <code>(1 - &lt;y_w&gt;) E_nu</code>;</li>
+<li>the target volume is the threshold muon range
+  (:func:<code>~softpaws.transport.soft_volume.range_target_volume_km3</code>)
+  rather than the spectrally weighted soft volume, because the published
+  table integrates over every selected muon energy at fixed <code>E_nu</code>.</li>
+</ul>
+<p>The result carries no <code>gamma</code>: unlike :meth:<code>effective_area_cm2</code> it is
+genuinely flux independent, as a tabulated effective area should be.
+Detection efficiency is still not modelled, so this is the geometric
+ceiling of a perfect through-going selection.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_nu_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>True neutrino energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV">DEFAULT_MUON_THRESHOLD_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV]. Defaults to
+:data:<code>~softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>mean_inelasticity</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.MEAN_INELASTICITY">MEAN_INELASTICITY</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Mean CC inelasticity <code>&lt;y_w&gt;</code> relating the muon energy to the
+neutrino energy. Defaults to
+:data:<code>~softpaws.transport.source.MEAN_INELASTICITY</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Implied effective area [cm^2], broadcast to the shape of
+<code>energy_nu_gev</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def threshold_effective_area_cm2(
+    self,
+    energy_nu_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    lam: float = DEFAULT_LAMBDA,
+    mean_inelasticity: float = MEAN_INELASTICITY,
+) -&gt; np.ndarray:
+    """Effective area in the published-``A_eff`` convention.
+
+    Like-for-like counterpart of :meth:`effective_area_cm2`, built to match
+    how the IceCube instrument response is tabulated rather than how the soft
+    volume is derived. Two things change:
+
+    * the argument is the **true neutrino energy**, not the observed muon
+      energy, with the muon born at ``(1 - &lt;y_w&gt;) E_nu``;
+    * the target volume is the threshold muon range
+      (:func:`~softpaws.transport.soft_volume.range_target_volume_km3`)
+      rather than the spectrally weighted soft volume, because the published
+      table integrates over every selected muon energy at fixed ``E_nu``.
+
+    The result carries no ``gamma``: unlike :meth:`effective_area_cm2` it is
+    genuinely flux independent, as a tabulated effective area should be.
+    Detection efficiency is still not modelled, so this is the geometric
+    ceiling of a perfect through-going selection.
+
+    Parameters
+    ----------
+    energy_nu_gev : float or np.ndarray
+        True neutrino energy [GeV].
+    threshold_gev : float, optional
+        Muon selection threshold [GeV]. Defaults to
+        :data:`~softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV`.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    mean_inelasticity : float, optional
+        Mean CC inelasticity ``&lt;y_w&gt;`` relating the muon energy to the
+        neutrino energy. Defaults to
+        :data:`~softpaws.transport.source.MEAN_INELASTICITY`.
+
+    Returns
+    -------
+    aeff : np.ndarray
+        Implied effective area [cm^2], broadcast to the shape of
+        ``energy_nu_gev``.
+    """
+    energy_nu = np.atleast_1d(np.asarray(energy_nu_gev, dtype=float))
+    energy_mu = (1.0 - mean_inelasticity) * energy_nu
+    volume_cm3 = (
+        range_target_volume_km3(
+            self.radius_km,
+            energy_mu,
+            threshold_gev,
+            self.density_g_cm3,
+            self.b_scale,
+            self.coefficient_source,
+            light_yield_length_km=self.light_yield_length_km,
+        )
+        * CM_PER_KM**3
+    )
+    return volume_cm3 * self.n_nucleon_cm3 * self.cc_cross_section_cm2(energy_nu, lam)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.response.soft_volume.SoftVolumeResponse.weak_rate_density" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">weak_rate_density</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">weak_rate_density(energy_gev: float | ndarray, phi0: float, gamma: float, lam: float = DEFAULT_LAMBDA) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local weak-rate density <code>n_N sigma_CC(E) phi_nu(E)</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV] (approximately the neutrino energy).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>rate_density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Weak-rate density [cm^-3 GeV^-1 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>If the response was built with <code>attenuation_column_g_cm2</code>, the flux is
+multiplied by the closed-form Earth survival probability <code>D_nu(E)</code>
+(Form A). This is a single representative column for the band; the
+per-event treatment is :meth:<code>expected_counts_attenuated</code>.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def weak_rate_density(
+    self,
+    energy_gev: float | np.ndarray,
+    phi0: float,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+) -&gt; np.ndarray:
+    """Local weak-rate density ``n_N sigma_CC(E) phi_nu(E)``.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV] (approximately the neutrino energy).
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`).
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+
+    Returns
+    -------
+    rate_density : np.ndarray
+        Weak-rate density [cm^-3 GeV^-1 s^-1 sr^-1].
+
+    Notes
+    -----
+    If the response was built with ``attenuation_column_g_cm2``, the flux is
+    multiplied by the closed-form Earth survival probability ``D_nu(E)``
+    (Form A). This is a single representative column for the band; the
+    per-event treatment is :meth:`expected_counts_attenuated`.
+    """
+    sigma = self.cc_cross_section_cm2(energy_gev, lam)
+    flux = power_law_flux(energy_gev, phi0, gamma)
+    if self.attenuation_column_g_cm2 is not None:
+        flux = flux * survival_probability(
+            energy_gev, self.attenuation_column_g_cm2, lam, self.cross_section
+        )
+    return self.n_nucleon_cm3 * sigma * flux</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.soft_volume.tau_induced_differential_rate" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tau_induced_differential_rate</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">tau_induced_differential_rate(response: SoftVolumeResponse, energy_gev: float | ndarray, phi0: float, gamma: float, lam: float = DEFAULT_LAMBDA) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon-track rate from a same-normalization <code>nu_tau</code> flux.</p>
+<p>Scales the direct <code>nu_mu</code> differential rate (<code>response.differential_rate</code>,
+<code>part="total"</code>) by :func:<code>softpaws.transport.tau.tau_to_muon_ratio</code>, giving
+the additional muon-track rate a <code>nu_tau</code> flux with the <em>same</em> <code>(phi0,
+gamma)</code> would produce via CC tau production and leptonic decay
+(:mod:<code>softpaws.transport.tau</code>). This is additive to, not a replacement for,
+the <code>nu_mu</code> prediction.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>response</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="SoftVolumeResponse (softpaws.response.soft_volume.SoftVolumeResponse)" href="#softpaws.response.soft_volume.SoftVolumeResponse">SoftVolumeResponse</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>A response built with <code>method="exact"</code>; the tau ratio needs the exact
+eigenvalue <code>Phi(A)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>), shared by the
+<code>nu_tau</code> flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters (see :func:<code>power_law_flux</code>), shared by the
+<code>nu_tau</code> flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>rate</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Tau-induced differential track rate [GeV^-1 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>response.method != "exact"</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def tau_induced_differential_rate(
+    response: SoftVolumeResponse,
+    energy_gev: float | np.ndarray,
+    phi0: float,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+) -&gt; np.ndarray:
+    """Muon-track rate from a same-normalization ``nu_tau`` flux.
+
+    Scales the direct ``nu_mu`` differential rate (``response.differential_rate``,
+    ``part="total"``) by :func:`softpaws.transport.tau.tau_to_muon_ratio`, giving
+    the additional muon-track rate a ``nu_tau`` flux with the *same* ``(phi0,
+    gamma)`` would produce via CC tau production and leptonic decay
+    (:mod:`softpaws.transport.tau`). This is additive to, not a replacement for,
+    the ``nu_mu`` prediction.
+
+    Parameters
+    ----------
+    response : SoftVolumeResponse
+        A response built with ``method="exact"``; the tau ratio needs the exact
+        eigenvalue ``Phi(A)``.
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    phi0, gamma : float
+        Power-law flux parameters (see :func:`power_law_flux`), shared by the
+        ``nu_tau`` flux.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+
+    Returns
+    -------
+    rate : np.ndarray
+        Tau-induced differential track rate [GeV^-1 s^-1 sr^-1].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``response.method != "exact"``.
+    """
+    if response.method != "exact":
+        raise ValueError(
+            f"tau_induced_differential_rate requires method='exact', got "
+            f"{response.method!r}."
+        )
+    numu_rate = response.differential_rate(energy_gev, phi0, gamma, lam, part="total")
+    a = spectral_index(gamma, lam)
+    ratio = tau_to_muon_ratio(a, energy_gev, response.density_g_cm3)
+    return ratio * numu_rate</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.soft_volume.tau_induced_expected_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tau_induced_expected_counts</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">tau_induced_expected_counts(response: SoftVolumeResponse, log10_energy_edges: ndarray, phi0: float, gamma: float, livetime_s: float, solid_angle_sr: float, lam: float = DEFAULT_LAMBDA, n_subdivisions: int = 64) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected tau-induced track counts per muon-energy bin.</p>
+<p>Bin-integrated counterpart of :func:<code>tau_induced_differential_rate</code>, matching
+the bin-integration convention of :meth:<code>SoftVolumeResponse.expected_counts</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>response</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="SoftVolumeResponse (softpaws.response.soft_volume.SoftVolumeResponse)" href="#softpaws.response.soft_volume.SoftVolumeResponse">SoftVolumeResponse</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>A response built with <code>method="exact"</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters shared by the <code>nu_tau</code> flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters shared by the <code>nu_tau</code> flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle over which the (isotropic) flux is integrated [sr].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per bin for the energy integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected number of tau-induced tracks in each energy bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def tau_induced_expected_counts(
+    response: SoftVolumeResponse,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    livetime_s: float,
+    solid_angle_sr: float,
+    lam: float = DEFAULT_LAMBDA,
+    n_subdivisions: int = 64,
+) -&gt; np.ndarray:
+    """Expected tau-induced track counts per muon-energy bin.
+
+    Bin-integrated counterpart of :func:`tau_induced_differential_rate`, matching
+    the bin-integration convention of :meth:`SoftVolumeResponse.expected_counts`.
+
+    Parameters
+    ----------
+    response : SoftVolumeResponse
+        A response built with ``method="exact"``.
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters shared by the ``nu_tau`` flux.
+    livetime_s : float
+        Exposure time [s].
+    solid_angle_sr : float
+        Solid angle over which the (isotropic) flux is integrated [sr].
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tau-induced tracks in each energy bin.
+    """
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        rate = tau_induced_differential_rate(response, energy, phi0, gamma, lam)
+        counts[i] = np.trapezoid(rate, energy)
+    return counts * livetime_s * solid_angle_sr</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.soft_volume.tau_induced_expected_counts_attenuated" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tau_induced_expected_counts_attenuated</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">tau_induced_expected_counts_attenuated(response: SoftVolumeResponse, log10_energy_edges: ndarray, phi0: float, gamma: float, livetime_s: float, dec_min_deg: float, dec_max_deg: float, lam: float = DEFAULT_LAMBDA, n_subdivisions: int = 64, n_dec: int = 64) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected tau-induced track counts with per-event PREM attenuation (Form B).</p>
+<p>Tau counterpart of :meth:<code>SoftVolumeResponse.expected_counts_attenuated</code>,
+reusing the same effective-solid-angle weighting
+(:func:<code>softpaws.transport.attenuation.effective_solid_angle</code>). The tau
+module neglects regeneration and uses the plain <code>nu_mu</code> survival
+probability (:mod:<code>softpaws.transport.attenuation</code>), so the same <code>D_nu(E)</code>
+is applied to the <code>nu_tau</code> flux here.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>response</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="SoftVolumeResponse (softpaws.response.soft_volume.SoftVolumeResponse)" href="#softpaws.response.soft_volume.SoftVolumeResponse">SoftVolumeResponse</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>A response built with <code>method="exact"</code> and
+<code>attenuation_column_g_cm2=None</code> (per-event attenuation is applied
+here, not via the closed-form column).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_energy_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters shared by the <code>nu_tau</code> flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Power-law flux parameters shared by the <code>nu_tau</code> flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_min_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg] defining the integrated solid angle.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination band edges [deg] defining the integrated solid angle.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of log-spaced sample points per bin for the energy integral.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_dec</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>64</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of declination samples for the effective-solid-angle integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected number of tau-induced tracks in each energy bin.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the response also carries a closed-form attenuation column,
+which would double-count the Earth absorption.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def tau_induced_expected_counts_attenuated(
+    response: SoftVolumeResponse,
+    log10_energy_edges: np.ndarray,
+    phi0: float,
+    gamma: float,
+    livetime_s: float,
+    dec_min_deg: float,
+    dec_max_deg: float,
+    lam: float = DEFAULT_LAMBDA,
+    n_subdivisions: int = 64,
+    n_dec: int = 64,
+) -&gt; np.ndarray:
+    """Expected tau-induced track counts with per-event PREM attenuation (Form B).
+
+    Tau counterpart of :meth:`SoftVolumeResponse.expected_counts_attenuated`,
+    reusing the same effective-solid-angle weighting
+    (:func:`softpaws.transport.attenuation.effective_solid_angle`). The tau
+    module neglects regeneration and uses the plain ``nu_mu`` survival
+    probability (:mod:`softpaws.transport.attenuation`), so the same ``D_nu(E)``
+    is applied to the ``nu_tau`` flux here.
+
+    Parameters
+    ----------
+    response : SoftVolumeResponse
+        A response built with ``method="exact"`` and
+        ``attenuation_column_g_cm2=None`` (per-event attenuation is applied
+        here, not via the closed-form column).
+    log10_energy_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    phi0, gamma : float
+        Power-law flux parameters shared by the ``nu_tau`` flux.
+    livetime_s : float
+        Exposure time [s].
+    dec_min_deg, dec_max_deg : float
+        Declination band edges [deg] defining the integrated solid angle.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    n_subdivisions : int, optional
+        Number of log-spaced sample points per bin for the energy integral.
+    n_dec : int, optional
+        Number of declination samples for the effective-solid-angle integral.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_bins,)
+        Expected number of tau-induced tracks in each energy bin.
+
+    Raises
+    ------
+    ValueError
+        Raised if the response also carries a closed-form attenuation column,
+        which would double-count the Earth absorption.
+    """
+    if response.attenuation_column_g_cm2 is not None:
+        raise ValueError(
+            "tau_induced_expected_counts_attenuated applies per-event attenuation; "
+            "build the response with attenuation_column_g_cm2=None to avoid "
+            "double-counting."
+        )
+    edges = np.asarray(log10_energy_edges, dtype=float)
+    counts = np.empty(len(edges) - 1)
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
+        energy = np.logspace(lo, hi, n_subdivisions)
+        rate = tau_induced_differential_rate(response, energy, phi0, gamma, lam)
+        omega_eff = effective_solid_angle(
+            energy, dec_min_deg, dec_max_deg, lam, n_dec, response.cross_section,
+        )
+        counts[i] = np.trapezoid(rate * omega_eff, energy)
+    return counts * livetime_s</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../sensitivity/" class="btn btn-neutral float-left" title="sensitivity"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../standards/" class="btn btn-neutral float-right" title="standards">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../sensitivity/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../standards/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

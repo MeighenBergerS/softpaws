@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/data/paths/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>paths - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "paths";
+        var mkdocs_page_input_path = "api-reference/softpaws/data/paths.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/data/paths/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >data</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loader/">loader</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">paths</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.paths.data_root">data_root</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.paths.dr2_dir">dr2_dir</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.paths.hese_dir">hese_dir</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.paths.require">require</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">data</li>
+      <li class="breadcrumb-item active">paths</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.data.paths" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.data.paths</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Where the large releases live.</p>
+<p>The tables that ship with the package are found relative to this file. The
+IceCube releases are not shipped: the IceTracks-DR2 release is 2.5 GB and
+the HESE 7.5-year Monte Carlo 90 MB. Download them yourself and either place
+them under the package's <code>data</code> directory or point the environment
+variable <code>SOFTPAWS_DATA_DIR</code> at a directory with the same layout::</p>
+<pre><code>&lt;SOFTPAWS_DATA_DIR&gt;/
+    dataverse_files/      IceTracks-DR2, DOI 10.7910/DVN/MMIIZA
+        events/           &lt;season&gt;_exp.csv
+        irfs/             &lt;season&gt;_effectiveArea.csv, &lt;season&gt;_smearing.csv
+        uptime/           &lt;season&gt;_exp.csv
+    hese/                 HESE 7.5-year release
+        HESE_data.json, HESE_mc_observable.json, HESE_mc_truth.json
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="data_root (softpaws.data.paths.data_root)" href="#softpaws.data.paths.data_root">data_root</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Directory the releases are read from.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="dr2_dir (softpaws.data.paths.dr2_dir)" href="#softpaws.data.paths.dr2_dir">dr2_dir</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Root of the IceTracks-DR2 release, <code>&lt;data_root&gt;/dataverse_files</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="hese_dir (softpaws.data.paths.hese_dir)" href="#softpaws.data.paths.hese_dir">hese_dir</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Directory of the HESE 7.5-year release, <code>&lt;data_root&gt;/hese</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="require (softpaws.data.paths.require)" href="#softpaws.data.paths.require">require</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return <code>path</code> if it exists, else raise an error that says where to get it.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.paths.data_root" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">data_root</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">data_root() -&gt; pathlib.Path</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Directory the releases are read from.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>root</code></b>(                  <code><span title="pathlib.Path">Path</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>$SOFTPAWS_DATA_DIR</code> when set, else the package's <code>data</code>
+directory.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/paths.py</code></summary>
+              <pre class="highlight"><code class="language-python">def data_root() -&gt; pathlib.Path:
+    """Directory the releases are read from.
+
+    Returns
+    -------
+    root : pathlib.Path
+        ``$SOFTPAWS_DATA_DIR`` when set, else the package's ``data``
+        directory.
+    """
+    override = os.environ.get(DATA_DIR_VARIABLE)
+    return pathlib.Path(override).expanduser() if override else _PACKAGE_DATA</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.paths.dr2_dir" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">dr2_dir</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">dr2_dir() -&gt; pathlib.Path</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Root of the IceTracks-DR2 release, <code>&lt;data_root&gt;/dataverse_files</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/paths.py</code></summary>
+              <pre class="highlight"><code class="language-python">def dr2_dir() -&gt; pathlib.Path:
+    """Root of the IceTracks-DR2 release, ``&lt;data_root&gt;/dataverse_files``."""
+    return data_root() / "dataverse_files"</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.paths.hese_dir" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">hese_dir</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">hese_dir() -&gt; pathlib.Path</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Directory of the HESE 7.5-year release, <code>&lt;data_root&gt;/hese</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/paths.py</code></summary>
+              <pre class="highlight"><code class="language-python">def hese_dir() -&gt; pathlib.Path:
+    """Directory of the HESE 7.5-year release, ``&lt;data_root&gt;/hese``."""
+    return data_root() / "hese"</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.paths.require" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">require</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">require(path: str | Path, what: str) -&gt; pathlib.Path</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Return <code>path</code> if it exists, else raise an error that says where to get it.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>File or directory that must exist.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>what</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Short name of the release, for the message.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>path</code></b>(                  <code><span title="pathlib.Path">Path</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The same path.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>path</code> does not exist, with the DOI and the expected
+layout in the message.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/paths.py</code></summary>
+              <pre class="highlight"><code class="language-python">def require(path: str | pathlib.Path, what: str) -&gt; pathlib.Path:
+    """Return ``path`` if it exists, else raise an error that says where to get it.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        File or directory that must exist.
+    what : str
+        Short name of the release, for the message.
+
+    Returns
+    -------
+    path : pathlib.Path
+        The same path.
+
+    Raises
+    ------
+    FileNotFoundError
+        Raised if ``path`` does not exist, with the DOI and the expected
+        layout in the message.
+    """
+    path = pathlib.Path(path)
+    if path.exists():
+        return path
+    raise FileNotFoundError(
+        f"{path} not found. The {what} is not shipped with softpaws: download it "
+        f"(IceTracks-DR2: DOI {DR2_DOI}; HESE 7.5-year: the IceCube data releases page) "
+        f"and place it under {data_root()} or set {DATA_DIR_VARIABLE} to a directory with "
+        "the layout described in softpaws.data.paths."
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../loader/" class="btn btn-neutral float-left" title="loader"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../published/" class="btn btn-neutral float-right" title="published">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../loader/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../published/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

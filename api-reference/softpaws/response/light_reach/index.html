@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/response/light_reach/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>light_reach - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "light_reach";
+        var mkdocs_page_input_path = "api-reference/softpaws/response/light_reach.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/response/light_reach/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >response</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">light_reach</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.attenuation_length_m">attenuation_length_m</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.attenuation_spectrum_m">attenuation_spectrum_m</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.brightness_factor">brightness_factor</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.cherenkov_spectrum_per_m_per_nm">cherenkov_spectrum_per_m_per_nm</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.detection_efficiency">detection_efficiency</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.effective_body_km">effective_body_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.hit_count">hit_count</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.hit_probability">hit_probability</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.hit_radius_m">hit_radius_m</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.instrumented_chord_km">instrumented_chord_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.module_area_m2">module_area_m2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.module_charge_pe">module_charge_pe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.muon_threshold_gev">muon_threshold_gev</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.light_reach.reach_offset_m">reach_offset_m</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">response</li>
+      <li class="breadcrumb-item active">light_reach</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.response.light_reach" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.response.light_reach</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Light reach of a detector, derived from its optics and its module.</p>
+<p>A muon's Cherenkov output per unit length follows its energy loss. The bare
+track radiates at the Frank-Tamm rate, and each GeV of radiative loss builds
+an electromagnetic shower carrying :data:<code>EM_TRACK_LENGTH_M_PER_GEV</code> of
+charged track, so the yield is</p>
+<p>.. math:: N'(E) = \frac{{\rm d}N_\gamma}{{\rm d}x}\,
+    \left(1 + L_{\rm em}\, b_\mu E\right),</p>
+<p>the <code>a + bE</code> of the loss law with its own coefficients. Light leaves the
+track cylindrically and is attenuated on the medium's effective photon
+length, which is <code>sqrt(lambda_abs lambda_scat / 3)</code> where scattering
+dominates, as in deep ice, and <code>lambda_abs</code> where it does not, as in sea
+water. Every integral here is resolved in wavelength on
+:data:<code>WAVELENGTH_NM</code>, because the photocathode and the medium each admit a
+band ~120 nm wide, and taking either flat across the nominal 300 to 600 nm
+overstates the collected light by about a factor of two.</p>
+<p>Two conditions follow. A <em>hit</em> is a local coincidence, an HLC pair on
+neighbouring modules at IceCube or two photomultipliers of one module at
+KM3NeT, with each receiver converting its share of the collected charge into
+at least one photoelectron at Poisson probability
+(:func:<code>hit_probability</code>). A selection then demands a <em>multiplicity</em>: enough
+of those hits, eight for IceCube's simple-majority trigger
+(:data:<code>DEFAULT_MIN_MODULES</code>). The mean count over the in-array transverse
+plane (:func:<code>hit_count</code>) sets the reach (:func:<code>reach_offset_m</code>), the
+Poisson probability of meeting the multiplicity at that mean turns the
+threshold into a smooth turn-on (:func:<code>effective_body_km</code>), and no charge is
+left to choose.</p>
+<p>Every input is an instrument or medium number carried by an
+:class:<code>~softpaws.detectors.Optics</code> record: the photocathode area, the module
+density, the photon detection efficiency against wavelength, and the medium's
+absorption and scattering against wavelength.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="attenuation_length_m (softpaws.response.light_reach.attenuation_length_m)" href="#softpaws.response.light_reach.attenuation_length_m">attenuation_length_m</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Attenuation length at the clarity peak [m], for reporting only.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="attenuation_spectrum_m (softpaws.response.light_reach.attenuation_spectrum_m)" href="#softpaws.response.light_reach.attenuation_spectrum_m">attenuation_spectrum_m</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective photon attenuation length of the medium, per wavelength [m].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="brightness_factor (softpaws.response.light_reach.brightness_factor)" href="#softpaws.response.light_reach.brightness_factor">brightness_factor</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Track brightness relative to a minimum-ionizing muon.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cherenkov_spectrum_per_m_per_nm (softpaws.response.light_reach.cherenkov_spectrum_per_m_per_nm)" href="#softpaws.response.light_reach.cherenkov_spectrum_per_m_per_nm">cherenkov_spectrum_per_m_per_nm</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Frank-Tamm photon yield of a bare relativistic track [m^-1 nm^-1].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="detection_efficiency (softpaws.response.light_reach.detection_efficiency)" href="#softpaws.response.light_reach.detection_efficiency">detection_efficiency</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Probability that a photon reaching the module produces a photoelectron.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="effective_body_km (softpaws.response.light_reach.effective_body_km)" href="#softpaws.response.light_reach.effective_body_km">effective_body_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Instrumented body dilated by the derived light reach, and its weight [km].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="hit_count (softpaws.response.light_reach.hit_count)" href="#softpaws.response.light_reach.hit_count">hit_count</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mean number of hit modules, for a track at a signed distance from the boundary.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="hit_probability (softpaws.response.light_reach.hit_probability)" href="#softpaws.response.light_reach.hit_probability">hit_probability</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Probability that a module at a distance registers a <em>hit</em>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="hit_radius_m (softpaws.response.light_reach.hit_radius_m)" href="#softpaws.response.light_reach.hit_radius_m">hit_radius_m</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Distance at which a module still collects one photoelectron [m].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="instrumented_chord_km (softpaws.response.light_reach.instrumented_chord_km)" href="#softpaws.response.light_reach.instrumented_chord_km">instrumented_chord_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mean chord of the instrumented body [km].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="module_area_m2 (softpaws.response.light_reach.module_area_m2)" href="#softpaws.response.light_reach.module_area_m2">module_area_m2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Geometric photocathode area a module presents to an arriving photon [m^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="module_charge_pe (softpaws.response.light_reach.module_charge_pe)" href="#softpaws.response.light_reach.module_charge_pe">module_charge_pe</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Photoelectrons a module collects from a track passing at a distance.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="muon_threshold_gev (softpaws.response.light_reach.muon_threshold_gev)" href="#softpaws.response.light_reach.muon_threshold_gev">muon_threshold_gev</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon energy at which a track through the array first fires <code>min_modules</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="reach_offset_m (softpaws.response.light_reach.reach_offset_m)" href="#softpaws.response.light_reach.reach_offset_m">reach_offset_m</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>How far outside the boundary a track can be and still make <code>min_modules</code>.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.attenuation_length_m" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">attenuation_length_m</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">attenuation_length_m(site: Optics) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Attenuation length at the clarity peak [m], for reporting only.</p>
+<p>The model integrates :func:<code>attenuation_spectrum_m</code> and never uses a
+single number; this is the value at :data:<code>~softpaws.detectors.ANCHOR_NM</code>,
+which is what a data sheet quotes and what a fitted length is comparable
+against.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>length_m</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Attenuation length at the anchor wavelength [m], or the flat
+<code>attenuation_override_m</code> when a fit has set one.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def attenuation_length_m(site: Optics) -&gt; float:
+    """Attenuation length at the clarity peak [m], for reporting only.
+
+    The model integrates :func:`attenuation_spectrum_m` and never uses a
+    single number; this is the value at :data:`~softpaws.detectors.ANCHOR_NM`,
+    which is what a data sheet quotes and what a fitted length is comparable
+    against.
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics.
+
+    Returns
+    -------
+    length_m : float
+        Attenuation length at the anchor wavelength [m], or the flat
+        ``attenuation_override_m`` when a fit has set one.
+    """
+    if site.attenuation_override_m is not None:
+        return float(site.attenuation_override_m)
+    return float(np.interp(ANCHOR_NM, WAVELENGTH_NM, attenuation_spectrum_m(site)))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.attenuation_spectrum_m" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">attenuation_spectrum_m</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">attenuation_spectrum_m(site: Optics) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective photon attenuation length of the medium, per wavelength [m].</p>
+<p>Where scattering is short against absorption the transport is diffusive
+and the flux falls on <code>sqrt(lambda_abs lambda_scat / 3)</code>; where it is
+not, the light travels ballistically and the length is <code>lambda_abs</code>.
+The shorter of the two selects the applicable limit at each wavelength.</p>
+<p>Both lengths are the site's own single-wavelength values carried by a
+tabulated shape, normalized at :data:<code>~softpaws.detectors.ANCHOR_NM</code>, so
+<code>absorption_m</code> and <code>scattering_m</code> keep their published meaning and
+only the wavelength dependence is added. Deep ice is clearest near 400 nm
+and opaque by 600 nm, so the red half of the nominal band is gone long
+before the reach is interesting, and the light that survives to large
+distance is a narrow window near the clarity peak.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>length_m</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Attenuation length [m] on :data:<code>WAVELENGTH_NM</code>, or a flat
+<code>attenuation_override_m</code> when a fit has set one.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def attenuation_spectrum_m(site: Optics) -&gt; np.ndarray:
+    """Effective photon attenuation length of the medium, per wavelength [m].
+
+    Where scattering is short against absorption the transport is diffusive
+    and the flux falls on ``sqrt(lambda_abs lambda_scat / 3)``; where it is
+    not, the light travels ballistically and the length is ``lambda_abs``.
+    The shorter of the two selects the applicable limit at each wavelength.
+
+    Both lengths are the site's own single-wavelength values carried by a
+    tabulated shape, normalized at :data:`~softpaws.detectors.ANCHOR_NM`, so
+    ``absorption_m`` and ``scattering_m`` keep their published meaning and
+    only the wavelength dependence is added. Deep ice is clearest near 400 nm
+    and opaque by 600 nm, so the red half of the nominal band is gone long
+    before the reach is interesting, and the light that survives to large
+    distance is a narrow window near the clarity peak.
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics.
+
+    Returns
+    -------
+    length_m : np.ndarray
+        Attenuation length [m] on :data:`WAVELENGTH_NM`, or a flat
+        ``attenuation_override_m`` when a fit has set one.
+    """
+    if site.attenuation_override_m is not None:
+        return np.full_like(WAVELENGTH_NM, float(site.attenuation_override_m))
+    shape_abs = np.interp(WAVELENGTH_NM, np.asarray(site.absorption_nm),
+                          np.asarray(site.absorption_shape))
+    shape_scat = np.interp(WAVELENGTH_NM, np.asarray(site.scattering_nm),
+                           np.asarray(site.scattering_shape))
+    anchor_abs = np.interp(ANCHOR_NM, np.asarray(site.absorption_nm),
+                           np.asarray(site.absorption_shape))
+    anchor_scat = np.interp(ANCHOR_NM, np.asarray(site.scattering_nm),
+                            np.asarray(site.scattering_shape))
+    absorption = site.absorption_m * shape_abs / anchor_abs
+    scattering = site.scattering_m * shape_scat / anchor_scat
+    diffusive = np.sqrt(absorption * scattering / 3.0)
+    return np.minimum(diffusive, absorption)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.brightness_factor" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">brightness_factor</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">brightness_factor(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Track brightness relative to a minimum-ionizing muon.</p>
+<p><code>1 + L_em b_mu E</code>: the bare track plus the electromagnetic showers of
+the radiative loss, which carry <code>L_em</code> metres of charged track per GeV.
+The shower light has the same Cherenkov spectrum as the bare track, so
+this factors out of every wavelength integral.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>brightness</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Light yield relative to the bare track.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def brightness_factor(energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Track brightness relative to a minimum-ionizing muon.
+
+    ``1 + L_em b_mu E``: the bare track plus the electromagnetic showers of
+    the radiative loss, which carry ``L_em`` metres of charged track per GeV.
+    The shower light has the same Cherenkov spectrum as the bare track, so
+    this factors out of every wavelength integral.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+
+    Returns
+    -------
+    brightness : np.ndarray
+        Light yield relative to the bare track.
+    """
+    energy = np.asarray(energy_gev, dtype=float)
+    b_water = drift_coefficient(energy, RHO_WATER_G_CM3) / M_PER_KM
+    return 1.0 + EM_TRACK_LENGTH_M_PER_GEV * b_water * energy</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.cherenkov_spectrum_per_m_per_nm" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cherenkov_spectrum_per_m_per_nm</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">cherenkov_spectrum_per_m_per_nm(site: Optics) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Frank-Tamm photon yield of a bare relativistic track [m^-1 nm^-1].</p>
+<p>.. math:: \frac{{\rm d}^2N_\gamma}{{\rm d}x\,{\rm d}\lambda}
+    = \frac{2\pi\alpha}{\lambda^2}\left(1 - n^{-2}\right),</p>
+<p>on :data:<code>WAVELENGTH_NM</code>. Integrating it over 300 to 600 nm returns the
+~3.3e4 photons per metre that a single-number treatment starts from, but
+the <code>1 / lambda^2</code> decides <em>which</em> photons those are, and neither the
+photocathode nor the medium treats them alike.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics, for the refractive index.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>spectrum</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Photons per metre of track per nanometre, on :data:<code>WAVELENGTH_NM</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cherenkov_spectrum_per_m_per_nm(site: Optics) -&gt; np.ndarray:
+    r"""Frank-Tamm photon yield of a bare relativistic track [m^-1 nm^-1].
+
+    .. math:: \\frac{{\\rm d}^2N_\\gamma}{{\\rm d}x\\,{\\rm d}\\lambda}
+        = \\frac{2\\pi\\alpha}{\\lambda^2}\\left(1 - n^{-2}\\right),
+
+    on :data:`WAVELENGTH_NM`. Integrating it over 300 to 600 nm returns the
+    ~3.3e4 photons per metre that a single-number treatment starts from, but
+    the ``1 / lambda^2`` decides *which* photons those are, and neither the
+    photocathode nor the medium treats them alike.
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics, for the refractive index.
+
+    Returns
+    -------
+    spectrum : np.ndarray
+        Photons per metre of track per nanometre, on :data:`WAVELENGTH_NM`.
+    """
+    lam_m = WAVELENGTH_NM * 1.0e-9
+    per_m_per_m = (2.0 * np.pi * FINE_STRUCTURE / lam_m**2
+                   * (1.0 - site.refractive_index**-2))
+    return per_m_per_m * 1.0e-9</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.detection_efficiency" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">detection_efficiency</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">detection_efficiency(site: Optics) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Probability that a photon reaching the module produces a photoelectron.</p>
+<p>The photocathode's quantum efficiency times the transmission of the
+pressure sphere and the optical gel, tabulated together on
+:data:<code>WAVELENGTH_NM</code>. Taking it flat at its peak across the whole band,
+which is what a single <code>quantum_efficiency</code> does, counts photons the
+module cannot convert: the response is a bump ~120 nm wide sitting inside
+a 300 nm band, cut off below by the glass and above by the cathode.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics, for the tabulated efficiency curve.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>efficiency</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Photon detection efficiency on :data:<code>WAVELENGTH_NM</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def detection_efficiency(site: Optics) -&gt; np.ndarray:
+    """Probability that a photon reaching the module produces a photoelectron.
+
+    The photocathode's quantum efficiency times the transmission of the
+    pressure sphere and the optical gel, tabulated together on
+    :data:`WAVELENGTH_NM`. Taking it flat at its peak across the whole band,
+    which is what a single ``quantum_efficiency`` does, counts photons the
+    module cannot convert: the response is a bump ~120 nm wide sitting inside
+    a 300 nm band, cut off below by the glass and above by the cathode.
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics, for the tabulated efficiency curve.
+
+    Returns
+    -------
+    efficiency : np.ndarray
+        Photon detection efficiency on :data:`WAVELENGTH_NM`.
+    """
+    grid, values = np.asarray(site.efficiency_nm), np.asarray(site.efficiency)
+    return np.interp(WAVELENGTH_NM, grid, values, left=0.0, right=0.0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.effective_body_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">effective_body_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">effective_body_km(radius_km: float, height_km: float, energy_gev: float | ndarray, site: Optics, min_modules: float, n_sides: int | None = 6) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Instrumented body dilated by the derived light reach, and its weight [km].</p>
+<p>The reach is where a track still makes <code>min_modules</code> mean hits
+(:func:<code>reach_offset_m</code>). It is a distance from a <em>boundary</em>, so the same
+reach moves the body in every direction and not only radially.
+Vertically it is capped by the medium: both sites are layered, with an
+upper boundary at the ice or sea surface and a lower one at bedrock or
+seabed, and a track outside the optical medium is neither radiating into
+it nor visible through it. The horizontal directions carry no such cap.</p>
+<p>Dim muons are carried by the third return, a multiplicity weight: the
+hits are Poisson-thinned, so a track whose <em>mean</em> count sits below
+<code>min_modules</code> still meets the selection with probability
+<code>P(N &gt;= min_modules)</code>, evaluated for a central crossing. The weight is
+what turns the threshold into a smooth turn-on; emptying the body below
+the mean-count threshold instead is a delta-function condition that
+collapses the model at low energy, where the published response falls
+smoothly. The weight applies the dimming exactly once: the range keeps
+its nominal lower limit, and the offset is clipped at zero because
+sub-threshold acceptance belongs to the weight.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented footprint radius [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>height_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented height [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy where the track is seen [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mean number of hits demanded.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sides</code></b>
+                  (<code><span title="int">int</span> or None</code>, default:
+                      <code>6</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section of the instrumented body, for its mean chord.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>radius</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective radius [km].</p>
+              </div>
+            </li>
+            <li>
+<b><code>height</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective height [km], grown at each end cap and held inside the medium.</p>
+              </div>
+            </li>
+            <li>
+<b><code>weight</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Probability that a central crossing track meets the multiplicity.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def effective_body_km(
+    radius_km: float, height_km: float, energy_gev: float | np.ndarray, site: Optics,
+    min_modules: float, n_sides: int | None = 6,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Instrumented body dilated by the derived light reach, and its weight [km].
+
+    The reach is where a track still makes ``min_modules`` mean hits
+    (:func:`reach_offset_m`). It is a distance from a *boundary*, so the same
+    reach moves the body in every direction and not only radially.
+    Vertically it is capped by the medium: both sites are layered, with an
+    upper boundary at the ice or sea surface and a lower one at bedrock or
+    seabed, and a track outside the optical medium is neither radiating into
+    it nor visible through it. The horizontal directions carry no such cap.
+
+    Dim muons are carried by the third return, a multiplicity weight: the
+    hits are Poisson-thinned, so a track whose *mean* count sits below
+    ``min_modules`` still meets the selection with probability
+    ``P(N &gt;= min_modules)``, evaluated for a central crossing. The weight is
+    what turns the threshold into a smooth turn-on; emptying the body below
+    the mean-count threshold instead is a delta-function condition that
+    collapses the model at low energy, where the published response falls
+    smoothly. The weight applies the dimming exactly once: the range keeps
+    its nominal lower limit, and the offset is clipped at zero because
+    sub-threshold acceptance belongs to the weight.
+
+    Parameters
+    ----------
+    radius_km : float
+        Instrumented footprint radius [km].
+    height_km : float
+        Instrumented height [km].
+    energy_gev : float or np.ndarray
+        Muon energy where the track is seen [GeV].
+    site : Optics
+        Detector optics.
+    min_modules : float
+        Mean number of hits demanded.
+    n_sides : int or None, optional
+        Cross-section of the instrumented body, for its mean chord.
+
+    Returns
+    -------
+    radius : np.ndarray
+        Effective radius [km].
+    height : np.ndarray
+        Effective height [km], grown at each end cap and held inside the medium.
+    weight : np.ndarray
+        Probability that a central crossing track meets the multiplicity.
+    """
+    chord_km = instrumented_chord_km(radius_km, height_km, n_sides)
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    counts, central = _mean_counts(energy, site, chord_km)
+    offset_km = np.clip(_invert_reach_m(counts, min_modules) / M_PER_KM, 0.0, None)
+    above_km = np.minimum(offset_km, site.headroom_above_m / M_PER_KM)
+    below_km = np.minimum(offset_km, site.headroom_below_m / M_PER_KM)
+    # P(N &gt;= k) for a Poisson mean is the regularized lower incomplete gamma.
+    weight = gammainc(min_modules, central)
+    return (np.clip(radius_km + offset_km, 0.0, None),
+            np.clip(height_km + above_km + below_km, 0.0, None),
+            weight)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.hit_count" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">hit_count</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">hit_count(offset_m: float, energy_gev: float | ndarray, site: Optics, chord_km: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mean number of hit modules, for a track at a signed distance from the boundary.</p>
+<p>Each module hits with :func:<code>hit_probability</code>, so the mean count is that
+probability integrated over the in-array part of the transverse plane. A
+circle of radius <code>d</code> around a track at signed offset <code>x</code> from the
+boundary keeps the fraction <code>arccos(x / d) / pi</code> of its circumference
+inside, hence</p>
+<p>.. math:: \bar N(x, E) = \rho_{\rm mod}\,\langle c\rangle \int
+    2\,d\,\arccos\!\left({\rm clip}(x / d)\right) p_{\rm hit}(d, E)\,
+    {\rm d}d,</p>
+<p>with the mean chord as the track length in view. For a step <code>p_hit</code>
+this is the circular-segment count of a disc treatment; the Poisson form
+differs where it matters, in the dim limit, where the count becomes
+linear in the collected charge.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>offset_m</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Signed distance of the track from the boundary [m]; positive is outside.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>chord_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mean chord of the instrumented body [km], from
+:func:<code>instrumented_chord_km</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>count</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Mean number of modules registering a coincident hit.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def hit_count(
+    offset_m: float, energy_gev: float | np.ndarray, site: Optics, chord_km: float,
+) -&gt; np.ndarray:
+    r"""Mean number of hit modules, for a track at a signed distance from the boundary.
+
+    Each module hits with :func:`hit_probability`, so the mean count is that
+    probability integrated over the in-array part of the transverse plane. A
+    circle of radius ``d`` around a track at signed offset ``x`` from the
+    boundary keeps the fraction ``arccos(x / d) / pi`` of its circumference
+    inside, hence
+
+    .. math:: \\bar N(x, E) = \\rho_{\\rm mod}\\,\\langle c\\rangle \\int
+        2\\,d\\,\\arccos\\!\\left({\\rm clip}(x / d)\\right) p_{\\rm hit}(d, E)\\,
+        {\\rm d}d,
+
+    with the mean chord as the track length in view. For a step ``p_hit``
+    this is the circular-segment count of a disc treatment; the Poisson form
+    differs where it matters, in the dim limit, where the count becomes
+    linear in the collected charge.
+
+    Parameters
+    ----------
+    offset_m : float
+        Signed distance of the track from the boundary [m]; positive is outside.
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    site : Optics
+        Detector optics.
+    chord_km : float
+        Mean chord of the instrumented body [km], from
+        :func:`instrumented_chord_km`.
+
+    Returns
+    -------
+    count : np.ndarray
+        Mean number of modules registering a coincident hit.
+    """
+    probability = hit_probability(
+        _HIT_DISTANCE_M, np.atleast_1d(np.asarray(energy_gev, dtype=float))[..., None],
+        site)
+    wedge = 2.0 * _HIT_DISTANCE_M * np.arccos(
+        np.clip(float(offset_m) / _HIT_DISTANCE_M, -1.0, 1.0))
+    density_per_m3 = site.module_density_per_km3 / M_PER_KM**3
+    count = (probability * _D_TRAPZ) @ wedge
+    return density_per_m3 * count * chord_km * M_PER_KM</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.hit_probability" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">hit_probability</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">hit_probability(distance_m: float | ndarray, energy_gev: float | ndarray, site: Optics) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Probability that a module at a distance registers a <em>hit</em>.</p>
+<p>A hit is a local coincidence, because that is what both instruments
+count: IceCube's simple-majority trigger counts HLC hits, and KM3NeT's L1
+is two photomultipliers of one module within ~10 ns, since in sea water
+a single photoelectron is indistinguishable from potassium-40 decay. Each
+receiver converts its mean charge into at least one photoelectron with
+Poisson probability <code>p = 1 - e^{-Q}</code>, and the coincidence admits every
+partner the definition allows:</p>
+<ul>
+<li>A single-PMT module (IceCube) pairs with its nearest or next-to-nearest
+  neighbours on the same string, up or down, so a firing module counts
+  when <em>any</em> of :data:<code>HLC_PARTNERS</code> partners at essentially the same
+  track distance also fires: <code>p (1 - (1 - p)^4)</code>.</li>
+<li>A multi-PMT module (KM3NeT) splits its collected charge over the
+  <code>illuminated_pmts</code> that face the track, and counts when any two fire:
+  <code>1 - (1-p)^m - m p (1-p)^(m-1)</code> with <code>p = 1 - e^{-Q/m}</code>.</li>
+</ul>
+<p>Both reduce to the module firing outright when the track is bright. The
+partner sum matters in the dim limit, where a fixed-pair rule
+under-counts by the number of partners, enough to push the IceCube
+turn-on from 1.8 TeV to 3.7 TeV and visibly suppress the effective area
+below 100 TeV. A step function, every module inside the one-photoelectron
+radius fires and none outside, is worse still, putting the threshold at
+5.3 TeV where the array demonstrably triggers below 1 TeV.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>distance_m</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Perpendicular distance from the track [m].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV], broadcast against <code>distance_m</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>probability</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Probability that the module registers a coincident hit.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def hit_probability(
+    distance_m: float | np.ndarray, energy_gev: float | np.ndarray, site: Optics
+) -&gt; np.ndarray:
+    """Probability that a module at a distance registers a *hit*.
+
+    A hit is a local coincidence, because that is what both instruments
+    count: IceCube's simple-majority trigger counts HLC hits, and KM3NeT's L1
+    is two photomultipliers of one module within ~10 ns, since in sea water
+    a single photoelectron is indistinguishable from potassium-40 decay. Each
+    receiver converts its mean charge into at least one photoelectron with
+    Poisson probability ``p = 1 - e^{-Q}``, and the coincidence admits every
+    partner the definition allows:
+
+    - A single-PMT module (IceCube) pairs with its nearest or next-to-nearest
+      neighbours on the same string, up or down, so a firing module counts
+      when *any* of :data:`HLC_PARTNERS` partners at essentially the same
+      track distance also fires: ``p (1 - (1 - p)^4)``.
+    - A multi-PMT module (KM3NeT) splits its collected charge over the
+      ``illuminated_pmts`` that face the track, and counts when any two fire:
+      ``1 - (1-p)^m - m p (1-p)^(m-1)`` with ``p = 1 - e^{-Q/m}``.
+
+    Both reduce to the module firing outright when the track is bright. The
+    partner sum matters in the dim limit, where a fixed-pair rule
+    under-counts by the number of partners, enough to push the IceCube
+    turn-on from 1.8 TeV to 3.7 TeV and visibly suppress the effective area
+    below 100 TeV. A step function, every module inside the one-photoelectron
+    radius fires and none outside, is worse still, putting the threshold at
+    5.3 TeV where the array demonstrably triggers below 1 TeV.
+
+    Parameters
+    ----------
+    distance_m : float or np.ndarray
+        Perpendicular distance from the track [m].
+    energy_gev : float or np.ndarray
+        Muon energy [GeV], broadcast against ``distance_m``.
+    site : Optics
+        Detector optics.
+
+    Returns
+    -------
+    probability : np.ndarray
+        Probability that the module registers a coincident hit.
+    """
+    charge = module_charge_pe(distance_m, energy_gev, site)
+    if site.illuminated_pmts is None:
+        single = 1.0 - np.exp(-charge)
+        return single * (1.0 - (1.0 - single) ** HLC_PARTNERS)
+    m = float(site.illuminated_pmts)
+    single = 1.0 - np.exp(-charge / m)
+    return 1.0 - (1.0 - single) ** m - m * single * (1.0 - single) ** (m - 1.0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.hit_radius_m" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">hit_radius_m</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">hit_radius_m(energy_gev: float | ndarray, site: Optics) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Distance at which a module still collects one photoelectron [m].</p>
+<p>A reporting scale only: the counting that enters the model is Poisson
+over :func:<code>hit_probability</code>, with no step at any radius. This is the
+distance at which the <em>mean</em> charge falls to one photoelectron, which is
+what a single-number summary of the optics can be compared against.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>radius_m</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Radius of the one-photoelectron cylinder [m]. Zero where even a
+module on the track does not reach one photoelectron.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def hit_radius_m(energy_gev: float | np.ndarray, site: Optics) -&gt; np.ndarray:
+    """Distance at which a module still collects one photoelectron [m].
+
+    A reporting scale only: the counting that enters the model is Poisson
+    over :func:`hit_probability`, with no step at any radius. This is the
+    distance at which the *mean* charge falls to one photoelectron, which is
+    what a single-number summary of the optics can be compared against.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    site : Optics
+        Detector optics.
+
+    Returns
+    -------
+    radius_m : np.ndarray
+        Radius of the one-photoelectron cylinder [m]. Zero where even a
+        module on the track does not reach one photoelectron.
+    """
+    charge = module_charge_pe(_HIT_DISTANCE_M, np.atleast_1d(energy_gev)[..., None], site)
+    # Q falls monotonically with distance, so the crossing is unique. Locate it
+    # with one argmax per row and interpolate in log(charge) against
+    # log(distance), where both are close to straight.
+    log_d = np.log(_HIT_DISTANCE_M)
+    with np.errstate(divide="ignore"):
+        log_q = np.log(np.clip(charge, 1.0e-300, None))
+    faint = charge &lt; 1.0
+    crossed = faint.any(axis=-1)
+    hi = np.argmax(faint, axis=-1)
+    lo = np.clip(hi - 1, 0, None)
+    span = np.take_along_axis(log_q, lo[..., None], -1)[..., 0] - \
+        np.take_along_axis(log_q, hi[..., None], -1)[..., 0]
+    start = np.take_along_axis(log_q, lo[..., None], -1)[..., 0]
+    with np.errstate(divide="ignore", invalid="ignore"):
+        frac = np.where(span &gt; 0.0, start / span, 0.0)
+    radius = np.exp(log_d[lo] + frac * (log_d[hi] - log_d[lo]))
+    radius = np.where(hi == 0, 0.0, radius)
+    return np.where(crossed, radius, _HIT_DISTANCE_M[-1])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.instrumented_chord_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">instrumented_chord_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">instrumented_chord_km(radius_km: float, height_km: float, n_sides: int | None) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mean chord of the instrumented body [km].</p>
+<p><code>&lt;c&gt; = 4V / S</code> for any convex body, so this needs no new number. It is
+the length of track the array has to work with, and therefore the length
+over which :func:<code>hit_count</code> counts modules.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Footprint radius of the body [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>height_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Height of the body [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sides</code></b>
+                  (<code><span title="int">int</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Sides of the prism cross-section, or <code>None</code> for a cylinder.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>chord_km</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Mean chord [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def instrumented_chord_km(radius_km: float, height_km: float, n_sides: int | None) -&gt; float:
+    """Mean chord of the instrumented body [km].
+
+    ``&lt;c&gt; = 4V / S`` for any convex body, so this needs no new number. It is
+    the length of track the array has to work with, and therefore the length
+    over which :func:`hit_count` counts modules.
+
+    Parameters
+    ----------
+    radius_km : float
+        Footprint radius of the body [km].
+    height_km : float
+        Height of the body [km].
+    n_sides : int or None
+        Sides of the prism cross-section, or ``None`` for a cylinder.
+
+    Returns
+    -------
+    chord_km : float
+        Mean chord [km].
+    """
+    volume = np.pi * radius_km**2 * height_km
+    if n_sides is None:
+        perimeter = 2.0 * np.pi * radius_km
+    else:
+        perimeter = 2.0 * radius_km * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
+    surface = 2.0 * np.pi * radius_km**2 + perimeter * height_km
+    return float(4.0 * volume / surface)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.module_area_m2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">module_area_m2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">module_area_m2(site: Optics) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Geometric photocathode area a module presents to an arriving photon [m^2].</p>
+<p>The photocathode area times :data:<code>PROJECTED_FRACTION</code>. It carries no
+efficiency: the conversion probability sits inside the wavelength
+integral, since it is the one thing in the chain that varies fastest
+across the band.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>area_m2</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Projected photocathode area [m^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def module_area_m2(site: Optics) -&gt; float:
+    """Geometric photocathode area a module presents to an arriving photon [m^2].
+
+    The photocathode area times :data:`PROJECTED_FRACTION`. It carries no
+    efficiency: the conversion probability sits inside the wavelength
+    integral, since it is the one thing in the chain that varies fastest
+    across the band.
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics.
+
+    Returns
+    -------
+    area_m2 : float
+        Projected photocathode area [m^2].
+    """
+    return site.cathode_area_m2 * PROJECTED_FRACTION</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.module_charge_pe" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">module_charge_pe</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">module_charge_pe(distance_m: float | ndarray, energy_gev: float | ndarray, site: Optics) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Photoelectrons a module collects from a track passing at a distance.</p>
+<p>Light leaves a long track cylindrically, so the fluence at perpendicular
+distance <code>d</code> is the yield per metre spread over <code>2 pi d</code> and
+attenuated on the medium's length. Summing over the band,</p>
+<p>.. math:: Q(d, E) = \frac{A_{\rm mod}}{2\pi d}\, Y(E) \int {\rm d}\lambda\;
+    \frac{{\rm d}^2N_\gamma}{{\rm d}x\,{\rm d}\lambda}\,
+    \eta(\lambda)\, {\rm e}^{-d / \Lambda(\lambda)},</p>
+<p>with <code>Y</code> the brightness of :func:<code>brightness_factor</code>. The wavelength
+integral is where a single-number treatment loses: <code>eta</code> and <code>Lambda</code>
+peak in the same narrow window, and the exponential narrows it further
+with distance, so the effective band shrinks as the reach grows.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>distance_m</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Perpendicular distance from the track [m].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV], broadcast against <code>distance_m</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>charge_pe</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Collected charge [photoelectrons].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def module_charge_pe(
+    distance_m: float | np.ndarray, energy_gev: float | np.ndarray, site: Optics
+) -&gt; np.ndarray:
+    r"""Photoelectrons a module collects from a track passing at a distance.
+
+    Light leaves a long track cylindrically, so the fluence at perpendicular
+    distance ``d`` is the yield per metre spread over ``2 pi d`` and
+    attenuated on the medium's length. Summing over the band,
+
+    .. math:: Q(d, E) = \\frac{A_{\\rm mod}}{2\\pi d}\\, Y(E) \\int {\\rm d}\\lambda\\;
+        \\frac{{\\rm d}^2N_\\gamma}{{\\rm d}x\\,{\\rm d}\\lambda}\\,
+        \\eta(\\lambda)\\, {\\rm e}^{-d / \\Lambda(\\lambda)},
+
+    with ``Y`` the brightness of :func:`brightness_factor`. The wavelength
+    integral is where a single-number treatment loses: ``eta`` and ``Lambda``
+    peak in the same narrow window, and the exponential narrows it further
+    with distance, so the effective band shrinks as the reach grows.
+
+    Parameters
+    ----------
+    distance_m : float or np.ndarray
+        Perpendicular distance from the track [m].
+    energy_gev : float or np.ndarray
+        Muon energy [GeV], broadcast against ``distance_m``.
+    site : Optics
+        Detector optics.
+
+    Returns
+    -------
+    charge_pe : np.ndarray
+        Collected charge [photoelectrons].
+    """
+    distance = np.atleast_1d(np.asarray(distance_m, dtype=float))
+    weight = (cherenkov_spectrum_per_m_per_nm(site) * detection_efficiency(site))
+    exponent = -distance[..., None] / attenuation_spectrum_m(site)
+    collected = np.trapezoid(weight * np.exp(exponent), WAVELENGTH_NM, axis=-1)
+    geometry = module_area_m2(site) / (2.0 * np.pi * np.maximum(distance, 1.0e-6))
+    return geometry * collected * brightness_factor(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.muon_threshold_gev" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">muon_threshold_gev</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">muon_threshold_gev(site: Optics, min_modules: float, chord_km: float) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon energy at which a track through the array first fires <code>min_modules</code>.</p>
+<p>Deep inside the array the segment is the whole disc, so the condition is
+<code>rho_mod pi d_1^2 &lt;c&gt; = N_min</code>: the hit radius has to reach a definite
+value, and that fixes an energy. This is the threshold the <em>light</em> sets,
+and with Poisson-thinned hits it is the midpoint of a turn-on: the
+multiplicity weight of :func:<code>effective_body_km</code> passes ~55% of central
+tracks here, more above, fewer below. The range still runs to the nominal
+threshold; the weight carries the dimming.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Modules that must fire.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>chord_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mean chord of the instrumented body [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>threshold_gev</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Muon threshold [GeV], held at or above
+:data:<code>~softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV</code>.
+<code>nan</code> when no energy up to <code>10^12</code> GeV meets the multiplicity.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def muon_threshold_gev(site: Optics, min_modules: float, chord_km: float) -&gt; float:
+    """Muon energy at which a track through the array first fires ``min_modules``.
+
+    Deep inside the array the segment is the whole disc, so the condition is
+    ``rho_mod pi d_1^2 &lt;c&gt; = N_min``: the hit radius has to reach a definite
+    value, and that fixes an energy. This is the threshold the *light* sets,
+    and with Poisson-thinned hits it is the midpoint of a turn-on: the
+    multiplicity weight of :func:`effective_body_km` passes ~55% of central
+    tracks here, more above, fewer below. The range still runs to the nominal
+    threshold; the weight carries the dimming.
+
+    Parameters
+    ----------
+    site : Optics
+        Detector optics.
+    min_modules : float
+        Modules that must fire.
+    chord_km : float
+        Mean chord of the instrumented body [km].
+
+    Returns
+    -------
+    threshold_gev : float
+        Muon threshold [GeV], held at or above
+        :data:`~softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV`.
+        ``nan`` when no energy up to ``10^12`` GeV meets the multiplicity.
+    """
+    def gap(log10_e: float) -&gt; float:
+        deep = -1.0e4
+        count = np.atleast_1d(hit_count(deep, 10.0**log10_e, site, chord_km))
+        return float(count[0]) - min_modules
+
+    if gap(12.0) &lt; 0.0:
+        return float("nan")
+    if gap(0.0) &gt; 0.0:
+        return DEFAULT_MUON_THRESHOLD_GEV
+    return max(10.0 ** brentq(gap, 0.0, 12.0, xtol=1.0e-4), DEFAULT_MUON_THRESHOLD_GEV)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.light_reach.reach_offset_m" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">reach_offset_m</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">reach_offset_m(energy_gev: ndarray, site: Optics, chord_km: float, min_modules: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>How far outside the boundary a track can be and still make <code>min_modules</code>.</p>
+<p>Inverts the mean count of :func:<code>hit_count</code> in the signed offset. The
+count falls monotonically with the offset, so the crossing is unique and
+one tabulated count against offset serves every energy at once.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>site</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="Optics
+
+
+  
+      dataclass
+   (softpaws.detectors.Optics)" href="../../detectors/#softpaws.detectors.Optics">Optics</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Detector optics.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>chord_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mean chord of the instrumented body [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_modules</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mean number of hits demanded.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>offset_m</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Signed distance [m], held at the edges of the tabulated offsets. The
+negative edge does not need to be deep: below it the acceptance is
+carried by the multiplicity weight of :func:<code>effective_body_km</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/light_reach.py</code></summary>
+              <pre class="highlight"><code class="language-python">def reach_offset_m(
+    energy_gev: np.ndarray, site: Optics, chord_km: float, min_modules: float
+) -&gt; np.ndarray:
+    """How far outside the boundary a track can be and still make ``min_modules``.
+
+    Inverts the mean count of :func:`hit_count` in the signed offset. The
+    count falls monotonically with the offset, so the crossing is unique and
+    one tabulated count against offset serves every energy at once.
+
+    Parameters
+    ----------
+    energy_gev : np.ndarray
+        Muon energy [GeV].
+    site : Optics
+        Detector optics.
+    chord_km : float
+        Mean chord of the instrumented body [km].
+    min_modules : float
+        Mean number of hits demanded.
+
+    Returns
+    -------
+    offset_m : np.ndarray
+        Signed distance [m], held at the edges of the tabulated offsets. The
+        negative edge does not need to be deep: below it the acceptance is
+        carried by the multiplicity weight of :func:`effective_body_km`.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    counts, _ = _mean_counts(energy, site, chord_km)
+    return _invert_reach_m(counts, min_modules)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../irfs/" class="btn btn-neutral float-left" title="irfs"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../published/" class="btn btn-neutral float-right" title="published">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../irfs/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../published/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

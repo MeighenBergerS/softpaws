@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/loss_ensemble/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>loss_ensemble - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "loss_ensemble";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/loss_ensemble.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/loss_ensemble/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">loss_ensemble</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_ensemble.build_ensemble">build_ensemble</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_ensemble.channel_moments">channel_moments</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_ensemble.implied_scales">implied_scales</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_ensemble.load_ensemble">load_ensemble</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_ensemble.variant_parametrization">variant_parametrization</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_ensemble.variant_ratios">variant_ratios</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.loss_ensemble.variant_scaling">variant_scaling</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">loss_ensemble</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.loss_ensemble" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.loss_ensemble</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>The loss model's own error: an ensemble of published parametrizations.</p>
+<p>The kernel's inputs are PROPOSAL's parametrizations (Kelner-Kokoulin-Petrukhin
+bremsstrahlung and pair production, ALLM97 photonuclear with
+Butkevich-Mikheyev shadowing). Benchmarking against PROPOSAL validates the
+transport algebra and says nothing about the cross sections themselves. This
+module measures that remaining error the way the field does: an ensemble of
+published parametrizations, one channel swapped at a time, every variant
+pushed through the same quadrature the shipped table uses.</p>
+<p>Because the exponent <code>Phi</code> is linear in the loss spectrum, each swap
+propagates exactly as a ratio of moments at each energy: <code>kappa_1</code> on the
+first log-loss moment is the energy-reconstruction error, <code>kappa_2</code> on the
+second is the error on everything fluctuation sensitive. Installing those
+ratios through :func:<code>softpaws.transport.coefficients.set_kernel_scaling</code>
+pushes one variant through every calculation without rebuilding the table.</p>
+<p>Building the ensemble needs PROPOSAL (<code>pip install softpaws[transport]</code>);
+loading a cached one needs only NumPy.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="build_ensemble (softpaws.transport.loss_ensemble.build_ensemble)" href="#softpaws.transport.loss_ensemble.build_ensemble">build_ensemble</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Baseline channel moments and every variant's swapped channel.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="channel_moments (softpaws.transport.loss_ensemble.channel_moments)" href="#softpaws.transport.loss_ensemble.channel_moments">channel_moments</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Log-loss moments <code>&lt;(-ln(1-y))^n&gt;</code> of one channel [km^-1].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="implied_scales (softpaws.transport.loss_ensemble.implied_scales)" href="#softpaws.transport.loss_ensemble.implied_scales">implied_scales</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective transport scale each variant implies over an energy window.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_ensemble (softpaws.transport.loss_ensemble.load_ensemble)" href="#softpaws.transport.loss_ensemble.load_ensemble">load_ensemble</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The ensemble from a cache file, building and saving it if needed.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="variant_parametrization (softpaws.transport.loss_ensemble.variant_parametrization)" href="#softpaws.transport.loss_ensemble.variant_parametrization">variant_parametrization</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>PROPOSAL parametrization object for one variant's swapped channel.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="variant_ratios (softpaws.transport.loss_ensemble.variant_ratios)" href="#softpaws.transport.loss_ensemble.variant_ratios">variant_ratios</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Split an ensemble into baseline channels and total-moment ratios.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="variant_scaling (softpaws.transport.loss_ensemble.variant_scaling)" href="#softpaws.transport.loss_ensemble.variant_scaling">variant_scaling</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The :class:<code>~softpaws.transport.coefficients.KernelScaling</code> of one variant.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_ensemble.build_ensemble" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">build_ensemble</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">build_ensemble(energy_grid: ndarray = E_GRID, variants: dict[str, tuple[str, str]] = VARIANTS, n_moments: int = N_MOMENTS) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Baseline channel moments and every variant's swapped channel.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.E_GRID">E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon energies the moments are tabulated at [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>variants</code></b>
+                  (<code><span title="dict">dict</span></code>, default:
+                      <code><span title="softpaws.transport.loss_ensemble.VARIANTS">VARIANTS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Variants to build; see :data:<code>VARIANTS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_moments</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants.N_MOMENTS">N_MOMENTS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of moments per energy.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>ensemble</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>"base &lt;channel&gt;"</code> for each baseline channel and
+<code>"swap &lt;label&gt;"</code> for each variant, each of shape
+<code>(n_energy, n_moments)</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_ensemble.py</code></summary>
+              <pre class="highlight"><code class="language-python">def build_ensemble(
+    energy_grid: np.ndarray = E_GRID,
+    variants: dict[str, tuple[str, str]] = VARIANTS,
+    n_moments: int = N_MOMENTS,
+) -&gt; dict[str, np.ndarray]:
+    """Baseline channel moments and every variant's swapped channel.
+
+    Parameters
+    ----------
+    energy_grid : np.ndarray, optional
+        Muon energies the moments are tabulated at [GeV].
+    variants : dict, optional
+        Variants to build; see :data:`VARIANTS`.
+    n_moments : int, optional
+        Number of moments per energy.
+
+    Returns
+    -------
+    ensemble : dict of np.ndarray
+        ``"base &lt;channel&gt;"`` for each baseline channel and
+        ``"swap &lt;label&gt;"`` for each variant, each of shape
+        ``(n_energy, n_moments)`` [km^-1].
+    """
+    y = loss_spectrum_y_grid()
+    base_params = proposal_parametrizations()
+    baseline = {ch: np.zeros((energy_grid.size, n_moments)) for ch in base_params}
+    logger.info("Baseline channels (KKP + KKP + ALLM97/BM)")
+    for i, e in enumerate(energy_grid):
+        for ch, param in base_params.items():
+            baseline[ch][i] = channel_moments(param, float(e), y, n_moments)
+    swapped = {}
+    for label, (_, name) in variants.items():
+        logger.info("Variant %s (%s)", label, name)
+        param = variant_parametrization(label)
+        swapped[label] = np.array(
+            [channel_moments(param, float(e), y, n_moments) for e in energy_grid]
+        )
+    out = {f"base {ch}": v for ch, v in baseline.items()}
+    out.update({f"swap {label}": v for label, v in swapped.items()})
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_ensemble.channel_moments" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">channel_moments</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">channel_moments(param: Any, energy_gev: float, y: ndarray, n_moments: int = N_MOMENTS) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Log-loss moments <code>&lt;(-ln(1-y))^n&gt;</code> of one channel [km^-1].</p>
+<p>The same quadrature and water convention as
+:func:<code>softpaws.transport.coefficients.build_proposal_table</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>param</code></b>
+                  (<code><span title="object">object</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>A PROPOSAL parametrization.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>y</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Fractional-loss grid, from
+:func:<code>softpaws.transport.coefficients.loss_spectrum_y_grid</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_moments</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code><span title="softpaws.constants.N_MOMENTS">N_MOMENTS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of moments returned, from the first.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>moments</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_moments">n_moments</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>The moments [km^-1] at water density.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_ensemble.py</code></summary>
+              <pre class="highlight"><code class="language-python">def channel_moments(
+    param: Any, energy_gev: float, y: np.ndarray, n_moments: int = N_MOMENTS
+) -&gt; np.ndarray:
+    """Log-loss moments ``&lt;(-ln(1-y))^n&gt;`` of one channel [km^-1].
+
+    The same quadrature and water convention as
+    :func:`softpaws.transport.coefficients.build_proposal_table`.
+
+    Parameters
+    ----------
+    param : object
+        A PROPOSAL parametrization.
+    energy_gev : float
+        Muon energy [GeV].
+    y : np.ndarray
+        Fractional-loss grid, from
+        :func:`softpaws.transport.coefficients.loss_spectrum_y_grid`.
+    n_moments : int, optional
+        Number of moments returned, from the first.
+
+    Returns
+    -------
+    moments : np.ndarray, shape (n_moments,)
+        The moments [km^-1] at water density.
+    """
+    import proposal as pp
+
+    particle = pp.particle.MuMinusDef()
+    medium = pp.medium.Water()
+    energy_mev = energy_gev * 1.0e3
+    molar_mass = sum(c.atoms_in_molecule * c.atomic_number for c in medium.components)
+    scale = CM_PER_KM * RHO_WATER_G_CM3 / medium.mass_density
+    rate = np.zeros_like(y)
+    for component in medium.components:
+        limits = param.kinematic_limits(particle, component, energy_mev)
+        inside = (y &gt; limits.v_min) &amp; (y &lt; limits.v_max)
+        per_gram = np.zeros_like(y)
+        per_gram[inside] = [
+            param.differential_crosssection(particle, component, energy_mev, value)
+            for value in y[inside]
+        ]
+        weight = component.atoms_in_molecule * component.atomic_number / molar_mass
+        rate += medium.mass_density * weight * per_gram
+    rate *= scale
+    log_loss = -np.log1p(-y)
+    return np.array([np.trapezoid(log_loss**n * rate, y) for n in range(1, n_moments + 1)])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_ensemble.implied_scales" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">implied_scales</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">implied_scales(ratios: dict[str, ndarray], energy_grid: ndarray = E_GRID, window_log10_gev: tuple[float, float] = (5.0, 7.0)) -&gt; dict[str, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective transport scale each variant implies over an energy window.</p>
+<p>The geometric mean of <code>kappa_1</code> across the window, which is what a
+constant <code>b_scale</code> fitted over that window would return.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>ratios</code></b>
+                  (<code>dict of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>Variant ratios from :func:<code>load_ensemble</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.E_GRID">E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energies the ratios are tabulated at [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>window_log10_gev</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>(5.0, 7.0)</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Window [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>scales</code></b>(                  <code>dict of float</code>
+)              –
+              <div class="doc-md-description">
+                <p>Variant label -&gt; implied scale.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_ensemble.py</code></summary>
+              <pre class="highlight"><code class="language-python">def implied_scales(
+    ratios: dict[str, np.ndarray],
+    energy_grid: np.ndarray = E_GRID,
+    window_log10_gev: tuple[float, float] = (5.0, 7.0),
+) -&gt; dict[str, float]:
+    """Effective transport scale each variant implies over an energy window.
+
+    The geometric mean of ``kappa_1`` across the window, which is what a
+    constant ``b_scale`` fitted over that window would return.
+
+    Parameters
+    ----------
+    ratios : dict of np.ndarray
+        Variant ratios from :func:`load_ensemble`.
+    energy_grid : np.ndarray, optional
+        Energies the ratios are tabulated at [GeV].
+    window_log10_gev : tuple of float, optional
+        Window [log10 GeV].
+
+    Returns
+    -------
+    scales : dict of float
+        Variant label -&gt; implied scale.
+    """
+    log_e = np.log10(energy_grid)
+    keep = (log_e &gt;= window_log10_gev[0]) &amp; (log_e &lt;= window_log10_gev[1])
+    return {
+        label: float(np.exp(np.mean(np.log(values[keep, 0])))) for label, values in ratios.items()
+    }</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_ensemble.load_ensemble" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_ensemble</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_ensemble(path: str | Path, rebuild: bool = False) -&gt; tuple[dict[str, np.ndarray], dict[str, np.ndarray]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The ensemble from a cache file, building and saving it if needed.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cache file (<code>.npz</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rebuild</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Rebuild with PROPOSAL even if the cache exists.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>baseline</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>Channel -&gt; <code>(n_energy, n_moments)</code> baseline moments.</p>
+              </div>
+            </li>
+            <li>
+<b><code>ratios</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>Variant label -&gt; <code>(n_energy, n_moments)</code> total-moment ratio.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_ensemble.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_ensemble(
+    path: str | pathlib.Path, rebuild: bool = False
+) -&gt; tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
+    """The ensemble from a cache file, building and saving it if needed.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Cache file (``.npz``).
+    rebuild : bool, optional
+        Rebuild with PROPOSAL even if the cache exists.
+
+    Returns
+    -------
+    baseline : dict of np.ndarray
+        Channel -&gt; ``(n_energy, n_moments)`` baseline moments.
+    ratios : dict of np.ndarray
+        Variant label -&gt; ``(n_energy, n_moments)`` total-moment ratio.
+    """
+    path = pathlib.Path(path)
+    if path.exists() and not rebuild:
+        logger.info("Cached ensemble from %s", path)
+        data = dict(np.load(path))
+    else:
+        data = build_ensemble()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        np.savez(path, **data)
+    return variant_ratios(data)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_ensemble.variant_parametrization" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">variant_parametrization</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">variant_parametrization(label: str) -&gt; Any</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>PROPOSAL parametrization object for one variant's swapped channel.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>label</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Key of :data:<code>VARIANTS</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>parametrization</code></b>(                  <code><span title="object">object</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The PROPOSAL parametrization.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ImportError">ImportError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if PROPOSAL is not installed.</p>
+              </div>
+            </li>
+            <li>
+                  <code><span title="KeyError">KeyError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>label</code> is not a variant.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_ensemble.py</code></summary>
+              <pre class="highlight"><code class="language-python">def variant_parametrization(label: str) -&gt; Any:
+    """PROPOSAL parametrization object for one variant's swapped channel.
+
+    Parameters
+    ----------
+    label : str
+        Key of :data:`VARIANTS`.
+
+    Returns
+    -------
+    parametrization : object
+        The PROPOSAL parametrization.
+
+    Raises
+    ------
+    ImportError
+        Raised if PROPOSAL is not installed.
+    KeyError
+        Raised if ``label`` is not a variant.
+    """
+    try:
+        import proposal as pp
+    except ImportError as error:
+        raise ImportError(
+            "The loss ensemble needs PROPOSAL: pip install 'softpaws[transport]'."
+        ) from error
+
+    shadow_bm = pp.parametrization.photonuclear.ShadowButkevichMikheyev
+    builders = {
+        "brems ABB": lambda: pp.parametrization.bremsstrahlung.AndreevBezrukovBugaev(False),
+        "brems NLO": lambda: pp.parametrization.bremsstrahlung.SandrockSoedingreksoRhode(False),
+        "pair NLO": lambda: pp.parametrization.pairproduction.SandrockSoedingreksoRhode(False),
+        "photo BB": lambda: pp.parametrization.photonuclear.BezrukovBugaev(True),
+        "photo BDH": lambda: pp.parametrization.photonuclear.BlockDurandHa(shadow_bm()),
+        "photo ALLM91": lambda: pp.parametrization.photonuclear.AbramowiczLevinLevyMaor91(
+            shadow_bm()
+        ),
+        "photo DRSS": lambda: pp.parametrization.photonuclear.AbramowiczLevinLevyMaor97(
+            pp.parametrization.photonuclear.ShadowDuttaRenoSarcevicSeckel()
+        ),
+    }
+    return builders[label]()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_ensemble.variant_ratios" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">variant_ratios</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">variant_ratios(ensemble: dict[str, ndarray], variants: dict[str, tuple[str, str]] = VARIANTS) -&gt; tuple[dict[str, np.ndarray], dict[str, np.ndarray]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Split an ensemble into baseline channels and total-moment ratios.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>ensemble</code></b>
+                  (<code>dict of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>As returned by :func:<code>build_ensemble</code> or read from its cache.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>variants</code></b>
+                  (<code><span title="dict">dict</span></code>, default:
+                      <code><span title="softpaws.transport.loss_ensemble.VARIANTS">VARIANTS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Variants present; see :data:<code>VARIANTS</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>baseline</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>Channel -&gt; <code>(n_energy, n_moments)</code> baseline moments.</p>
+              </div>
+            </li>
+            <li>
+<b><code>ratios</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>Variant label -&gt; <code>(n_energy, n_moments)</code> ratio of the variant's
+total moments to the baseline's.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_ensemble.py</code></summary>
+              <pre class="highlight"><code class="language-python">def variant_ratios(
+    ensemble: dict[str, np.ndarray],
+    variants: dict[str, tuple[str, str]] = VARIANTS,
+) -&gt; tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
+    """Split an ensemble into baseline channels and total-moment ratios.
+
+    Parameters
+    ----------
+    ensemble : dict of np.ndarray
+        As returned by :func:`build_ensemble` or read from its cache.
+    variants : dict, optional
+        Variants present; see :data:`VARIANTS`.
+
+    Returns
+    -------
+    baseline : dict of np.ndarray
+        Channel -&gt; ``(n_energy, n_moments)`` baseline moments.
+    ratios : dict of np.ndarray
+        Variant label -&gt; ``(n_energy, n_moments)`` ratio of the variant's
+        total moments to the baseline's.
+    """
+    baseline = {k[5:]: v for k, v in ensemble.items() if k.startswith("base ")}
+    total = sum(baseline.values())
+    ratios = {}
+    for label, (channel, _) in variants.items():
+        variant_total = total - baseline[channel] + ensemble[f"swap {label}"]
+        ratios[label] = variant_total / total
+    return baseline, ratios</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.loss_ensemble.variant_scaling" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">variant_scaling</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">variant_scaling(ratios: dict[str, ndarray], label: str | None, energy_grid: ndarray = E_GRID, prefactor: float = 1.0) -&gt; KernelScaling | None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The :class:<code>~softpaws.transport.coefficients.KernelScaling</code> of one variant.</p>
+<p>The ratios are interpolated linearly in <code>log10 E</code> and held at the ends
+of the grid.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>ratios</code></b>
+                  (<code>dict of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>Variant ratios from :func:<code>load_ensemble</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>label</code></b>
+                  (<code><span title="str">str</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Variant to activate. <code>None</code> is the baseline, which returns
+<code>None</code> unless <code>prefactor</code> differs from one.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.E_GRID">E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energies the ratios are tabulated at [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>prefactor</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Constant factor multiplied into both ratios, for a fitted transport
+scale on top of the variant.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>scaling</code></b>(                  <code><a class="autorefs autorefs-internal" title="KernelScaling
+
+
+  
+      dataclass
+   (softpaws.transport.coefficients.KernelScaling)" href="../coefficients/#softpaws.transport.coefficients.KernelScaling">KernelScaling</a> or None</code>
+)              –
+              <div class="doc-md-description">
+                <p>Factors to install with
+:func:<code>softpaws.transport.coefficients.set_kernel_scaling</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/loss_ensemble.py</code></summary>
+              <pre class="highlight"><code class="language-python">def variant_scaling(
+    ratios: dict[str, np.ndarray],
+    label: str | None,
+    energy_grid: np.ndarray = E_GRID,
+    prefactor: float = 1.0,
+) -&gt; KernelScaling | None:
+    """The :class:`~softpaws.transport.coefficients.KernelScaling` of one variant.
+
+    The ratios are interpolated linearly in ``log10 E`` and held at the ends
+    of the grid.
+
+    Parameters
+    ----------
+    ratios : dict of np.ndarray
+        Variant ratios from :func:`load_ensemble`.
+    label : str or None
+        Variant to activate. ``None`` is the baseline, which returns
+        ``None`` unless ``prefactor`` differs from one.
+    energy_grid : np.ndarray, optional
+        Energies the ratios are tabulated at [GeV].
+    prefactor : float, optional
+        Constant factor multiplied into both ratios, for a fitted transport
+        scale on top of the variant.
+
+    Returns
+    -------
+    scaling : KernelScaling or None
+        Factors to install with
+        :func:`softpaws.transport.coefficients.set_kernel_scaling`.
+    """
+    log_grid = np.log10(energy_grid)
+    if label is None:
+        if prefactor == 1.0:
+            return None
+        return KernelScaling(lambda e: prefactor, lambda e: prefactor)
+    values = ratios[label]
+
+    def make(column):
+        def kappa(energy_gev):
+            log_e = np.log10(np.asarray(energy_gev, dtype=float))
+            return prefactor * np.interp(log_e, log_grid, values[:, column])
+
+        return kappa
+
+    return KernelScaling(make(0), make(1))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../loss_distribution/" class="btn btn-neutral float-left" title="loss_distribution"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../muon_range/" class="btn btn-neutral float-right" title="muon_range">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../loss_distribution/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../muon_range/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,4462 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>transport - softpaws</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "transport";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/index.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../..">
+    <img src="../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">transport</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.CrossSection">CrossSection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.KernelScaling">KernelScaling</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.PowerLawCrossSection">PowerLawCrossSection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.bgr18_cross_section">bgr18_cross_section</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.diffusion_coefficient">diffusion_coefficient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.drift_coefficient">drift_coefficient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.log_loss_moments">log_loss_moments</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.muon_range_km">muon_range_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.neutrino_column_g_cm2">neutrino_column_g_cm2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.overburden_km">overburden_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.phi_eigenvalue">phi_eigenvalue</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.phi_eigenvalue_at_energy">phi_eigenvalue_at_energy</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.prem_column">prem_column</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.scaled_kernel">scaled_kernel</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.set_kernel_scaling">set_kernel_scaling</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.spectral_index">spectral_index</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.stochastic_muon_range_km">stochastic_muon_range_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.third_moment_coefficient">third_moment_coefficient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.truncated_muon_range_km">truncated_muon_range_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.two_medium_muon_range_km">two_medium_muon_range_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.zenith_grid">zenith_grid</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">transport</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>High-energy muon transport.</p>
+<p>Two treatments of the QED collision operator:</p>
+<ul>
+<li>the <strong>eigenvalue</strong> treatment (<code>eigenvalue</code>, <code>soft_volume_exact</code>), which
+  diagonalizes the collision operator with power laws under the assumption
+  that the loss kernel is locally scale invariant. It gives the transport
+  exponent <code>Phi(s)</code> with every loss moment kept, and with no small-<code>y</code>
+  expansion and no energy cutoff. This is the physics core, described in
+  Meighen-Berger, <em>Analytical High-Energy Muon Transport for Neutrino
+  Telescopes</em> (2026); see <code>docs/theory/exact_soft_volume.md</code>.</li>
+<li>the second-order <strong>drift-diffusion</strong> expansion (<code>coefficients</code>,
+  <code>soft_volume</code> drift form), where soft energy losses dominate and rare hard
+  scatters are perturbative. It is the earlier treatment of Palmisano,
+  Redigolo, Tammaro and Tesi (arXiv:2607.13143), recovered here as the first
+  two terms of <code>Phi(s)</code> and kept as a cross-check; see
+  <code>docs/theory/soft_volume.md</code>.</li>
+</ul>
+<p>The range of a muon to a threshold, the first-passage generator built on
+<code>Phi(s)</code>, lives in <code>muon_range</code>; the effective areas of
+:mod:<code>softpaws.response</code> are built on it. Both soft-volume treatments feed
+the same master formula and are exposed through interchangeable
+:mod:<code>softpaws.response</code> predictors.</p>
+
+
+
+
+
+
+<p><span class="doc-section-title">Modules:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.attenuation" href="attenuation/#softpaws.transport.attenuation">attenuation</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Earth attenuation of the neutrino flux before it reaches the detector.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.coefficients" href="coefficients/#softpaws.transport.coefficients">coefficients</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Muon drift and diffusion transport coefficients.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.cross_section" href="cross_section/#softpaws.transport.cross_section">cross_section</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Neutrino-nucleon cross-section models.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.cutoff_source" href="cutoff_source/#softpaws.transport.cutoff_source">cutoff_source</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Exponential-cutoff sources via real-space log-loss convolution.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.earth" href="earth/#softpaws.transport.earth">earth</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Earth geometry: PREM density, chords and columns, overburden, zenith grids.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.eigenvalue" href="eigenvalue/#softpaws.transport.eigenvalue">eigenvalue</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The transport exponent: eigenvalue of the QED collision operator.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.loss_distribution" href="loss_distribution/#softpaws.transport.loss_distribution">loss_distribution</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Full distribution of the accumulated muon log-energy loss.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.loss_ensemble" href="loss_ensemble/#softpaws.transport.loss_ensemble">loss_ensemble</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The loss model's own error: an ensemble of published parametrizations.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.muon_range" href="muon_range/#softpaws.transport.muon_range">muon_range</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The range of a muon to a threshold, and the target volume it sets.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.soft_volume" href="soft_volume/#softpaws.transport.soft_volume">soft_volume</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Soft volume in the drift limit.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.source" href="source/#softpaws.transport.source">source</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Weak source ingredients: neutrino CC cross section and target density.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.transport.tau" href="tau/#softpaws.transport.tau">tau</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Tau-neutrino contribution to the through-going muon sample.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.CrossSection)" href="#softpaws.transport.CrossSection">CrossSection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Interface shared by the analytic and tabulated cross-section models.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="KernelScaling
+
+
+  
+      dataclass
+   (softpaws.transport.KernelScaling)" href="#softpaws.transport.KernelScaling">KernelScaling</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Energy-dependent factors that rescale the tabulated kernel moments.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="PowerLawCrossSection (softpaws.transport.PowerLawCrossSection)" href="#softpaws.transport.PowerLawCrossSection">PowerLawCrossSection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The single power law <code>sigma_CC = sigma0 (E / E0)^lambda</code> of Palmisano et al.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="bgr18_cross_section (softpaws.transport.bgr18_cross_section)" href="#softpaws.transport.bgr18_cross_section">bgr18_cross_section</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load the tabulated cross section shipped with the package.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="diffusion_coefficient (softpaws.transport.diffusion_coefficient)" href="#softpaws.transport.diffusion_coefficient">diffusion_coefficient</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon diffusion coefficient <code>d_mu</code> at a given energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="drift_coefficient (softpaws.transport.drift_coefficient)" href="#softpaws.transport.drift_coefficient">drift_coefficient</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon drift coefficient <code>b_mu</code> at a given energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="log_loss_moments (softpaws.transport.log_loss_moments)" href="#softpaws.transport.log_loss_moments">log_loss_moments</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The three log-loss moments of the kernel, from the tabulated spectrum.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="muon_range_km (softpaws.transport.muon_range_km)" href="#softpaws.transport.muon_range_km">muon_range_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon range from a starting energy down to a detection threshold.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="neutrino_column_g_cm2 (softpaws.transport.neutrino_column_g_cm2)" href="#softpaws.transport.neutrino_column_g_cm2">neutrino_column_g_cm2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Column a neutrino traverses before reaching the detector [g cm^-2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="overburden_km (softpaws.transport.overburden_km)" href="#softpaws.transport.overburden_km">overburden_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Length of medium a muon can be born in, upstream of the detector [km].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_eigenvalue (softpaws.transport.phi_eigenvalue)" href="#softpaws.transport.phi_eigenvalue">phi_eigenvalue</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Exact collision eigenvalue <code>Phi(A)</code> from the two calibrated moments.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_eigenvalue_at_energy (softpaws.transport.phi_eigenvalue_at_energy)" href="#softpaws.transport.phi_eigenvalue_at_energy">phi_eigenvalue_at_energy</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Exact eigenvalue at a muon energy, from the tabulated coefficients.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="prem_column (softpaws.transport.prem_column)" href="#softpaws.transport.prem_column">prem_column</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Column depth of a layered PREM Earth chord.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="scaled_kernel (softpaws.transport.scaled_kernel)" href="#softpaws.transport.scaled_kernel">scaled_kernel</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Install a :class:<code>KernelScaling</code> for a block and restore the old one after.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="set_kernel_scaling (softpaws.transport.set_kernel_scaling)" href="#softpaws.transport.set_kernel_scaling">set_kernel_scaling</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Install (or with <code>None</code> remove) a global :class:<code>KernelScaling</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="spectral_index (softpaws.transport.spectral_index)" href="#softpaws.transport.spectral_index">spectral_index</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Source spectral index <code>A = gamma - lambda - 1</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="stochastic_muon_range_km (softpaws.transport.stochastic_muon_range_km)" href="#softpaws.transport.stochastic_muon_range_km">stochastic_muon_range_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon range to a threshold, averaged over the exact stochastic loss law.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="third_moment_coefficient (softpaws.transport.third_moment_coefficient)" href="#softpaws.transport.third_moment_coefficient">third_moment_coefficient</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon third loss moment <code>t_mu = &lt;y^3&gt;</code> at a given energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="truncated_muon_range_km (softpaws.transport.truncated_muon_range_km)" href="#softpaws.transport.truncated_muon_range_km">truncated_muon_range_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>First-passage range cut at a finite upstream column [km].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="two_medium_muon_range_km (softpaws.transport.two_medium_muon_range_km)" href="#softpaws.transport.two_medium_muon_range_km">two_medium_muon_range_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Range to threshold through a far medium first and a near one last.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="zenith_grid (softpaws.transport.zenith_grid)" href="#softpaws.transport.zenith_grid">zenith_grid</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Zenith samples and their solid-angle weights over a band of the sky.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.transport.CrossSection" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">CrossSection</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+
+
+        <p>Interface shared by the analytic and tabulated cross-section models.</p>
+<p>Implementations expose the charged-current cross section that sources
+muons, the total that attenuates the flux in the Earth, and the local
+log-log slope <code>lambda</code> that sets the soft volume's spectral index
+<code>A = gamma - lambda - 1</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc
+
+
+  
+      abstractmethod
+   (softpaws.transport.CrossSection.cc)" href="#softpaws.transport.CrossSection.cc">cc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Charged-current cross section [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="local_slope
+
+
+  
+      abstractmethod
+   (softpaws.transport.CrossSection.local_slope)" href="#softpaws.transport.CrossSection.local_slope">local_slope</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Local slope <code>lambda(E) = d ln sigma_CC / d ln E</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="nc
+
+
+  
+      abstractmethod
+   (softpaws.transport.CrossSection.nc)" href="#softpaws.transport.CrossSection.nc">nc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutral-current cross section [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="total (softpaws.transport.CrossSection.total)" href="#softpaws.transport.CrossSection.total">total</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Total (CC + NC) cross section [cm^2], which sets Earth attenuation.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.CrossSection.cc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">cc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Charged-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">@abstractmethod
+def cc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Charged-current cross section [cm^2]."""</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.CrossSection.local_slope" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">local_slope</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">local_slope(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local slope <code>lambda(E) = d ln sigma_CC / d ln E</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">@abstractmethod
+def local_slope(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Local slope ``lambda(E) = d ln sigma_CC / d ln E``."""</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.CrossSection.nc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">nc</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">nc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutral-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">@abstractmethod
+def nc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Neutral-current cross section [cm^2]."""</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.CrossSection.total" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">total</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">total(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Total (CC + NC) cross section [cm^2], which sets Earth attenuation.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sigma</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Total cross section per target [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def total(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Total (CC + NC) cross section [cm^2], which sets Earth attenuation.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+
+    Returns
+    -------
+    sigma : np.ndarray
+        Total cross section per target [cm^2].
+    """
+    return self.cc(energy_gev) + self.nc(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.transport.KernelScaling" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">KernelScaling</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">KernelScaling(kappa_1: Callable[[ndarray], ndarray], kappa_2: Callable[[ndarray], ndarray])</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Energy-dependent factors that rescale the tabulated kernel moments.</p>
+<p>Used by :mod:<code>softpaws.transport.loss_ensemble</code> to push one alternative
+loss parametrization through every calculation without rebuilding the
+table: the ensemble is linear in the loss spectrum, so a swapped channel
+is a ratio of moments at each energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>kappa_1</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the first moments, <code>Phi'_var(0) / Phi'(0)</code> and
+<code>b_var / b</code>, as a function of the muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>kappa_2</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the second moments, applied to <code>d_mu</code>, to <code>-Phi''(0)</code>
+and to the third log-loss moment.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.transport.PowerLawCrossSection" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">PowerLawCrossSection</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">PowerLawCrossSection(lam: float = DEFAULT_LAMBDA, sigma0_cm2: float = SIGMA0_CM2, e0_gev: float = E0_CROSS_GEV, total_to_cc: float = DEFAULT_TOTAL_TO_CC)</code></pre>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="CrossSection (softpaws.transport.cross_section.CrossSection)" href="cross_section/#softpaws.transport.cross_section.CrossSection">CrossSection</a></code></p>
+
+
+
+        <p>The single power law <code>sigma_CC = sigma0 (E / E0)^lambda</code> of Palmisano et al.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section slope. Defaults to
+:data:<code>~softpaws.transport.source.DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma0_cm2</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.SIGMA0_CM2">SIGMA0_CM2</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross section at the anchor energy [cm^2]. Defaults to
+:data:<code>~softpaws.transport.source.SIGMA0_CM2</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e0_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.E0_CROSS_GEV">E0_CROSS_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Anchor energy [GeV]. Defaults to
+:data:<code>~softpaws.transport.source.E0_CROSS_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>total_to_cc</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.cross_section.DEFAULT_TOTAL_TO_CC">DEFAULT_TOTAL_TO_CC</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the total to the charged-current cross section. Defaults to
+:data:<code>DEFAULT_TOTAL_TO_CC</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; model = PowerLawCrossSection()
+&gt;&gt;&gt; float(model.local_slope(1.0e6)[0])
+0.4</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Slope, so that <code>sigma ~ E^lam</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma0_cm2</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.SIGMA0_CM2">SIGMA0_CM2</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Charged-current cross section at <code>e0_gev</code> [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e0_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.E0_CROSS_GEV">E0_CROSS_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Anchor energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>total_to_cc</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.cross_section.DEFAULT_TOTAL_TO_CC">DEFAULT_TOTAL_TO_CC</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the total to the charged-current cross section;
+see :data:<code>softpaws.constants.TOTAL_TO_CC_RATIO</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cc (softpaws.transport.PowerLawCrossSection.cc)" href="#softpaws.transport.PowerLawCrossSection.cc">cc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Charged-current cross section [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="local_slope (softpaws.transport.PowerLawCrossSection.local_slope)" href="#softpaws.transport.PowerLawCrossSection.local_slope">local_slope</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Local slope, which for a power law is the constant <code>lambda</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="nc (softpaws.transport.PowerLawCrossSection.nc)" href="#softpaws.transport.PowerLawCrossSection.nc">nc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Neutral-current cross section [cm^2], a fixed fraction of the CC one.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(
+    self,
+    lam: float = DEFAULT_LAMBDA,
+    sigma0_cm2: float = SIGMA0_CM2,
+    e0_gev: float = E0_CROSS_GEV,
+    total_to_cc: float = DEFAULT_TOTAL_TO_CC,
+) -&gt; None:
+    """Build a power-law cross section anchored at one energy.
+
+    Parameters
+    ----------
+    lam : float, optional
+        Slope, so that ``sigma ~ E^lam``.
+    sigma0_cm2 : float, optional
+        Charged-current cross section at ``e0_gev`` [cm^2].
+    e0_gev : float, optional
+        Anchor energy [GeV].
+    total_to_cc : float, optional
+        Ratio of the total to the charged-current cross section;
+        see :data:`softpaws.constants.TOTAL_TO_CC_RATIO`.
+    """
+    self.lam = lam
+    self.sigma0_cm2 = sigma0_cm2
+    self.e0_gev = e0_gev
+    self.total_to_cc = total_to_cc</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.PowerLawCrossSection.cc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">cc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Charged-current cross section [cm^2].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Charged-current cross section [cm^2]."""
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    return self.sigma0_cm2 * (energy / self.e0_gev) ** self.lam</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.PowerLawCrossSection.local_slope" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">local_slope</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">local_slope(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local slope, which for a power law is the constant <code>lambda</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def local_slope(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Local slope, which for a power law is the constant ``lambda``."""
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    return np.full_like(energy, self.lam)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.transport.PowerLawCrossSection.nc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">nc</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">nc(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Neutral-current cross section [cm^2], a fixed fraction of the CC one.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def nc(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Neutral-current cross section [cm^2], a fixed fraction of the CC one."""
+    return (self.total_to_cc - 1.0) * self.cc(energy_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.bgr18_cross_section" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">bgr18_cross_section</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">bgr18_cross_section(model: str = DEFAULT_TABLE_MODEL) -&gt; TabulatedCrossSection</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load the tabulated cross section shipped with the package.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>model</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code><span title="softpaws.transport.cross_section.DEFAULT_TABLE_MODEL">DEFAULT_TABLE_MODEL</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Table directory under <code>src/softpaws/data/xsec/</code>. Defaults to
+:data:<code>DEFAULT_TABLE_MODEL</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>cross_section</code></b>(                  <code><a class="autorefs autorefs-internal" title="TabulatedCrossSection (softpaws.transport.cross_section.TabulatedCrossSection)" href="cross_section/#softpaws.transport.cross_section.TabulatedCrossSection">TabulatedCrossSection</a></code>
+)              –
+              <div class="doc-md-description">
+                <p>Model built from the charged- and neutral-current tables.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/cross_section.py</code></summary>
+              <pre class="highlight"><code class="language-python">def bgr18_cross_section(model: str = DEFAULT_TABLE_MODEL) -&gt; TabulatedCrossSection:
+    """Load the tabulated cross section shipped with the package.
+
+    Parameters
+    ----------
+    model : str, optional
+        Table directory under ``src/softpaws/data/xsec/``. Defaults to
+        :data:`DEFAULT_TABLE_MODEL`.
+
+    Returns
+    -------
+    cross_section : TabulatedCrossSection
+        Model built from the charged- and neutral-current tables.
+    """
+    # Imported here rather than at module scope: softpaws.data.loader returns
+    # softpaws.response.irfs objects, so importing it from transport at load
+    # time would close an import cycle. Nothing here runs at import.
+    from ..data.loader import load_cross_section_table
+
+    energy_cc, sigma_cc = load_cross_section_table(model, "cc")
+    energy_nc, sigma_nc = load_cross_section_table(model, "nc")
+    return TabulatedCrossSection(energy_cc, sigma_cc, energy_nc, sigma_nc, name=model)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.diffusion_coefficient" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">diffusion_coefficient</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">diffusion_coefficient(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon diffusion coefficient <code>d_mu</code> at a given energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Scales linearly
+with density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate; see the module docstring. Defaults to
+:data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>d_mu</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Interpolated as in :func:<code>drift_coefficient</code>. Not used in the drift limit;
+tabulated for the diffusion extension.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def diffusion_coefficient(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Muon diffusion coefficient ``d_mu`` at a given energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly
+        with density.
+    source : {"proposal", "table1"}, optional
+        Which tabulation to interpolate; see the module docstring. Defaults to
+        :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    d_mu : np.ndarray
+        Diffusion coefficient [km^-1].
+
+    Notes
+    -----
+    Interpolated as in :func:`drift_coefficient`. Not used in the drift limit;
+    tabulated for the diffusion extension.
+    """
+    d_water = _interpolate(energy_gev, source, 1)
+    return _scale(d_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.drift_coefficient" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">drift_coefficient</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">drift_coefficient(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon drift coefficient <code>b_mu</code> at a given energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. The coefficient
+scales linearly with density, since it is proportional to the target
+number density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate; see the module docstring. Defaults to
+:data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>b_mu</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Values are log-linearly interpolated in <code>log10(E / GeV)</code> and clipped to
+the endpoints of the selected source: for <code>"table1"</code> just the two
+reference energies (1 PeV and 100 PeV), for <code>"proposal"</code> the full table
+outside that range. The energy dependence of the QED coefficients is slow
+(logarithmic), so this is adequate in the drift limit.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def drift_coefficient(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Muon drift coefficient ``b_mu`` at a given energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. The coefficient
+        scales linearly with density, since it is proportional to the target
+        number density.
+    source : {"proposal", "table1"}, optional
+        Which tabulation to interpolate; see the module docstring. Defaults to
+        :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    b_mu : np.ndarray
+        Drift coefficient [km^-1].
+
+    Notes
+    -----
+    Values are log-linearly interpolated in ``log10(E / GeV)`` and clipped to
+    the endpoints of the selected source: for ``"table1"`` just the two
+    reference energies (1 PeV and 100 PeV), for ``"proposal"`` the full table
+    outside that range. The energy dependence of the QED coefficients is slow
+    (logarithmic), so this is adequate in the drift limit.
+    """
+    b_water = _interpolate(energy_gev, source, 0)
+    return _scale(b_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 1)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.log_loss_moments" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">log_loss_moments</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">log_loss_moments(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The three log-loss moments of the kernel, from the tabulated spectrum.</p>
+<p>Where <code>b_mu</code>, <code>d_mu</code> and <code>t_mu</code> are moments of the fractional loss
+<code>y</code>, these are moments of the <em>logarithmic</em> loss <code>-ln(1-y)</code>, which is
+what the first-passage range of
+:func:<code>softpaws.transport.muon_range.stochastic_muon_range_km</code> and its
+variance are built from:</p>
+<p>.. math:: \Phi'(0) = \langle -\ln(1-y)\rangle, \quad
+    -\Phi''(0) = \langle \ln^2(1-y)\rangle, \quad
+    \Phi'''(0) = \langle -\ln^3(1-y)\rangle .</p>
+<p>They are read from the shipped table rather than reconstructed from
+<code>b_mu</code>, <code>d_mu</code>, <code>t_mu</code>, because no family calibrated to the
+<code>y</code>-moments reproduces them. <code>-ln(1-y)</code> diverges as <code>y -&gt; 1</code> where
+<code>y</code> saturates, so these moments are dominated by the hard end of the
+kernel that a calibrated family gets wrong: against PROPOSAL's own spectrum
+the two-moment family of
+:func:<code>softpaws.transport.eigenvalue.two_moment_loss_spectrum</code> is 8% low on
+the first, 56% low on the second and 87% low on the third, and the
+three-moment family is 1% high, 15% high and 40% high.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+density, as for the <code>y</code>-moments.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>&#39;proposal&#39;</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate. Defaults to :data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>phi_prime, phi_second, phi_third : np.ndarray</code>
+              –
+              <div class="doc-md-description">
+                <p><code>Phi'(0)</code>, <code>-Phi''(0)</code> and <code>Phi'''(0)</code> [km^-1], all positive.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised for <code>source="table1"</code>, which tabulates no log-loss moments, or
+if the shipped PROPOSAL table predates these columns.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def log_loss_moments(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    r"""The three log-loss moments of the kernel, from the tabulated spectrum.
+
+    Where ``b_mu``, ``d_mu`` and ``t_mu`` are moments of the fractional loss
+    ``y``, these are moments of the *logarithmic* loss ``-ln(1-y)``, which is
+    what the first-passage range of
+    :func:`softpaws.transport.muon_range.stochastic_muon_range_km` and its
+    variance are built from:
+
+    .. math:: \\Phi'(0) = \\langle -\\ln(1-y)\\rangle, \\quad
+        -\\Phi''(0) = \\langle \\ln^2(1-y)\\rangle, \\quad
+        \\Phi'''(0) = \\langle -\\ln^3(1-y)\\rangle .
+
+    They are read from the shipped table rather than reconstructed from
+    ``b_mu``, ``d_mu``, ``t_mu``, because no family calibrated to the
+    ``y``-moments reproduces them. ``-ln(1-y)`` diverges as ``y -&gt; 1`` where
+    ``y`` saturates, so these moments are dominated by the hard end of the
+    kernel that a calibrated family gets wrong: against PROPOSAL's own spectrum
+    the two-moment family of
+    :func:`softpaws.transport.eigenvalue.two_moment_loss_spectrum` is 8% low on
+    the first, 56% low on the second and 87% low on the third, and the
+    three-moment family is 1% high, 15% high and 40% high.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+        density, as for the ``y``-moments.
+    source : {"proposal"}, optional
+        Which tabulation to interpolate. Defaults to :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    phi_prime, phi_second, phi_third : np.ndarray
+        ``Phi'(0)``, ``-Phi''(0)`` and ``Phi'''(0)`` [km^-1], all positive.
+
+    Raises
+    ------
+    ValueError
+        Raised for ``source="table1"``, which tabulates no log-loss moments, or
+        if the shipped PROPOSAL table predates these columns.
+    """
+    scale = density_g_cm3 / RHO_WATER_G_CM3
+    return tuple(
+        _scale(_interpolate(energy_gev, source, column) * scale, energy_gev, order)
+        for column, order in ((3, 1), (4, 2), (5, 2))
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.muon_range_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">muon_range_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">muon_range_km(energy_gev: float | ndarray, threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE, kernel_evaluation: str = 'running') -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon range from a starting energy down to a detection threshold.</p>
+<p>Integrating the continuous-slowing-down loss law <code>-dE/dx = a_mu + b_mu E</code>
+from <code>E</code> down to <code>E_thr</code> gives</p>
+<p>.. math:: R(E \to E_\mathrm{thr}) = \frac{1}{b_\mu}
+    \ln\frac{E + E_c}{E_\mathrm{thr} + E_c},
+    \qquad E_c = a_\mu / b_\mu.</p>
+<p>Unlike the soft volume's spectral length <code>1/(b_mu A)</code>, this carries no
+spectral weighting: it is the distance a muon of energy <code>E</code> can travel and
+still arrive above threshold, and it grows logarithmically with <code>E</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_MUON_THRESHOLD_GEV">DEFAULT_MUON_THRESHOLD_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy below which the track is not selected [GeV]. Defaults to
+:data:<code>DEFAULT_MUON_THRESHOLD_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient. Defaults to 1.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>range_km</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Muon range [km], clipped at zero for muons born below threshold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p><code>b_mu</code> is evaluated at the starting energy <code>E</code> rather than integrated
+along the track. Because <code>b_mu</code> moves by only 14% between 1 PeV and 100 PeV
+(Table 1), this is a percent-level approximation over the range of interest.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/muon_range.py</code></summary>
+              <pre class="highlight"><code class="language-python">def muon_range_km(
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+    kernel_evaluation: str = "running",
+) -&gt; np.ndarray:
+    r"""Muon range from a starting energy down to a detection threshold.
+
+    Integrating the continuous-slowing-down loss law ``-dE/dx = a_mu + b_mu E``
+    from ``E`` down to ``E_thr`` gives
+
+    .. math:: R(E \\to E_\\mathrm{thr}) = \\frac{1}{b_\\mu}
+        \\ln\\frac{E + E_c}{E_\\mathrm{thr} + E_c},
+        \\qquad E_c = a_\\mu / b_\\mu.
+
+    Unlike the soft volume's spectral length ``1/(b_mu A)``, this carries no
+    spectral weighting: it is the distance a muon of energy ``E`` can travel and
+    still arrive above threshold, and it grows logarithmically with ``E``.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient. Defaults to 1.
+
+    Returns
+    -------
+    range_km : np.ndarray
+        Muon range [km], clipped at zero for muons born below threshold.
+
+    Notes
+    -----
+    ``b_mu`` is evaluated at the starting energy ``E`` rather than integrated
+    along the track. Because ``b_mu`` moves by only 14% between 1 PeV and 100 PeV
+    (Table 1), this is a percent-level approximation over the range of interest.
+    """
+    if kernel_evaluation not in ("frozen", "running"):
+        raise ValueError(
+            f"kernel_evaluation must be 'frozen' or 'running', got {kernel_evaluation!r}."
+        )
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    if kernel_evaluation == "frozen":
+        b_mu = b_scale * drift_coefficient(energy, density_g_cm3, source)
+        e_crit = critical_energy_gev(energy, density_g_cm3, b_scale, source)
+        ratio = (energy + e_crit) / (threshold_gev + e_crit)
+        return np.clip(np.log(ratio) / b_mu, 0.0, None)
+
+    # Running: -dE/dx = a_mu + b_mu(E) E has no closed-form integral once b_mu
+    # itself runs, so integrate dL = dE / (a_mu + b_mu(E) E) along a shared
+    # logarithmic lattice. Frozen b_mu recovers the closed form above exactly.
+    return _depth_between_km(
+        "csda",
+        energy,
+        threshold_gev,
+        density_g_cm3,
+        b_scale,
+        source,
+        "table",
+        _CSDA_NODES_PER_DECADE,
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.neutrino_column_g_cm2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">neutrino_column_g_cm2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">neutrino_column_g_cm2(cos_theta: float | ndarray, depth_km: float, density_g_cm3: float, cap_km: float = MAX_UPSTREAM_KM) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Column a neutrino traverses before reaching the detector [g cm^-2].</p>
+<p>Upgoing directions get the layered-PREM Earth chord of
+:func:<code>prem_column</code>, evaluated at a declination equal to the angle below
+the horizon. Downgoing directions get the medium above the detector,
+which is negligible except within a degree or so of the horizon, where
+the <code>1 / cos(theta)</code> path reaches <code>10^7</code> g cm^-2 and starts to matter
+above 100 PeV. Exactly at the horizon the column is zero.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith; <code>+1</code> is overhead, <code>-1</code> the nadir.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Depth of the instrumented centre below the surface of the medium [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Density of the medium above the detector [g cm^-3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cap_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.MAX_UPSTREAM_KM">MAX_UPSTREAM_KM</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cap on the downgoing path; see :func:<code>overburden_km</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>column</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Column depth [g cm^-2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/earth.py</code></summary>
+              <pre class="highlight"><code class="language-python">def neutrino_column_g_cm2(
+    cos_theta: float | np.ndarray,
+    depth_km: float,
+    density_g_cm3: float,
+    cap_km: float = MAX_UPSTREAM_KM,
+) -&gt; np.ndarray:
+    """Column a neutrino traverses before reaching the detector [g cm^-2].
+
+    Upgoing directions get the layered-PREM Earth chord of
+    :func:`prem_column`, evaluated at a declination equal to the angle below
+    the horizon. Downgoing directions get the medium above the detector,
+    which is negligible except within a degree or so of the horizon, where
+    the ``1 / cos(theta)`` path reaches ``10^7`` g cm^-2 and starts to matter
+    above 100 PeV. Exactly at the horizon the column is zero.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith; ``+1`` is overhead, ``-1`` the nadir.
+    depth_km : float
+        Depth of the instrumented centre below the surface of the medium [km].
+    density_g_cm3 : float
+        Density of the medium above the detector [g cm^-3].
+    cap_km : float, optional
+        Cap on the downgoing path; see :func:`overburden_km`.
+
+    Returns
+    -------
+    column : np.ndarray
+        Column depth [g cm^-2].
+    """
+    cos_theta = np.asarray(cos_theta, dtype=float)
+    above = cos_theta &gt; 0.0
+    medium = overburden_km(cos_theta, depth_km, cap_km) * CM_PER_KM * density_g_cm3
+    theta_deg = np.rad2deg(np.arccos(np.clip(cos_theta, -1.0, 1.0)))
+    earth = np.array(
+        [prem_column(float(t) - 90.0) if t &gt; 90.0 else 0.0 for t in np.atleast_1d(theta_deg)]
+    ).reshape(np.shape(theta_deg))
+    return np.where(above, medium, earth)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.overburden_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">overburden_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">overburden_km(cos_theta: float | ndarray, depth_km: float, cap_km: float = MAX_UPSTREAM_KM) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Length of medium a muon can be born in, upstream of the detector [km].</p>
+<p>A downgoing muon is produced in the medium between the surface and the
+detector, a path of <code>depth / cos(theta)</code>. An upgoing muon comes through
+rock, which supplies far more column than any muon survives, so its
+length is effectively infinite and <code>cap_km</code> stands in for it.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith; <code>+1</code> is overhead.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Depth of the instrumented centre below the surface of the medium [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cap_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.MAX_UPSTREAM_KM">MAX_UPSTREAM_KM</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Longest length returned [km]; see :data:<code>MAX_UPSTREAM_KM</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>length_km</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Available upstream length, as a length of the detector medium [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/earth.py</code></summary>
+              <pre class="highlight"><code class="language-python">def overburden_km(
+    cos_theta: float | np.ndarray,
+    depth_km: float,
+    cap_km: float = MAX_UPSTREAM_KM,
+) -&gt; np.ndarray:
+    """Length of medium a muon can be born in, upstream of the detector [km].
+
+    A downgoing muon is produced in the medium between the surface and the
+    detector, a path of ``depth / cos(theta)``. An upgoing muon comes through
+    rock, which supplies far more column than any muon survives, so its
+    length is effectively infinite and ``cap_km`` stands in for it.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith; ``+1`` is overhead.
+    depth_km : float
+        Depth of the instrumented centre below the surface of the medium [km].
+    cap_km : float, optional
+        Longest length returned [km]; see :data:`MAX_UPSTREAM_KM`.
+
+    Returns
+    -------
+    length_km : np.ndarray
+        Available upstream length, as a length of the detector medium [km].
+    """
+    cos_theta = np.asarray(cos_theta, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        downgoing = np.where(cos_theta &gt; 0.0, depth_km / np.maximum(cos_theta, 1.0e-6), np.inf)
+    return np.minimum(downgoing, cap_km)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.phi_eigenvalue" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_eigenvalue</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_eigenvalue(spectral_index_value: float | ndarray, b_mu: float | ndarray, d_mu: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Exact collision eigenvalue <code>Phi(A)</code> from the two calibrated moments.</p>
+<p>Using the closed form of the two-moment family (Part 10.4),</p>
+<p>.. math:: \Phi(A) = \kappa\,\bigl[\psi(p + A + 1) - \psi(p + 1)\bigr],</p>
+<p>with <code>psi</code> the digamma function. This reproduces <code>Phi(1) = b_mu</code> and
+<code>Phi(2) = 2 b_mu - d_mu</code> exactly and grows monotonically in <code>A</code> (unlike the
+Fokker-Planck truncation, which turns over).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code> (see :func:<code>spectral_index</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient [km^-1]. If non-positive, the drift limit
+<code>Phi = A b_mu</code> is returned.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Eigenvalue <code>Phi(A)</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Exact only at <code>A = 1, 2</code>; other <code>A</code> inherit whatever the two-moment family
+gets wrong about third and higher moments. For a definitive value pass
+tabulated differential cross sections to :func:<code>phi_eigenvalue_quadrature</code>.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_eigenvalue(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+) -&gt; np.ndarray:
+    r"""Exact collision eigenvalue ``Phi(A)`` from the two calibrated moments.
+
+    Using the closed form of the two-moment family (Part 10.4),
+
+    .. math:: \\Phi(A) = \\kappa\\,\\bigl[\\psi(p + A + 1) - \\psi(p + 1)\\bigr],
+
+    with ``psi`` the digamma function. This reproduces ``Phi(1) = b_mu`` and
+    ``Phi(2) = 2 b_mu - d_mu`` exactly and grows monotonically in ``A`` (unlike the
+    Fokker-Planck truncation, which turns over).
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A`` (see :func:`spectral_index`).
+    b_mu : float or np.ndarray
+        Drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Diffusion coefficient [km^-1]. If non-positive, the drift limit
+        ``Phi = A b_mu`` is returned.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Eigenvalue ``Phi(A)`` [km^-1].
+
+    Notes
+    -----
+    Exact only at ``A = 1, 2``; other ``A`` inherit whatever the two-moment family
+    gets wrong about third and higher moments. For a definitive value pass
+    tabulated differential cross sections to :func:`phi_eigenvalue_quadrature`.
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        kappa, p = two_moment_loss_spectrum(b, d)
+        phi = phi_symbol(a, kappa, p)
+    return np.where(d &gt; 0.0, phi, a * b)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.phi_eigenvalue_at_energy" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_eigenvalue_at_energy</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_eigenvalue_at_energy(spectral_index_value: float | ndarray, energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Exact eigenvalue at a muon energy, from the tabulated coefficients.</p>
+<p>Convenience wrapper that reads <code>b_mu(E)</code>, <code>d_mu(E)</code> from
+:mod:<code>softpaws.transport.coefficients</code> and feeds them to
+:func:<code>phi_eigenvalue</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Eigenvalue <code>Phi(A)</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_eigenvalue_at_energy(
+    spectral_index_value: float | np.ndarray,
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Exact eigenvalue at a muon energy, from the tabulated coefficients.
+
+    Convenience wrapper that reads ``b_mu(E)``, ``d_mu(E)`` from
+    :mod:`softpaws.transport.coefficients` and feeds them to
+    :func:`phi_eigenvalue`.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A``.
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Eigenvalue ``Phi(A)`` [km^-1].
+    """
+    b_mu = drift_coefficient(energy_gev, density_g_cm3, source)
+    d_mu = diffusion_coefficient(energy_gev, density_g_cm3, source)
+    return phi_eigenvalue(spectral_index_value, b_mu, d_mu)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.prem_column" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">prem_column</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">prem_column(declination_deg: float, n_steps: int = 512) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Column depth of a layered PREM Earth chord.</p>
+<p>Integrates the PREM density along the chord to the detector. The chord has
+impact parameter <code>b = R_Earth sin(nadir)</code> with nadir angle
+<code>90 deg - dec</code>, so the radius at path length <code>s</code> from the chord midpoint
+is <code>sqrt(b^2 + s^2)</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>declination_deg</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source declination [deg]; <code>dec &lt;= 0</code> (downgoing) returns zero.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_steps</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>512</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of trapezoidal steps along the chord. Defaults to 512.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>column</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Column depth [g cm^-2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/earth.py</code></summary>
+              <pre class="highlight"><code class="language-python">def prem_column(
+    declination_deg: float,
+    n_steps: int = 512,
+) -&gt; float:
+    """Column depth of a layered PREM Earth chord.
+
+    Integrates the PREM density along the chord to the detector. The chord has
+    impact parameter ``b = R_Earth sin(nadir)`` with nadir angle
+    ``90 deg - dec``, so the radius at path length ``s`` from the chord midpoint
+    is ``sqrt(b^2 + s^2)``.
+
+    Parameters
+    ----------
+    declination_deg : float
+        Source declination [deg]; ``dec &lt;= 0`` (downgoing) returns zero.
+    n_steps : int, optional
+        Number of trapezoidal steps along the chord. Defaults to 512.
+
+    Returns
+    -------
+    column : float
+        Column depth [g cm^-2].
+    """
+    length_km = float(earth_chord_length_km(declination_deg)[0])
+    if length_km &lt;= 0.0:
+        return 0.0
+    half_km = 0.5 * length_km
+    nadir_rad = np.deg2rad(90.0 - declination_deg)
+    b_km = EARTH_RADIUS_KM * np.sin(nadir_rad)
+    s_km = np.linspace(-half_km, half_km, n_steps)
+    r_km = np.sqrt(b_km**2 + s_km**2)
+    density = prem_density(r_km)
+    # Integrate over path length; convert km -&gt; cm for a g cm^-2 column.
+    return float(np.trapezoid(density, s_km) * CM_PER_KM)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.scaled_kernel" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scaled_kernel</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">scaled_kernel(scaling: KernelScaling | None) -&gt; Iterator[None]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Install a :class:<code>KernelScaling</code> for a block and restore the old one after.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>scaling</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="KernelScaling
+
+
+  
+      dataclass
+   (softpaws.transport.coefficients.KernelScaling)" href="coefficients/#softpaws.transport.coefficients.KernelScaling">KernelScaling</a> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>The factors to apply inside the block.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; with scaled_kernel(None):
+...     b = drift_coefficient(1.0e6)</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">@contextlib.contextmanager
+def scaled_kernel(scaling: KernelScaling | None) -&gt; Iterator[None]:
+    """Install a :class:`KernelScaling` for a block and restore the old one after.
+
+    Parameters
+    ----------
+    scaling : KernelScaling or None
+        The factors to apply inside the block.
+
+    Examples
+    --------
+    &gt;&gt;&gt; with scaled_kernel(None):
+    ...     b = drift_coefficient(1.0e6)
+    """
+    previous = _KERNEL_SCALING
+    set_kernel_scaling(scaling)
+    try:
+        yield
+    finally:
+        set_kernel_scaling(previous)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.set_kernel_scaling" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">set_kernel_scaling</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">set_kernel_scaling(scaling: KernelScaling | None) -&gt; None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Install (or with <code>None</code> remove) a global :class:<code>KernelScaling</code>.</p>
+<p>While a scaling is installed, :func:<code>drift_coefficient</code>,
+:func:<code>diffusion_coefficient</code> and :func:<code>log_loss_moments</code> multiply their
+results by its factors at the requested energy, so everything built on
+them sees the alternative kernel.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>scaling</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="KernelScaling
+
+
+  
+      dataclass
+   (softpaws.transport.coefficients.KernelScaling)" href="coefficients/#softpaws.transport.coefficients.KernelScaling">KernelScaling</a> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>The factors to apply, or <code>None</code> for the shipped table.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def set_kernel_scaling(scaling: KernelScaling | None) -&gt; None:
+    """Install (or with ``None`` remove) a global :class:`KernelScaling`.
+
+    While a scaling is installed, :func:`drift_coefficient`,
+    :func:`diffusion_coefficient` and :func:`log_loss_moments` multiply their
+    results by its factors at the requested energy, so everything built on
+    them sees the alternative kernel.
+
+    Parameters
+    ----------
+    scaling : KernelScaling or None
+        The factors to apply, or ``None`` for the shipped table.
+    """
+    global _KERNEL_SCALING, _kernel_scaling_token
+    _KERNEL_SCALING = scaling
+    _kernel_scaling_token += 1</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.spectral_index" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">spectral_index</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">spectral_index(gamma: float, lam: float = DEFAULT_LAMBDA) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Source spectral index <code>A = gamma - lambda - 1</code>.</p>
+<p>Unlike :func:<code>softpaws.transport.soft_volume.spectral_penalty</code>, this does not
+require <code>A &gt; 0</code>: the exact treatment stays finite for <code>A &lt;= 0</code> through the
+saturation factor, so the sign is left for the caller to interpret (<code>A &lt; 0</code>
+signals the cross-section pole, handled by
+:func:<code>softpaws.transport.soft_volume.saturation_factor</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope, <code>sigma_CC ~ E^lambda</code>. Defaults to
+:data:<code>softpaws.transport.source.DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>A</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Spectral index <code>gamma - lambda - 1</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def spectral_index(gamma: float, lam: float = DEFAULT_LAMBDA) -&gt; float:
+    """Source spectral index ``A = gamma - lambda - 1``.
+
+    Unlike :func:`softpaws.transport.soft_volume.spectral_penalty`, this does not
+    require ``A &gt; 0``: the exact treatment stays finite for ``A &lt;= 0`` through the
+    saturation factor, so the sign is left for the caller to interpret (``A &lt; 0``
+    signals the cross-section pole, handled by
+    :func:`softpaws.transport.soft_volume.saturation_factor`).
+
+    Parameters
+    ----------
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope, ``sigma_CC ~ E^lambda``. Defaults to
+        :data:`softpaws.transport.source.DEFAULT_LAMBDA`.
+
+    Returns
+    -------
+    A : float
+        Spectral index ``gamma - lambda - 1``.
+    """
+    return gamma - lam - 1.0</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.stochastic_muon_range_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">stochastic_muon_range_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">stochastic_muon_range_km(energy_gev: float | ndarray, threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE, ell_max_scale: float = 2.5, n_ell: int = 161, method: str = 'closed', include_ionization: bool = True, match_energy_gev: float = DEFAULT_IONIZATION_MATCH_GEV, log_loss_source: str = 'table', kernel_evaluation: str = 'running', running_nodes_per_decade: int = 48) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon range to a threshold, averaged over the exact stochastic loss law.</p>
+<p>:func:<code>muon_range_km</code> answers "how far does the <em>average</em> muon get before
+dropping below <code>E_thr</code>" by integrating the continuous-slowing-down law,
+which makes the arrival-above-threshold probability a step function at that
+mean range. The losses are not deterministic, though
+(:mod:<code>softpaws.transport.loss_distribution</code>), so the honest length is the
+expected one,</p>
+<p>.. math:: L(\varepsilon) = \int_0^\infty d\ell\;
+    \mathbb{P}\bigl[\,W(\ell) &lt; \ln(\varepsilon / E_\mathrm{thr})\,\bigr],</p>
+<p>with <code>W</code> the accumulated log-loss subordinator whose CDF is
+:func:<code>softpaws.transport.loss_distribution.log_loss_cdf</code>. Replacing the
+step by the true CDF shortens the length by ~7% at 1 PeV and ~12% at
+100 PeV: the loss law is right-skewed, so more muons fall short of the mean
+range than overshoot it.</p>
+<p>That integral has a closed form (<code>docs/theory/first_passage_range.md</code>). <code>W</code> is
+non-decreasing, so <code>{W(ell) &lt; w}</code> is exactly <code>{tau(w) &gt; ell}</code> for the
+first-passage depth <code>tau</code>, and the integral collapses to <code>E[tau(w)]</code> --
+the expected distance at which the muon first drops below threshold. That
+renewal function has Laplace transform <code>1 / (s Phi(s))</code>, whose small-<code>s</code>
+expansion gives</p>
+<p>.. math:: L(\varepsilon) = \frac{\ln(\varepsilon / E_\mathrm{thr})}
+    {\Phi'(0)} - \frac{\Phi''(0)}{2\,\Phi'(0)^2},
+    \qquad \Phi'(0) = \langle -\ln(1-y)\rangle,\;
+    -\Phi''(0) = \langle \ln^2(1-y)\rangle,</p>
+<p>i.e. the CSDA formula with <code>b_mu = &lt;y&gt;</code> replaced by <code>&lt;-ln(1-y)&gt;</code>, plus a
+constant. Since <code>-ln(1-y) &gt;= y</code> for every positive loss spectrum, the
+stochastic range is always the shorter one.</p>
+<p><strong>Ionization and the two-regime range.</strong> The expansion above is purely
+radiative, but a threshold of 1 TeV sits within a factor of two of the muon
+critical energy in water (<code>E_c = a_mu / b_mu ~ 600</code> GeV,
+:func:<code>~softpaws.transport.coefficients.critical_energy_gev</code>), so the last
+e-fold of the range -- the one that sets where a tabulated effective area
+turns on -- is not radiative at all. Ionization cannot simply be added to
+<code>Phi</code>: it removes a fixed amount of energy per unit length and not a fixed
+<em>fraction</em>, so it is additive in <code>E</code> and not in <code>ln E</code>, which is the
+structure the whole subordinator derivation rests on.</p>
+<p>With <code>include_ionization</code> (the default) the range is therefore spliced at a
+matching energy <code>E_*</code> chosen well above <code>E_c</code>,</p>
+<p>.. math:: L(\varepsilon) = \underbrace{\frac{\ln(\varepsilon/E_*)}
+    {\Phi'(0)} - \frac{\Phi''(0)}{2\Phi'(0)^2}}<em>{\text{stochastic,
+    radiative}} \;+\; \underbrace{\frac{1}{b</em>\mu(E_a)}
+    \ln\frac{E_a + E_c}{E_\mathrm{thr} + E_c}}_{\text{deterministic,
+    with ionization}},</p>
+<p>which leaves the derivation untouched above <code>E_*</code> and appends an almost
+constant offset below it, so the result is still closed form. Muons born
+below <code>E_*</code> get the deterministic range alone (:func:<code>muon_range_km</code>).
+Passing <code>include_ionization=False</code> recovers the purely radiative range,
+which is what Table E.1 of the paper contrasts against <code>R_CSDA</code>.</p>
+<p>The deterministic segment starts at <code>E_a = E_* exp(-&lt;overshoot&gt;)</code> and not
+at <code>E_*</code>, because a first passage overshoots the level it crosses. By
+Wald's identity <code>E[W(tau)] = w + &lt;overshoot&gt;</code> with
+<code>&lt;overshoot&gt; = -Phi''(0) / 2 Phi'(0)</code> in log energy, which is the same
+quantity the renewal constant above measures in depth, so starting the CSDA
+segment at <code>E_*</code> would count that stretch of track twice. It is worth 0.4
+km, and leaving it in shows up as a 0.4 km discontinuity at <code>E_*</code>.</p>
+<p>The splice shortens the range at every energy, by 17% at <code>E_nu = 10^4</code>
+GeV, where the muon never enters the radiative regime at all, through 6.7%
+at <code>10^6</code> to 4.3% at <code>10^8</code>. Under <code>kernel_evaluation="frozen"</code> it
+instead changed sign across the band (-13%, -1.6%, +1.4%), because two
+effects ran against each other in the spliced decade: ionization shortened
+the range while ceasing to apply the production-energy <code>Phi'(0)</code> to a muon
+that is by then at TeV energies lengthened it, and the two nearly cancelled.
+Running the kernel down the trajectory already carries the second of those,
+so the splice is left doing only the physical job it exists for.</p>
+<p><code>match_energy_gev</code> is a convention and the answer moves with it: a factor
+of three either way from the default changes the range by about 3%, which is
+the systematic this treatment carries. Lowering it keeps more of the track
+stochastic, which is right down to <code>E_c</code>; raising it keeps more of the
+ionization, which matters most near threshold. Neither limit is uniformly
+better, and only a deterministic drift inside <code>W(ell)</code> would remove the
+choice.</p>
+<p>Unlike the soft volume's spectral length <code>1/Phi(A)</code>, this carries no
+spectral weighting -- it is the right length for a <strong>monochromatic</strong> parent,
+which is what a tabulated effective area is differential in (App. I's
+<code>s -&gt; 0</code> case; see :func:<code>dm_line_target_volume_km3</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_MUON_THRESHOLD_GEV">DEFAULT_MUON_THRESHOLD_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy below which the track is not selected [GeV]. Defaults to
+:data:<code>DEFAULT_MUON_THRESHOLD_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient. Defaults to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_max_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>2.5</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Upper limit of the depth integral, in units of the deterministic range
+(:func:<code>muon_range_km</code>). The CDF is already below <code>1e-3</code> by twice the
+deterministic range, so the default truncation is harmless. Used by
+<code>method="quadrature"</code> only.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_ell</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>161</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of depth samples in the integral. Used by
+<code>method="quadrature"</code> only.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>method</code></b>
+                  (<code>(&#39;closed&#39;, &#39;quadrature&#39;)</code>, default:
+                      <code>&#34;closed&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p><code>"closed"</code> (the default) evaluates the renewal expansion above, two
+polygamma calls and no inversion. <code>"quadrature"</code> evaluates the depth
+integral directly against
+:func:<code>softpaws.transport.loss_distribution.log_loss_cdf</code>; it is orders
+of magnitude slower and is kept as the independent check that the
+closed form is exercised against.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>include_ionization</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Splice the deterministic ionizing range below <code>match_energy_gev</code> onto
+the radiative first passage above it, as derived above. Defaults to
+<code>True</code>. <code>False</code> gives the purely radiative range.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>match_energy_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_IONIZATION_MATCH_GEV">DEFAULT_IONIZATION_MATCH_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Matching energy <code>E_*</code> [GeV] between the two regimes, which has to sit
+well above the critical energy for the splice to be meaningful.
+Defaults to :data:<code>DEFAULT_IONIZATION_MATCH_GEV</code>. Ignored when
+<code>include_ionization</code> is <code>False</code>, and also when it falls at or below
+<code>threshold_gev</code>, where there is no ionizing segment left to splice and
+the range degrades to the purely radiative one.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log_loss_source</code></b>
+                  (<code>(&#39;table&#39;, &#39;family&#39;)</code>, default:
+                      <code>&#34;table&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Where <code>Phi'(0)</code> and <code>Phi''(0)</code> come from. <code>"table"</code> (the default)
+reads them from the tabulated spectrum via
+:func:<code>~softpaws.transport.coefficients.log_loss_moments</code>; <code>"family"</code>
+reconstructs them from the two-moment calibration of <code>b_mu</code> and
+<code>d_mu</code>. The family is 8% low on the first moment and 56% low on the
+second, because <code>-ln(1-y)</code> weights the hard end of the kernel that a
+fit to the <code>y</code>-moments does not constrain, and the resulting range is
+6.9% long over <code>10^5</code> to <code>10^8</code> GeV. The bias is almost pure
+normalization -- 0.7% rms of residual tilt across that band -- so it
+moves an effective-area ceiling and leaves its shape alone. Kept as an
+option because <code>source="table1"</code> has no log-loss columns and because
+<code>method="quadrature"</code> checks against the family's own kernel.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>kernel_evaluation</code></b>
+                  (<code>(&#39;running&#39;, &#39;frozen&#39;)</code>, default:
+                      <code>&#34;running&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Where along the descent the kernel is read. <code>"running"</code> (the default)
+follows it down, so the radiative segment is
+<code>int dlnE / Phi'(0; E)</code> and both renewal constants are read at the
+level being crossed. <code>"frozen"</code> holds the production-energy kernel for
+the whole descent, which is the closed form of Eq.~(C4) as written.</p>
+<p>Freezing is short, one-sidedly, and by more the further the muon falls,
+because it evaluates the loss rate at the top of the descent where that
+rate is highest. Against a PROPOSAL propagation (example 39, stopping at
+100 TeV) the mean range is 4.0% rms and 6.5% worst over <code>w = 1.15</code> to
+<code>5.76</code>, against 1.4% and 2.5% running. Effective areas reach
+<code>w ~ 9</code>, where the two differ by 11%. The gap is a rising tilt and not
+a normalization: 0% at <code>10^4</code> GeV of parent energy, 2.1% at <code>10^5</code>,
+4.4% at <code>10^6</code>, 7.3% at <code>10^7</code> and 11.3% at <code>10^8</code>.</p>
+<p>Kept selectable because the frozen form is what the drift-diffusion
+literature evaluates and what <code>method="quadrature"</code> can check.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>running_nodes_per_decade</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>48</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Grid density for the running integral. The integrand <code>1/Phi'(0; E)</code>
+varies by <code>E^-beta</code> with <code>beta ~ 0.028</code>, so it is nearly linear in
+<code>lnE</code>: the default is converged to 6 mm over four decades, two orders
+below the 4 cm at which the closed form tracks its own depth integral.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>range_km</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected range [km], zero for muons born below threshold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>method</code> or <code>log_loss_source</code> is not one of its supported
+values, or if the two are combined incompatibly.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p><code>b_mu</code> and <code>d_mu</code> are evaluated once, at the production energy, rather
+than followed down the track -- the same percent-level approximation
+:func:<code>muon_range_km</code> makes and justifies. Against a PROPOSAL Monte Carlo
+that cost is 4.5% rms on the range, dropping to 1.8% if the moments are
+integrated down the trajectory instead
+(<code>examples/39_range_moment_estimator.py</code>).</p>
+<p>With <code>log_loss_source="family"</code> the two methods agree to better than 4 cm
+over <code>10^4</code> to <code>10^8</code> GeV. The
+residual is the depth grid: it is sized to the range to <code>E_thr</code> while the
+integrand falls off on the shorter range to <code>E_*</code>, so the spliced form is
+sampled more coarsely than the purely radiative one, which agrees to 2 mm.
+The closed form is an expansion in <code>1 / ln(eps / E_thr)</code>, so it should
+not be pushed to <code>eps -&gt; E_thr</code>, where the length vanishes anyway.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/muon_range.py</code></summary>
+              <pre class="highlight"><code class="language-python">def stochastic_muon_range_km(
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+    ell_max_scale: float = 2.5,
+    n_ell: int = 161,
+    method: str = "closed",
+    include_ionization: bool = True,
+    match_energy_gev: float = DEFAULT_IONIZATION_MATCH_GEV,
+    log_loss_source: str = "table",
+    kernel_evaluation: str = "running",
+    running_nodes_per_decade: int = 48,
+) -&gt; np.ndarray:
+    r"""Muon range to a threshold, averaged over the exact stochastic loss law.
+
+    :func:`muon_range_km` answers "how far does the *average* muon get before
+    dropping below ``E_thr``" by integrating the continuous-slowing-down law,
+    which makes the arrival-above-threshold probability a step function at that
+    mean range. The losses are not deterministic, though
+    (:mod:`softpaws.transport.loss_distribution`), so the honest length is the
+    expected one,
+
+    .. math:: L(\\varepsilon) = \\int_0^\\infty d\\ell\\;
+        \\mathbb{P}\\bigl[\\,W(\\ell) &lt; \\ln(\\varepsilon / E_\\mathrm{thr})\\,\\bigr],
+
+    with ``W`` the accumulated log-loss subordinator whose CDF is
+    :func:`softpaws.transport.loss_distribution.log_loss_cdf`. Replacing the
+    step by the true CDF shortens the length by ~7% at 1 PeV and ~12% at
+    100 PeV: the loss law is right-skewed, so more muons fall short of the mean
+    range than overshoot it.
+
+    That integral has a closed form (``docs/theory/first_passage_range.md``). ``W`` is
+    non-decreasing, so ``{W(ell) &lt; w}`` is exactly ``{tau(w) &gt; ell}`` for the
+    first-passage depth ``tau``, and the integral collapses to ``E[tau(w)]`` --
+    the expected distance at which the muon first drops below threshold. That
+    renewal function has Laplace transform ``1 / (s Phi(s))``, whose small-``s``
+    expansion gives
+
+    .. math:: L(\\varepsilon) = \\frac{\\ln(\\varepsilon / E_\\mathrm{thr})}
+        {\\Phi'(0)} - \\frac{\\Phi''(0)}{2\\,\\Phi'(0)^2},
+        \\qquad \\Phi'(0) = \\langle -\\ln(1-y)\\rangle,\\;
+        -\\Phi''(0) = \\langle \\ln^2(1-y)\\rangle,
+
+    i.e. the CSDA formula with ``b_mu = &lt;y&gt;`` replaced by ``&lt;-ln(1-y)&gt;``, plus a
+    constant. Since ``-ln(1-y) &gt;= y`` for every positive loss spectrum, the
+    stochastic range is always the shorter one.
+
+    **Ionization and the two-regime range.** The expansion above is purely
+    radiative, but a threshold of 1 TeV sits within a factor of two of the muon
+    critical energy in water (``E_c = a_mu / b_mu ~ 600`` GeV,
+    :func:`~softpaws.transport.coefficients.critical_energy_gev`), so the last
+    e-fold of the range -- the one that sets where a tabulated effective area
+    turns on -- is not radiative at all. Ionization cannot simply be added to
+    ``Phi``: it removes a fixed amount of energy per unit length and not a fixed
+    *fraction*, so it is additive in ``E`` and not in ``ln E``, which is the
+    structure the whole subordinator derivation rests on.
+
+    With ``include_ionization`` (the default) the range is therefore spliced at a
+    matching energy ``E_*`` chosen well above ``E_c``,
+
+    .. math:: L(\\varepsilon) = \\underbrace{\\frac{\\ln(\\varepsilon/E_*)}
+        {\\Phi'(0)} - \\frac{\\Phi''(0)}{2\\Phi'(0)^2}}_{\\text{stochastic,
+        radiative}} \\;+\\; \\underbrace{\\frac{1}{b_\\mu(E_a)}
+        \\ln\\frac{E_a + E_c}{E_\\mathrm{thr} + E_c}}_{\\text{deterministic,
+        with ionization}},
+
+    which leaves the derivation untouched above ``E_*`` and appends an almost
+    constant offset below it, so the result is still closed form. Muons born
+    below ``E_*`` get the deterministic range alone (:func:`muon_range_km`).
+    Passing ``include_ionization=False`` recovers the purely radiative range,
+    which is what Table E.1 of the paper contrasts against ``R_CSDA``.
+
+    The deterministic segment starts at ``E_a = E_* exp(-&lt;overshoot&gt;)`` and not
+    at ``E_*``, because a first passage overshoots the level it crosses. By
+    Wald's identity ``E[W(tau)] = w + &lt;overshoot&gt;`` with
+    ``&lt;overshoot&gt; = -Phi''(0) / 2 Phi'(0)`` in log energy, which is the same
+    quantity the renewal constant above measures in depth, so starting the CSDA
+    segment at ``E_*`` would count that stretch of track twice. It is worth 0.4
+    km, and leaving it in shows up as a 0.4 km discontinuity at ``E_*``.
+
+    The splice shortens the range at every energy, by 17% at ``E_nu = 10^4``
+    GeV, where the muon never enters the radiative regime at all, through 6.7%
+    at ``10^6`` to 4.3% at ``10^8``. Under ``kernel_evaluation="frozen"`` it
+    instead changed sign across the band (-13%, -1.6%, +1.4%), because two
+    effects ran against each other in the spliced decade: ionization shortened
+    the range while ceasing to apply the production-energy ``Phi'(0)`` to a muon
+    that is by then at TeV energies lengthened it, and the two nearly cancelled.
+    Running the kernel down the trajectory already carries the second of those,
+    so the splice is left doing only the physical job it exists for.
+
+    ``match_energy_gev`` is a convention and the answer moves with it: a factor
+    of three either way from the default changes the range by about 3%, which is
+    the systematic this treatment carries. Lowering it keeps more of the track
+    stochastic, which is right down to ``E_c``; raising it keeps more of the
+    ionization, which matters most near threshold. Neither limit is uniformly
+    better, and only a deterministic drift inside ``W(ell)`` would remove the
+    choice.
+
+    Unlike the soft volume's spectral length ``1/Phi(A)``, this carries no
+    spectral weighting -- it is the right length for a **monochromatic** parent,
+    which is what a tabulated effective area is differential in (App. I's
+    ``s -&gt; 0`` case; see :func:`dm_line_target_volume_km3`).
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient. Defaults to 1.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    ell_max_scale : float, optional
+        Upper limit of the depth integral, in units of the deterministic range
+        (:func:`muon_range_km`). The CDF is already below ``1e-3`` by twice the
+        deterministic range, so the default truncation is harmless. Used by
+        ``method="quadrature"`` only.
+    n_ell : int, optional
+        Number of depth samples in the integral. Used by
+        ``method="quadrature"`` only.
+    method : {"closed", "quadrature"}, optional
+        ``"closed"`` (the default) evaluates the renewal expansion above, two
+        polygamma calls and no inversion. ``"quadrature"`` evaluates the depth
+        integral directly against
+        :func:`softpaws.transport.loss_distribution.log_loss_cdf`; it is orders
+        of magnitude slower and is kept as the independent check that the
+        closed form is exercised against.
+    include_ionization : bool, optional
+        Splice the deterministic ionizing range below ``match_energy_gev`` onto
+        the radiative first passage above it, as derived above. Defaults to
+        ``True``. ``False`` gives the purely radiative range.
+    match_energy_gev : float, optional
+        Matching energy ``E_*`` [GeV] between the two regimes, which has to sit
+        well above the critical energy for the splice to be meaningful.
+        Defaults to :data:`DEFAULT_IONIZATION_MATCH_GEV`. Ignored when
+        ``include_ionization`` is ``False``, and also when it falls at or below
+        ``threshold_gev``, where there is no ionizing segment left to splice and
+        the range degrades to the purely radiative one.
+    log_loss_source : {"table", "family"}, optional
+        Where ``Phi'(0)`` and ``Phi''(0)`` come from. ``"table"`` (the default)
+        reads them from the tabulated spectrum via
+        :func:`~softpaws.transport.coefficients.log_loss_moments`; ``"family"``
+        reconstructs them from the two-moment calibration of ``b_mu`` and
+        ``d_mu``. The family is 8% low on the first moment and 56% low on the
+        second, because ``-ln(1-y)`` weights the hard end of the kernel that a
+        fit to the ``y``-moments does not constrain, and the resulting range is
+        6.9% long over ``10^5`` to ``10^8`` GeV. The bias is almost pure
+        normalization -- 0.7% rms of residual tilt across that band -- so it
+        moves an effective-area ceiling and leaves its shape alone. Kept as an
+        option because ``source="table1"`` has no log-loss columns and because
+        ``method="quadrature"`` checks against the family's own kernel.
+    kernel_evaluation : {"running", "frozen"}, optional
+        Where along the descent the kernel is read. ``"running"`` (the default)
+        follows it down, so the radiative segment is
+        ``int dlnE / Phi'(0; E)`` and both renewal constants are read at the
+        level being crossed. ``"frozen"`` holds the production-energy kernel for
+        the whole descent, which is the closed form of Eq.~(C4) as written.
+
+        Freezing is short, one-sidedly, and by more the further the muon falls,
+        because it evaluates the loss rate at the top of the descent where that
+        rate is highest. Against a PROPOSAL propagation (example 39, stopping at
+        100 TeV) the mean range is 4.0% rms and 6.5% worst over ``w = 1.15`` to
+        ``5.76``, against 1.4% and 2.5% running. Effective areas reach
+        ``w ~ 9``, where the two differ by 11%. The gap is a rising tilt and not
+        a normalization: 0% at ``10^4`` GeV of parent energy, 2.1% at ``10^5``,
+        4.4% at ``10^6``, 7.3% at ``10^7`` and 11.3% at ``10^8``.
+
+        Kept selectable because the frozen form is what the drift-diffusion
+        literature evaluates and what ``method="quadrature"`` can check.
+    running_nodes_per_decade : int, optional
+        Grid density for the running integral. The integrand ``1/Phi'(0; E)``
+        varies by ``E^-beta`` with ``beta ~ 0.028``, so it is nearly linear in
+        ``lnE``: the default is converged to 6 mm over four decades, two orders
+        below the 4 cm at which the closed form tracks its own depth integral.
+
+    Returns
+    -------
+    range_km : np.ndarray
+        Expected range [km], zero for muons born below threshold.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``method`` or ``log_loss_source`` is not one of its supported
+        values, or if the two are combined incompatibly.
+
+    Notes
+    -----
+    ``b_mu`` and ``d_mu`` are evaluated once, at the production energy, rather
+    than followed down the track -- the same percent-level approximation
+    :func:`muon_range_km` makes and justifies. Against a PROPOSAL Monte Carlo
+    that cost is 4.5% rms on the range, dropping to 1.8% if the moments are
+    integrated down the trajectory instead
+    (``examples/39_range_moment_estimator.py``).
+
+    With ``log_loss_source="family"`` the two methods agree to better than 4 cm
+    over ``10^4`` to ``10^8`` GeV. The
+    residual is the depth grid: it is sized to the range to ``E_thr`` while the
+    integrand falls off on the shorter range to ``E_*``, so the spliced form is
+    sampled more coarsely than the purely radiative one, which agrees to 2 mm.
+    The closed form is an expansion in ``1 / ln(eps / E_thr)``, so it should
+    not be pushed to ``eps -&gt; E_thr``, where the length vanishes anyway.
+    """
+    if method not in ("closed", "quadrature"):
+        raise ValueError(f"method must be 'closed' or 'quadrature', got {method!r}.")
+    if log_loss_source not in ("table", "family"):
+        raise ValueError(
+            f"log_loss_source must be 'table' or 'family', got {log_loss_source!r}."
+        )
+    if kernel_evaluation not in ("frozen", "running"):
+        raise ValueError(
+            f"kernel_evaluation must be 'frozen' or 'running', got {kernel_evaluation!r}."
+        )
+    if method == "quadrature" and kernel_evaluation != "frozen":
+        # The depth integral builds one kernel and holds it for the whole
+        # descent, so it is a frozen calculation by construction. Checking the
+        # running closed form against it would measure the running, not the
+        # renewal expansion the check exists for.
+        raise ValueError(
+            "method='quadrature' freezes the kernel at the production energy, so "
+            "it needs kernel_evaluation='frozen'."
+        )
+    if method == "quadrature" and log_loss_source != "family":
+        # The depth integral runs against log_loss_cdf, which builds the
+        # two-moment family's kernel. Checking a table-based closed form against
+        # it would compare two different kernels and disagree by ~7% by
+        # construction, so the internal check is pinned to the family.
+        raise ValueError(
+            "method='quadrature' checks the closed form against the two-moment "
+            "family's own depth integral, so it needs log_loss_source='family'."
+        )
+
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    deterministic = muon_range_km(
+        energy, threshold_gev, density_g_cm3, b_scale, source, kernel_evaluation
+    )
+    selectable = (energy &gt; threshold_gev) &amp; (deterministic &gt; 0.0)
+
+    # Phi'(0) = &lt;-ln(1-y)&gt; and -Phi''(0) = &lt;ln^2(1-y)&gt;, both per unit length,
+    # here at the production energy.
+    first, second = _log_loss_moments_at(
+        energy, density_g_cm3, b_scale, source, log_loss_source
+    )
+
+    # Above the matching energy the first passage is radiative and stochastic; below it
+    # the muon is within reach of E_c and slows deterministically. The stochastic part
+    # already carries the muon *past* E_*, since first passage overshoots the level it
+    # crosses: by Wald, E[W(tau)] = w + &lt;overshoot&gt; with &lt;overshoot&gt; = -Phi''(0)/2Phi'(0)
+    # in log energy, which is the same quantity the renewal constant measures in depth.
+    # The deterministic segment therefore starts at the mean arrival energy and not at
+    # E_*, and its b_mu is evaluated there, which is where the muon actually is.
+    # A threshold at or above E_* leaves no ionizing segment to splice on, since
+    # the muon stops counting while it is still radiative. Clamping the floor
+    # degrades the two-regime range back to the purely radiative one, which is
+    # what a fitted threshold above E_* should get.
+    # Both renewal constants -- the mean overshoot in log energy and the
+    # constant it contributes to the depth -- belong to the *crossing*, so a
+    # running evaluation reads them at the level being crossed. Freezing reads
+    # everything at production, which is what makes it a frozen calculation.
+    stochastic_floor = float(
+        match_energy_gev
+        if include_ionization and match_energy_gev &gt; threshold_gev
+        else threshold_gev
+    )
+    if kernel_evaluation == "running":
+        crossing_first, crossing_second = _log_loss_moments_at(
+            np.array([stochastic_floor]), density_g_cm3, b_scale, source, log_loss_source
+        )
+    else:
+        crossing_first, crossing_second = first, second
+
+    if include_ionization and match_energy_gev &gt; threshold_gev:
+        # A first passage crosses its level from above, so the overshoot is
+        # non-negative and the arrival energy lies in [E_thr, E_*]. Both bounds
+        # bind only where the calibrated kernel is not a valid loss spectrum at
+        # all -- ``d_mu / b_mu &gt;= 1`` puts ``p + 1 &lt;= 0`` -- which a sampler
+        # exploring an unphysical b_scale does reach, and where an unclamped
+        # exponential would return an infinite range instead of a wrong one.
+        overshoot = np.clip(crossing_second / (2.0 * crossing_first), 0.0, None)
+        arrival_gev = np.clip(
+            stochastic_floor * np.exp(-overshoot), threshold_gev, stochastic_floor
+        )
+        offset_km = muon_range_km(
+            arrival_gev, threshold_gev, density_g_cm3, b_scale, source, kernel_evaluation
+        )
+    else:
+        offset_km = np.zeros_like(energy)
+    stochastic_regime = selectable &amp; (energy &gt; stochastic_floor)
+
+    if method == "closed":
+        with np.errstate(divide="ignore", invalid="ignore"):
+            if kernel_evaluation == "running":
+                radiative_km = _running_radiative_length_km(
+                    energy,
+                    stochastic_floor,
+                    density_g_cm3,
+                    b_scale,
+                    source,
+                    log_loss_source,
+                    running_nodes_per_decade,
+                )
+            else:
+                radiative_km = np.log(energy / stochastic_floor) / first
+            length = (
+                radiative_km
+                + crossing_second / (2.0 * crossing_first**2)
+                + offset_km
+            )
+        # Muons born below E_* never enter the radiative regime, so the deterministic
+        # range is the whole of their answer.
+        out = np.where(stochastic_regime, length, np.where(selectable, deterministic, 0.0))
+        return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
+
+    from .loss_distribution import log_loss_cdf
+
+    # Only the depth integral needs the y-moments; the closed form reads the
+    # log-loss ones instead, so these are built here and not above.
+    b_mu = b_scale * drift_coefficient(energy, density_g_cm3, source)
+    d_mu = diffusion_coefficient(energy, density_g_cm3, source)
+    out = np.zeros(energy.shape[0])
+    for i, eps in enumerate(energy):
+        if not selectable[i]:
+            continue
+        if not stochastic_regime[i]:
+            out[i] = float(deterministic[i])
+            continue
+        ell = np.linspace(0.0, ell_max_scale * float(deterministic[i]), n_ell)
+        cdf = log_loss_cdf(np.log(eps / stochastic_floor), ell, float(b_mu[i]), float(d_mu[i]))
+        out[i] = float(np.trapezoid(cdf, ell)) + float(offset_km[i])
+    return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.third_moment_coefficient" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">third_moment_coefficient</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">third_moment_coefficient(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon third loss moment <code>t_mu = &lt;y^3&gt;</code> at a given energy.</p>
+<p>The extra input the three-moment loss family needs
+(:func:<code>softpaws.transport.eigenvalue.three_moment_loss_spectrum</code>). Where
+<code>b_mu</code> and <code>d_mu</code> fix the mean and variance of the energy loss, <code>t_mu</code>
+fixes its skewness, which is what pins the hard end of <code>dGamma/dy</code> and so
+the tail of the log-loss law.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+density, as for the lower moments.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>&#39;proposal&#39;</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate. Defaults to :data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>t_mu</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Third moment [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised for <code>source="table1"</code>, which tabulates only two moments, or if
+the shipped PROPOSAL table predates the third-moment column.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def third_moment_coefficient(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Muon third loss moment ``t_mu = &lt;y^3&gt;`` at a given energy.
+
+    The extra input the three-moment loss family needs
+    (:func:`softpaws.transport.eigenvalue.three_moment_loss_spectrum`). Where
+    ``b_mu`` and ``d_mu`` fix the mean and variance of the energy loss, ``t_mu``
+    fixes its skewness, which is what pins the hard end of ``dGamma/dy`` and so
+    the tail of the log-loss law.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+        density, as for the lower moments.
+    source : {"proposal"}, optional
+        Which tabulation to interpolate. Defaults to :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    t_mu : np.ndarray
+        Third moment [km^-1].
+
+    Raises
+    ------
+    ValueError
+        Raised for ``source="table1"``, which tabulates only two moments, or if
+        the shipped PROPOSAL table predates the third-moment column.
+    """
+    t_water = _interpolate(energy_gev, source, 2)
+    return _scale(t_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.truncated_muon_range_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">truncated_muon_range_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">truncated_muon_range_km(energy_gev: float | ndarray, column_km: float | ndarray, threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE, kernel_evaluation: str = 'running') -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>First-passage range cut at a finite upstream column [km].</p>
+<p>:func:<code>stochastic_muon_range_km</code> integrates the first-passage probability to
+infinite depth, which is right whenever the medium supplies more column than
+any muon survives and wrong whenever it does not. A downgoing track is always
+the second case, since the muon cannot be born above the ice; so is any
+detector under a few km of water, where an upgoing muon at the top of the
+band would need more column than the site has. The honest length is then the
+<em>limited</em> expectation</p>
+<p>.. math:: L(\varepsilon, X) = \mathbb{E}[\tau(w) \wedge X]
+    = \int_0^X {\rm d}\ell\;\mathbb{P}[W(\ell) &lt; w].</p>
+<p>Evaluating that integral directly needs the log-loss CDF at every depth.
+Matching a gamma law to the first two moments of the first-passage depth --
+:func:<code>stochastic_muon_range_km</code> and
+:func:<code>stochastic_muon_range_variance_km2</code> -- turns it into an incomplete
+gamma function instead, at no cost in accuracy that matters here: example
+33's <code>--check-truncation</code> holds it against a direct Gil-Pelaez inversion.</p>
+<p>Both moments are built from the tabulated log-loss moments, so this agrees
+with :func:<code>stochastic_muon_range_km</code> with <code>include_ionization=False</code> in
+the <code>column_km -&gt; inf</code> limit. There is no ionization splice: the truncation
+is only interesting where the column runs out well before the muon reaches
+the critical energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Available upstream column, as a length of the medium [km]. Broadcast
+against <code>energy_gev</code>; <code>inf</code> returns the untruncated range.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_MUON_THRESHOLD_GEV">DEFAULT_MUON_THRESHOLD_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy below which the track is not selected [GeV]. Defaults to
+:data:<code>DEFAULT_MUON_THRESHOLD_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the kernel normalization.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>&#39;proposal&#39;</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>length_km</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected truncated range [km], zero for muons born below threshold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/muon_range.py</code></summary>
+              <pre class="highlight"><code class="language-python">def truncated_muon_range_km(
+    energy_gev: float | np.ndarray,
+    column_km: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+    kernel_evaluation: str = "running",
+) -&gt; np.ndarray:
+    r"""First-passage range cut at a finite upstream column [km].
+
+    :func:`stochastic_muon_range_km` integrates the first-passage probability to
+    infinite depth, which is right whenever the medium supplies more column than
+    any muon survives and wrong whenever it does not. A downgoing track is always
+    the second case, since the muon cannot be born above the ice; so is any
+    detector under a few km of water, where an upgoing muon at the top of the
+    band would need more column than the site has. The honest length is then the
+    *limited* expectation
+
+    .. math:: L(\\varepsilon, X) = \\mathbb{E}[\\tau(w) \\wedge X]
+        = \\int_0^X {\\rm d}\\ell\\;\\mathbb{P}[W(\\ell) &lt; w].
+
+    Evaluating that integral directly needs the log-loss CDF at every depth.
+    Matching a gamma law to the first two moments of the first-passage depth --
+    :func:`stochastic_muon_range_km` and
+    :func:`stochastic_muon_range_variance_km2` -- turns it into an incomplete
+    gamma function instead, at no cost in accuracy that matters here: example
+    33's ``--check-truncation`` holds it against a direct Gil-Pelaez inversion.
+
+    Both moments are built from the tabulated log-loss moments, so this agrees
+    with :func:`stochastic_muon_range_km` with ``include_ionization=False`` in
+    the ``column_km -&gt; inf`` limit. There is no ionization splice: the truncation
+    is only interesting where the column runs out well before the muon reaches
+    the critical energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    column_km : float or np.ndarray
+        Available upstream column, as a length of the medium [km]. Broadcast
+        against ``energy_gev``; ``inf`` returns the untruncated range.
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the kernel normalization.
+    source : {"proposal"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    length_km : np.ndarray
+        Expected truncated range [km], zero for muons born below threshold.
+    """
+    if kernel_evaluation not in ("frozen", "running"):
+        raise ValueError(
+            f"kernel_evaluation must be 'frozen' or 'running', got {kernel_evaluation!r}."
+        )
+    energy = np.asarray(energy_gev, dtype=float)
+    # The tabulated moments come back at least one-dimensional; keep the shape of
+    # the input so a scalar energy gives a scalar length, as the callers assume.
+    constant_at = energy if kernel_evaluation == "frozen" else np.array([threshold_gev])
+    phi_prime, phi_second, _ = (
+        np.reshape(b_scale * moment, np.shape(energy) if kernel_evaluation == "frozen" else ())
+        for moment in log_loss_moments(constant_at, density_g_cm3, source)
+    )
+
+    selectable = energy &gt; threshold_gev
+    w = np.where(selectable, np.log(np.maximum(energy, threshold_gev) / threshold_gev), 0.0)
+    if kernel_evaluation == "running":
+        radiative = np.reshape(
+            _running_radiative_length_km(
+                np.maximum(energy, threshold_gev),
+                threshold_gev,
+                density_g_cm3,
+                b_scale,
+                source,
+                "table",
+                48,
+            ),
+            np.shape(energy),
+        )
+    else:
+        radiative = w / phi_prime
+    mean = radiative + phi_second / (2.0 * phi_prime**2)
+    variance = np.reshape(
+        stochastic_muon_range_variance_km2(
+            np.maximum(energy, threshold_gev * (1.0 + 1.0e-12)),
+            threshold_gev,
+            density_g_cm3,
+            b_scale,
+            source,
+            kernel_evaluation,
+        ),
+        np.shape(energy),
+    )
+
+    column = np.asarray(column_km, dtype=float)
+    # An infinite column is the untruncated case; the general expression below
+    # would evaluate inf * 0 on it.
+    capped = np.where(np.isfinite(column), column, 0.0)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        shape = mean**2 / variance
+        x = capped / (variance / mean)
+        limited = mean * gammainc(shape + 1.0, x) + capped * (1.0 - gammainc(shape, x))
+    # A few e-folds above threshold the variance expansion floors at zero, where
+    # the first passage is effectively deterministic and the limited expectation
+    # is just the shorter of the two lengths.
+    limited = np.where(variance &gt; 0.0, limited, np.minimum(mean, capped))
+    limited = np.where(np.isfinite(column), limited, mean)
+    return np.where(selectable &amp; (mean &gt; 0.0), np.clip(limited, 0.0, None), 0.0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.two_medium_muon_range_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">two_medium_muon_range_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">two_medium_muon_range_km(energy_gev: float | ndarray, threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV, near_column_km: float = 0.0, near_source: str = DEFAULT_SOURCE, far_source: str = 'proposal_rock', density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, **range_kwargs) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Range to threshold through a far medium first and a near one last.</p>
+<p>An upgoing muon at IceCube or ARCA is born in the bedrock or the sea floor
+and only enters the ice or the water for the last stretch before the
+array, so the kernel it descends through is rock for most of its range.
+Because the log-loss subordinator only moves down, the descent splits at
+one energy: the muon enters the near medium at the <code>E_1</code> for which the
+near medium's own range to threshold equals the near column,</p>
+<p>.. math:: L_\mathrm{near}(E_1 \to E_\mathrm{thr}) = X_\mathrm{near},</p>
+<p>and the total range is the far-medium first passage from the production
+energy down to that level plus the near column,</p>
+<p>.. math:: L(\varepsilon) = L_\mathrm{far}(\varepsilon \to E_1)
+    + X_\mathrm{near}, \qquad \varepsilon &gt; E_1 .</p>
+<p>A muon whose whole near-medium range fits inside <code>X_near</code> never sees the
+far medium and gets :func:<code>stochastic_muon_range_km</code> in the near medium
+alone. <code>E_1</code> depends on the near column and the threshold and not on the
+production energy, so it is solved once per arrival direction.</p>
+<p>Every column here is water equivalent, as everywhere in the model, so a
+near column of ice at density 0.918 enters as its water-equivalent length.
+The ionization coefficient is taken from the near medium throughout; the
+far-medium value is ~15% lower in standard rock, which is worth a few
+percent of the last kilometre and nothing elsewhere.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_MUON_THRESHOLD_GEV">DEFAULT_MUON_THRESHOLD_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy below which the track is not selected [GeV]. Defaults to
+:data:<code>DEFAULT_MUON_THRESHOLD_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>near_column_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Column of the near medium between the far medium and the detector,
+along the arrival direction [km w.e.]. Zero (the default) puts the
+whole range in the far medium.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>near_source</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code><span title="softpaws.transport.coefficients.DEFAULT_SOURCE">DEFAULT_SOURCE</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Coefficient source for the near medium; see
+:mod:<code>softpaws.transport.coefficients</code>. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>far_source</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;proposal_rock&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Coefficient source for the far medium. Defaults to
+<code>"proposal_rock"</code>, PROPOSAL's standard rock.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Reference density [g cm^-3]; cancels, as every length is a column.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient, applied to both
+media. Defaults to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>**range_kwargs</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Passed to :func:<code>stochastic_muon_range_km</code> for both segments
+(<code>include_ionization</code>, <code>match_energy_gev</code>, <code>kernel_evaluation</code>,
+<code>log_loss_source</code>, <code>running_nodes_per_decade</code>).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>range_km</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected range [km w.e.], zero for muons born below threshold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/muon_range.py</code></summary>
+              <pre class="highlight"><code class="language-python">def two_medium_muon_range_km(
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    near_column_km: float = 0.0,
+    near_source: str = DEFAULT_SOURCE,
+    far_source: str = "proposal_rock",
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    **range_kwargs,
+) -&gt; np.ndarray:
+    r"""Range to threshold through a far medium first and a near one last.
+
+    An upgoing muon at IceCube or ARCA is born in the bedrock or the sea floor
+    and only enters the ice or the water for the last stretch before the
+    array, so the kernel it descends through is rock for most of its range.
+    Because the log-loss subordinator only moves down, the descent splits at
+    one energy: the muon enters the near medium at the ``E_1`` for which the
+    near medium's own range to threshold equals the near column,
+
+    .. math:: L_\\mathrm{near}(E_1 \\to E_\\mathrm{thr}) = X_\\mathrm{near},
+
+    and the total range is the far-medium first passage from the production
+    energy down to that level plus the near column,
+
+    .. math:: L(\\varepsilon) = L_\\mathrm{far}(\\varepsilon \\to E_1)
+        + X_\\mathrm{near}, \\qquad \\varepsilon &gt; E_1 .
+
+    A muon whose whole near-medium range fits inside ``X_near`` never sees the
+    far medium and gets :func:`stochastic_muon_range_km` in the near medium
+    alone. ``E_1`` depends on the near column and the threshold and not on the
+    production energy, so it is solved once per arrival direction.
+
+    Every column here is water equivalent, as everywhere in the model, so a
+    near column of ice at density 0.918 enters as its water-equivalent length.
+    The ionization coefficient is taken from the near medium throughout; the
+    far-medium value is ~15% lower in standard rock, which is worth a few
+    percent of the last kilometre and nothing elsewhere.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon energy below which the track is not selected [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    near_column_km : float, optional
+        Column of the near medium between the far medium and the detector,
+        along the arrival direction [km w.e.]. Zero (the default) puts the
+        whole range in the far medium.
+    near_source : str, optional
+        Coefficient source for the near medium; see
+        :mod:`softpaws.transport.coefficients`. Defaults to water.
+    far_source : str, optional
+        Coefficient source for the far medium. Defaults to
+        ``"proposal_rock"``, PROPOSAL's standard rock.
+    density_g_cm3 : float, optional
+        Reference density [g cm^-3]; cancels, as every length is a column.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient, applied to both
+        media. Defaults to 1.
+    **range_kwargs
+        Passed to :func:`stochastic_muon_range_km` for both segments
+        (``include_ionization``, ``match_energy_gev``, ``kernel_evaluation``,
+        ``log_loss_source``, ``running_nodes_per_decade``).
+
+    Returns
+    -------
+    range_km : np.ndarray
+        Expected range [km w.e.], zero for muons born below threshold.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    near = float(near_column_km)
+    range_items = tuple(sorted(range_kwargs.items()))
+
+    if near &lt;= 0.0:
+        out = stochastic_muon_range_km(
+            energy, threshold_gev, density_g_cm3, b_scale, far_source, **range_kwargs
+        )
+        return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out
+
+    within_near = stochastic_muon_range_km(
+        energy, threshold_gev, density_g_cm3, b_scale, near_source, **range_kwargs
+    )
+    if float(np.max(within_near)) &lt;= near:
+        # Even the most energetic muon asked for stops inside the near column.
+        return within_near.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else within_near
+
+    entry_gev = _near_entry_energy_gev(
+        near, float(threshold_gev), float(density_g_cm3), float(b_scale), near_source,
+        range_items,
+    )
+    beyond = stochastic_muon_range_km(
+        energy, entry_gev, density_g_cm3, b_scale, far_source, **range_kwargs
+    )
+    out = np.where(energy &gt; entry_gev, near + beyond, within_near)
+    return out.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.zenith_grid" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">zenith_grid</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">zenith_grid(n_zenith: int, cos_range: tuple[float, float] = (-1.0, 1.0)) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Zenith samples and their solid-angle weights over a band of the sky.</p>
+<p>The band is cut into <code>n_zenith</code> slices of equal <code>cos(theta)</code>, which
+is equal solid angle, and each slice is represented by its centre.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>n_zenith</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Number of slices.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_range</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>(-1.0, 1.0)</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Band of <code>cos(theta)</code> to cover. Defaults to the full sky. The output
+runs from <code>+1</code> (downgoing) to <code>-1</code> (upgoing) whatever order the
+two limits are given in.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>theta_deg</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_zenith">n_zenith</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Zenith angle of each slice centre [deg], downgoing first.</p>
+              </div>
+            </li>
+            <li>
+<b><code>weights</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_zenith">n_zenith</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Solid-angle weights within the band, normalized to sum to one, so a
+weighted average over them is the average over that band.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; theta, w = zenith_grid(4)
+&gt;&gt;&gt; theta.round(1)
+array([ 41.4,  75.5, 104.5, 138.6])
+&gt;&gt;&gt; float(w.sum())
+1.0</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/earth.py</code></summary>
+              <pre class="highlight"><code class="language-python">def zenith_grid(
+    n_zenith: int,
+    cos_range: tuple[float, float] = (-1.0, 1.0),
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Zenith samples and their solid-angle weights over a band of the sky.
+
+    The band is cut into ``n_zenith`` slices of equal ``cos(theta)``, which
+    is equal solid angle, and each slice is represented by its centre.
+
+    Parameters
+    ----------
+    n_zenith : int
+        Number of slices.
+    cos_range : tuple of float, optional
+        Band of ``cos(theta)`` to cover. Defaults to the full sky. The output
+        runs from ``+1`` (downgoing) to ``-1`` (upgoing) whatever order the
+        two limits are given in.
+
+    Returns
+    -------
+    theta_deg : np.ndarray, shape (n_zenith,)
+        Zenith angle of each slice centre [deg], downgoing first.
+    weights : np.ndarray, shape (n_zenith,)
+        Solid-angle weights within the band, normalized to sum to one, so a
+        weighted average over them is the average over that band.
+
+    Examples
+    --------
+    &gt;&gt;&gt; theta, w = zenith_grid(4)
+    &gt;&gt;&gt; theta.round(1)
+    array([ 41.4,  75.5, 104.5, 138.6])
+    &gt;&gt;&gt; float(w.sum())
+    1.0
+    """
+    cos_lo, cos_hi = sorted(cos_range)
+    edges = np.linspace(cos_hi, cos_lo, n_zenith + 1)
+    cos_theta = 0.5 * (edges[:-1] + edges[1:])
+    theta_deg = np.rad2deg(np.arccos(np.clip(cos_theta, -1.0, 1.0)))
+    return theta_deg, np.full(n_zenith, 1.0 / n_zenith)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../standards/" class="btn btn-neutral float-left" title="standards"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="attenuation/" class="btn btn-neutral float-right" title="attenuation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../standards/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="attenuation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../js/popper.min.js"></script>
+      <script src="../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../js/clipboard.js"></script>
+      <script src="../../../js/extra.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

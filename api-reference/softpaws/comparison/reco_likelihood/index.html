@@ -1,0 +1,3076 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/comparison/reco_likelihood/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>reco_likelihood - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "reco_likelihood";
+        var mkdocs_page_input_path = "api-reference/softpaws/comparison/reco_likelihood.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/comparison/reco_likelihood/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >comparison</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../rates/">rates</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">reco_likelihood</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.RecoLikelihood">RecoLikelihood</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.atmospheric_fluxes">atmospheric_fluxes</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.banded_responses">banded_responses</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.binned_events">binned_events</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.cached_fit_inputs">cached_fit_inputs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.fit_inputs">fit_inputs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.load_banded_responses">load_banded_responses</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.physical_r_range">physical_r_range</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.save_banded_responses">save_banded_responses</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.smearing_marginal">smearing_marginal</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.reco_likelihood.true_counts">true_counts</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">comparison</li>
+      <li class="breadcrumb-item active">reco_likelihood</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.comparison.reco_likelihood" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.comparison.reco_likelihood</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Reconstructed-energy likelihood of the IceCube DR2 upgoing track sample.</p>
+<p>The forward model of :mod:<code>softpaws.response</code> predicts a rate against true
+neutrino energy and declination. The events of the IceTracks-DR2 release
+carry a reconstructed muon-energy proxy instead, so a comparison has to fold
+the model through the released smearing table first. This module does that
+fold and wraps it in a Poisson likelihood over (reconstructed energy,
+declination band) bins:</p>
+<ul>
+<li>:func:<code>smearing_marginal</code> sums the released 5D table over its
+  point-spread and angular-error axes and projects it onto one common
+  reconstructed-energy grid.</li>
+<li>:func:<code>banded_responses</code> puts a model effective area on the same
+  declination bands as that table.</li>
+<li>:func:<code>atmospheric_fluxes</code> reads the MCEq background and
+  :func:<code>binned_events</code> histograms the observed events.</li>
+<li>:class:<code>RecoLikelihood</code> folds the model, adds the background, and profiles
+  the astrophysical normalization, the spectral index and the two
+  atmospheric normalizations at a fixed flavour ratio.</li>
+</ul>
+<p>The grids, priors and external anchors the fit uses are module constants, so
+a script and its consumers share one definition of the fit window.</p>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The release is documented at <a href="https://doi.org/10.7910/DVN/MMIIZA">https://doi.org/10.7910/DVN/MMIIZA</a>.</p>
+</details>
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="RecoLikelihood (softpaws.comparison.reco_likelihood.RecoLikelihood)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood">RecoLikelihood</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Poisson likelihood over (reco energy, declination band) bins.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="atmospheric_fluxes (softpaws.comparison.reco_likelihood.atmospheric_fluxes)" href="#softpaws.comparison.reco_likelihood.atmospheric_fluxes">atmospheric_fluxes</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Conventional and prompt fluxes on the fine grid, one column per band.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="banded_responses (softpaws.comparison.reco_likelihood.banded_responses)" href="#softpaws.comparison.reco_likelihood.banded_responses">banded_responses</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Model channel responses on the smearing declination bands [cm^2].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="binned_events (softpaws.comparison.reco_likelihood.binned_events)" href="#softpaws.comparison.reco_likelihood.binned_events">binned_events</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>IC86 upgoing events histogrammed on (reco grid, declination bands).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cached_fit_inputs (softpaws.comparison.reco_likelihood.cached_fit_inputs)" href="#softpaws.comparison.reco_likelihood.cached_fit_inputs">cached_fit_inputs</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Fit inputs from an earlier run, or <code>None</code> if the cache cannot serve.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="fit_inputs (softpaws.comparison.reco_likelihood.fit_inputs)" href="#softpaws.comparison.reco_likelihood.fit_inputs">fit_inputs</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Smearing marginal and banded responses, cached across runs.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_banded_responses (softpaws.comparison.reco_likelihood.load_banded_responses)" href="#softpaws.comparison.reco_likelihood.load_banded_responses">load_banded_responses</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Banded responses from an earlier run, or <code>None</code> if the bands differ.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="physical_r_range (softpaws.comparison.reco_likelihood.physical_r_range)" href="#softpaws.comparison.reco_likelihood.physical_r_range">physical_r_range</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Earth flavour-ratio range standard oscillations allow.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="save_banded_responses (softpaws.comparison.reco_likelihood.save_banded_responses)" href="#softpaws.comparison.reco_likelihood.save_banded_responses">save_banded_responses</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Write banded responses and their declination bands to a cache file.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="smearing_marginal (softpaws.comparison.reco_likelihood.smearing_marginal)" href="#softpaws.comparison.reco_likelihood.smearing_marginal">smearing_marginal</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Energy marginal of the IC86 smearing table on a common reco grid.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="true_counts (softpaws.comparison.reco_likelihood.true_counts)" href="#softpaws.comparison.reco_likelihood.true_counts">true_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected counts per (true-energy bin, declination band).</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.comparison.reco_likelihood.RecoLikelihood" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">RecoLikelihood</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">RecoLikelihood(enu_edges, marginal, responses, atmos, dec_edges_deg, livetime_s, data_counts, anchors=None)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Poisson likelihood over (reco energy, declination band) bins.</p>
+<p>The model enters as one response per channel, the background as the two
+atmospheric fluxes, and the free parameters are the flavour ratio <code>r</code>,
+the astrophysical normalization in units of :data:<code>PIVOT_PHI0</code>, the
+spectral index, and the two atmospheric normalizations. Each bin's
+deviance is scaled by <code>1 + MODEL_SYS^2 mu</code>, which de-weights the
+highest-statistics atmospheric bins and leaves the Poisson-limited tail
+untouched, and Gaussian priors hold the atmospheric normalizations and,
+when anchors are supplied, the index and the <code>nu_mu</code> flux.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>enu_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>True-energy bin edges of the smearing table [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>marginal</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Smearing marginal, as :func:<code>smearing_marginal</code> returns it.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>responses</code></b>
+                  (<code>dict of str -&gt; np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>"mu"</code> and <code>"tau"</code> responses on (:data:<code>LOG10_E_GRID</code>, bands)
+[cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>atmos</code></b>
+                  (<code>dict of str -&gt; np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>"conv"</code> and <code>"prompt"</code> fluxes on the same grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>data_counts</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts on (:data:<code>RECO_EDGES</code>, bands).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>anchors</code></b>
+                  (<code><span title="dict">dict</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>External Gaussian anchors, <code>{"gamma": (centre, width),
+"phi_mu": (centre, width)}</code>, the <code>nu_mu</code> flux in units of
+:data:<code>PIVOT_PHI0</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts on the fit window.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="channel_yield_ratio (softpaws.comparison.reco_likelihood.RecoLikelihood.channel_yield_ratio)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.channel_yield_ratio">channel_yield_ratio</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Tracks per unit flux, tau channel over <code>nu_mu</code> channel.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="count_plane (softpaws.comparison.reco_likelihood.RecoLikelihood.count_plane)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.count_plane">count_plane</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p><code>2 Delta ln L</code> on (:data:<code>N_MU_GRID</code>, :data:<code>N_TAU_GRID</code>).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="delta_ll (softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll">delta_ll</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Profiled objective at one flavour ratio, and the nuisances.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="delta_ll_counts (softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_counts)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_counts">delta_ll_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Profiled objective at fixed per-channel track counts.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="delta_ll_fluxes (softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_fluxes)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_fluxes">delta_ll_fluxes</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Profiled objective at fixed per-flavour fluxes.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="delta_ll_tau (softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_tau)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_tau">delta_ll_tau</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Profiled objective at a fixed tau flux, the <code>nu_mu</code> flux free.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="expectation (softpaws.comparison.reco_likelihood.RecoLikelihood.expectation)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.expectation">expectation</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected counts on the fit window at one parameter point.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="flux_plane (softpaws.comparison.reco_likelihood.RecoLikelihood.flux_plane)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.flux_plane">flux_plane</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p><code>2 Delta ln L</code> on (:data:<code>PHI_MU_GRID</code>, :data:<code>PHI_TAU_GRID</code>).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="profile (softpaws.comparison.reco_likelihood.RecoLikelihood.profile)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.profile">profile</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p><code>2 Delta ln L</code> on :data:<code>R_GRID</code> with the per-point nuisances.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="tau_profile (softpaws.comparison.reco_likelihood.RecoLikelihood.tau_profile)" href="#softpaws.comparison.reco_likelihood.RecoLikelihood.tau_profile">tau_profile</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p><code>2 Delta ln L</code> on :data:<code>PHI_TAU_SCAN</code>, floored at its minimum.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(self, enu_edges, marginal, responses, atmos, dec_edges_deg,
+             livetime_s, data_counts, anchors=None):
+    self._anchors = dict(anchors or {})
+    self._enu_edges = enu_edges
+    self._marginal = marginal
+    self._responses = responses
+    self._livetime_s = livetime_s
+    self._d_omega = 2.0 * np.pi * np.diff(np.sin(np.deg2rad(dec_edges_deg)))
+    self._window = ((RECO_EDGES[:-1] &gt;= FIT_RECO[0] - 1.0e-9)
+                    &amp; (RECO_EDGES[1:] &lt;= FIT_RECO[1] + 1.0e-9))
+    self.data = data_counts[self._window]
+    self._marginal_tau = self._shifted_marginal(enu_edges, marginal)
+    self._folded_conv = self._fold(self._true_counts("mu", atmos["conv"]))
+    self._folded_prompt = self._fold(self._true_counts("mu", atmos["prompt"]))
+    self._astro_cache = {
+        channel: np.stack([self._astro_direct(channel, gamma)
+                           for gamma in GAMMA_GRID])
+        for channel in CHANNELS
+    }</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.channel_yield_ratio" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">channel_yield_ratio</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">channel_yield_ratio(gamma) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Tracks per unit flux, tau channel over <code>nu_mu</code> channel.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Astrophysical spectral index.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>ratio</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Window counts of the tau channel over the <code>nu_mu</code> channel.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def channel_yield_ratio(self, gamma) -&gt; float:
+    """Tracks per unit flux, tau channel over ``nu_mu`` channel.
+
+    Parameters
+    ----------
+    gamma : float
+        Astrophysical spectral index.
+
+    Returns
+    -------
+    ratio : float
+        Window counts of the tau channel over the ``nu_mu`` channel.
+    """
+    return float(self._astro("tau", gamma).sum()
+                 / self._astro("mu", gamma).sum())</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.count_plane" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">count_plane</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">count_plane()</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p><code>2 Delta ln L</code> on (:data:<code>N_MU_GRID</code>, :data:<code>N_TAU_GRID</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>plane</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profile statistic on the two grids.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def count_plane(self):
+    """``2 Delta ln L`` on (:data:`N_MU_GRID`, :data:`N_TAU_GRID`).
+
+    Returns
+    -------
+    plane : np.ndarray
+        Profile statistic on the two grids.
+    """
+    return self._plane(N_MU_GRID, N_TAU_GRID, self.delta_ll_counts)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">delta_ll</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">delta_ll(r, data=None, warm_start=None, use_default_start=True) -&gt; tuple[float, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Profiled objective at one flavour ratio, and the nuisances.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>r</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Flavour ratio the fit is conditioned on.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>data</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Counts on the fit window; the observed counts when omitted.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>warm_start</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Extra simplex seed, typically a neighbouring fit's nuisances.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>use_default_start</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Also seed from the global default point; toys switch this off
+once warm-started.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>value</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profiled objective.</p>
+              </div>
+            </li>
+            <li>
+<b><code>params</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Nuisances <code>(norm, gamma, a_conv, a_prompt)</code> at the minimum.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def delta_ll(self, r, data=None, warm_start=None,
+             use_default_start=True) -&gt; tuple[float, np.ndarray]:
+    """Profiled objective at one flavour ratio, and the nuisances.
+
+    Parameters
+    ----------
+    r : float
+        Flavour ratio the fit is conditioned on.
+    data : np.ndarray, optional
+        Counts on the fit window; the observed counts when omitted.
+    warm_start : np.ndarray, optional
+        Extra simplex seed, typically a neighbouring fit's nuisances.
+    use_default_start : bool, optional
+        Also seed from the global default point; toys switch this off
+        once warm-started.
+
+    Returns
+    -------
+    value : float
+        Profiled objective.
+    params : np.ndarray
+        Nuisances ``(norm, gamma, a_conv, a_prompt)`` at the minimum.
+    """
+    data = self.data if data is None else data
+    starts = [(1.0, PIVOT_GAMMA, 1.0, 1.0)] if use_default_start else []
+    if warm_start is not None:
+        starts.append(warm_start)
+    return self._minimize(
+        lambda p: self._objective(r, p[0], p[1], p[2], p[3], data), starts)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">delta_ll_counts</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">delta_ll_counts(n_mu, n_tau, warm_start=None)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Profiled objective at fixed per-channel track counts.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>n_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Astrophysical tracks each channel puts in the fit window.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_tau</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Astrophysical tracks each channel puts in the fit window.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>warm_start</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Extra simplex seed <code>(gamma, a_conv, a_prompt)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>value</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profiled objective.</p>
+              </div>
+            </li>
+            <li>
+<b><code>params</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Nuisances <code>(gamma, a_conv, a_prompt)</code> at the minimum.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def delta_ll_counts(self, n_mu, n_tau, warm_start=None):
+    """Profiled objective at fixed per-channel track counts.
+
+    Parameters
+    ----------
+    n_mu, n_tau : float
+        Astrophysical tracks each channel puts in the fit window.
+    warm_start : np.ndarray, optional
+        Extra simplex seed ``(gamma, a_conv, a_prompt)``.
+
+    Returns
+    -------
+    value : float
+        Profiled objective.
+    params : np.ndarray
+        Nuisances ``(gamma, a_conv, a_prompt)`` at the minimum.
+    """
+    starts = [(PIVOT_GAMMA, 1.0, 1.0)]
+    if warm_start is not None:
+        starts.append(warm_start)
+    return self._minimize(
+        lambda p: self._objective_counts(n_mu, n_tau, p[0], p[1], p[2],
+                                         self.data), starts)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_fluxes" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">delta_ll_fluxes</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">delta_ll_fluxes(phi_mu, phi_tau, warm_start=None)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Profiled objective at fixed per-flavour fluxes.</p>
+<p><code>phi_mu</code> and <code>phi_tau</code> are in units of the combined-fit
+per-flavour flux; the index and the atmospheric normalizations are
+profiled. The point maps onto :meth:<code>expectation</code> through
+<code>norm = (phi_mu + phi_tau) / 2</code> and
+<code>r = phi_tau / (phi_mu + phi_tau)</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>phi_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Per-flavour fluxes [units of :data:<code>PIVOT_PHI0</code>].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi_tau</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Per-flavour fluxes [units of :data:<code>PIVOT_PHI0</code>].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>warm_start</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Extra simplex seed <code>(gamma, a_conv, a_prompt)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>value</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profiled objective.</p>
+              </div>
+            </li>
+            <li>
+<b><code>params</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Nuisances <code>(gamma, a_conv, a_prompt)</code> at the minimum.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def delta_ll_fluxes(self, phi_mu, phi_tau, warm_start=None):
+    """Profiled objective at fixed per-flavour fluxes.
+
+    ``phi_mu`` and ``phi_tau`` are in units of the combined-fit
+    per-flavour flux; the index and the atmospheric normalizations are
+    profiled. The point maps onto :meth:`expectation` through
+    ``norm = (phi_mu + phi_tau) / 2`` and
+    ``r = phi_tau / (phi_mu + phi_tau)``.
+
+    Parameters
+    ----------
+    phi_mu, phi_tau : float
+        Per-flavour fluxes [units of :data:`PIVOT_PHI0`].
+    warm_start : np.ndarray, optional
+        Extra simplex seed ``(gamma, a_conv, a_prompt)``.
+
+    Returns
+    -------
+    value : float
+        Profiled objective.
+    params : np.ndarray
+        Nuisances ``(gamma, a_conv, a_prompt)`` at the minimum.
+    """
+    total = phi_mu + phi_tau
+    r, norm = (0.0, 0.0) if total &lt;= 0.0 else (phi_tau / total, 0.5 * total)
+    starts = [(PIVOT_GAMMA, 1.0, 1.0)]
+    if warm_start is not None:
+        starts.append(warm_start)
+    return self._minimize(
+        lambda p: self._objective(r, norm, p[0], p[1], p[2], self.data),
+        starts)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.delta_ll_tau" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">delta_ll_tau</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">delta_ll_tau(phi_tau, warm_start=None)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Profiled objective at a fixed tau flux, the <code>nu_mu</code> flux free.</p>
+<p>With the anchors carried, this is the tau-flux profile at IceCube's
+measured <code>nu_mu</code> flux and index.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>phi_tau</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tau flux [units of :data:<code>PIVOT_PHI0</code>].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>warm_start</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Extra simplex seed <code>(phi_mu, gamma, a_conv, a_prompt)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>value</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profiled objective.</p>
+              </div>
+            </li>
+            <li>
+<b><code>params</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Nuisances <code>(phi_mu, gamma, a_conv, a_prompt)</code> at the minimum.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def delta_ll_tau(self, phi_tau, warm_start=None):
+    """Profiled objective at a fixed tau flux, the ``nu_mu`` flux free.
+
+    With the anchors carried, this is the tau-flux profile at IceCube's
+    measured ``nu_mu`` flux and index.
+
+    Parameters
+    ----------
+    phi_tau : float
+        Tau flux [units of :data:`PIVOT_PHI0`].
+    warm_start : np.ndarray, optional
+        Extra simplex seed ``(phi_mu, gamma, a_conv, a_prompt)``.
+
+    Returns
+    -------
+    value : float
+        Profiled objective.
+    params : np.ndarray
+        Nuisances ``(phi_mu, gamma, a_conv, a_prompt)`` at the minimum.
+    """
+    def objective(p):
+        phi_mu, gamma, a_conv, a_prompt = p
+        if phi_mu &lt; 0.0:
+            return 1.0e12
+        total = phi_mu + phi_tau
+        r, norm = ((0.0, 0.0) if total &lt;= 0.0
+                   else (phi_tau / total, 0.5 * total))
+        return self._objective(r, norm, gamma, a_conv, a_prompt, self.data)
+
+    starts = [(0.8, PIVOT_GAMMA, 1.0, 1.0)]
+    if warm_start is not None:
+        starts.append(warm_start)
+    return self._minimize(objective, starts)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.expectation" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">expectation</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">expectation(r, norm, gamma, a_conv, a_prompt)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected counts on the fit window at one parameter point.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>r</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Flavour ratio <code>f_tau / (f_mu + f_tau)</code> at Earth.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>norm</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Astrophysical normalization [units of :data:<code>PIVOT_PHI0</code>].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Astrophysical spectral index.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>a_conv</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Atmospheric normalizations.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>a_prompt</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Atmospheric normalizations.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>mu</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected counts on (window bins, bands).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def expectation(self, r, norm, gamma, a_conv, a_prompt):
+    """Expected counts on the fit window at one parameter point.
+
+    Parameters
+    ----------
+    r : float
+        Flavour ratio ``f_tau / (f_mu + f_tau)`` at Earth.
+    norm : float
+        Astrophysical normalization [units of :data:`PIVOT_PHI0`].
+    gamma : float
+        Astrophysical spectral index.
+    a_conv, a_prompt : float
+        Atmospheric normalizations.
+
+    Returns
+    -------
+    mu : np.ndarray
+        Expected counts on (window bins, bands).
+    """
+    astro = norm * ((1.0 - r) * self._astro("mu", gamma)
+                    + r * self._astro("tau", gamma))
+    return a_conv * self._folded_conv + a_prompt * self._folded_prompt + astro</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.flux_plane" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">flux_plane</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">flux_plane()</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p><code>2 Delta ln L</code> on (:data:<code>PHI_MU_GRID</code>, :data:<code>PHI_TAU_GRID</code>).</p>
+<p>Floored at its minimum over the whole plane, physical or not, so the
+valley the ratio scan walks along is visible in full.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>plane</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profile statistic on the two grids.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def flux_plane(self):
+    """``2 Delta ln L`` on (:data:`PHI_MU_GRID`, :data:`PHI_TAU_GRID`).
+
+    Floored at its minimum over the whole plane, physical or not, so the
+    valley the ratio scan walks along is visible in full.
+
+    Returns
+    -------
+    plane : np.ndarray
+        Profile statistic on the two grids.
+    """
+    return self._plane(PHI_MU_GRID, PHI_TAU_GRID, self.delta_ll_fluxes)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.profile" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">profile</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">profile(data=None)</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p><code>2 Delta ln L</code> on :data:<code>R_GRID</code> with the per-point nuisances.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Counts on the fit window; the observed counts when omitted.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>curve</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profile statistic on :data:<code>R_GRID</code>, floored at its minimum.</p>
+              </div>
+            </li>
+            <li>
+<b><code>nuisances</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="softpaws.constants.R_GRID.size">size</span>, 4))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Profiled <code>(norm, gamma, a_conv, a_prompt)</code> per grid point.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def profile(self, data=None):
+    """``2 Delta ln L`` on :data:`R_GRID` with the per-point nuisances.
+
+    Parameters
+    ----------
+    data : np.ndarray, optional
+        Counts on the fit window; the observed counts when omitted.
+
+    Returns
+    -------
+    curve : np.ndarray
+        Profile statistic on :data:`R_GRID`, floored at its minimum.
+    nuisances : np.ndarray, shape (R_GRID.size, 4)
+        Profiled ``(norm, gamma, a_conv, a_prompt)`` per grid point.
+    """
+    curves, nuisances = [], []
+    warm = None
+    for r in R_GRID:
+        value, params = self.delta_ll(r, data=data, warm_start=warm)
+        curves.append(value)
+        nuisances.append(params)
+        warm = params
+    curve = np.array(curves)
+    return curve - curve.min(), np.array(nuisances)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.reco_likelihood.RecoLikelihood.tau_profile" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tau_profile</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">tau_profile()</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p><code>2 Delta ln L</code> on :data:<code>PHI_TAU_SCAN</code>, floored at its minimum.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>curve</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Profile statistic on :data:<code>PHI_TAU_SCAN</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def tau_profile(self):
+    """``2 Delta ln L`` on :data:`PHI_TAU_SCAN`, floored at its minimum.
+
+    Returns
+    -------
+    curve : np.ndarray
+        Profile statistic on :data:`PHI_TAU_SCAN`.
+    """
+    curve, warm = [], None
+    for phi_tau in PHI_TAU_SCAN:
+        value, warm = self.delta_ll_tau(phi_tau, warm)
+        curve.append(value)
+    curve = np.array(curve)
+    return curve - curve.min()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.atmospheric_fluxes" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">atmospheric_fluxes</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">atmospheric_fluxes(table_path: str | Path, dec_edges_deg: ndarray, log10_e_grid: ndarray = LOG10_E_GRID) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Conventional and prompt fluxes on the fine grid, one column per band.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>table_path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>MCEq table, as :func:<code>softpaws.fluxes.build_mceq_table</code> writes it.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges [deg]; each band is taken at its centre.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.LOG10_E_GRID">LOG10_E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy grid the fluxes are returned on [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>fluxes</code></b>(                  <code>dict of str -&gt; np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>"conv"</code> and <code>"prompt"</code> on (<code>log10_e_grid</code>, bands)
+[GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the table is missing.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def atmospheric_fluxes(
+    table_path: str | pathlib.Path,
+    dec_edges_deg: np.ndarray,
+    log10_e_grid: np.ndarray = LOG10_E_GRID,
+) -&gt; dict[str, np.ndarray]:
+    """Conventional and prompt fluxes on the fine grid, one column per band.
+
+    Parameters
+    ----------
+    table_path : str or pathlib.Path
+        MCEq table, as :func:`softpaws.fluxes.build_mceq_table` writes it.
+    dec_edges_deg : np.ndarray
+        Declination bin edges [deg]; each band is taken at its centre.
+    log10_e_grid : np.ndarray, optional
+        Energy grid the fluxes are returned on [log10 GeV].
+
+    Returns
+    -------
+    fluxes : dict of str -&gt; np.ndarray
+        ``"conv"`` and ``"prompt"`` on (``log10_e_grid``, bands)
+        [GeV^-1 cm^-2 s^-1 sr^-1].
+
+    Raises
+    ------
+    FileNotFoundError
+        Raised if the table is missing.
+    """
+    table_path = pathlib.Path(table_path)
+    if not table_path.exists():
+        raise FileNotFoundError(
+            f"{table_path} not found; tabulate the atmospheric flux once with "
+            "softpaws.fluxes.build_mceq_table.")
+    flux = AtmosphericFlux(load_mceq_table(table_path))
+    centers = 0.5 * (dec_edges_deg[:-1] + dec_edges_deg[1:])
+    energy = 10.0**log10_e_grid
+    return {c: flux.component_on_grid(c, energy, centers) for c in ("conv", "prompt")}</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.banded_responses" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">banded_responses</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">banded_responses(banded_aeff: Callable, dec_edges_deg: ndarray, coarse_log10_e: ndarray, channels: Sequence[str] = CHANNELS, log10_e_grid: ndarray = LOG10_E_GRID) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Model channel responses on the smearing declination bands [cm^2].</p>
+<p>The caller supplies the effective area itself, band by band and channel
+by channel, on whatever coarse energy grid it prefers; this function
+interpolates it in the logarithm onto <code>log10_e_grid</code>, which is the
+grid the likelihood integrates over.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>banded_aeff</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Called as <code>banded_aeff(channel, sin_dec_edges)</code> and returns the
+band-averaged effective area [cm^2] of that channel, of shape
+<code>(coarse_log10_e.size, n_bands)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Upgoing declination bin edges [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>coarse_log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Energy grid the supplied areas are given on [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>sequence of str</code>, default:
+                      <code><span title="softpaws.comparison.reco_likelihood.CHANNELS">CHANNELS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Channels to build.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.LOG10_E_GRID">LOG10_E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fine energy grid the responses are returned on [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>responses</code></b>(                  <code>dict of str -&gt; np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>One entry per channel, on (<code>log10_e_grid</code>, bands) [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def banded_responses(
+    banded_aeff: Callable,
+    dec_edges_deg: np.ndarray,
+    coarse_log10_e: np.ndarray,
+    channels: Sequence[str] = CHANNELS,
+    log10_e_grid: np.ndarray = LOG10_E_GRID,
+) -&gt; dict[str, np.ndarray]:
+    """Model channel responses on the smearing declination bands [cm^2].
+
+    The caller supplies the effective area itself, band by band and channel
+    by channel, on whatever coarse energy grid it prefers; this function
+    interpolates it in the logarithm onto ``log10_e_grid``, which is the
+    grid the likelihood integrates over.
+
+    Parameters
+    ----------
+    banded_aeff : callable
+        Called as ``banded_aeff(channel, sin_dec_edges)`` and returns the
+        band-averaged effective area [cm^2] of that channel, of shape
+        ``(coarse_log10_e.size, n_bands)``.
+    dec_edges_deg : np.ndarray
+        Upgoing declination bin edges [deg].
+    coarse_log10_e : np.ndarray
+        Energy grid the supplied areas are given on [log10 GeV].
+    channels : sequence of str, optional
+        Channels to build.
+    log10_e_grid : np.ndarray, optional
+        Fine energy grid the responses are returned on [log10 GeV].
+
+    Returns
+    -------
+    responses : dict of str -&gt; np.ndarray
+        One entry per channel, on (``log10_e_grid``, bands) [cm^2].
+    """
+    sin_dec_edges = np.sin(np.deg2rad(dec_edges_deg))
+    out = {}
+    for channel in channels:
+        banded = np.asarray(banded_aeff(channel, sin_dec_edges), dtype=float)
+        fine = np.empty((log10_e_grid.size, banded.shape[1]))
+        with np.errstate(divide="ignore"):
+            log_a = np.log10(np.clip(banded, 1.0e-30, None))
+        for j in range(banded.shape[1]):
+            fine[:, j] = 10.0 ** np.interp(log10_e_grid, coarse_log10_e, log_a[:, j],
+                                           left=-30.0, right=log_a[-1, j])
+        out[channel] = fine
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.binned_events" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">binned_events</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">binned_events(data_dir: str | Path | None, dec_edges_deg: ndarray, reco_edges: ndarray = RECO_EDGES, seasons: tuple[str, ...] = IC86_SEASONS) -&gt; tuple[np.ndarray, int]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>IC86 upgoing events histogrammed on (reco grid, declination bands).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release; <code>None</code> uses
+:func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges [deg]; events below the first edge are cut.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reco_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.RECO_EDGES">RECO_EDGES</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seasons</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.data.icecube.IC86_SEASONS">IC86_SEASONS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Seasons to combine. Defaults to the eleven IC86 seasons.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_reco">n_reco</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Events per bin.</p>
+              </div>
+            </li>
+            <li>
+<b><code>n_upgoing</code></b>(                  <code><span title="int">int</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Events above the first declination edge, whether or not their
+<code>log10_energy</code> falls inside the reco grid.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def binned_events(
+    data_dir: str | pathlib.Path | None,
+    dec_edges_deg: np.ndarray,
+    reco_edges: np.ndarray = RECO_EDGES,
+    seasons: tuple[str, ...] = IC86_SEASONS,
+) -&gt; tuple[np.ndarray, int]:
+    """IC86 upgoing events histogrammed on (reco grid, declination bands).
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses
+        :func:`softpaws.data.paths.dr2_dir`.
+    dec_edges_deg : np.ndarray
+        Declination bin edges [deg]; events below the first edge are cut.
+    reco_edges : np.ndarray, optional
+        Reconstructed-energy bin edges [log10 GeV].
+    seasons : tuple of str, optional
+        Seasons to combine. Defaults to the eleven IC86 seasons.
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_reco, n_dec)
+        Events per bin.
+    n_upgoing : int
+        Events above the first declination edge, whether or not their
+        ``log10_energy`` falls inside the reco grid.
+    """
+    events = load_events(data_dir, seasons)
+    sel = events.dec &gt;= dec_edges_deg[0]
+    counts, _, _ = np.histogram2d(events.log10_energy[sel], events.dec[sel],
+                                  bins=(reco_edges, dec_edges_deg))
+    return counts, int(sel.sum())</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.cached_fit_inputs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cached_fit_inputs</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">cached_fit_inputs(cache_path: str | Path, reco_edges: ndarray = RECO_EDGES, channels: Sequence[str] = CHANNELS) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray]] | None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Fit inputs from an earlier run, or <code>None</code> if the cache cannot serve.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cache_path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>.npz</code> file written by :func:<code>fit_inputs</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reco_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.RECO_EDGES">RECO_EDGES</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges the caller wants; a cache built on a
+different grid is refused.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>sequence of str</code>, default:
+                      <code><span title="softpaws.comparison.reco_likelihood.CHANNELS">CHANNELS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Channels the cache is expected to hold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>inputs</code></b>(                  <code><span title="tuple">tuple</span> or None</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>(enu_edges, dec_edges, marginal, responses)</code> as
+:func:<code>fit_inputs</code> returns them, or <code>None</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cached_fit_inputs(
+    cache_path: str | pathlib.Path,
+    reco_edges: np.ndarray = RECO_EDGES,
+    channels: Sequence[str] = CHANNELS,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray]] | None:
+    """Fit inputs from an earlier run, or ``None`` if the cache cannot serve.
+
+    Parameters
+    ----------
+    cache_path : str or pathlib.Path
+        ``.npz`` file written by :func:`fit_inputs`.
+    reco_edges : np.ndarray, optional
+        Reconstructed-energy bin edges the caller wants; a cache built on a
+        different grid is refused.
+    channels : sequence of str, optional
+        Channels the cache is expected to hold.
+
+    Returns
+    -------
+    inputs : tuple or None
+        ``(enu_edges, dec_edges, marginal, responses)`` as
+        :func:`fit_inputs` returns them, or ``None``.
+    """
+    cache_path = pathlib.Path(cache_path)
+    if not cache_path.exists():
+        return None
+    cache = np.load(cache_path)
+    if not np.array_equal(cache["reco_edges"], reco_edges):
+        return None
+    logger.info("Cached fit inputs from %s", cache_path)
+    return (cache["enu_edges"], cache["dec_edges"], cache["marginal"],
+            {channel: cache[f"response_{channel}"] for channel in channels})</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.fit_inputs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">fit_inputs</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">fit_inputs(data_dir: str | Path | None, cache_path: str | Path, build_responses: Callable[[ndarray], dict[str, ndarray]], rebuild: bool = False, reco_edges: ndarray = RECO_EDGES, channels: Sequence[str] = CHANNELS) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Smearing marginal and banded responses, cached across runs.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release; <code>None</code> uses
+:func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cache_path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>.npz</code> file the inputs are read from and written to.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>build_responses</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Called as <code>build_responses(dec_edges)</code> when the cache cannot
+serve, and returns the responses of :func:<code>banded_responses</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rebuild</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ignore the cache and rebuild.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reco_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.RECO_EDGES">RECO_EDGES</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>sequence of str</code>, default:
+                      <code><span title="softpaws.comparison.reco_likelihood.CHANNELS">CHANNELS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Channels the responses hold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>enu_edges</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>True-energy bin edges of the smearing table [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+<b><code>dec_edges</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Upgoing declination bin edges [deg].</p>
+              </div>
+            </li>
+            <li>
+<b><code>marginal</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Smearing marginal, as :func:<code>smearing_marginal</code> returns it.</p>
+              </div>
+            </li>
+            <li>
+<b><code>responses</code></b>(                  <code>dict of str -&gt; np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>Channel responses on (<code>LOG10_E_GRID</code>, bands) [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def fit_inputs(
+    data_dir: str | pathlib.Path | None,
+    cache_path: str | pathlib.Path,
+    build_responses: Callable[[np.ndarray], dict[str, np.ndarray]],
+    rebuild: bool = False,
+    reco_edges: np.ndarray = RECO_EDGES,
+    channels: Sequence[str] = CHANNELS,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray]]:
+    """Smearing marginal and banded responses, cached across runs.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None
+        Root of the DR2 release; ``None`` uses
+        :func:`softpaws.data.paths.dr2_dir`.
+    cache_path : str or pathlib.Path
+        ``.npz`` file the inputs are read from and written to.
+    build_responses : callable
+        Called as ``build_responses(dec_edges)`` when the cache cannot
+        serve, and returns the responses of :func:`banded_responses`.
+    rebuild : bool, optional
+        Ignore the cache and rebuild.
+    reco_edges : np.ndarray, optional
+        Reconstructed-energy bin edges [log10 GeV].
+    channels : sequence of str, optional
+        Channels the responses hold.
+
+    Returns
+    -------
+    enu_edges : np.ndarray
+        True-energy bin edges of the smearing table [log10 GeV].
+    dec_edges : np.ndarray
+        Upgoing declination bin edges [deg].
+    marginal : np.ndarray
+        Smearing marginal, as :func:`smearing_marginal` returns it.
+    responses : dict of str -&gt; np.ndarray
+        Channel responses on (``LOG10_E_GRID``, bands) [cm^2].
+    """
+    if not rebuild:
+        cached = cached_fit_inputs(cache_path, reco_edges, channels)
+        if cached is not None:
+            return cached
+    enu_edges, dec_edges, marginal = smearing_marginal(data_dir, reco_edges)
+    responses = build_responses(dec_edges)
+    cache_path = pathlib.Path(cache_path)
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez(cache_path, reco_edges=reco_edges, enu_edges=enu_edges,
+             dec_edges=dec_edges, marginal=marginal,
+             **{f"response_{channel}": responses[channel] for channel in channels})
+    return enu_edges, dec_edges, marginal, responses</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.load_banded_responses" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_banded_responses</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_banded_responses(cache_path: str | Path, dec_edges_deg: ndarray, channels: Sequence[str] = CHANNELS) -&gt; dict[str, np.ndarray] | None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Banded responses from an earlier run, or <code>None</code> if the bands differ.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cache_path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>.npz</code> file written by :func:<code>save_banded_responses</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges the caller wants [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channels</code></b>
+                  (<code>sequence of str</code>, default:
+                      <code><span title="softpaws.comparison.reco_likelihood.CHANNELS">CHANNELS</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Channels the cache is expected to hold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>responses</code></b>(                  <code>dict of str -&gt; np.ndarray or None</code>
+)              –
+              <div class="doc-md-description">
+                <p>The cached responses, or <code>None</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_banded_responses(
+    cache_path: str | pathlib.Path,
+    dec_edges_deg: np.ndarray,
+    channels: Sequence[str] = CHANNELS,
+) -&gt; dict[str, np.ndarray] | None:
+    """Banded responses from an earlier run, or ``None`` if the bands differ.
+
+    Parameters
+    ----------
+    cache_path : str or pathlib.Path
+        ``.npz`` file written by :func:`save_banded_responses`.
+    dec_edges_deg : np.ndarray
+        Declination bin edges the caller wants [deg].
+    channels : sequence of str, optional
+        Channels the cache is expected to hold.
+
+    Returns
+    -------
+    responses : dict of str -&gt; np.ndarray or None
+        The cached responses, or ``None``.
+    """
+    cache_path = pathlib.Path(cache_path)
+    if not cache_path.exists():
+        return None
+    cache = np.load(cache_path)
+    if not np.array_equal(cache["dec_edges"], dec_edges_deg):
+        return None
+    logger.info("Cached banded responses from %s", cache_path)
+    return {channel: cache[f"response_{channel}"] for channel in channels}</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.physical_r_range" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">physical_r_range</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">physical_r_range(earth_composition: Callable) -&gt; tuple[float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Earth flavour-ratio range standard oscillations allow.</p>
+<p>The Earth fractions are linear in the source composition, so the
+linear-fractional ratio <code>f_tau / (f_mu + f_tau)</code> is extremal at a
+vertex of the source simplex; the three pure-flavour sources are enough.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>earth_composition</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maps a source composition <code>(f_e, f_mu, f_tau)</code> to the fractions
+after standard oscillations.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>r_min, r_max : float</code>
+              –
+              <div class="doc-md-description">
+                <p>Band of the ratio over all source compositions.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def physical_r_range(earth_composition: Callable) -&gt; tuple[float, float]:
+    """Earth flavour-ratio range standard oscillations allow.
+
+    The Earth fractions are linear in the source composition, so the
+    linear-fractional ratio ``f_tau / (f_mu + f_tau)`` is extremal at a
+    vertex of the source simplex; the three pure-flavour sources are enough.
+
+    Parameters
+    ----------
+    earth_composition : callable
+        Maps a source composition ``(f_e, f_mu, f_tau)`` to the fractions
+        after standard oscillations.
+
+    Returns
+    -------
+    r_min, r_max : float
+        Band of the ratio over all source compositions.
+    """
+    ratios = []
+    for source in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)):
+        _, f_mu, f_tau = earth_composition(source)
+        ratios.append(f_tau / (f_mu + f_tau))
+    return min(ratios), max(ratios)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.save_banded_responses" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">save_banded_responses</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">save_banded_responses(cache_path: str | Path, dec_edges_deg: ndarray, responses: dict[str, ndarray]) -&gt; None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Write banded responses and their declination bands to a cache file.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cache_path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Destination <code>.npz</code> file.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_edges_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Declination bin edges the responses are banded on [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>responses</code></b>
+                  (<code>dict of str -&gt; np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>Channel responses on (<code>LOG10_E_GRID</code>, bands) [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def save_banded_responses(
+    cache_path: str | pathlib.Path,
+    dec_edges_deg: np.ndarray,
+    responses: dict[str, np.ndarray],
+) -&gt; None:
+    """Write banded responses and their declination bands to a cache file.
+
+    Parameters
+    ----------
+    cache_path : str or pathlib.Path
+        Destination ``.npz`` file.
+    dec_edges_deg : np.ndarray
+        Declination bin edges the responses are banded on [deg].
+    responses : dict of str -&gt; np.ndarray
+        Channel responses on (``LOG10_E_GRID``, bands) [cm^2].
+    """
+    cache_path = pathlib.Path(cache_path)
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez(cache_path, dec_edges=dec_edges_deg,
+             **{f"response_{channel}": grid for channel, grid in responses.items()})</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.smearing_marginal" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">smearing_marginal</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">smearing_marginal(data_dir: str | Path | None = None, reco_edges: ndarray = RECO_EDGES) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Energy marginal of the IC86 smearing table on a common reco grid.</p>
+<p>Sums the released fractional counts over the point-spread and
+angular-error axes and projects each reconstructed-energy interval onto
+<code>reco_edges</code>, uniform density assumed inside an interval.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release; <code>None</code> uses
+:func:<code>softpaws.data.paths.dr2_dir</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reco_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.RECO_EDGES">RECO_EDGES</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Reconstructed-energy bin edges [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>enu_edges</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_enu">n_enu</span> + 1))</code>
+)              –
+              <div class="doc-md-description">
+                <p>True-energy bin edges [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+<b><code>dec_edges</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span> + 1))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Upgoing declination bin edges [deg].</p>
+              </div>
+            </li>
+            <li>
+<b><code>marginal</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_enu">n_enu</span>, <span title="n_dec">n_dec</span>, <span title="n_reco">n_reco</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>P(reco bin | true bin)</code>; sums over reco to one where the released
+intervals lie inside the grid.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def smearing_marginal(
+    data_dir: str | pathlib.Path | None = None,
+    reco_edges: np.ndarray = RECO_EDGES,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Energy marginal of the IC86 smearing table on a common reco grid.
+
+    Sums the released fractional counts over the point-spread and
+    angular-error axes and projects each reconstructed-energy interval onto
+    ``reco_edges``, uniform density assumed inside an interval.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path or None, optional
+        Root of the DR2 release; ``None`` uses
+        :func:`softpaws.data.paths.dr2_dir`.
+    reco_edges : np.ndarray, optional
+        Reconstructed-energy bin edges [log10 GeV].
+
+    Returns
+    -------
+    enu_edges : np.ndarray, shape (n_enu + 1,)
+        True-energy bin edges [log10 GeV].
+    dec_edges : np.ndarray, shape (n_dec + 1,)
+        Upgoing declination bin edges [deg].
+    marginal : np.ndarray, shape (n_enu, n_dec, n_reco)
+        ``P(reco bin | true bin)``; sums over reco to one where the released
+        intervals lie inside the grid.
+    """
+    data_dir = dr2_dir() if data_dir is None else pathlib.Path(data_dir)
+    path = require(data_dir / "irfs" / "IC86_smearing.csv", "IceTracks-DR2 release")
+    raw = np.genfromtxt(path, comments="#")
+    raw = raw[raw[:, 10] &gt; 0.0]
+    enu_lows = np.unique(raw[:, 0])
+    enu_edges = np.append(enu_lows, raw[:, 1].max())
+    dec_lows_all = np.unique(raw[:, 2])
+    upgoing = dec_lows_all &gt;= -1.0e-9
+    dec_lows = dec_lows_all[upgoing]
+    keep = raw[:, 2] &gt;= dec_lows[0] - 1.0e-9
+    rows = raw[keep]
+    dec_edges = np.append(dec_lows, rows[:, 3].max())
+
+    i_enu = np.searchsorted(enu_lows, rows[:, 0] + 1.0e-9) - 1
+    i_dec = np.searchsorted(dec_lows, rows[:, 2] + 1.0e-9) - 1
+    lo, hi, weight = rows[:, 4], rows[:, 5], rows[:, 10]
+    width = np.maximum(hi - lo, 1.0e-12)
+
+    marginal = np.zeros((enu_lows.size, dec_lows.size, reco_edges.size - 1))
+    for k in range(reco_edges.size - 1):
+        overlap = np.clip(np.minimum(hi, reco_edges[k + 1])
+                          - np.maximum(lo, reco_edges[k]), 0.0, None)
+        np.add.at(marginal, (i_enu, i_dec, k), weight * overlap / width)
+    return enu_edges, dec_edges, marginal</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.reco_likelihood.true_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">true_counts</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">true_counts(response: ndarray, flux: ndarray, enu_edges: ndarray, d_omega: ndarray, livetime_s: float, log10_e_grid: ndarray = LOG10_E_GRID) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected counts per (true-energy bin, declination band).</p>
+<p>The response and the flux live on the fine grid; the integral over each
+true-energy bin of the smearing table is a trapezoid over the fine grid
+points inside it, so a bin holding fewer than two points contributes
+nothing.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>response</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Channel response on (<code>log10_e_grid</code>, bands) [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flux</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Differential flux on the same grid [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>enu_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>True-energy bin edges of the smearing table [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_omega</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle per declination band [sr].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.LOG10_E_GRID">LOG10_E_GRID</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Energy grid the response and the flux are given on [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_enu">n_enu</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected events per true-energy bin and band.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/reco_likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def true_counts(
+    response: np.ndarray,
+    flux: np.ndarray,
+    enu_edges: np.ndarray,
+    d_omega: np.ndarray,
+    livetime_s: float,
+    log10_e_grid: np.ndarray = LOG10_E_GRID,
+) -&gt; np.ndarray:
+    """Expected counts per (true-energy bin, declination band).
+
+    The response and the flux live on the fine grid; the integral over each
+    true-energy bin of the smearing table is a trapezoid over the fine grid
+    points inside it, so a bin holding fewer than two points contributes
+    nothing.
+
+    Parameters
+    ----------
+    response : np.ndarray
+        Channel response on (``log10_e_grid``, bands) [cm^2].
+    flux : np.ndarray
+        Differential flux on the same grid [GeV^-1 cm^-2 s^-1 sr^-1].
+    enu_edges : np.ndarray
+        True-energy bin edges of the smearing table [log10 GeV].
+    d_omega : np.ndarray
+        Solid angle per declination band [sr].
+    livetime_s : float
+        Exposure [s].
+    log10_e_grid : np.ndarray, optional
+        Energy grid the response and the flux are given on [log10 GeV].
+
+    Returns
+    -------
+    counts : np.ndarray, shape (n_enu, n_dec)
+        Expected events per true-energy bin and band.
+    """
+    energy = 10.0**log10_e_grid
+    integrand = response * flux
+    counts = np.zeros((enu_edges.size - 1, d_omega.size))
+    for i in range(enu_edges.size - 1):
+        sel = (log10_e_grid &gt;= enu_edges[i]) &amp; (log10_e_grid &lt;= enu_edges[i + 1])
+        if sel.sum() &lt; 2:
+            continue
+        counts[i] = np.trapezoid(integrand[sel], energy[sel], axis=0)
+    return livetime_s * counts * d_omega[None, :]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../rates/" class="btn btn-neutral float-left" title="rates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../constants/" class="btn btn-neutral float-right" title="constants">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../rates/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../constants/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
