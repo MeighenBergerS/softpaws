@@ -1,25 +1,160 @@
 name: publish
 
-# Uploads a tagged release to PyPI through trusted publishing. Nothing is
-# published until the project is registered there and a `v*` tag is pushed.
+# A pushed `v*` tag builds the distribution once, uploads it to TestPyPI,
+# installs that upload on a clean runner and runs the test suite against it,
+# and only then uploads the same files to PyPI. Both uploads use trusted
+# publishing (OpenID Connect), so no token is stored anywhere; the `pypi`
+# environment waits for a reviewer before the last step.
 on:
   push:
     tags: ['v*']
-  workflow_dispatch:
+
+permissions: {}
+
+# A publish is never cancelled part-way through.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  publish:
-    name: Build and publish to PyPI
+  build:
+    name: Build the distribution
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: The tag matches the version in pyproject.toml
+        id: version
+        run: |
+          python - <<'PY'
+          import os, tomllib
+          version = tomllib.load(open("pyproject.toml", "rb"))["project"]["version"]
+          tag = os.environ["GITHUB_REF_NAME"].removeprefix("v")
+          assert tag == version, f"tag v{tag} but pyproject.toml says {version}"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"version={version}\n")
+          print(version)
+          PY
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check dist/*
+      # The shipped tables must survive the build; without them an installed
+      # wheel cannot compute anything.
+      - name: Check the wheel carries the data tables
+        run: |
+          python - <<'PY'
+          import glob, zipfile
+          names = zipfile.ZipFile(glob.glob("dist/*.whl")[0]).namelist()
+          tables = [n for n in names if "/data/" in n and not n.endswith(".py")]
+          assert len(tables) > 50, f"only {len(tables)} data files in the wheel"
+          assert not any("dataverse" in n for n in names), "a release leaked into the wheel"
+          print(f"{len(tables)} data files")
+          PY
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  publish-testpypi:
+    name: Upload to TestPyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          print-hash: true
+
+  verify:
+    name: Install from TestPyPI on Python ${{ matrix.python-version }}
+    needs: [build, publish-testpypi]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    env:
+      VERSION: ${{ needs.build.outputs.version }}
+    steps:
+      # The checkout provides the tests and the files they read; the package
+      # itself comes from TestPyPI, never from src/.
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      # TestPyPI's index lags an upload by up to a minute, and it does not
+      # carry current NumPy or SciPy, so those come from PyPI.
+      - name: Install the uploaded version on a clean interpreter
+        run: |
+          for attempt in $(seq 1 10); do
+            if pip install --no-cache-dir \
+                 --index-url https://test.pypi.org/simple/ \
+                 --extra-index-url https://pypi.org/simple/ \
+                 "softpaws==${VERSION}"; then
+              break
+            fi
+            echo "attempt ${attempt} failed; waiting for the index"
+            sleep 30
+          done
+          pip install pytest
+      - name: The import resolves to the installed wheel, not the checkout
+        working-directory: ${{ runner.temp }}
+        run: |
+          python - <<'PY'
+          import os, pathlib, softpaws
+          path = pathlib.Path(softpaws.__file__)
+          assert "site-packages" in path.parts, path
+          assert softpaws.__version__ == os.environ["VERSION"], softpaws.__version__
+          print(path, softpaws.__version__)
+          PY
+      - name: The README example runs from an empty directory
+        working-directory: ${{ runner.temp }}
+        run: |
+          python - <<'PY'
+          import os, re, subprocess, sys
+          readme = open(os.path.join(os.environ["GITHUB_WORKSPACE"], "README.md")).read()
+          blocks = re.findall(r"```python\n(.*?)```", readme, re.S)
+          assert blocks, "no Python block in README.md"
+          for block in blocks:
+              subprocess.run([sys.executable, "-c", block], check=True)
+          PY
+      # pyproject.toml puts src/ on the test path; an empty override keeps the
+      # installed wheel in front. Same selection as ci.yml.
+      - name: Run the test suite against the installed wheel
+        run: pytest -q -o pythonpath= -p no:cacheprovider --run-slow -m "not network"
+
+  publish-pypi:
+    name: Upload to PyPI
+    needs: [publish-testpypi, verify]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/download-artifact@v8
         with:
-          python-version: '3.12'
-      - run: pip install build twine
-      - run: python -m build
-      - run: twine check dist/*
+          name: dist
+          path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          print-hash: true
