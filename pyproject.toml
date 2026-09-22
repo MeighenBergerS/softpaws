@@ -118,8 +118,15 @@ convention = "numpy"
 "!src/**" = ["D"]
 
 [tool.pytest.ini_options]
+minversion = "8.0"
 testpaths = ["tests"]
 pythonpath = ["src"]
+# A misspelled option or marker is an error, and so is any warning: a
+# deprecation in NumPy or SciPy fails a test here before it breaks a release.
+addopts = ["-ra", "--strict-config", "--strict-markers"]
+xfail_strict = true
+filterwarnings = ["error"]
+log_level = "INFO"
 markers = [
     "network: tests that require network access (deselect with '-m not network')",
     "slow: slow tests, e.g. Monte-Carlo cross-checks (deselect with '-m not slow')",
