@@ -1,0 +1,8 @@
+# zizmor (https://docs.zizmor.sh) audits the workflows in pre-commit.
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # Actions are pinned to a major tag, not a commit hash: the tags come
+        # from GitHub and PyPA, and hash pins would go stale without Dependabot.
+        "*": ref-pin

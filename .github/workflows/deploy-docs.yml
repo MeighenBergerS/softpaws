@@ -5,16 +5,18 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# gh-deploy pushes the built site to the gh-pages branch, which needs write access.
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   deploy:
     name: Deploy the documentation site
     runs-on: ubuntu-latest
+    # gh-deploy pushes the built site to gh-pages with the checkout's token,
+    # so this job alone writes and keeps the credential.
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7 # zizmor: ignore[artipacked]
       - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
