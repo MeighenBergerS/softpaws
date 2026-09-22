@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "softpaws"
-version = "0.1.0"
+version = "1.0.0"
 description = "Analytic muon-transport forward model for UHE neutrino telescopes: effective areas, event rates and event energies from first principles."
 authors = [
     { name = "Stephan Meighen-Berger", email = "stephan.meighenberger@gmail.com" },

@@ -6,6 +6,8 @@ uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-22
+
 ### Added
 
 - `softpaws.transport.muon_range`: the range to threshold and its
@@ -47,4 +49,7 @@ uses [semantic versioning](https://semver.org/).
 
 - `softpaws.comparison.datasets`, which nothing reached.
 - `softpaws.response.irfs.PointSpreadFunction` is deprecated and will be
-  removed before 1.0.
+  removed in a later release.
+
+[Unreleased]: https://github.com/MeighenBergerS/softpaws/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/MeighenBergerS/softpaws/releases/tag/v1.0.0
