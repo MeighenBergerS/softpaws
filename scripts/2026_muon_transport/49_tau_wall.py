@@ -251,7 +251,7 @@ def figure_counts(centers, widths, up, rows, e_min_gev, out_dir) -> None:
     """Expected DR2 events per unit ``sin(dec)``, by component."""
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.0, 3.0))
-        for (name, row), color in zip(rows.items(), COMPONENT_COLOR.values()):
+        for (name, row), color in zip(rows.items(), COMPONENT_COLOR.values(), strict=False):
             ax.step(centers[up], row[up] / widths[up], where="mid", color=color,
                     lw=1.2, label=name)
         ax.set_yscale("log")

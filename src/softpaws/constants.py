@@ -271,6 +271,10 @@ FLUX_UNIT = 1.0e-18
 #: Neutrino energies every curve here is returned on [log10 GeV].
 COMMON_LOG10_E = np.linspace(3.0, 8.0, 26)
 
+#: Energies the published-reach fit and the point-source limit run on when
+#: none are given [log10 GeV]; copied on use, so a caller never alters it.
+REACH_FIT_LOG10_E = np.arange(4.0, 8.01, 0.25)
+
 #: Directions sampled inside each published declination band.
 N_SUB_BAND = 5
 

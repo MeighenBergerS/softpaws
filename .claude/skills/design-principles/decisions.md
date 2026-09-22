@@ -6,6 +6,15 @@ Newest first. One entry per adoption, change or exception: date, IDs, what, why.
 
 Nothing open.
 
+## 2026-09-22: Ruff gains flake8-bugbear (L6)
+
+- The ruff selection in `pyproject.toml` grows from `E, F, W, I, D` to
+  `E, F, W, I, D, B`, and CLAUDE.md says so. Why: the first Repo Audit
+  (`.audit/2026-09-21.md`, finding 10) found 115 bugbear hits, among them two
+  array defaults built at import time and three closures reading loop
+  variables in the package. Every zip now states whether its inputs must
+  match in length. Approved by the user, fixed in the same PR.
+
 ## 2026-09-18: New module map (A4); exception for a Bash edit (P4)
 
 - A4: `constants, standards -> data, detectors, fluxes -> transport ->

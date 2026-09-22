@@ -47,7 +47,7 @@ def main():
 
     plt.style.use(STYLE)
     fig, ax = plt.subplots(figsize=(3.4, 3.4))
-    for (name, aeff), color in zip(models.items(), ("C1", "C0")):
+    for (name, aeff), color in zip(models.items(), ("C1", "C0"), strict=False):
         level, _, _ = band_statistics(COMMON_LOG10_E, published, aeff, scored)
         print(f"{name:>10}: published / model = {np.nanmean(level[north]):.2f} "
               "averaged over the northern bands")

@@ -418,7 +418,7 @@ def figure_spectra(hyps, out_dir) -> None:
     with plt.style.context(str(_STYLE)):
         fig, axes = plt.subplots(1, 2, figsize=(6.0, 3.0), sharey=True,
                                  gridspec_kw={"wspace": 0.06})
-        for ax, h in zip(axes, hyps):
+        for ax, h in zip(axes, hyps, strict=True):
             like = h.results["likelihood"]
             r, (norm, gamma, a_conv, a_prompt) = h.results["r_best"], h.results["best"]
             centers = 0.5 * (ex.RECO_EDGES[:-1] + ex.RECO_EDGES[1:])[like._window]
@@ -470,13 +470,13 @@ def figure_triangle(hyps, out_dir) -> None:
                                   lw=0.6))
                 ours_labels.append(rf"{h.label} ${level}\%${note}")
             tip = _EX50._ternary_xy(0.0, 1.0 - r_best, r_best)
-            ax.plot(*zip(corners["e"], tip), color=h.color, lw=1.1, ls="--", zorder=4)
+            ax.plot(*zip(corners["e"], tip, strict=True), color=h.color, lw=1.1, ls="--", zorder=4)
             ax.plot(*tip, marker="*", color=h.color, ms=7, ls="none", zorder=5)
             ours.append(Line2D([], [], color=h.color, lw=1.1, ls="--", marker="*", ms=7))
             ours_labels.append(rf"best fit $\hat r = {r_best:.2f}$")
         for r in (ex.R_MIN_STD, ex.R_MAX):
             bound = _EX50._ternary_xy(0.0, 1.0 - r, r)
-            ax.plot(*zip(corners["e"], bound), color="0.4", lw=0.8, ls=":", zorder=3)
+            ax.plot(*zip(corners["e"], bound, strict=True), color="0.4", lw=0.8, ls=":", zorder=3)
         ours.append(Line2D([], [], color="0.4", lw=0.8, ls=":"))
         ours_labels.append(rf"std. osc. band, $r \in [{ex.R_MIN_STD:.2f}, {ex.R_MAX:.2f}]$")
         _EX50.draw_published_curves(ax)

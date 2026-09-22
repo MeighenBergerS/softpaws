@@ -6,6 +6,12 @@ uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- `fit_published_reach` and `point_source_limit` in
+  `softpaws.response.declination` take `log10_e=None` for their default
+  energy grid, so the default array is never shared between calls.
+
 ## [1.0.0] - 2026-09-22
 
 ### Added

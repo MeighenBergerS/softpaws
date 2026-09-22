@@ -123,7 +123,7 @@ def main() -> None:
     detectors.append(trident)
     print("\nTRIDENT 2025 map averages [m^2]:")
     print(f"  {'log10E':>7} {'|cos|<=0.5':>11} {'all-sky':>9} {'ratio':>6}")
-    for e, f, a in zip(trident.log10_e, trident.observed / 1e4, allsky / 1e4):
+    for e, f, a in zip(trident.log10_e, trident.observed / 1e4, allsky / 1e4, strict=True):
         print(f"  {e:7.2f} {f:11.1f} {a:9.1f} {a/f:6.3f}")
     print("\nResidual inside each fit window (published / posterior median):")
     for d in detectors:

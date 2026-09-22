@@ -813,8 +813,9 @@ def main() -> None:
     figure_absolute(curves, envelope3, a_grid, args.out_dir)
     figure_ratio(curves, envelope3, envelope4, a_grid, args.out_dir)
     analytic = (b_mu * np.minimum(a_grid, 1.0), b_mu * np.maximum(a_grid, 1.0))
+    worst = max(np.max(np.abs(e / a - 1.0)) for e, a in zip(envelope1, analytic, strict=True))
     print("  one-moment envelope against b_mu and A b_mu: largest difference "
-          f"{100.0 * max(np.max(np.abs(e / a - 1.0)) for e, a in zip(envelope1, analytic)):.3f}%")
+          f"{100.0 * worst:.3f}%")
     all_envelopes = {1: envelope1, 2: envelope2, 3: envelope3, 4: envelope4, 5: envelope5}
     figure_envelopes(curves["proposal"], all_envelopes, a_grid, args.out_dir)
     figure_envelopes_absolute(

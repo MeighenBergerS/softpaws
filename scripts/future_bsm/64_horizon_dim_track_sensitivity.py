@@ -187,7 +187,7 @@ def muon_background(moments, livetime_s):
     d_omega = 2.0 * np.pi * np.abs(np.diff(np.cos(np.deg2rad(ZENITH_DEG))))
     area_cm2 = SIDE_AREA_KM2 * 1.0e10
     counts = np.zeros(centers.size)
-    for j, (theta, col) in enumerate(zip(centers, columns)):
+    for j, (theta, col) in enumerate(zip(centers, columns, strict=True)):
         e_s = np.logspace(np.log10(ARRIVAL_WINDOW_GEV[0]), 8.0, 120)
         flux = gaisser_muon_flux(e_s, theta)
         p_window = arrival_probability(moments, coefficients, e_s, col,

@@ -208,7 +208,7 @@ def free_param_names(method: str) -> list[str]:
 
 
 def _theta_to_dict(theta: Sequence[float], method: str) -> dict[str, float]:
-    return dict(zip(free_param_names(method), theta))
+    return dict(zip(free_param_names(method), theta, strict=True))
 
 
 def signal_counts(config: FitConfig, phi0: float, gamma: float,

@@ -130,7 +130,7 @@ def figure_areas(ex32, curves, published, out_dir) -> None:
     grids = {"IceCube": ex32.IC_LOG10_E, "ARCA": ex32.ARCA_LOG10_E}
     with plt.style.context(str(_STYLE)):
         fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.9), sharey=False)
-        for ax, which in zip(axes, grids):
+        for ax, which in zip(axes, grids, strict=True):
             log10_e = grids[which]
             stack = np.array([v for k, v in curves[which].items() if k != "baseline"])
             ax.fill_between(10.0**log10_e, stack.min(axis=0), stack.max(axis=0),

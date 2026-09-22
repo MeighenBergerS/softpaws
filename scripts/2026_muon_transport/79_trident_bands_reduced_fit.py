@@ -75,7 +75,7 @@ def build_band_detectors() -> list:
     keys = ("up", "horizon", "down")
     detectors = []
     bands = _EX55.trident_bands()
-    for key, (lo, hi, log10_e, log10_a) in zip(keys, bands):
+    for key, (lo, hi, log10_e, log10_a) in zip(keys, bands, strict=True):
         observed = _EX56._on_grid(log10_e, log10_a)
         mask = (grid >= site.fit_band[0]) & (grid <= site.fit_band[1]) & np.isfinite(observed)
         weights = np.where((cos_theta >= lo) & (cos_theta < hi), zenith_weights, 0.0)

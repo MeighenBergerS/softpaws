@@ -49,7 +49,7 @@ def main() -> None:
     theta_deg, _ = _EX33.arca_zenith_grid()
     cos_theta = np.cos(np.deg2rad(theta_deg))
     grid = _EX33.ARCA_LOG10_E
-    bands = list(zip(("up", "horizon", "down"), _EX55.trident_bands()))
+    bands = list(zip(("up", "horizon", "down"), _EX55.trident_bands(), strict=True))
     print(f"TRIDENT bands, reach fixed at {1e3*REACH_KM:.0f} m, eps_0 = 1, physics fixed, "
           f"E_thr free; deviance at {100*SIGMA:.0f}% per node, tilt = last/first node [dex]")
     for key, (lo, hi, log10_e, log10_a) in bands:
@@ -63,7 +63,8 @@ def main() -> None:
             row = []
             for f in ABSORPTION_SCALES:
                 ladders = _EX56.water_ladders(site, f * neutrino_column)
-                def dev_of(log10_thr):
+                def dev_of(log10_thr, ladders=ladders, weights=weights, column=column,
+                           mask=mask, observed=observed):
                     theta = np.array([1.0, log10_thr, 1.0, _EX33.LAMBDA_BGR18, REACH_KM])
                     pred = _EX56.water_model(theta, site, ladders, weights, column, mask)
                     if not np.all(np.isfinite(pred)) or np.any(pred <= 0):

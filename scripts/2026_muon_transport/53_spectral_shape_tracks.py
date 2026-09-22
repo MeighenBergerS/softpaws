@@ -183,7 +183,7 @@ class SpectralFit:
 
         def unpack(p):
             full = [None] * 4
-            for i, v in zip(free, p[:len(free)]):
+            for i, v in zip(free, p[:len(free)], strict=True):
                 full[i] = v
             for i, v in fixed.items():
                 full[i] = v

@@ -237,7 +237,7 @@ def surface_stau_flux(energy_gev, mass_gev, k_factor=K_FACTOR):
         lx = np.linspace(np.log(1.0e-4), np.log(0.5), 90)
         x = np.exp(lx)
         value = 0.0
-        for xa, dlx in zip(x, np.gradient(lx)):
+        for xa, dlx in zip(x, np.gradient(lx), strict=True):
             e_n = e_st / xa
             s = 2.0 * M_NUCLEON * e_n
             sigma, x_grid, dn_dx = dy_cross_section_cm2(s, mass_gev, k_factor, n_x=40)
@@ -284,7 +284,7 @@ def figure_flux(masses, fluxes, allowed_k, out_dir) -> None:
     energy = np.logspace(3.0, 8.0, 60)
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.0))
-        for m, flux in zip(masses, fluxes):
+        for m, flux in zip(masses, fluxes, strict=True):
             ax.plot(energy, energy**2 * flux, lw=1.2,
                     label=rf"$m = {m:.0f}$ GeV", alpha=0.9)
         gamma, k90 = allowed_k
@@ -317,7 +317,7 @@ def main() -> None:
     for m in (100.0, 200.0):
         flux = surface_stau_flux(energy_ref, m, args.k_factor)
         print(f"  m {m:.0f} GeV: " + "  ".join(
-            f"E={e:.0e}: {f:.2e}" for e, f in zip(energy_ref, flux)))
+            f"E={e:.0e}: {f:.2e}" for e, f in zip(energy_ref, flux, strict=True)))
 
     print("\nFolding through example 62's likelihood ...")
     ex35 = load_example("35_point_source_effective_area.py", "_e35")

@@ -144,7 +144,7 @@ def four_way_compatibility(detectors) -> dict:
     indices = [ex.PARAM_NAMES.index(name) for name in ex.PHYSICS_PARAMS]
     chains = [d.chain[:, indices] for d in detectors]
     out = {"params": list(ex.PHYSICS_PARAMS), "leave_one_out": {}}
-    for d, result in zip(detectors, leave_one_out_compatibility(chains)):
+    for d, result in zip(detectors, leave_one_out_compatibility(chains), strict=True):
         out["leave_one_out"][d.name] = result
     overall = global_compatibility(chains, ex.PHYSICS_PARAMS)
     out["global"] = {key: overall[key] for key in ("chi2", "dof", "p_value", "sigma")}

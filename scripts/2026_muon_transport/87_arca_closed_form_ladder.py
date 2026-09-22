@@ -156,7 +156,7 @@ def figure(curves: list, out_dir: pathlib.Path) -> None:
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(4.2, 3.6))
         ratios = []
-        for (_, area), color in zip(curves, RUNG_COLORS):
+        for (_, area), color in zip(curves, RUNG_COLORS, strict=False):
             ratio = area / full
             ratios.append(ratio)
             ax.plot(sm.ARCA_LOG10_E, ratio, color=color, lw=1.2 if color == "k" else 1.1,
@@ -168,7 +168,9 @@ def figure(curves: list, out_dir: pathlib.Path) -> None:
         ax.set_ylabel("Ratio To Full")
         ax.set_box_aspect(1)
         fig.canvas.draw()
-        for (text, x0, offset, ha, follow), ratio, color in zip(LABELS, ratios, RUNG_COLORS):
+        for (text, x0, offset, ha, follow), ratio, color in zip(
+            LABELS, ratios, RUNG_COLORS, strict=False
+        ):
             angle = _curve_angle_deg(ax, sm.ARCA_LOG10_E, ratio, x0) if follow else 0.0
             y0 = float(np.interp(x0, sm.ARCA_LOG10_E, ratio)) + offset
             ax.text(x0, y0, text, color=color, ha=ha, va="center",
@@ -208,7 +210,7 @@ def main() -> None:
         cells = "".join(f"{np.interp(x, sm.ARCA_LOG10_E, ratio):8.3f}" for x in QUOTED_LOG10_E)
         print(f"  {label.replace('~', ' '):>36}:{cells}")
     print("\nEach effect alone, as the step it adds (rung over the rung before)")
-    for (_, before), (label, area) in zip(curves[:-1], curves[1:]):
+    for (_, before), (label, area) in zip(curves[:-1], curves[1:], strict=True):
         step = np.interp(QUOTED_LOG10_E, sm.ARCA_LOG10_E, area / before) - 1.0
         cells = "".join(f"{s:+8.1%}" for s in step)
         print(f"  {label.replace('~', ' '):>36}:{cells}")

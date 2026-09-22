@@ -267,12 +267,14 @@ def required_radius_km(ratio: np.ndarray, radius_km: float = RADIUS_KM) -> np.nd
         (1.0 - MEAN_INELASTICITY) * 10.0**COMMON_LOG10_E, DEFAULT_MUON_THRESHOLD_GEV
     )
     out = np.full(np.shape(ratio), np.nan)
-    for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths)):
+    for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths, strict=True)):
         if not np.isfinite(r) or r <= 0.0:
             continue
         target = r * float(mean_target_volume_cm3(np.array([length]))[0])
         out[i] = brentq(
-            lambda x: float(mean_target_volume_cm3(np.array([length]), x)[0]) - target,
+            lambda x, length=length, target=target: (
+                float(mean_target_volume_cm3(np.array([length]), x)[0]) - target
+            ),
             1.0e-4,
             50.0,
         )
@@ -480,7 +482,7 @@ def make_figure(
 
         ax = axes[0]
         ax.plot(COMMON_LOG10_E, icecube, color="k", lw=1.8, label="IceCube, upgoing")
-        for (name, curve), color in zip(curves.items(), colors):
+        for (name, curve), color in zip(curves.items(), colors, strict=False):
             ax.plot(COMMON_LOG10_E, curve, lw=1.1, color=color, label=name)
         ax.set_yscale("log")
         ax.set_ylabel(r"$A_{\rm eff}$ [cm$^2$]")
@@ -488,7 +490,7 @@ def make_figure(
         ax.legend(fontsize=5.5, loc="upper left")
 
         ax = axes[1]
-        for (name, curve), color in zip(curves.items(), colors):
+        for (name, curve), color in zip(curves.items(), colors, strict=False):
             ax.plot(COMMON_LOG10_E, icecube / curve, lw=1.1, color=color, label=name)
         ax.axhline(1.0, color="0.6", lw=0.8, ls=":")
         ax.set_yscale("log")

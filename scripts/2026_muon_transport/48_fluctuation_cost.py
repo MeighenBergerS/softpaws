@@ -312,7 +312,7 @@ def figure_bands(published, phi_model, csda_model, sin_dec_centers, log10_e,
         fig, (ax_area, ax_ratio) = plt.subplots(
             2, 1, figsize=(3.0, 4.4), sharex=True,
             gridspec_kw={"height_ratios": (2.0, 1.2), "hspace": 0.06})
-        for target, style in zip(SHOW_SIN_DEC, BAND_STYLE):
+        for target, style in zip(SHOW_SIN_DEC, BAND_STYLE, strict=False):
             j = int(np.argmin(np.abs(sin_dec_centers - target)))
             ax_area.plot(log10_e[band], published[band, j], color="0.75", lw=2.4,
                          ls=style, alpha=0.8, zorder=1)
@@ -334,7 +334,7 @@ def figure_bands(published, phi_model, csda_model, sin_dec_centers, log10_e,
         ax_area.legend(
             handles=[plt.Line2D([], [], color="k", ls=s, lw=1.0,
                                 label=rf"$\sin\delta = {t:g}$")
-                     for t, s in zip(SHOW_SIN_DEC, BAND_STYLE)],
+                     for t, s in zip(SHOW_SIN_DEC, BAND_STYLE, strict=False)],
             loc="lower right", fontsize=8, frameon=False, handlelength=2.4,
         )
         ax_ratio.axhline(1.0, color="0.6", lw=0.8, ls=":", zorder=1)

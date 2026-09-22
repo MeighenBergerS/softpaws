@@ -617,7 +617,7 @@ def make_figures(ceilings: dict[str, np.ndarray], curves: dict[str, dict[str, np
         # response, the atmospheric background in the measured bin, and the
         # window each declination is best searched in. No band, because there
         # is nothing left here that is a choice.
-        for name, band in ceilings.items():
+        for _name, band in ceilings.items():
             axes[0].plot(SIN_DEC, band.get("background", band["fitted"]), lw=1.4)
         published_sin, published_flux = icecube_point_source_sensitivity()
         axes[0].plot(published_sin, published_flux, color="0.4", lw=1.6, ls="--")

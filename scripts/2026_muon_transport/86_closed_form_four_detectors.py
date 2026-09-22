@@ -135,7 +135,7 @@ def closed_form_trident(theta: np.ndarray, log10_e: np.ndarray, cos_max: float) 
     d_cos = np.abs(np.diff(reduced.COS_EDGES))
     rows = np.abs(cos_theta) <= cos_max
     curves = []
-    for weights, row in zip(model.weights, rows):
+    for weights, row in zip(model.weights, rows, strict=True):
         if not row:
             continue
         full = closed_form_water(

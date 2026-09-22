@@ -469,7 +469,7 @@ def draw_triangle_frame(ax) -> dict[str, tuple[float, float]]:
             (_ternary_xy(0.0, 1.0 - value, value),
              _ternary_xy(1.0 - value, 0.0, value)),
         ):
-            ax.plot(*zip(a, b), color="0.88", lw=0.4, zorder=1)
+            ax.plot(*zip(a, b, strict=True), color="0.88", lw=0.4, zorder=1)
         x, y = _ternary_xy(value, 0.0, 1.0 - value)
         ax.text(x, y - 0.033, f"{value:.1f}", ha="center", va="top",
                 fontsize=8, color="0.35", rotation=-60)
@@ -481,7 +481,7 @@ def draw_triangle_frame(ax) -> dict[str, tuple[float, float]]:
                 va="center", fontsize=8, color="0.35")
 
     triangle = [corners["tau"], corners["e"], corners["mu"], corners["tau"]]
-    ax.plot(*zip(*triangle), color="k", lw=0.9, zorder=3)
+    ax.plot(*zip(*triangle, strict=True), color="k", lw=0.9, zorder=3)
     ax.text(0.5, -0.115, r"$\nu_e$ fraction", ha="center",
             va="top", fontsize=8)
     ax.text(0.115, 0.50, r"$\nu_\tau$ fraction",

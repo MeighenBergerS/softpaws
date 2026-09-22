@@ -343,7 +343,7 @@ def figure_acceptance(moments, charges, out_dir) -> None:
                     color=COLORS[mass], lw=1.2, label=rf"$\tilde\tau$, {mass:.0f} GeV")
         ax.plot(energies, acceptance(scaled_coefficients(moments, M_MU)),
                 color=COLORS["muon"], lw=1.0, ls=":", label="muon")
-        for q, ls in zip(charges, ("--", "-.")):
+        for q, ls in zip(charges, ("--", "-."), strict=False):
             ax.plot(energies, acceptance(scaled_coefficients(moments, M_MU, q)),
                     color="#66a61e", lw=1.1, ls=ls,
                     label=rf"millicharge $\varepsilon_q = {q:g}$")

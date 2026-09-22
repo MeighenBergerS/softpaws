@@ -235,7 +235,7 @@ def make_figures(sin_dec_centers, log10_e, published, model, level, tilt, out) -
     up = sin_dec_centers > 0.0
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.2, 3.0))
-        for target, color in zip(SHOW_LOG10_E, BAND_COLOR):
+        for target, color in zip(SHOW_LOG10_E, BAND_COLOR, strict=False):
             i = int(np.argmin(np.abs(log10_e - target)))
             ax.plot(sin_dec_centers[up], (published[i] / model[i])[up], color=color,
                     lw=1.3, label=rf"$10^{{{target:.0f}}}$ GeV")

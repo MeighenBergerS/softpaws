@@ -628,7 +628,7 @@ class RecoLikelihood:
         weights = f / f.sum()
         shifted = np.zeros_like(marginal)
         for i, center in enumerate(centers):
-            for x, w in zip(TAU_DECAY_X, weights):
+            for x, w in zip(TAU_DECAY_X, weights, strict=True):
                 j = int(np.clip(
                     np.searchsorted(enu_edges, center + np.log10(x)) - 1,
                     0, centers.size - 1))

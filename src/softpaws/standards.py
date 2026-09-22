@@ -146,7 +146,7 @@ def make_standards(
     for name, entry in json.loads(fit_result.read_text()).items():
         if TWO_NUMBER_FIT not in entry:
             raise ValueError(f"{fit_result}: {name} has no {TWO_NUMBER_FIT!r} result.")
-        best = dict(zip(FIT_PARAMETERS, entry[TWO_NUMBER_FIT]["best"]))
+        best = dict(zip(FIT_PARAMETERS, entry[TWO_NUMBER_FIT]["best"], strict=True))
         quantiles = entry[TWO_NUMBER_FIT]["quantiles"]
         site_fixed = {"b_scale": best["b_scale"], "cross_section_slope": best["lam"]}
         if fixed not in (None, site_fixed):

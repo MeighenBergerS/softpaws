@@ -39,7 +39,7 @@ def test_zenith_band_weights():
     assert centres.shape == (dec.N_COS_THETA,) and weights.shape == (2, dec.N_COS_THETA)
     np.testing.assert_allclose(weights.sum(axis=1), 1.0)
     # One band holds the whole day, at cos(theta) = -sin(dec).
-    for row, declination in zip(weights, (30.0, -60.0)):
+    for row, declination in zip(weights, (30.0, -60.0), strict=True):
         assert row.max() == pytest.approx(1.0)
         assert centres[np.argmax(row)] == pytest.approx(-np.sin(np.deg2rad(declination)), abs=0.01)
     _, spread = dec.zenith_band_weights(0.0, np.array([0.0]))

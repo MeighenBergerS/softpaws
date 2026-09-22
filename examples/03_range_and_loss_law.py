@@ -43,7 +43,7 @@ def main():
     energies = 10.0 ** np.arange(4.0, 9.0)
     first_passage = stochastic_muon_range_km(energies, THRESHOLD_GEV)
     mean_loss = muon_range_km(energies, THRESHOLD_GEV)
-    for e, fp, ml in zip(energies, first_passage, mean_loss):
+    for e, fp, ml in zip(energies, first_passage, mean_loss, strict=True):
         print(f"{e:.0e} GeV muon: range {fp:5.2f} km, mean-loss range {ml:5.2f} km")
 
     b, d, t = (f(ENERGY_GEV).item() for f in
@@ -59,7 +59,7 @@ def main():
 
     plt.style.use(STYLE)
     fig, ax = plt.subplots(figsize=(3.4, 3.4))
-    for (name, density), style in zip(densities.items(), ("-", "--", ":")):
+    for (name, density), style in zip(densities.items(), ("-", "--", ":"), strict=False):
         ax.plot(W, np.clip(density, 1e-12, None), style, label=name)
     ax.set(yscale="log", xlim=(0.0, 5.0), ylim=(1e-4, 5.0),
            xlabel=r"Log loss $w = \ln(\varepsilon/E)$", ylabel=r"Probability density $P(w)$")

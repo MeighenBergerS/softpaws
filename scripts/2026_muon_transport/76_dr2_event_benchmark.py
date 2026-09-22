@@ -275,7 +275,7 @@ def figure_declination(components, errors, data, dec_edges, out_dir) -> None:
         for stem, sel, title in panels:
             fig, ax = plt.subplots(figsize=(3.0, 3.0))
             model_d = total[sel].sum(axis=0)
-            band_d = combine_band(errors, lambda g: g[sel].sum(axis=0))
+            band_d = combine_band(errors, lambda g, sel=sel: g[sel].sum(axis=0))
             data_d = data[sel].sum(axis=0)
             atmos_d = atmos[sel].sum(axis=0)
             ax.stairs(model_d, sin_edges, color="k", lw=1.2, label="Model")

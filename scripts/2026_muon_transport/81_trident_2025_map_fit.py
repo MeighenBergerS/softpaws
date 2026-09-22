@@ -92,7 +92,7 @@ def main() -> None:
         print(f"  chi2 {chi2:.1f} / {n - 3} dof; eps_0 {x[0]:.3f}, E_thr {10**x[1]:.0f} GeV, "
               f"Lambda {1e3*x[2]:+.1f} m [{1e3*lo:+.1f}, {1e3*hi:+.1f}]")
         print("  residual (data/model) by cos bin, mean over the fitted energies:")
-        for c, row in zip(cos_c, resid):
+        for c, row in zip(cos_c, resid, strict=True):
             print(f"    cos {c:+.3f}: {10**row.mean():.3f}   rms {row.std():.3f} dex")
         out[name] = {"eps_0": x[0], "e_thr_gev": 10**x[1], "reach_m": 1e3*x[2],
                      "reach_68_m": [1e3*lo, 1e3*hi], "chi2": chi2, "dof": n - 3}

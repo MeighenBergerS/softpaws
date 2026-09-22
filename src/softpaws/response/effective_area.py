@@ -416,15 +416,16 @@ def ic_required_radius_km(
         positive.
     """
     out = np.full(np.shape(ratio), np.nan)
-    for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths)):
+    for i, (r, length) in enumerate(zip(np.atleast_1d(ratio), lengths, strict=True)):
         if not np.isfinite(r) or r <= 0.0:
             continue
         one = np.array([length])
         target = r * float(ic_mean_target_volume_cm3(one, n_dec=n_dec, height_km=height_km,
                                                      n_sides=n_sides)[0])
         out[i] = brentq(
-            lambda x: float(ic_mean_target_volume_cm3(one, x, n_dec, height_km, n_sides)[0])
-            - target,
+            lambda x, one=one, target=target: (
+                float(ic_mean_target_volume_cm3(one, x, n_dec, height_km, n_sides)[0]) - target
+            ),
             1.0e-4,
             50.0,
         )
@@ -814,7 +815,7 @@ def required_footprint_radius_km(
     for i, r in enumerate(np.atleast_1d(ratio)):
         if not np.isfinite(r) or r <= 0.0:
             continue
-        out[i] = brentq(lambda x: mean_area(x) - r * base, 1.0e-3, 50.0)
+        out[i] = brentq(lambda x, r=r: mean_area(x) - r * base, 1.0e-3, 50.0)
     return out
 
 

@@ -184,7 +184,7 @@ def irf_expected_counts_directional(
     n_reco = response.shape[2]
     counts = np.zeros(n_reco)
 
-    for i, (lo, hi) in enumerate(zip(enu_edges[:-1], enu_edges[1:])):
+    for i, (lo, hi) in enumerate(zip(enu_edges[:-1], enu_edges[1:], strict=True)):
         energy = np.logspace(lo, hi, n_subdivisions)
 
         for j in np.nonzero(dec_mask)[0]:

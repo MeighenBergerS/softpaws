@@ -463,7 +463,7 @@ def print_tail_table(tails: dict, reference_tail: list[float]) -> None:
     )
     for n, values in tails.items():
         cells = "".join(
-            f" {v:10.3e} {v / r:8.3f}" for v, r in zip(values, reference_tail)
+            f" {v:10.3e} {v / r:8.3f}" for v, r in zip(values, reference_tail, strict=True)
         )
         print(f"  {n:<2} " + cells)
 
@@ -482,7 +482,7 @@ def print_support_table(y: np.ndarray, dgamma_dy: np.ndarray) -> None:
     phi_integrand = dgamma_dy * (1.0 - np.exp(8.0 * log_one_minus_y))
     edges = [0.0, 1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1, 0.5, 0.9, 1.0]
     print("       y range      mu_1    Phi(8)      rate")
-    for low, high in zip(edges, edges[1:]):
+    for low, high in zip(edges, edges[1:], strict=False):
         mask = (y >= low) & (y < high)
         if mask.sum() < 2:
             continue
