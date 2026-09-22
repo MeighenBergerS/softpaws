@@ -658,7 +658,7 @@ def third_moment_coefficient(
         the shipped PROPOSAL table predates the third-moment column.
     """
     t_water = _interpolate(energy_gev, source, 2)
-    return t_water * (density_g_cm3 / RHO_WATER_G_CM3)
+    return _scale(t_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 2)
 
 
 def log_loss_moments(

@@ -23,9 +23,10 @@ BASELINE = json.loads(
 
 def test_scaling_hook_multiplies_the_accessors():
     e = np.array([1e4, 1e6, 1e8])
-    b, d, moments = (
+    b, d, t, moments = (
         coefficients.drift_coefficient(e),
         coefficients.diffusion_coefficient(e),
+        coefficients.third_moment_coefficient(e),
         coefficients.log_loss_moments(e),
     )
     scaling = KernelScaling(lambda x: 1.1 * np.ones_like(x), lambda x: 0.8 * np.ones_like(x))
@@ -34,6 +35,7 @@ def test_scaling_hook_multiplies_the_accessors():
         assert kernel_scaling() is scaling
         np.testing.assert_allclose(coefficients.drift_coefficient(e), 1.1 * b)
         np.testing.assert_allclose(coefficients.diffusion_coefficient(e), 0.8 * d)
+        np.testing.assert_allclose(coefficients.third_moment_coefficient(e), 0.8 * t)
         first, second, third = coefficients.log_loss_moments(e)
         np.testing.assert_allclose(first, 1.1 * moments[0])
         np.testing.assert_allclose(second, 0.8 * moments[1])
