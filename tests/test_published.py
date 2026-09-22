@@ -276,7 +276,7 @@ def test_arca21_bright_track():
 def test_arca230_angle_dependent():
     bands = pb.arca230_angle_dependent_aeff()
     assert len(bands) == len(REF["angle_dependent"]) == 4
-    for (hi, lo, log10_e, aeff), r in zip(bands, REF["angle_dependent"]):
+    for (hi, lo, log10_e, aeff), r in zip(bands, REF["angle_dependent"], strict=True):
         assert (hi, lo) == (r["hi"], r["lo"])
         assert log10_e.size == r["n"] and np.all(np.diff(log10_e) >= 0.0)
         close(log10_e[[0, -1]], r["log10_e"])

@@ -179,7 +179,7 @@ def parse_aeff(raw: np.ndarray) -> EffectiveArea:
     i_d = np.searchsorted(dec_edges_deg[:-1], raw[:, 2], side="left")
 
     values = np.zeros((n_e, n_d))
-    for row, ie, id_ in zip(raw, i_e, i_d):
+    for row, ie, id_ in zip(raw, i_e, i_d, strict=True):
         values[ie, id_] = row[4]
 
     return EffectiveArea(log10_e_edges, sin_dec_edges, values)

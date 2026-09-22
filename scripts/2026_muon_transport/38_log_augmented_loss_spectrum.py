@@ -511,7 +511,7 @@ def print_tail_table(tails: dict[str, list[float]], reference: list[float]) -> N
     print("  model     " + "".join(f"   P(W>{w:.1f})    x ref" for w in _W_THRESHOLDS))
     print("  --        " + "".join(f" {v:10.3e}        -" for v in reference))
     for label, values in tails.items():
-        cells = "".join(f" {v:10.3e} {v / r:8.3f}" for v, r in zip(values, reference))
+        cells = "".join(f" {v:10.3e} {v / r:8.3f}" for v, r in zip(values, reference, strict=True))
         print(f"  {label:<10}" + cells)
 
 

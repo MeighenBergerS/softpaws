@@ -197,7 +197,7 @@ def figure_bsm(sm_curves, bsm_curves, out_dir) -> None:
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.5, 3.1))
         shared = max(v.max() for _, v in sm_curves.items())
-        for (label, values), color in zip(sm_curves.items(), COLORS["sm_family"]):
+        for (label, values), color in zip(sm_curves.items(), COLORS["sm_family"], strict=False):
             ax.plot(ENU_GRID_BSM, values / shared, color=color, lw=1.0, ls="--",
                     label=label)
         # The three loss laws coincide wherever the fold is flat; distinct
@@ -259,7 +259,7 @@ def main() -> None:
                    * _EX57.flux_shape("E^-2", ENU_GRID) * ENU_GRID)  # per ln E
 
     print("\nFlux-agnostic verdicts (likelihood-ratio 0.1 edges, per ln E):")
-    for label, (color, ls, values) in list(curves.items())[1:]:
+    for label, (_color, _ls, values) in list(curves.items())[1:]:
         norm = values / values.max()
         above = ENU_GRID[norm > 0.1]
         hi = f"{above[-1]:.3g}" if above[-1] < ENU_GRID[-1] * 0.99 else "none in window"

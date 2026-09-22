@@ -245,7 +245,7 @@ def figure_bands(sin_dec_centers, published, variants, out_dir) -> None:
     log10_e = _EX35.COMMON_LOG10_E
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
-        for j, color in zip(show, ("C0", "C1", "C2", "C3")):
+        for j, color in zip(show, ("C0", "C1", "C2", "C3"), strict=False):
             dec = np.rad2deg(np.arcsin(sin_dec_centers[j]))
             ax.plot(log10_e, published[:, j], color=color, lw=1.4)
             lo, hi = _band(variants, lambda v, j=j: v["static"][:, j])
@@ -272,7 +272,7 @@ def figure_residual(sin_dec_centers, published, variants, out_dir) -> None:
     """74b: the residual across the sky, with the band on the model side."""
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
-        for log10_e, color in zip((5.0, 6.0, 7.0), ("C0", "C1", "C2")):
+        for log10_e, color in zip((5.0, 6.0, 7.0), ("C0", "C1", "C2"), strict=False):
             i = int(np.argmin(np.abs(_EX35.COMMON_LOG10_E - log10_e)))
             lo, hi = _band(variants, lambda v, i=i: published[i] / v["static"][i])
             ax.fill_between(sin_dec_centers, lo, hi, color=color, alpha=0.30, lw=0)

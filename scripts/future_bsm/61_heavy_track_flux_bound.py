@@ -241,7 +241,7 @@ def figure_emin(centers, moments, columns, out_dir) -> None:
         for mass in MASSES_GEV:
             ax.plot(90.0 + centers, e_min_gev(moments, columns, mass), color=COLORS[mass],
                     lw=1.2, label=rf"$\tilde\tau$, {mass:.0f} GeV")
-        for q, ls in zip((0.8, 0.7), ("--", ":")):
+        for q, ls in zip((0.8, 0.7), ("--", ":"), strict=False):
             deposit = q**2 * UNIT_DEPOSIT_GEV
             label = (rf"$\varepsilon_q = {q:g}$ ({deposit:.0f} GeV deposit)")
             ax.plot(90.0 + centers, e_min_gev(moments, columns, MASSES_GEV[0], q),
@@ -282,7 +282,7 @@ def main() -> None:
 
     print(f"\n  {'zenith':>8} {'column':>9} {'N_obs':>8} {'Phi_90':>10}   E_min [GeV] per mass "
           + " / ".join(f"{m:.0f}" for m in MASSES_GEV))
-    for j, (dec, col) in enumerate(zip(centers, columns)):
+    for j, (dec, col) in enumerate(zip(centers, columns, strict=True)):
         e_mins = [e_min_gev(moments, np.array([col]), m)[0] for m in MASSES_GEV]
         print(f"  {90 + dec:8.1f} {col:9.0f} {n_band[j]:8.0f} {flux_ul[j]:10.2e}   "
               + " / ".join(f"{e:.2e}" for e in e_mins))
@@ -291,7 +291,7 @@ def main() -> None:
           f"{ANCHOR_EFFICIENCY:.0%}):")
     charges = np.array([1.0, 0.8, 0.6, 0.5, 0.4, 1.0 / 3.0, 0.3, 0.25, 0.2])
     eff = dim_track_efficiency(charges)
-    for q, e in zip(charges, eff):
+    for q, e in zip(charges, eff, strict=True):
         deposit = q**2 * UNIT_DEPOSIT_GEV
         note = "" if e > 0.01 else "   (out of reach for this selection)"
         print(f"  eps_q {q:5.2f}: efficiency {e:8.3f}, deposit {deposit:6.1f} GeV, "

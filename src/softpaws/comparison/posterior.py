@@ -44,7 +44,7 @@ def inside_box(theta: np.ndarray, bounds: Sequence[tuple[float, float]]) -> bool
     inside : bool
         True if ``low < value < high`` for every parameter.
     """
-    return all(low < value < high for value, (low, high) in zip(theta, bounds))
+    return all(low < value < high for value, (low, high) in zip(theta, bounds, strict=True))
 
 
 def log_gaussian_in_log(observed: np.ndarray, predicted: np.ndarray, sigma_ln: float) -> float:
@@ -287,7 +287,7 @@ def product_posterior(
     density = density.reshape(mesh[0].shape)
     total = density.sum()
     out: dict = {"params": list(names)}
-    for axis, (name, grid) in enumerate(zip(names, axes)):
+    for axis, (name, grid) in enumerate(zip(names, axes, strict=True)):
         others = tuple(a for a in range(density.ndim) if a != axis)
         marginal = density.sum(axis=others) / total
         cumulative = np.cumsum(marginal)
@@ -295,7 +295,8 @@ def product_posterior(
         out[name] = {"median": float(median), "ci68": [float(lo68), float(hi68)]}
     peak = np.unravel_index(np.argmax(density), density.shape)
     out["mode"] = {
-        name: float(grid[peak[axis]]) for axis, (name, grid) in enumerate(zip(names, axes))
+        name: float(grid[peak[axis]])
+        for axis, (name, grid) in enumerate(zip(names, axes, strict=True))
     }
     return out
 

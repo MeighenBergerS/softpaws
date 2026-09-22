@@ -353,7 +353,7 @@ def figure_tension(results, phi0_grid, gamma_grid, out_dir) -> None:
         fig, axes = plt.subplots(1, len(families), figsize=(3.1 * len(families), 3.0),
                                  sharey=True, gridspec_kw={"wspace": 0.08})
         axes = np.atleast_1d(axes)
-        for ax, family in zip(axes, families):
+        for ax, family in zip(axes, families, strict=True):
             r = results[family]
             ic = r["ic"] - r["ic"].max()
             km = r["km_like"] - r["km_like"].max()

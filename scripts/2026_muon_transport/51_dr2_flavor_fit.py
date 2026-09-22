@@ -469,7 +469,7 @@ def figure_spectra(likelihood, best, dec_edges_deg, out_dir) -> None:
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.0, 3.0))
         total = np.zeros_like(window_centers)
-        for (name, comp), color in zip(components.items(), colors):
+        for (name, comp), color in zip(components.items(), colors, strict=False):
             summed = comp.sum(axis=1)
             total += summed
             if summed.max() <= 0.0:
@@ -524,7 +524,7 @@ def figure_triangle(curve, interval68, interval95, out_dir) -> None:
             ax.add_patch(wedge)
 
         tip = _EX50._ternary_xy(0.0, 1.0 - r_best, r_best)
-        ax.plot(*zip(corners["e"], tip), color=color, lw=1.1, ls="--",
+        ax.plot(*zip(corners["e"], tip, strict=True), color=color, lw=1.1, ls="--",
                 zorder=4, label=rf"best fit $\hat r = {r_best:.2f}$")
         ax.plot(*tip, marker="*", color=color, ms=7, ls="none", zorder=5)
 
@@ -532,7 +532,7 @@ def figure_triangle(curve, interval68, interval95, out_dir) -> None:
                           rf"$r \in [{R_MIN_STD:.2f}, {R_MAX:.2f}]$"),
                          (R_MAX, "_nolegend_")):
             bound = _EX50._ternary_xy(0.0, 1.0 - r, r)
-            ax.plot(*zip(corners["e"], bound), color="0.4", lw=0.8, ls=":",
+            ax.plot(*zip(corners["e"], bound, strict=True), color="0.4", lw=0.8, ls=":",
                     zorder=3, label=label)
 
         _EX50.draw_published_curves(ax)

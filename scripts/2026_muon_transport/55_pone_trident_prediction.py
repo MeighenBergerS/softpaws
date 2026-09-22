@@ -239,7 +239,7 @@ def report(ex35, name, bands, model, labels) -> None:
     print(f"  {'band':>18} {'mean':>8} {'rms':>8} {'tilt/dec':>10}"
           + "".join(f" {'@10^' + str(d):>8}" for d in REPORT_DECADES))
     all_res = []
-    for (lo, hi, log10_e, log10_a), curve, label in zip(bands, model, labels):
+    for (_lo, _hi, log10_e, log10_a), curve, label in zip(bands, model, labels, strict=True):
         res = residuals(ex35, log10_e, log10_a, curve)
         x = log10_e[log10_e >= REPORT_LOG10_E]
         tilt = np.polyfit(x, res, 1)[0] if x.size > 2 else np.nan
@@ -272,8 +272,8 @@ def figure_bands(ex35, name, bands, model, labels, stem, out_dir, ylim) -> None:
     """Published bands (smoothed, with the digitization band) and model lines."""
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
-        for (lo, hi, log10_e, log10_a), curve, label, color in zip(bands, model, labels,
-                                                                   COLORS):
+        for (_lo, _hi, log10_e, log10_a), curve, label, color in zip(bands, model, labels,
+                                                                   COLORS, strict=False):
             ax.fill_between(log10_e, 10.0 ** (log10_a - BAND_DEX),
                             10.0 ** (log10_a + BAND_DEX), color=color, alpha=0.22, lw=0)
             ax.plot(ex35.COMMON_LOG10_E, curve, color=color, lw=1.1, label=label)
@@ -295,11 +295,11 @@ def figure_ratios(ex35, sets, out_dir) -> None:
     with plt.style.context(str(_STYLE)):
         fig, axes = plt.subplots(1, len(sets), figsize=(3.2 * len(sets), 3.0), sharey=True,
                                  gridspec_kw={"wspace": 0.06})
-        for ax, (name, bands, model, labels) in zip(axes, sets):
+        for ax, (name, bands, model, labels) in zip(axes, sets, strict=True):
             ax.axhspan(10.0**-BAND_DEX, 10.0**BAND_DEX, color="0.93", zorder=0)
             ax.axhline(1.0, color="0.6", lw=0.8, ls=":", zorder=1)
-            for (lo, hi, log10_e, log10_a), curve, label, color in zip(bands, model, labels,
-                                                                       COLORS):
+            for (_lo, _hi, log10_e, log10_a), curve, label, color in zip(bands, model, labels,
+                                                                       COLORS, strict=False):
                 table = np.log10(np.clip(curve, 1.0e-30, None))
                 matched = np.interp(log10_e, ex35.COMMON_LOG10_E, table)
                 ax.plot(log10_e, 10.0 ** (log10_a - matched), color=color, lw=1.2,

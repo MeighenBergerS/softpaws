@@ -233,7 +233,9 @@ def factorized_predictors(trident_log10_e: np.ndarray) -> dict:
                     length, site.depth_km, cos_theta[down_mask], weights[down_mask]
                 )
             out = np.zeros(energy.size)
-            for (mask, fraction, transmission), seg in zip(halves, (length, length_down)):
+            for (_mask, fraction, transmission), seg in zip(
+                halves, (length, length_down), strict=True
+            ):
                 out += fraction * transmission * (area * seg + v_det)
             out *= eps_0 * n_nucleon * sm.tilted_cc(energy, lam) * CM_PER_KM**3
             return out if select is None else out[select]
@@ -246,7 +248,7 @@ def factorized_predictors(trident_log10_e: np.ndarray) -> dict:
     d_cos = np.abs(np.diff(reduced.COS_EDGES))
     rows = np.abs(cos_cells) <= _EX83.COS_MAX
     band_predictors = [
-        water(model.site, band=(w > 0.0)) for w, row in zip(model.weights, rows) if row
+        water(model.site, band=(w > 0.0)) for w, row in zip(model.weights, rows, strict=True) if row
     ]
 
     def trident(theta, select=None, naive=False):

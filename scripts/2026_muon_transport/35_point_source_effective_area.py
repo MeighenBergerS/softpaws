@@ -683,7 +683,7 @@ def figure_bands(
 
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
-        for j, color in zip(show_bands, ("C0", "C1", "C2", "C3")):
+        for j, color in zip(show_bands, ("C0", "C1", "C2", "C3"), strict=False):
             dec = np.rad2deg(np.arcsin(sin_dec_centers[j]))
             ax.plot(COMMON_LOG10_E, published[:, j], color=color, lw=1.4)
             ax.plot(COMMON_LOG10_E, static[:, j], color=color, lw=1.0, ls="--")
@@ -724,7 +724,7 @@ def figure_residual(
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
         lowest = None
-        for log10_e, color in zip(show_energies, ("C0", "C1", "C2")):
+        for log10_e, color in zip(show_energies, ("C0", "C1", "C2"), strict=False):
             i = int(np.argmin(np.abs(COMMON_LOG10_E - log10_e)))
             ratio = published[i] / static[i]
             ax.plot(

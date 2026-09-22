@@ -394,7 +394,7 @@ def main() -> None:
     )
 
     print("Atmospheric prediction vs. data, per bin (MCEq normalization as computed):")
-    for i, (lo, hi) in enumerate(zip(LOG10_E_EDGES[:-1], LOG10_E_EDGES[1:])):
+    for i, (lo, hi) in enumerate(zip(LOG10_E_EDGES[:-1], LOG10_E_EDGES[1:], strict=True)):
         print(
             f"  {lo:4.1f}-{hi:4.1f}: observed {observed[i]:9,.0f}   "
             f"IRF atm {irf_background[i]:11,.1f}   soft atm {soft_background[i]:11,.1f}"

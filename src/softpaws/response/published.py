@@ -149,7 +149,7 @@ def trident_allsky_cm2() -> np.ndarray:
     for cos_lo, cos_hi in TRIDENT_COS_BANDS:
         log10_e, aeff_cm2 = trident_band_aeff(cos_lo, cos_hi)
         bands.append(on_arca_grid(*_smooth_digitized(log10_e, np.log10(aeff_cm2))))
-    return np.sum([w * b for w, b in zip(TRIDENT_BAND_WEIGHTS, bands)], axis=0)
+    return np.sum([w * b for w, b in zip(TRIDENT_BAND_WEIGHTS, bands, strict=True)], axis=0)
 
 
 #: Published sky average of each water site, by name.

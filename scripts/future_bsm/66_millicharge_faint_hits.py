@@ -291,7 +291,7 @@ def z_onium(name, energy_gev):
         dlx = np.gradient(lx)
         for i, e_m in enumerate(e_grid):
             value = 0.0
-            for xa, dl in zip(x, dlx):
+            for xa, dl in zip(x, dlx, strict=True):
                 s = 2.0 * _EX63.M_NUCLEON * (e_m / xa)
                 sigma, x_grid, dn_dx = qq_pair_cross_section_cm2(s, m_q)
                 if sigma <= 0.0:
@@ -362,7 +362,7 @@ def z_dy(mass_chi, energy_gev):
         dlx = np.gradient(lx)
         for i, e_chi in enumerate(e_grid):
             value = 0.0
-            for xa, dl in zip(x, dlx):
+            for xa, dl in zip(x, dlx, strict=True):
                 s = 2.0 * _EX63.M_NUCLEON * (e_chi / xa)
                 sigma, x_grid, dn_dx = dy_chi_cross_section_cm2(s, mass_chi)
                 if sigma <= 0.0:
@@ -552,7 +552,7 @@ def main() -> None:
     for m in (0.01, 0.5, 3.5):
         flux = mcp_flux(e_ref, m)
         print(f"  eps^-2 flux, m = {m:g} GeV: " + "  ".join(
-            f"E={e:.0f}: {f:.2e}" for e, f in zip(e_ref, flux)))
+            f"E={e:.0f}: {f:.2e}" for e, f in zip(e_ref, flux, strict=True)))
 
     print("\n  eps_90(m):")
     central, lo_b, hi_b = [], [], []

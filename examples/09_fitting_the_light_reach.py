@@ -46,7 +46,7 @@ def main():
     plt.style.use(STYLE)
     fig, ax = plt.subplots(figsize=(3.4, 3.4))
     ax.plot(LOG10_E, published, color="k", lw=1.4, label="IceCube, published")
-    for (name, model), color in zip(models.items(), ("C1", "C0")):
+    for (name, model), color in zip(models.items(), ("C1", "C0"), strict=False):
         ratio = (published / model)[4:15]  # 10^5 to 10^7.5 GeV
         print(f"{name:>10}: published / model = {np.exp(np.mean(np.log(ratio))):.2f}")
         ax.plot(LOG10_E, model, "--", color=color, label=f"Model, {name.lower()}")

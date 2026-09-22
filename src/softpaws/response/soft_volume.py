@@ -718,7 +718,7 @@ class SoftVolumeResponse:
         """
         edges = np.asarray(log10_energy_edges, dtype=float)
         counts = np.empty(len(edges) - 1)
-        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
             energy = np.logspace(lo, hi, n_subdivisions)
             rate = self.differential_rate_with_cutoff(
                 energy, phi0, gamma, e0_cutoff_gev, lam, part, **cutoff_kwargs,
@@ -768,7 +768,7 @@ class SoftVolumeResponse:
         """
         edges = np.asarray(log10_energy_edges, dtype=float)
         counts = np.empty(len(edges) - 1)
-        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
             energy = np.logspace(lo, hi, n_subdivisions)
             rate = self.differential_rate(energy, phi0, gamma, lam, part)
             counts[i] = np.trapezoid(rate, energy)
@@ -839,7 +839,7 @@ class SoftVolumeResponse:
             )
         edges = np.asarray(log10_energy_edges, dtype=float)
         counts = np.empty(len(edges) - 1)
-        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
             energy = np.logspace(lo, hi, n_subdivisions)
             # Differential rate is per steradian; weight by the attenuation-folded
             # effective solid angle at each energy before integrating over energy.
@@ -942,7 +942,7 @@ class SoftVolumeResponse:
 
         edges = np.asarray(log10_energy_edges, dtype=float)
         counts = np.empty(len(edges) - 1)
-        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
             energy = np.logspace(lo, hi, n_subdivisions)
             lam_eff = self.spectral_slope(energy, lam)
             sigma = self.cc_cross_section_cm2(energy, lam)
@@ -1055,7 +1055,7 @@ class SoftVolumeResponse:
 
         edges = np.asarray(log10_energy_edges, dtype=float)
         counts = np.empty(len(edges) - 1)
-        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+        for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
             energy = np.logspace(lo, hi, n_subdivisions)
             flux = np.asarray(flux_fn(energy[:, None], dec_deg[None, :]), dtype=float)
             if columns is not None:
@@ -1068,7 +1068,7 @@ class SoftVolumeResponse:
             gamma_eff = _local_spectral_index(energy, band_flux)
             aeff = np.array([
                 float(self.effective_area_cm2(e, g, lam, part)[0])
-                for e, g in zip(energy, gamma_eff)
+                for e, g in zip(energy, gamma_eff, strict=True)
             ])
             counts[i] = np.trapezoid(aeff * band_flux, energy)
         return counts * livetime_s
@@ -1193,7 +1193,7 @@ def tau_induced_expected_counts(
     """
     edges = np.asarray(log10_energy_edges, dtype=float)
     counts = np.empty(len(edges) - 1)
-    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
         energy = np.logspace(lo, hi, n_subdivisions)
         rate = tau_induced_differential_rate(response, energy, phi0, gamma, lam)
         counts[i] = np.trapezoid(rate, energy)
@@ -1261,7 +1261,7 @@ def tau_induced_expected_counts_attenuated(
         )
     edges = np.asarray(log10_energy_edges, dtype=float)
     counts = np.empty(len(edges) - 1)
-    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+    for i, (lo, hi) in enumerate(zip(edges[:-1], edges[1:], strict=True)):
         energy = np.logspace(lo, hi, n_subdivisions)
         rate = tau_induced_differential_rate(response, energy, phi0, gamma, lam)
         omega_eff = effective_solid_angle(

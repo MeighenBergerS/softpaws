@@ -310,7 +310,7 @@ def figure_scans(scans, out_dir) -> None:
     with plt.style.context(str(_STYLE)):
         fig, axes = plt.subplots(1, len(N_GRID), figsize=(2.6 * len(N_GRID), 2.7),
                                  sharey=True, gridspec_kw={"wspace": 0.08})
-        for ax, n in zip(axes, N_GRID):
+        for ax, n in zip(axes, N_GRID, strict=True):
             for effect, label in (("both", "both effects"), ("rate", "rate only"),
                                   ("proxy", "proxy shift only")):
                 ax.plot(EPS_GRID, scans["IC86"][(n, effect)], color=COLORS[effect], lw=1.2,

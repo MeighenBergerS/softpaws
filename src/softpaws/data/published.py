@@ -348,7 +348,9 @@ def trident_band_aeff(
     ValueError
         Raised if ``(cos_lo, cos_hi)`` is not one of the tabulated bands.
     """
-    stems = dict(zip(TRIDENT_COS_BANDS, ("trident_-1_-0.2", "trident_-0.2_0.2", "trident_0.2_1.0")))
+    stems = dict(zip(
+        TRIDENT_COS_BANDS, ("trident_-1_-0.2", "trident_-0.2_0.2", "trident_0.2_1.0"), strict=True
+    ))
     try:
         stem = stems[(float(cos_lo), float(cos_hi))]
     except KeyError:

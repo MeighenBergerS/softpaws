@@ -140,7 +140,7 @@ def full_theta(
         ``(eps_0, log10_e_thr, b_scale, lam, reach_km)``.
     """
     theta = np.array([fixed[name] for name in PARAM_NAMES], dtype=float)
-    for name, value in zip(free_names, free_values):
+    for name, value in zip(free_names, free_values, strict=True):
         theta[PARAM_NAMES.index(name)] = value
     return theta
 
@@ -201,7 +201,7 @@ def reduced_log_probability(
     """
 
     def log_probability(values: np.ndarray) -> float:
-        for name, value in zip(free_names, values):
+        for name, value in zip(free_names, values, strict=True):
             low, high = detector.priors[name]
             if not low < value < high:
                 return -np.inf
@@ -552,7 +552,7 @@ def fit_cells(
         return np.array([x[0], x[1], 1.0, LAMBDA_BGR18, x[2]])
 
     def chi_square(x):
-        for value, (low, high) in zip(x, PARAM_BOUNDS.values()):
+        for value, (low, high) in zip(x, PARAM_BOUNDS.values(), strict=True):
             if not low < value < high:
                 return 1.0e9
         residual = log10_a[cells] - model(theta_of(x))[cells]
@@ -629,7 +629,7 @@ def trident_2025_detector(
     rows = np.abs(cos_theta) <= cos_max
     model = MapModel(log10_e)
     # Only the selected cos bins are needed; drop the others from the loop.
-    model.weights = [w for w, row in zip(model.weights, rows) if row]
+    model.weights = [w for w, row in zip(model.weights, rows, strict=True) if row]
     observed = 10.0 ** log10_a[rows].ravel()
 
     def predict(theta, select=None):
@@ -712,7 +712,7 @@ def trident_2025_average_detector(
     }
 
     model = MapModel(log10_e)
-    weights_per_band = [w for w, row in zip(model.weights, rows) if row]
+    weights_per_band = [w for w, row in zip(model.weights, rows, strict=True) if row]
 
     def predict(theta, select=None):
         curves = np.empty((len(weights_per_band), log10_e.size))

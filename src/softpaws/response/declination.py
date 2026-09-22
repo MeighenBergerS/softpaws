@@ -38,6 +38,7 @@ from ..constants import (
     N_HOUR_ANGLE,
     N_RUNG,
     N_SUB_BAND,
+    REACH_FIT_LOG10_E,
     REACH_FRACTIONS,
     REACH_PIVOT_GEV,
     REACH_REFERENCE_GEV,
@@ -344,7 +345,7 @@ def fit_light_reach(
 def fit_published_reach(
     site: Site,
     threshold_gev: float,
-    log10_e: np.ndarray = np.arange(4.0, 8.01, 0.25),
+    log10_e: np.ndarray | None = None,
     fit_band: tuple[float, float] = (5.0, 7.5),
     n_zenith: int = 8,
     channels: str = "both",
@@ -363,8 +364,9 @@ def fit_published_reach(
         TRIDENT.
     threshold_gev : float
         Muon selection threshold [GeV].
-    log10_e : np.ndarray, optional
-        Neutrino energies the comparison runs on [log10 GeV].
+    log10_e : np.ndarray or None, optional
+        Neutrino energies the comparison runs on [log10 GeV]. ``None`` takes
+        4 to 8 in steps of 0.25.
     fit_band : tuple of float, optional
         Band of ``log10(E / GeV)`` the fit is scored over. Published nodes
         outside the site's own range are skipped.
@@ -382,6 +384,7 @@ def fit_published_reach(
     residual_dex : float
         Root-mean-square residual of the best fit [dex].
     """
+    log10_e = REACH_FIT_LOG10_E.copy() if log10_e is None else log10_e
     published, cos_range = published_effective_area_cm2(site, log10_e, data_dir)
     theta_deg, weights = zenith_grid(n_zenith, cos_range)
     band = (log10_e >= fit_band[0]) & (log10_e <= fit_band[1])
@@ -401,7 +404,7 @@ def point_source_limit(
     reach_km: float | None = None,
     background: AtmosphericFlux | None = None,
     bin_radius_deg: float | np.ndarray = 1.0,
-    log10_e: np.ndarray = np.arange(4.0, 8.01, 0.25),
+    log10_e: np.ndarray | None = None,
     n_cos_theta: int = 60,
     channels: str = "both",
 ) -> np.ndarray:
@@ -436,8 +439,8 @@ def point_source_limit(
         Atmospheric neutrino flux. ``None`` gives a background-free search.
     bin_radius_deg : float or np.ndarray, optional
         Angular radius of the source bin [deg].
-    log10_e : np.ndarray, optional
-        Neutrino energies [log10 GeV].
+    log10_e : np.ndarray or None, optional
+        Neutrino energies [log10 GeV]. ``None`` takes 4 to 8 in steps of 0.25.
     n_cos_theta : int, optional
         Number of zenith bands the daily sweep is binned into.
     channels : {"both", "mu"}, optional
@@ -448,6 +451,7 @@ def point_source_limit(
     e2_flux : np.ndarray, shape (n_dec,)
         ``E^2 phi`` at 100 TeV the search excludes at 90% [GeV cm^-2 s^-1].
     """
+    log10_e = REACH_FIT_LOG10_E.copy() if log10_e is None else log10_e
     dec_deg = np.atleast_1d(np.asarray(dec_deg, dtype=float))
     cos_theta, weights = zenith_band_weights(
         site.latitude_deg, dec_deg, n_cos_theta=n_cos_theta

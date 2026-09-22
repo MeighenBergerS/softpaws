@@ -266,7 +266,7 @@ def report_arca_bands(ex35, bands, model) -> None:
     print("\n  ARCA230 cos(theta) bands, published / model "
           "(Fig. 7b, final track selection)")
     print(f"  {'cos(theta) band':>17} {'mean':>8} {'rms':>8}   points at E >= 10^4 GeV")
-    for (cos_hi, cos_lo, log10_e, aeff), curve in zip(bands, model):
+    for (cos_hi, cos_lo, log10_e, aeff), curve in zip(bands, model, strict=True):
         mask = log10_e >= 4.0
         table = np.log10(np.clip(curve, 1.0e-30, None))
         matched = 10.0 ** np.interp(log10_e[mask], ex35.COMMON_LOG10_E, table)
@@ -280,7 +280,7 @@ def figure_arca_bands(ex35, bands, model, out_dir) -> None:
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
         for (cos_hi, cos_lo, log10_e, aeff), curve, color in zip(
-                bands, model, BAND_COLOR):
+                bands, model, BAND_COLOR, strict=False):
             ax.plot(log10_e, aeff, color=color, lw=2.2, alpha=0.5)
             ax.plot(ex35.COMMON_LOG10_E, curve, color=color, lw=1.1)
             ax.text(7.35, 1.8 * np.interp(7.35, log10_e, aeff,
@@ -300,7 +300,7 @@ def figure_arca_ratio(ex35, bands, model, out_dir) -> None:
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
         ax.axhline(1.0, color="0.6", lw=0.8, ls=":", zorder=1)
         for (cos_hi, cos_lo, log10_e, aeff), curve, color in zip(
-                bands, model, BAND_COLOR):
+                bands, model, BAND_COLOR, strict=False):
             table = np.log10(np.clip(curve, 1.0e-30, None))
             matched = 10.0 ** np.interp(log10_e, ex35.COMMON_LOG10_E, table)
             ax.plot(log10_e, aeff / matched, color=color, lw=1.3,
@@ -321,7 +321,7 @@ def figure_bands(ex35, sin_dec_centers, published, model, out_dir) -> None:
     show = [int(np.argmin(np.abs(sin_dec_centers - s))) for s in SHOW_SIN_DEC]
     with plt.style.context(str(_STYLE)):
         fig, ax = plt.subplots(figsize=(3.4, 3.4))
-        for j, color in zip(show, BAND_COLOR):
+        for j, color in zip(show, BAND_COLOR, strict=False):
             dec = np.rad2deg(np.arcsin(sin_dec_centers[j]))
             ax.plot(log10_e, published[:, j], color=color, lw=2.2, alpha=0.5)
             ax.plot(log10_e, model[:, j], color=color, lw=1.1)

@@ -292,7 +292,7 @@ def make_figure(result: dict, out_path: pathlib.Path) -> None:
     energy = result["energy"]
     with plt.style.context(str(_STYLE)):
         fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.6), sharey=True)
-        for ax, flavour in zip(axes, FLAVOURS):
+        for ax, flavour in zip(axes, FLAVOURS, strict=True):
             for band in COS_ZENITH_BANDS:
                 ratio = result["hese"][(flavour, band)] / result["ours"][(flavour, band)]
                 ax.plot(np.log10(energy), ratio, color=BAND_COLOR[band], lw=1.2,

@@ -306,7 +306,7 @@ def log_probability(
     sigma_ln: float,
 ) -> float:
     """Flat-prior log posterior, Gaussian in ``ln A_eff``."""
-    for value, name in zip(theta, PARAM_NAMES):
+    for value, name in zip(theta, PARAM_NAMES, strict=True):
         low, high = PRIORS[name]
         if not low < value < high:
             return -np.inf
