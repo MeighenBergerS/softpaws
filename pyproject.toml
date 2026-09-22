@@ -104,7 +104,9 @@ softpaws = [
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "D"]
+# B (flake8-bugbear) catches likely bugs: shared mutable defaults, closures that
+# read a loop variable after the loop moved on, zips that truncate silently.
+select = ["E", "F", "W", "I", "D", "B"]
 # A summary may be a noun phrase ("Effective area for ... [cm^2]."), see design rule D1.
 ignore = ["D401"]
 

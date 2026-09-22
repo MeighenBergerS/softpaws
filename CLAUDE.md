@@ -116,6 +116,7 @@ for every figure.
   Bash. `permissions.ask` in `.claude/settings.json` enforces the prompt.
 - Prose in docstrings and documentation follows the
   [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/).
-- Ruff line length is 100; enabled rule sets are E, F, W, I, and D (numpy docstrings, `src/` only).
+- Ruff line length is 100; enabled rule sets are E, F, W, I, D (numpy docstrings, `src/` only)
+  and B (bugbear).
 - Commits and PRs follow `workflow-commits` and `workflow-pull-requests`.
   Never add Claude as an author, co-author or signer (`workflow-ai-disclosure`).
