@@ -15,9 +15,11 @@ result is recovered here as the first two terms of the series — see
 
 **Naming convention on this page.** "The method paper" is Meighen-Berger
 (2026), and the section, appendix and table references attached to it follow
-its current numbering: Roman-numbered sections I to VI and lettered appendices
-A to D, with App. A "The Transport" holding A.1 The Loss Kernel, A.2 The Range
-to Threshold, A.3 The Drift-Diffusion Limit and A.4 Tau Transport. "Palmisano
+its submitted numbering: Roman-numbered sections I to VII and lettered
+appendices A to D, with App. A "The Transport" holding A.1 The Drift-Diffusion
+Limit and A.2 The Muon Range. Parts of this page are derivation notes that the
+paper does not carry: the soft volume with its saturation factor, the
+cross-section pole and the subordinator reading of the loss. Those sections say so. "Palmisano
 et al." is arXiv:2607.13143, and every equation, figure, table and appendix
 number attached to that name is theirs.
 
@@ -30,7 +32,7 @@ loss `y`, not on energy `E`). Scale-invariant operators are **diagonalised by
 power laws**, and the astrophysical source *is* a power law. So the entire
 integro-differential transport problem collapses to **multiplication by a single
 number** `Φ(A)` — no propagator, no kernel, no convolution, and no energy
-cutoffs. (Method paper, Sec. I and Sec. II.A.)
+cutoffs. (Method paper, Sec. I and Sec. II.B.)
 
 Where Palmisano et al. expand the collision operator in small `y` to get a
 differential Fokker–Planck equation, this treatment keeps the collision operator
@@ -50,7 +52,7 @@ sight (`x` = column depth [km w.e.]) obeys
 ```
 
 The QED collision operator is kept as the **exact integral operator** (the
-collision operator the method paper writes down at the opening of Sec. II), not
+collision operator the method paper writes down in Sec. II.B), not
 expanded:
 
 ```
@@ -108,7 +110,7 @@ power-law source excites exactly one `s`, you never need the inverse transform.
 
 ---
 
-## 3. Solving the transport equation (method paper, Sec. III.A and App. A)
+## 3. Solving the transport equation (method paper, App. A)
 
 Mellin-transforming the PDE turns the integro-differential equation into a linear
 first-order **ODE in depth**, mode by mode:
@@ -119,8 +121,7 @@ first-order **ODE in depth**, mode by mode:
 
 - **First order in `x` ⇒ initial-value problem in depth** (depth plays the role
   of time). The *only* boundary condition allowed is `ϕ_μ(x=0, E) = 0` (no muons
-  enter at the Earth's surface, the condition `ϕ̂(0, s) = 0` the method paper
-  imposes in App. A). You cannot additionally impose a condition at the detector
+  enter at the Earth's surface, so `ϕ̂(0, s) = 0`). You cannot additionally impose a condition at the detector
   without over-determining the system.
 - **This justifies the "free flux at the surface" shortcut of Palmisano et al.**
   A perfectly absorbing detector at `x_det` affects only `x > x_det`, which
@@ -143,7 +144,7 @@ Fokker–Planck, no truncation.**
 
 ---
 
-## 4. The source term (method paper, Sec. II.C)
+## 4. The source term (method paper, Sec. II.B)
 
 Built from scratch, same physics as Palmisano et al. but carried exactly. Muon
 born from `ν_μ` CC DIS with `ε = (1−y_w) E_ν`, `y_w` the weak inelasticity
@@ -155,9 +156,9 @@ S(ε) = n_N ∫₀¹ dy_w/(1−y_w) · P(y_w) · [ϕ_ν σ_νN](ε/(1−y_w))
 
 Same `1/(1−y)` Jacobian structure as the QED gain term, same reason. With
 power-law flux `ϕ_ν ∝ E_ν^{−γ}` and power-law cross section `σ_νN ∝ E_ν^λ`,
-`λ ≈ 0.4` (both stated in the method paper, Sec. II.C), and step-function
-attenuation + constant near-detector density (the transparent-Earth idealization
-the method paper starts from in Sec. III.A), the product is a single power
+`λ ≈ 0.4` (both stated in the method paper, Sec. II.B), and step-function
+attenuation + constant near-detector density (a transparent-Earth idealization;
+the method paper's estimate in Sec. III.A keeps the Earth transmission), the product is a single power
 `ϕ_ν σ_νN ∝ E_ν^{λ−γ}`, and the `y_w` integral **factorises off completely** into
 a pure number. This defines the two key quantities:
 
@@ -180,7 +181,7 @@ a pure number. This defines the two key quantities:
 
 ---
 
-## 5. Master solution and event rate (method paper, Sec. III.A)
+## 5. Master solution and event rate (this page; compare the method paper, Sec. III)
 
 Because the source excites exactly one mode, the ODE solves directly in energy
 space (`S(ε) = S₀ ε^{−1−A}`, `ξ`-independent under the same constant-density
@@ -196,8 +197,8 @@ Sanity checks: `x→0` → `S(E)x` (thin slab, linear, none lost); `x→∞` →
 `S(E)/Φ(A)` (equilibrium); `Φ→0` → `S(E)x` for all `x` (no losses, whole column
 accumulates — **finite**, remember this one).
 
-**Soft volume** (the second term of the track rate in the method paper,
-Sec. III.A) — the target volume that, producing muons with no propagation
+**Soft volume** (the counterpart of the `A_proj L` term of the method paper's
+effective volume, Sec. III) — the target volume that, producing muons with no propagation
 losses, would give the observed arrival rate:
 
 ```
@@ -208,11 +209,10 @@ Three factors: `A_proj/Φ(A)` = area × effective range `1/Φ(A)` (range weighte
 spectral replenishment, not the CSDA range); `I(A) ≃ 0.8`; and the **saturation
 factor** `(1 − e^{−Φx})` = finite upstream column.
 
-**Master formula** (the track rate of the method paper, Sec. III.A) — two
+**Master formula** (compare the effective volume of the method paper, Sec. III) — two
 disjoint populations: produced inside (`V_det = 4/3 π R_det³`) and produced
 outside, arriving through the projected surface (`A_proj = π R_det²` for a
-sphere, the constant-projected-area detector the method paper takes first in
-Sec. III.A). `I(A)` multiplies both (same production vertex):
+sphere; the method paper's estimate uses the mean projected area, Sec. III.A). `I(A)` multiplies both (same production vertex):
 
 ```
         ┌─────────────────────────────────────────────────────────────────────┐
@@ -227,11 +227,11 @@ coefficient (`I(A)` and exact `Φ(A)`).
 
 ---
 
-## 6. The saturation factor `(1 − e^{−Φx})` — why it matters (method paper, Sec. III.A)
+## 6. The saturation factor `(1 − e^{−Φx})` — why it matters (not in the current method paper)
 
-The method paper names the saturation factor in Sec. III.A and takes the
-transparent-Earth limit `1/Λ_ν → 0` in App. A. The depth table and the `Φ < 0`
-continuation below are this page's own and are not in the current method paper.
+The current method paper does not carry the saturation factor. Its estimate
+caps the downgoing muon range at the depth of a sea site instead (Sec. III.A).
+The depth table and the `Φ < 0` continuation below are this page's own.
 
 The detector here is a perfect absorber (unit efficiency, no
 cuts/acceptance/threshold — the prediction is a geometric through-going rate),
@@ -264,8 +264,7 @@ finite, positive value:
 ## 7. The cross-section pole (not in the current method paper)
 
 The current method paper does not carry this pole. It records only `Φ(0) = 0`
-with `Φ' > 0` (Sec. II.A) and the convergence edge of the calibrated exponent at
-negative `A` (App. A.1). The derivation is kept here.
+with `Φ' > 0` (Sec. II.A). The derivation is kept here.
 
 The denominator `Φ(A)` crosses zero when `λ > γ − 1` (i.e. `A < 0`). For
 `γ = 2.38` the **pole sits at `λ = 1.38`**. Physically, when the cross section
@@ -289,7 +288,7 @@ floating it elsewhere, which would be inconsistent but avoids the sign flip.)
 `docs/theory/soft_volume.md` documents the **Fokker–Planck path of Palmisano et
 al.**; this file documents the **exact eigenvalue path**. They describe the same
 physics; the exact version *contains* theirs as a truncation (method paper,
-Sec. II.D and App. A.3).
+Sec. II.D and App. A.1).
 
 | Aspect                | Palmisano et al. / [prior work](soft_volume.md) (Fokker–Planck) | This derivation (exact eigenvalue)                              |
 |-----------------------|-----------------------------------------------------------------|-----------------------------------------------------------------|
@@ -316,7 +315,7 @@ Truncating at second order gives exactly the `Φ ≃ A' b_μ` of Palmisano et al
 with `A' = A[1 − (d_μ/2b_μ)(A−1)]`. **The Fokker–Planck result of Palmisano et
 al. is the first two terms of the exact series.**
 
-### 8.2 Exactness identities — why the fit of Palmisano et al. survives (method paper, Sec. II.D)
+### 8.2 Exactness identities — why the fit of Palmisano et al. survives (method paper, Sec. II.C and II.D)
 
 The series **terminates for positive integer `A`** (every term beyond the first
 carries a factor `(A−1)`):
@@ -330,7 +329,7 @@ Kramers–Moyal truncation at order `n` is exact for integer `A ≤ n`. IceCube'
 gives `γ = 2.38`, `λ = 0.4` ⇒ **`A = 0.98`**, sitting essentially *on* the `A = 1`
 exactness point. There, `Φ = b_μ` and nothing else — the entire hard tail of
 brems + photonuclear (the ~25% Appendix-B systematic of Palmisano et al., which
-the method paper resums in App. A.3) **cancels identically between loss and
+the method paper resums in App. A.1) **cancels identically between loss and
 gain**. The residual error is `(A−1)·d_μ/2b_μ ≈ 0.02 × 0.11 ≈ 0.2%`.
 
 So the soft expansion survives **not** because it is marginally convergent
@@ -339,12 +338,13 @@ parameter is `(A−1)d_μ/2b_μ`, and IceCube's spectrum happens to sit exactly
 where it vanishes. Palmisano et al. note `A ≈ 1` twice without noticing it
 protects them.
 
-### 8.3 Numeric comparison of `Φ(A)` (the table of the exponent against its truncations in the method paper, App. A)
+### 8.3 Numeric comparison of `Φ(A)` (compare Figure 2 of the method paper, Sec. II.C)
 
-The method paper's table is now built on PROPOSAL's quadrature moments,
-`b_μ = 0.380 km⁻¹` at 1 PeV in water, so its rows differ in absolute value from
-the ones below, which use the earlier `b_μ = 0.349`, and its sign change sits at
-`A_die = 9.3` instead of the 10.1 quoted here.
+The method paper draws this comparison in its Figure 2, built on PROPOSAL's
+quadrature moments, `b_μ = 0.380 km⁻¹` at 1 PeV in water. Its curves therefore
+differ in absolute value from the rows below, which use the earlier
+`b_μ = 0.349`, and its truncation turns negative at `A = 9.3` (Sec. II.D)
+instead of the 10.1 quoted here.
 
 | A    | Φ(A) [km⁻¹] | A·b_μ (drift) | A'·b_μ (Fokker–Planck) | V_FP / V_exact |
 |------|-------------|---------------|------------------------|----------------|
@@ -365,13 +365,13 @@ muon once).
 
 ---
 
-## 9. Evaluating `Φ(A)` in practice (method paper, App. A.1 and A.2)
+## 9. Evaluating `Φ(A)` in practice (method paper, Sec. II.C and App. A.2)
 
 Table 1 of Palmisano et al. gives only `b_μ` and `d_μ`, but `Φ(A)` needs the full
 shape of `dΓ/dy`. Two options:
 
-**(a) Two-parameter family** calibrated to the two moments (the two-moment form
-of the method paper, App. A.1). With `dΓ/dy = κ (1−y)^p / y`:
+**(a) Two-parameter family** calibrated to the two moments (a form the method
+paper has since replaced by the three-moment family of Sec. II.C). With `dΓ/dy = κ (1−y)^p / y`:
 
 ```
   b = κ/(p+1),   d = κ/[(p+1)(p+2)]   ⇒   d/b = 1/(p+2)
@@ -400,7 +400,7 @@ it at `s=0` and `b_μ` at `s=1` — the "drift coefficient" is just `Φ` at one
 spectral index, not a universal propagation constant. The method paper takes
 this route for the log-loss moments `Φ'(0)` and `Φ''(0)` that set the range
 (App. A.2), and for `Φ(s)` itself it now uses a three-moment family matched to
-`b_μ`, `d_μ` and `t_μ`, a difference of two Beta functions (App. A.1).
+`b_μ`, `d_μ` and `t_μ`, a difference of two Beta functions (Sec. II.C).
 
 ---
 
@@ -418,14 +418,14 @@ this route for the log-loss moments `Φ'(0)` and `Φ''(0)` that set the range
   Sec. II.A). Photonuclear grows from 25%→35% of `b_μ` over 1→100 PeV. Power
   laws stop being exact eigenfunctions, but for slow variation use the WKB form
   `e^{−Φ(A)ℓ} → exp[−∫ dη Φ(A; E(η))]` (the content of Appendix A.1 of Palmisano
-  et al., without a kernel). The method paper follows the running kernel down a
+  et al., without a kernel). The method paper follows the running loss spectrum down a
   track in App. A.2 and treats the photonuclear rise as a shift of the spectral
   argument in App. A.
 - **Non-power-law sources** (DM line, cutoff, transient) excite many Mellin modes
   → the *only* place you actually need the inverse transform. Then use the exact
   propagator: accumulated loss `w = ln(ε/E)` is a compound Poisson subordinator
-  with Laplace exponent `Φ(s)` (the method paper, App. A, identifies it as a
-  subordinator but not a compound Poisson one, because the `1/y` bremsstrahlung
+  with Laplace exponent `Φ(s)` (strictly a subordinator but not a compound
+  Poisson one, because the `1/y` bremsstrahlung
   tail makes the total jump rate infinite), so `E[e^{−s w(ℓ)}] = e^{−ℓ Φ(s)}`,
   manifestly supported on `w ≥ 0` (no spurious energy gain, no `θ(ε−E)` patch —
   contrast the Fokker–Planck kernel's hand-imposed `θ(ε−E)` and its small
@@ -434,7 +434,7 @@ this route for the log-loss moments `Φ'(0)` and `Φ''(0)` that set the range
   here is a geometric through-going rate; a real `ε(E_μ, Ω)` multiplies the
   bracket and needs the collaboration's (non-public) response maps. The method
   paper has since replaced this with the two-number acceptance of Sec. III.B and
-  the released IceCube response of Sec. IV.D.
+  the released IceCube response of Sec. V.B.
 
 ---
 

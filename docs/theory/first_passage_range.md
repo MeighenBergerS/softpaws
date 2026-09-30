@@ -1,6 +1,6 @@
 # The monochromatic range as a first-passage problem
 
-Working notes behind the method paper's Sec. II E, "The Range to Threshold", and its
+Working notes behind the method paper's Sec. II E, "The Muon Range", and its
 App. A.2 of the same name. Everything below is exact under the same local scale-invariance
 assumption (`eq:scaleinv`, Sec. II A of the method paper) that the rest of the formalism
 rests on; nothing here is fitted. Eq. (1) below is the method paper's `eq:Ldef`, Eq. (5)
@@ -14,8 +14,8 @@ Implemented in `softpaws.transport.muon_range.stochastic_muon_range_km`, exercis
 
 ## 1. Why a second length is needed
 
-The track-rate equation of the method paper (`eq:rate`, Sec. III A) gives the track rate
-differential in the **observed muon energy**, and its
+The track-rate equation of an earlier draft of the method paper (`eq:rate`) gives the track
+rate differential in the **observed muon energy**, and its
 length is the spectrally-weighted `1/Φ(A)` — about 2.7 km in water at IceCube's
 diffuse spectral index. That is the right length for a power-law parent, because the source
 excites the single mode `s = A` and the propagator contributes `e^{-ℓΦ(A)}`.

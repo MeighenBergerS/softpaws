@@ -44,10 +44,11 @@ pytest -q --run-slow tests/regression
 ```
 
 A value that moves outside its tolerance is either a bug or an inconsistency
-the scripts previously hid. The transport rows of Tables C.1 and E.2 are
-machine-written from the library by `make_transport_table.py`, and the
-plug-in response of Table E.1 by `make_recipe_table.py`, both in the scripts
-directory, so those tables cannot drift from the code.
+the scripts previously hid. Three tables of the paper are machine-written from
+the library by scripts in the scripts directory: the instrument numbers of
+Table I by `make_recipe_table.py`, the transport rows of Table II by
+`make_transport_table.py`, and the inputs of Table V by
+`make_estimate_table.py`. Those tables cannot drift from the code.
 
 ## Two scripts do not reproduce run to run
 
