@@ -38,8 +38,11 @@ different loss model.
 ## Installation
 
 ```sh
-pip install git+https://github.com/MeighenBergerS/softpaws.git
+pip install softpaws
 ```
+
+For the latest development version, install from GitHub with
+`pip install git+https://github.com/MeighenBergerS/softpaws.git`.
 
 Requires Python 3.11 or later, NumPy, SciPy, Matplotlib and emcee. The
 optional extras `atm` (MCEq, for rebuilding the atmospheric background),

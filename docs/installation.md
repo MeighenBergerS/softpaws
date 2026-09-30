@@ -4,7 +4,13 @@ softpaws needs Python 3.11 or later.
 
 ## Install the package
 
-Install the latest version from GitHub:
+Install the latest release from PyPI:
+
+```sh
+pip install softpaws
+```
+
+For the latest development version, install from GitHub instead:
 
 ```sh
 pip install git+https://github.com/MeighenBergerS/softpaws.git
