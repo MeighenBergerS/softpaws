@@ -8,7 +8,8 @@ Each block carries a `source` line and a tolerance (`rtol` or `atol`). Values
 come from three places:
 
 - the paper's tables (Tables C.1, D.1, D.2, E.1, E.2, G.1, K.1),
-- the captured run logs of the examples (`paper/run_logs/`),
+- the captured run logs of the examples, kept with the paper source and not in
+  this repository,
 - the JSON results the examples wrote to `examples/output/`.
 
 `test_baseline.py` checks the blocks the library can compute directly. As the

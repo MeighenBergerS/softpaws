@@ -101,5 +101,7 @@ encodes this list:
 70  71  72  73  77  81  82  83  85  86  87  88  89  74  84  75  76  37
 ```
 
-then `paper/make_recipe_table.py`. The expensive steps are 22 (MCEq), 69 (the
-PROPOSAL ensemble), and the posterior chains of 33, 56, 72, 73, 77 and 82.
+then the three table writers, `make_recipe_table.py`, `make_transport_table.py`
+and `make_estimate_table.py`. `run_all.py` runs them after the scripts. The
+expensive steps are 22 (MCEq), 69 (the PROPOSAL ensemble), and the posterior
+chains of 33, 56, 72, 73, 77 and 82.
