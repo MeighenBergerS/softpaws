@@ -3,19 +3,19 @@
 <img src="img/logo.jpg" alt="A neutrino entering an instrumented volume and the muon it makes leaving it"
  width="220" style="display: block; margin: 0 auto 1.5em">
 
-softpaws builds the response of a neutrino telescope from muon transport
-rather than from simulation. It solves the transport of a high-energy muon
-through matter, turns that solution into the volume a detector effectively
-watches, and from there into an effective area, an event rate, or the energy
+softpaws builds the response of a neutrino telescope from muon transport,
+without a detector simulation. It solves the transport of a high-energy muon
+through matter analytically, turns the resulting muon range into the volume a
+detector effectively watches, and from there into an effective area, an event rate, or the energy
 of a single track. The same code serves IceCube, KM3NeT/ARCA, P-ONE, TRIDENT
 and Baikal-GVD, because nothing in the construction is specific to one site.
 
 ## What it is for
 
-A published effective area is a Monte-Carlo product. It answers what a
-detector sees, but not why, and it cannot be moved to a detector that has not
-been simulated. softpaws computes the same quantity from the loss kernel of
-the medium, the neutrino cross section, the geometry of the instrumented
+A published effective area comes out of a detector simulation. It answers
+what a detector sees, but not why, and it cannot be moved to a detector that
+has not been simulated. softpaws computes the same quantity from the loss
+spectrum of the medium, the neutrino cross section, the geometry of the instrumented
 volume, and two numbers per site that the instrument itself sets: a selection
 threshold and a light reach.
 
@@ -29,7 +29,7 @@ error on the transport itself is measured.
 
 | Subpackage | What it holds |
 | --- | --- |
-| `softpaws.transport` | The loss kernel, the transport exponent, the range to threshold, the loss law, Earth geometry and attenuation, and the tau channel |
+| `softpaws.transport` | The loss spectrum, the transport exponent, the muon range, the loss law, Earth geometry and attenuation, and the tau channel |
 | `softpaws.detectors` | Published geometry, medium and optics for each site |
 | `softpaws.fluxes` | Power laws, the published IceCube fits, and the atmospheric background |
 | `softpaws.response` | Effective areas: from the light reach, from the published optics, and resolved by declination |
