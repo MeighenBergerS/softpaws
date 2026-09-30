@@ -24,7 +24,7 @@ compared, edit the constants at the top of the script.
 | # | Script | What it shows | Needs |
 | --- | --- | --- | --- |
 | 01 | `load_the_release` | The events, effective areas and uptime of the DR2 release, and how much exposure it carries | DR2 |
-| 02 | `transport_exponent` | `Phi(A)` from the loss kernel, against the drift-only and second-order truncations | — |
+| 02 | `transport_exponent` | `Phi(A)` from the loss spectrum, against the drift-only and second-order truncations | — |
 | 03 | `range_and_loss_law` | The first-passage range against the mean-loss range, and why the loss tail is not Gaussian | — |
 | 04 | `earth_attenuation` | The PREM column against arrival direction, the survival it implies, and what regeneration adds back | — |
 | 05 | `effective_area` | Sky-averaged effective areas of four detectors from the instrumented footprint, against IceCube's published table | DR2 for the comparison |

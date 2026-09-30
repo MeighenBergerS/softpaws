@@ -18,17 +18,17 @@
 
 ## Summary
 
-softpaws builds the response of a neutrino telescope from muon transport
-rather than from simulation. It solves the transport of a high-energy muon
-through matter, turns that solution into the volume a detector effectively
-watches, and from there into an effective area, an event rate, or the energy
+softpaws builds the response of a neutrino telescope from muon transport,
+without a detector simulation. It solves the transport of a high-energy muon
+through matter analytically, turns the resulting muon range into the volume a
+detector effectively watches, and from there into an effective area, an event rate, or the energy
 of a single track. The same code serves IceCube, KM3NeT/ARCA, P-ONE, TRIDENT
 and Baikal-GVD, because nothing in the construction is specific to one site.
 
-A published effective area is a Monte-Carlo product: it says what a detector
-sees but not why, and it cannot be carried to a detector that has not been
-simulated. softpaws computes the same quantity from the loss kernel of the
-medium, the neutrino cross section, the geometry of the instrumented volume,
+A published effective area comes out of a detector simulation. It says what a
+detector sees but not why, and it cannot be carried to a detector that has not
+been simulated. softpaws computes the same quantity from the loss spectrum of
+the medium, the neutrino cross section, the geometry of the instrumented volume,
 and two numbers per site that the instrument sets, a selection threshold and
 a light reach. That makes it possible to reproduce a published table and see
 which ingredient carries each feature, to predict the response of a detector
@@ -38,8 +38,11 @@ different loss model.
 ## Installation
 
 ```sh
-pip install git+https://github.com/MeighenBergerS/softpaws.git
+pip install softpaws
 ```
+
+For the latest development version, install from GitHub with
+`pip install git+https://github.com/MeighenBergerS/softpaws.git`.
 
 Requires Python 3.11 or later, NumPy, SciPy, Matplotlib and emcee. The
 optional extras `atm` (MCEq, for rebuilding the atmospheric background),
@@ -81,7 +84,7 @@ in the [data guide](https://meighenbergers.github.io/softpaws/data/).
 
 ```
 src/softpaws/
-├── transport/     Loss kernel, transport exponent, ranges, Earth, tau channel
+├── transport/     Loss spectrum, transport exponent, ranges, Earth, tau channel
 ├── detectors/     Published geometry, medium and optics per site
 ├── fluxes/        Power laws, the published fits, the atmospheric background
 ├── response/      Effective areas: light reach, first principles, declination

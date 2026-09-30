@@ -24,25 +24,30 @@ IceCube-Gen2, ARCA230, ARCA21, TRIDENT in both layouts, P-ONE and Baikal-GVD.
 
 ## 2. Look at the transport
 
-The loss kernel gives the drift coefficient, the transport exponent and the
-range a muon covers before it drops below a threshold.
+The muon range is where the transport enters. The mean energy of a muon falls
+at the rate `b_μ`, which is `Φ(1)`. The range is set instead by `Φ'(0)`, the
+rate at which the logarithm of the energy falls.
 
 ```python
 import numpy as np
 from softpaws.transport import (
-    drift_coefficient,
+    log_loss_moments,
+    muon_range_km,
     phi_eigenvalue_at_energy,
     stochastic_muon_range_km,
 )
 
 energy = 1.0e6
-print(drift_coefficient(energy))              # b_mu [km^-1] in water
-print(phi_eigenvalue_at_energy(1.0, energy))  # Phi(1), which equals b_mu
-print(stochastic_muon_range_km(energy, 1.0e3))
+print(phi_eigenvalue_at_energy(1.0, energy))    # Phi(1) = b_mu [km^-1] in water
+phi_prime, phi_second, _ = log_loss_moments(energy)
+print(phi_prime)                                # Phi'(0) [km^-1]
+print(stochastic_muon_range_km(energy, 1.0e3))  # muon range to 1 TeV [km]
+print(muon_range_km(energy, 1.0e3))             # mean-loss range, for comparison
 ```
 
-A 1 PeV muon loses energy at 0.38 per kilometre of water and travels 15.6 km
-before it falls to a TeV.
+A 1 PeV muon loses on average 0.38 of its energy per kilometre of water, but
+the logarithm of its energy falls at 0.49 per kilometre. It travels 15.6 km
+before it falls to a TeV, where the mean-loss range says 18.3 km.
 
 ## 3. Build an effective area
 

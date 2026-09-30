@@ -401,7 +401,7 @@ def stochastic_muon_range_km(
     constant offset below it, so the result is still closed form. Muons born
     below ``E_*`` get the deterministic range alone (:func:`muon_range_km`).
     Passing ``include_ionization=False`` recovers the purely radiative range,
-    which is what Table E.1 of the paper contrasts against ``R_CSDA``.
+    which is what Table II of the paper contrasts against ``R_CSDA``.
 
     The deterministic segment starts at ``E_a = E_* exp(-<overshoot>)`` and not
     at ``E_*``, because a first passage overshoots the level it crosses. By
