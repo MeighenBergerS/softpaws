@@ -113,6 +113,36 @@ inputs your analysis relies on; the list is in the
 The entry is updated with the arXiv number and the journal reference once
 they exist.
 
+The name softpaws comes from the *soft volume* of Palmisano, Redigolo,
+Tammaro and Tesi. Their drift-diffusion treatment of the same collision
+operator was the starting point for this work, and softpaws keeps it as a
+limit and a cross-check. Please consider citing their two papers as well.
+
+```txt
+@preprint{Palmisano:2026sid,
+    author = "Palmisano, Stefano and Redigolo, Diego and Tammaro, Michele and Tesi, Andrea",
+    title = "{The soft volume of ultra-high energy neutrinos experiments}",
+    eprint = "2607.13143",
+    archivePrefix = "arXiv",
+    primaryClass = "hep-ph",
+    month = "7",
+    year = "2026"
+}
+
+@article{Palmisano:2025abd,
+    author = "Palmisano, Stefano and Redigolo, Diego and Tammaro, Michele and Tesi, Andrea",
+    title = "{Exploring ultra-high energy neutrino experiments through the lens of the transport equation}",
+    eprint = "2507.10665",
+    archivePrefix = "arXiv",
+    primaryClass = "hep-ph",
+    doi = "10.1007/JHEP03(2026)223",
+    journal = "JHEP",
+    volume = "03",
+    pages = "223",
+    year = "2026"
+}
+```
+
 ## Development with AI assistance
 
 softpaws was developed with the help of Claude, Anthropic's AI assistant,
