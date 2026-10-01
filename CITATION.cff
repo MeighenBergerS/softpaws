@@ -23,3 +23,17 @@ keywords:
 license: GPL-3.0-or-later
 version: 1.0.0
 date-released: '2026-09-22'
+preferred-citation:
+  type: article
+  title: Estimating High-Energy Neutrino Effective Areas from Muon Propagation
+  authors:
+    - given-names: Stephan A.
+      family-names: Meighen-Berger
+      orcid: https://orcid.org/0000-0001-6579-2000
+  year: 2026
+  doi: 10.48550/arXiv.2609.40188
+  url: https://arxiv.org/abs/2609.40188
+  identifiers:
+    - type: other
+      value: arXiv:2609.40188
+      description: arXiv identifier

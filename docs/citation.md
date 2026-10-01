@@ -1,17 +1,21 @@
 # Citation
 
-If softpaws is useful in your work, please cite the method paper.
+If softpaws is useful in your work, please cite the method paper,
+[arXiv:2609.40188](https://arxiv.org/abs/2609.40188).
 
 ```txt
-@article{MeighenBerger:softpaws,
-  author  = {Meighen-Berger, Stephan A.},
-  title   = {{Estimating High-Energy Neutrino Effective Areas from Muon Propagation}},
-  year    = {2026},
+@article{Meighen-Berger:2026yls,
+    author = "Meighen-Berger, Stephan A.",
+    title = "{Estimating High-Energy Neutrino Effective Areas from Muon Propagation}",
+    eprint = "2609.40188",
+    archivePrefix = "arXiv",
+    primaryClass = "hep-ph",
+    month = "9",
+    year = "2026"
 }
 ```
 
-The entry is updated with the arXiv number and the journal reference when
-they exist.
+The entry is updated with the journal reference once it exists.
 
 ## Citing what softpaws is built on
 

@@ -9,9 +9,11 @@
 [![docs](https://github.com/MeighenBergerS/softpaws/actions/workflows/deploy-docs.yml/badge.svg)](https://meighenbergers.github.io/softpaws/)
 [![python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)](https://www.python.org/)
 [![license](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.40188-b31b1b)](https://arxiv.org/abs/2609.40188)
 
 | | |
 | --- | --- |
+| Paper | [arXiv:2609.40188](https://arxiv.org/abs/2609.40188) |
 | Documentation | <https://meighenbergers.github.io/softpaws/> |
 | Repository | <https://github.com/MeighenBergerS/softpaws> |
 | Data release | [10.7910/DVN/MMIIZA](https://doi.org/10.7910/DVN/MMIIZA) |
@@ -106,15 +108,19 @@ inputs your analysis relies on; the list is in the
 [citation guide](https://meighenbergers.github.io/softpaws/citation/).
 
 ```txt
-@article{MeighenBerger:softpaws,
-  author  = {Meighen-Berger, Stephan A.},
-  title   = {{Estimating High-Energy Neutrino Effective Areas from Muon Propagation}},
-  year    = {2026},
+@article{Meighen-Berger:2026yls,
+    author = "Meighen-Berger, Stephan A.",
+    title = "{Estimating High-Energy Neutrino Effective Areas from Muon Propagation}",
+    eprint = "2609.40188",
+    archivePrefix = "arXiv",
+    primaryClass = "hep-ph",
+    month = "9",
+    year = "2026"
 }
 ```
 
-The entry is updated with the arXiv number and the journal reference once
-they exist.
+The paper is [arXiv:2609.40188](https://arxiv.org/abs/2609.40188). The entry is updated with the journal reference
+once it exists.
 
 The name softpaws comes from the *soft volume* of Palmisano, Redigolo,
 Tammaro and Tesi. Their drift-diffusion treatment of the same collision

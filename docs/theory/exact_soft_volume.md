@@ -2,7 +2,7 @@
 
 Distilled reference for the eigenvalue solution softpaws is built on, derived
 in the method paper, Meighen-Berger, *Estimating High-Energy Neutrino Effective Areas from
-Muon Propagation* (2026). It replaces the earlier Fokker–Planck
+Muon Propagation* (2026), [arXiv:2609.40188](https://arxiv.org/abs/2609.40188). It replaces the earlier Fokker–Planck
 (drift–diffusion) expansion with an eigenvalue treatment of the QED collision
 operator, keeping every loss moment. This is the physics core of the
 `transport/` → `response/` path.
