@@ -1,7 +1,7 @@
 # Reproducing the paper
 
 Every figure, table and quoted number in *Estimating High-Energy Neutrino Effective
-Areas from Muon Propagation* is produced by a script in
+Areas from Muon Propagation* ([arXiv:2609.40188](https://arxiv.org/abs/2609.40188)) is produced by a script in
 `scripts/2026_muon_transport/`, and the numbers the paper depends on are
 pinned in `tests/regression/baseline.json`.
 

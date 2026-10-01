@@ -1,7 +1,8 @@
 # The method paper vs. the `softpaws` implementation
 
 Line-by-line comparison of the equations in the method paper, Meighen-Berger,
-*Estimating High-Energy Neutrino Effective Areas from Muon Propagation* (2026), against
+*Estimating High-Energy Neutrino Effective Areas from Muon Propagation* (2026),
+[arXiv:2609.40188](https://arxiv.org/abs/2609.40188), against
 what `src/softpaws/` computes. Sections are cited by their Roman numerals
 (Sec. II.E) and appendices by their letters (App. A.2). Equations are named by
 what they say and, where that helps, by their label in the paper's source

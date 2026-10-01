@@ -46,4 +46,4 @@ to download. The [API reference](api-reference/) is generated from the
 docstrings.
 
 The method is described in *Estimating High-Energy Neutrino Effective Areas from
-Muon Propagation*; see [Citation](citation.md).
+Muon Propagation*, [arXiv:2609.40188](https://arxiv.org/abs/2609.40188). See [Citation](citation.md).

@@ -45,6 +45,7 @@ Homepage = "https://github.com/MeighenBergerS/softpaws"
 Documentation = "https://meighenbergers.github.io/softpaws/"
 Repository = "https://github.com/MeighenBergerS/softpaws"
 Issues = "https://github.com/MeighenBergerS/softpaws/issues"
+Paper = "https://arxiv.org/abs/2609.40188"
 
 [project.optional-dependencies]
 dev = [

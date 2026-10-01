@@ -1,7 +1,8 @@
 """softpaws — a first-principles forward model for UHE neutrino telescopes.
 
 Implements the analytic muon transport of Meighen-Berger, *Estimating
-High-Energy Neutrino Effective Areas from Muon Propagation* (2026). The locally
+High-Energy Neutrino Effective Areas from Muon Propagation* (2026),
+arXiv:2609.40188. The locally
 scale-invariant collision operator is diagonalized by power laws, so a muon's
 whole loss history collapses to a single transport exponent ``Phi(s)``, which
 then serves as a first-passage generator for the range of the muon and for the
