@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/fluxes/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>fluxes - softpaws</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "fluxes";
+        var mkdocs_page_input_path = "api-reference/softpaws/fluxes/index.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/fluxes/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../..">
+    <img src="../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >fluxes</a>
+    <ul class="current">
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">fluxes</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.AtmosphericFlux">AtmosphericFlux</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.BrokenPowerLawFit">BrokenPowerLawFit</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.PowerLawFit">PowerLawFit</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.broken_power_law_flux">broken_power_law_flux</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.broken_power_law_shape">broken_power_law_shape</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.build_mceq_table">build_mceq_table</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.load_mceq_table">load_mceq_table</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.power_law_flux">power_law_flux</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.fluxes.table_declination_deg">table_declination_deg</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">fluxes</li>
+      <li class="breadcrumb-item active">fluxes</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.fluxes" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.fluxes</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Neutrino fluxes at Earth: astrophysical power laws and the atmospheric background.</p>
+<p>The astrophysical side is a single or broken power law with the published
+IceCube fits as named constants. The atmospheric side is an MCEq table,
+built once and interpolated.</p>
+
+
+
+
+
+
+<p><span class="doc-section-title">Modules:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.fluxes.astrophysical" href="astrophysical/#softpaws.fluxes.astrophysical">astrophysical</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Astrophysical neutrino fluxes: power laws and the published fits.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="softpaws.fluxes.atmospheric" href="atmospheric/#softpaws.fluxes.atmospheric">atmospheric</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Atmospheric <code>nu_mu</code> flux from an MCEq table.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="AtmosphericFlux (softpaws.fluxes.AtmosphericFlux)" href="#softpaws.fluxes.AtmosphericFlux">AtmosphericFlux</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Interpolated atmospheric <code>nu_mu</code> flux from an MCEq table.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="BrokenPowerLawFit
+
+
+  
+      dataclass
+   (softpaws.fluxes.BrokenPowerLawFit)" href="#softpaws.fluxes.BrokenPowerLawFit">BrokenPowerLawFit</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>A published broken power-law fit.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="PowerLawFit
+
+
+  
+      dataclass
+   (softpaws.fluxes.PowerLawFit)" href="#softpaws.fluxes.PowerLawFit">PowerLawFit</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>A published single power-law fit.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="broken_power_law_flux (softpaws.fluxes.broken_power_law_flux)" href="#softpaws.fluxes.broken_power_law_flux">broken_power_law_flux</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Broken power-law diffuse flux.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="broken_power_law_shape (softpaws.fluxes.broken_power_law_shape)" href="#softpaws.fluxes.broken_power_law_shape">broken_power_law_shape</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Broken power law with unit flux at 100 TeV on the upper branch.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="build_mceq_table (softpaws.fluxes.build_mceq_table)" href="#softpaws.fluxes.build_mceq_table">build_mceq_table</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Run MCEq once per declination and cache the <code>nu_mu</code> fluxes.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_mceq_table (softpaws.fluxes.load_mceq_table)" href="#softpaws.fluxes.load_mceq_table">load_mceq_table</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load a cached MCEq table, building it first if needed.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="power_law_flux (softpaws.fluxes.power_law_flux)" href="#softpaws.fluxes.power_law_flux">power_law_flux</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Single power-law diffuse flux.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="table_declination_deg (softpaws.fluxes.table_declination_deg)" href="#softpaws.fluxes.table_declination_deg">table_declination_deg</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Table declination an arrival direction is read at [deg].</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.fluxes.AtmosphericFlux" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">AtmosphericFlux</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">AtmosphericFlux(table: dict[str, ndarray], include_prompt: bool = True)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Interpolated atmospheric <code>nu_mu</code> flux from an MCEq table.</p>
+<p>Bilinear in <code>(log10 E, dec)</code> on the logarithm of the flux, which is the
+interpolation both variables are smooth in. Callable in the two-argument
+form the forward models expect.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>table</code></b>
+                  (<code>dict of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>Table from :func:<code>load_mceq_table</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>include_prompt</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Whether to add the prompt (charm) component to the conventional one.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated energies [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_deg</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated declinations [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>flux</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_e">n_e</span>, <span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Tabulated flux [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>table</code></b>
+                  (<code>dict of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>The table itself, for :meth:<code>component_on_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="component_on_grid (softpaws.fluxes.AtmosphericFlux.component_on_grid)" href="#softpaws.fluxes.AtmosphericFlux.component_on_grid">component_on_grid</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>One component on an energy-by-declination grid, clamped at the table edges.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/fluxes/atmospheric.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(self, table: dict[str, np.ndarray], include_prompt: bool = True) -&gt; None:
+    """Build the interpolator. The arguments are described in the class docstring."""
+    self.table = table
+    self.energy_gev = np.asarray(table["energy_gev"], dtype=float)
+    self.dec_deg = np.asarray(table["dec_deg"], dtype=float)
+    flux = np.asarray(table["conv"], dtype=float)
+    if include_prompt:
+        flux = flux + np.asarray(table["prompt"], dtype=float)
+    self.flux = flux
+    # A floor keeps the logarithm finite where the cascade solution underflows.
+    floor = flux[flux &gt; 0.0].min() * 1e-10
+    self._interp = RegularGridInterpolator(
+        (np.log10(self.energy_gev), self.dec_deg),
+        np.log(np.maximum(flux, floor)),
+        bounds_error=False,
+        fill_value=None,  # linear extrapolation off the ends of the table
+    )</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.fluxes.AtmosphericFlux.component_on_grid" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">component_on_grid</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">component_on_grid(component: str, energy_gev: ndarray, dec_deg: ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>One component on an energy-by-declination grid, clamped at the table edges.</p>
+<p>Interpolates <code>log10</code> of the flux linearly in declination and then in
+<code>log10 E</code>, holding the edge values outside the table instead of
+extrapolating as :meth:<code>__call__</code> does.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>component</code></b>
+                  (<code>(&#39;conv&#39;, &#39;prompt&#39;)</code>, default:
+                      <code>&#34;conv&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which component to read.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_e">n_e</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_deg</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dec">n_dec</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Declinations [deg]. Negative values are folded to their absolute
+value, since the table covers one hemisphere.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>flux</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_e">n_e</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/atmospheric.py</code></summary>
+              <pre class="highlight"><code class="language-python">def component_on_grid(
+    self,
+    component: str,
+    energy_gev: np.ndarray,
+    dec_deg: np.ndarray,
+) -&gt; np.ndarray:
+    """One component on an energy-by-declination grid, clamped at the table edges.
+
+    Interpolates ``log10`` of the flux linearly in declination and then in
+    ``log10 E``, holding the edge values outside the table instead of
+    extrapolating as :meth:`__call__` does.
+
+    Parameters
+    ----------
+    component : {"conv", "prompt"}
+        Which component to read.
+    energy_gev : np.ndarray, shape (n_e,)
+        Neutrino energies [GeV].
+    dec_deg : np.ndarray, shape (n_dec,)
+        Declinations [deg]. Negative values are folded to their absolute
+        value, since the table covers one hemisphere.
+
+    Returns
+    -------
+    flux : np.ndarray, shape (n_e, n_dec)
+        Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].
+    """
+    energy_gev = np.asarray(energy_gev, dtype=float)
+    dec_deg = np.abs(np.asarray(dec_deg, dtype=float))
+    log_f = np.log10(np.clip(np.asarray(self.table[component], dtype=float), 1.0e-99, None))
+    on_dec = np.array(
+        [np.interp(dec_deg, self.dec_deg, log_f[i]) for i in range(self.energy_gev.size)]
+    )
+    out = np.empty((energy_gev.size, dec_deg.size))
+    for j in range(dec_deg.size):
+        out[:, j] = 10.0 ** np.interp(
+            np.log10(energy_gev), np.log10(self.energy_gev), on_dec[:, j]
+        )
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.fluxes.BrokenPowerLawFit" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">BrokenPowerLawFit</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">BrokenPowerLawFit(name: str, phi0: float, gamma_2: float, gamma_1: float, log10_break_gev: float, phi0_err: float = 0.0, gamma_2_err: float = 0.0, reference: str = '')</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>A published broken power-law fit.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>name</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Short label.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Per-flavour normalization at 100 TeV on the upper branch
+[1e-18 GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_2</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index above the break.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_1</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index below the break, held fixed in the fit.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_break_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Break energy [log10 GeV], held fixed in the fit.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0_err</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Symmetrized uncertainty on <code>phi0</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_2_err</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Symmetrized uncertainty on <code>gamma_2</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reference</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Where the numbers come from.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="flux (softpaws.fluxes.BrokenPowerLawFit.flux)" href="#softpaws.fluxes.BrokenPowerLawFit.flux">flux</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Differential flux of the fit at <code>energy_gev</code> [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="shape (softpaws.fluxes.BrokenPowerLawFit.shape)" href="#softpaws.fluxes.BrokenPowerLawFit.shape">shape</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Flux relative to its value at the pivot; see :func:<code>broken_power_law_shape</code>.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.fluxes.BrokenPowerLawFit.flux" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">flux</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">flux(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Differential flux of the fit at <code>energy_gev</code> [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/astrophysical.py</code></summary>
+              <pre class="highlight"><code class="language-python">def flux(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Differential flux of the fit at ``energy_gev`` [GeV^-1 cm^-2 s^-1 sr^-1]."""
+    return broken_power_law_flux(
+        energy_gev, self.phi0, self.gamma_2, self.gamma_1, self.log10_break_gev
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.fluxes.BrokenPowerLawFit.shape" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">shape</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">shape(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Flux relative to its value at the pivot; see :func:<code>broken_power_law_shape</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/astrophysical.py</code></summary>
+              <pre class="highlight"><code class="language-python">def shape(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Flux relative to its value at the pivot; see :func:`broken_power_law_shape`."""
+    return broken_power_law_shape(energy_gev, self.gamma_2, self.gamma_1, self.log10_break_gev)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.fluxes.PowerLawFit" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">PowerLawFit</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">PowerLawFit(name: str, phi0: float, gamma: float, phi0_err: float = 0.0, gamma_err: float = 0.0, reference: str = '')</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>A published single power-law fit.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>name</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Short label.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Per-flavour normalization at 100 TeV [1e-18 GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0_err</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Symmetrized uncertainty on <code>phi0</code> [same units]; zero if not quoted.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_err</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Symmetrized uncertainty on <code>gamma</code>; zero if not quoted.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reference</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Where the numbers come from.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="flux (softpaws.fluxes.PowerLawFit.flux)" href="#softpaws.fluxes.PowerLawFit.flux">flux</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Differential flux of the fit at <code>energy_gev</code> [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.fluxes.PowerLawFit.flux" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">flux</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">flux(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Differential flux of the fit at <code>energy_gev</code> [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/astrophysical.py</code></summary>
+              <pre class="highlight"><code class="language-python">def flux(self, energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Differential flux of the fit at ``energy_gev`` [GeV^-1 cm^-2 s^-1 sr^-1]."""
+    return power_law_flux(energy_gev, self.phi0, self.gamma)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.fluxes.broken_power_law_flux" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">broken_power_law_flux</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">broken_power_law_flux(energy_gev: float | ndarray, phi0: float, gamma_2: float, gamma_1: float = 1.31, log10_break_gev: float = 4.39) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Broken power-law diffuse flux.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Normalization at the 100 TeV pivot on the upper branch
+[1e-18 GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_2</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index above the break.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_1</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.31</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index below the break.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_break_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>4.39</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Break energy [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/astrophysical.py</code></summary>
+              <pre class="highlight"><code class="language-python">def broken_power_law_flux(
+    energy_gev: float | np.ndarray,
+    phi0: float,
+    gamma_2: float,
+    gamma_1: float = 1.31,
+    log10_break_gev: float = 4.39,
+) -&gt; np.ndarray:
+    """Broken power-law diffuse flux.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+    phi0 : float
+        Normalization at the 100 TeV pivot on the upper branch
+        [1e-18 GeV^-1 cm^-2 s^-1 sr^-1].
+    gamma_2 : float
+        Spectral index above the break.
+    gamma_1 : float, optional
+        Spectral index below the break.
+    log10_break_gev : float, optional
+        Break energy [log10 GeV].
+
+    Returns
+    -------
+    flux : np.ndarray
+        Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].
+    """
+    return (phi0 * FLUX_UNIT) * broken_power_law_shape(
+        energy_gev, gamma_2, gamma_1, log10_break_gev
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.fluxes.broken_power_law_shape" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">broken_power_law_shape</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">broken_power_law_shape(energy_gev: float | ndarray, gamma_2: float, gamma_1: float = 1.31, log10_break_gev: float = 4.39) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Broken power law with unit flux at 100 TeV on the upper branch.</p>
+<p>The lower branch is continuous at the break. The defaults are the fixed
+lower index and break of :data:<code>ICECUBE_BPL_2025</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_2</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index above the break.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma_1</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.31</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index below the break.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_break_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>4.39</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Break energy [log10 GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>shape</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Flux relative to its value at the pivot.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/astrophysical.py</code></summary>
+              <pre class="highlight"><code class="language-python">def broken_power_law_shape(
+    energy_gev: float | np.ndarray,
+    gamma_2: float,
+    gamma_1: float = 1.31,
+    log10_break_gev: float = 4.39,
+) -&gt; np.ndarray:
+    """Broken power law with unit flux at 100 TeV on the upper branch.
+
+    The lower branch is continuous at the break. The defaults are the fixed
+    lower index and break of :data:`ICECUBE_BPL_2025`.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+    gamma_2 : float
+        Spectral index above the break.
+    gamma_1 : float, optional
+        Spectral index below the break.
+    log10_break_gev : float, optional
+        Break energy [log10 GeV].
+
+    Returns
+    -------
+    shape : np.ndarray
+        Flux relative to its value at the pivot.
+    """
+    energy = np.asarray(energy_gev, dtype=float)
+    e_break = 10.0**log10_break_gev
+    above = (energy / FLUX_PIVOT_GEV) ** (-gamma_2)
+    below = (e_break / FLUX_PIVOT_GEV) ** (-gamma_2) * (energy / e_break) ** (-gamma_1)
+    return np.where(energy &gt;= e_break, above, below)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.fluxes.build_mceq_table" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">build_mceq_table</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">build_mceq_table(path: str | Path, dec_range_deg: tuple[float, float] = (0.0, 90.0), n_dec: int = 19, interaction_model: str = INTERACTION_MODEL, primary_model: str = PRIMARY_MODEL, atmosphere: tuple[str, str] = ATMOSPHERE) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Run MCEq once per declination and cache the <code>nu_mu</code> fluxes.</p>
+<p>A declination <code>dec</code> at the South Pole is a production zenith of
+<code>90 deg - dec</code>, so <code>dec = 90</code> is the vertical upgoing flux and
+<code>dec = 0</code> the horizontal one.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Destination <code>.npz</code> file.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_range_deg</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>(0.0, 90.0)</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Declination range sampled [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_dec</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>19</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of declinations sampled, evenly, over the range.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>interaction_model</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code><span title="softpaws.fluxes.atmospheric.INTERACTION_MODEL">INTERACTION_MODEL</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>MCEq hadronic interaction model.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>primary_model</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code><span title="softpaws.fluxes.atmospheric.PRIMARY_MODEL">PRIMARY_MODEL</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>MCEq primary cosmic-ray model, one of the Hillas-Gaisser variants.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>atmosphere</code></b>
+                  (<code>tuple of str</code>, default:
+                      <code><span title="softpaws.fluxes.atmospheric.ATMOSPHERE">ATMOSPHERE</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>MCEq <code>MSIS00_IC</code> atmosphere location and month.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>table</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>energy_gev</code> (n_e,), <code>dec_deg</code> (n_dec,), and the fluxes <code>conv</code>
+and <code>prompt</code> of shape <code>(n_e, n_dec)</code> in
+<code>GeV^-1 cm^-2 s^-1 sr^-1</code>, summed over <code>nu_mu</code> and <code>nu_mu_bar</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ImportError">ImportError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if MCEq or crflux is not installed.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/atmospheric.py</code></summary>
+              <pre class="highlight"><code class="language-python">def build_mceq_table(
+    path: str | pathlib.Path,
+    dec_range_deg: tuple[float, float] = (0.0, 90.0),
+    n_dec: int = 19,
+    interaction_model: str = INTERACTION_MODEL,
+    primary_model: str = PRIMARY_MODEL,
+    atmosphere: tuple[str, str] = ATMOSPHERE,
+) -&gt; dict[str, np.ndarray]:
+    """Run MCEq once per declination and cache the ``nu_mu`` fluxes.
+
+    A declination ``dec`` at the South Pole is a production zenith of
+    ``90 deg - dec``, so ``dec = 90`` is the vertical upgoing flux and
+    ``dec = 0`` the horizontal one.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Destination ``.npz`` file.
+    dec_range_deg : tuple of float, optional
+        Declination range sampled [deg].
+    n_dec : int, optional
+        Number of declinations sampled, evenly, over the range.
+    interaction_model : str, optional
+        MCEq hadronic interaction model.
+    primary_model : str, optional
+        MCEq primary cosmic-ray model, one of the Hillas-Gaisser variants.
+    atmosphere : tuple of str, optional
+        MCEq ``MSIS00_IC`` atmosphere location and month.
+
+    Returns
+    -------
+    table : dict of np.ndarray
+        ``energy_gev`` (n_e,), ``dec_deg`` (n_dec,), and the fluxes ``conv``
+        and ``prompt`` of shape ``(n_e, n_dec)`` in
+        ``GeV^-1 cm^-2 s^-1 sr^-1``, summed over ``nu_mu`` and ``nu_mu_bar``.
+
+    Raises
+    ------
+    ImportError
+        Raised if MCEq or crflux is not installed.
+    """
+    import importlib.util  # noqa: F401  (MCEq 1.4.1 uses it without importing it)
+
+    try:
+        import crflux.models as pm
+        from MCEq.core import MCEqRun
+    except ImportError as error:
+        raise ImportError(
+            "Building the atmospheric table needs MCEq and crflux: "
+            "pip install 'softpaws[atm]'."
+        ) from error
+
+    path = pathlib.Path(path)
+    dec_deg = np.linspace(dec_range_deg[0], dec_range_deg[1], n_dec)
+    mceq = MCEqRun(
+        interaction_model=interaction_model,
+        primary_model=(pm.HillasGaisser2012, primary_model),
+        density_model=("MSIS00_IC", atmosphere),
+        theta_deg=0.0,
+    )
+    conv = np.empty((mceq.e_grid.size, n_dec))
+    prompt = np.empty_like(conv)
+    for j, dec in enumerate(dec_deg):
+        theta = 90.0 - dec
+        logger.info("MCEq: dec = %5.1f deg (production zenith %5.1f deg)", dec, theta)
+        mceq.set_theta_deg(theta)
+        mceq.solve()
+        conv[:, j] = mceq.get_solution("conv_numu") + mceq.get_solution("conv_antinumu")
+        prompt[:, j] = mceq.get_solution("pr_numu") + mceq.get_solution("pr_antinumu")
+
+    table = {
+        "energy_gev": np.asarray(mceq.e_grid, dtype=float),
+        "dec_deg": dec_deg,
+        "conv": conv,
+        "prompt": prompt,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(
+        path,
+        interaction_model=interaction_model,
+        primary_model=primary_model,
+        atmosphere="/".join(atmosphere),
+        **table,
+    )
+    logger.info("Flux table saved to %s", path.resolve())
+    return table</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.fluxes.load_mceq_table" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_mceq_table</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_mceq_table(path: str | Path | None = None, recompute: bool = False) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load a cached MCEq table, building it first if needed.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Table file. <code>None</code>, the default, reads :data:<code>SHIPPED_TABLE</code>, which
+needs no MCEq installation.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>recompute</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Rebuild with :func:<code>build_mceq_table</code> even if <code>path</code> exists.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>table</code></b>(                  <code>dict of np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>As returned by :func:<code>build_mceq_table</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/atmospheric.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_mceq_table(
+    path: str | pathlib.Path | None = None, recompute: bool = False
+) -&gt; dict[str, np.ndarray]:
+    """Load a cached MCEq table, building it first if needed.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path or None, optional
+        Table file. ``None``, the default, reads :data:`SHIPPED_TABLE`, which
+        needs no MCEq installation.
+    recompute : bool, optional
+        Rebuild with :func:`build_mceq_table` even if ``path`` exists.
+
+    Returns
+    -------
+    table : dict of np.ndarray
+        As returned by :func:`build_mceq_table`.
+    """
+    path = SHIPPED_TABLE if path is None else pathlib.Path(path)
+    if recompute or not path.exists():
+        logger.info("Building the MCEq flux table at %s (this takes minutes)", path)
+        return build_mceq_table(path)
+    with np.load(path) as data:
+        table = {key: np.asarray(data[key]) for key in TABLE_KEYS}
+        logger.info(
+            "Loaded MCEq flux table %s: %s / %s / %s, %d declinations",
+            path.resolve(),
+            data["interaction_model"],
+            data["primary_model"],
+            data["atmosphere"],
+            table["dec_deg"].size,
+        )
+    return table</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.fluxes.power_law_flux" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">power_law_flux</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">power_law_flux(energy_gev: float | ndarray, phi0: float, gamma: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Single power-law diffuse flux.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Normalization at the 100 TeV pivot [1e-18 GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index, <code>phi ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; float(power_law_flux(1.0e5, 1.0, 2.0))
+1e-18</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/astrophysical.py</code></summary>
+              <pre class="highlight"><code class="language-python">def power_law_flux(
+    energy_gev: float | np.ndarray,
+    phi0: float,
+    gamma: float,
+) -&gt; np.ndarray:
+    """Single power-law diffuse flux.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Neutrino energy [GeV].
+    phi0 : float
+        Normalization at the 100 TeV pivot [1e-18 GeV^-1 cm^-2 s^-1 sr^-1].
+    gamma : float
+        Spectral index, ``phi ~ E^-gamma``.
+
+    Returns
+    -------
+    flux : np.ndarray
+        Differential flux [GeV^-1 cm^-2 s^-1 sr^-1].
+
+    Examples
+    --------
+    &gt;&gt;&gt; float(power_law_flux(1.0e5, 1.0, 2.0))
+    1e-18
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    return (phi0 * FLUX_UNIT) * (energy / FLUX_PIVOT_GEV) ** (-gamma)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.fluxes.table_declination_deg" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">table_declination_deg</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">table_declination_deg(cos_theta: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Table declination an arrival direction is read at [deg].</p>
+<p>The table axis is named for a declination at the South Pole, but what it
+indexes is the production zenith, <code>90 deg</code> minus that declination. A
+neutrino arriving with zenith cosine <code>cos_theta</code> was produced in a
+column of the same slant depth whichever side of the Earth it came from,
+so the atmosphere it crossed is set by <code>|cos_theta|</code> alone. The vertical
+directions, overhead and nadir, both read the <code>90 deg</code> end of the table
+and the horizon reads <code>0</code>.</p>
+<p>That folding is what lets one polar table serve every arrival direction,
+and every site. What it does not carry is the atmosphere itself: the
+table shipped here is the South Pole in January, so a mid-latitude site
+gets the right zenith dependence on the wrong profile.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith; <code>+1</code> is vertically downgoing and
+<code>-1</code> the nadir, as in :mod:<code>softpaws.transport.earth</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>dec_deg</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Declination to read the table at [deg], in <code>[0, 90]</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; table_declination_deg(np.array([-1.0, 0.0, 1.0]))
+array([90.,  0., 90.])</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/fluxes/atmospheric.py</code></summary>
+              <pre class="highlight"><code class="language-python">def table_declination_deg(cos_theta: float | np.ndarray) -&gt; np.ndarray:
+    """Table declination an arrival direction is read at [deg].
+
+    The table axis is named for a declination at the South Pole, but what it
+    indexes is the production zenith, ``90 deg`` minus that declination. A
+    neutrino arriving with zenith cosine ``cos_theta`` was produced in a
+    column of the same slant depth whichever side of the Earth it came from,
+    so the atmosphere it crossed is set by ``|cos_theta|`` alone. The vertical
+    directions, overhead and nadir, both read the ``90 deg`` end of the table
+    and the horizon reads ``0``.
+
+    That folding is what lets one polar table serve every arrival direction,
+    and every site. What it does not carry is the atmosphere itself: the
+    table shipped here is the South Pole in January, so a mid-latitude site
+    gets the right zenith dependence on the wrong profile.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith; ``+1`` is vertically downgoing and
+        ``-1`` the nadir, as in :mod:`softpaws.transport.earth`.
+
+    Returns
+    -------
+    dec_deg : np.ndarray
+        Declination to read the table at [deg], in ``[0, 90]``.
+
+    Examples
+    --------
+    &gt;&gt;&gt; import numpy as np
+    &gt;&gt;&gt; table_declination_deg(np.array([-1.0, 0.0, 1.0]))
+    array([90.,  0., 90.])
+    """
+    return np.rad2deg(np.arcsin(np.clip(np.abs(np.asarray(cos_theta, dtype=float)), 0.0, 1.0)))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../detectors/sites/" class="btn btn-neutral float-left" title="sites"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="astrophysical/" class="btn btn-neutral float-right" title="astrophysical">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../detectors/sites/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="astrophysical/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../js/popper.min.js"></script>
+      <script src="../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../js/clipboard.js"></script>
+      <script src="../../../js/extra.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

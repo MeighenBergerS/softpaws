@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/coefficients/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>coefficients - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "coefficients";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/coefficients.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/coefficients/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">coefficients</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.KernelScaling">KernelScaling</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.build_proposal_table">build_proposal_table</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.critical_energy_gev">critical_energy_gev</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.diffusion_coefficient">diffusion_coefficient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.drift_coefficient">drift_coefficient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.ionization_coefficient">ionization_coefficient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.kernel_scaling">kernel_scaling</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.kernel_scaling_token">kernel_scaling_token</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.log_loss_moments">log_loss_moments</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.loss_spectrum_y_grid">loss_spectrum_y_grid</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.proposal_loss_spectrum">proposal_loss_spectrum</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.proposal_parametrizations">proposal_parametrizations</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.scaled_kernel">scaled_kernel</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.set_kernel_scaling">set_kernel_scaling</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.coefficients.third_moment_coefficient">third_moment_coefficient</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">coefficients</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.coefficients" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.coefficients</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Muon drift and diffusion transport coefficients.</p>
+<p>The soft expansion of the QED collision operator reduces muon energy loss to a
+drift-diffusion process governed by two coefficients (Palmisano et al.,
+arXiv:2607.13143, Eq. 2.8): the drift <code>b_mu</code> [km^-1], the mean fractional energy loss per unit
+length (so the muon range is <code>1/b_mu</code>), and the diffusion <code>d_mu</code> [km^-1],
+the variance of that loss. In the eigenvalue language of
+:mod:<code>softpaws.transport.eigenvalue</code> they are the first two <code>y</code>-moments of the
+loss spectrum, <code>b_mu = &lt;y&gt;</code> and <code>d_mu = &lt;y^2&gt;</code> per unit length.</p>
+<p>Two sources are available, selected by the <code>source</code> argument:</p>
+<p><code>"table1"</code>
+    Table 1 of Palmisano et al.: two reference values in water, at 1 PeV and
+    100 PeV, log-energy interpolated and clipped outside. This is what
+    reproduces their numbers.
+<code>"proposal"</code> (the default)
+    A table computed with PROPOSAL (Koehne et al., arXiv:1809.07740) over
+    <code>10^2</code> to <code>10^16</code> GeV, summing bremsstrahlung, <code>e+e-</code> pair production
+    and the photonuclear channel. Built by :func:<code>build_proposal_table</code> and
+    shipped under <code>src/softpaws/data/coefficients/</code>. Above <code>10^11</code> GeV the
+    photonuclear channel dominates and keeps growing, and ALLM97 is an
+    extrapolation of the HERA fit there: the drift doubles between <code>10^10</code>
+    and <code>10^14</code> GeV on that extrapolation alone.
+<code>"proposal_rock"</code>
+    The same table in PROPOSAL's standard rock (<code>Z = 11</code>, <code>A = 22</code>,
+    <code>rho = 2.65</code>), stored per km of <em>water-equivalent</em> column so it compares
+    with the water table at equal column depth. Its <code>Z^2/A</code> puts <code>b_mu</code>
+    and the log-loss moments 26-30% above water at <code>10^4</code> to <code>10^6</code> GeV
+    and 20-24% above at <code>10^7</code> to <code>10^9</code>. An upgoing muon at IceCube or
+    ARCA spends most of its range below the ice or the sea floor, which is
+    what this source is for.</p>
+<p>The two differ by more than the clipping: PROPOSAL puts <code>b_mu</code> about 7-8%
+above Table 1 at <em>both</em> of its anchor energies and <code>d_mu</code> 13-20% above, and
+below 1 PeV -- where Table 1 has no data at all and is held flat -- the gap
+reaches 15% at 1 TeV, with the sign reversed. Since <code>Phi(1) = b_mu</code> exactly
+and the IceCube spectrum sits at <code>A ~ 1</code>, the soft volume goes as <code>1/b_mu</code>
+and inherits those differences directly.</p>
+<p>The Landau-Pomeranchuk-Migdal suppression of the radiative losses is switched
+on in the shipped tables (<code>lpm=True</code> in :func:<code>proposal_parametrizations</code>).
+It is invisible where the telescopes operate -- below <code>10^-5</code> at <code>10^10</code>
+GeV -- and only bites at the top of the table, where it takes 11% off the
+bremsstrahlung drift in water at <code>10^14</code> GeV and 68% at <code>10^16</code>, which is
+a few percent of the total since photonuclear losses dominate there. Pair
+production is suppressed by under 1% even at <code>10^16</code> GeV. LPM also matters
+for the electromagnetic showers the radiated photons initiate, but that is a
+detector-response effect and lives inside the published IceCube response.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="KernelScaling
+
+
+  
+      dataclass
+   (softpaws.transport.coefficients.KernelScaling)" href="#softpaws.transport.coefficients.KernelScaling">KernelScaling</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Energy-dependent factors that rescale the tabulated kernel moments.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="build_proposal_table (softpaws.transport.coefficients.build_proposal_table)" href="#softpaws.transport.coefficients.build_proposal_table">build_proposal_table</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Tabulate the first three <code>y</code>-moments with PROPOSAL and write them to disk.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="critical_energy_gev (softpaws.transport.coefficients.critical_energy_gev)" href="#softpaws.transport.coefficients.critical_energy_gev">critical_energy_gev</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon critical energy <code>E_c = a_mu / b_mu</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="diffusion_coefficient (softpaws.transport.coefficients.diffusion_coefficient)" href="#softpaws.transport.coefficients.diffusion_coefficient">diffusion_coefficient</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon diffusion coefficient <code>d_mu</code> at a given energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="drift_coefficient (softpaws.transport.coefficients.drift_coefficient)" href="#softpaws.transport.coefficients.drift_coefficient">drift_coefficient</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon drift coefficient <code>b_mu</code> at a given energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="ionization_coefficient (softpaws.transport.coefficients.ionization_coefficient)" href="#softpaws.transport.coefficients.ionization_coefficient">ionization_coefficient</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon ionization loss coefficient <code>a_mu</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="kernel_scaling (softpaws.transport.coefficients.kernel_scaling)" href="#softpaws.transport.coefficients.kernel_scaling">kernel_scaling</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The installed :class:<code>KernelScaling</code>, or <code>None</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="kernel_scaling_token (softpaws.transport.coefficients.kernel_scaling_token)" href="#softpaws.transport.coefficients.kernel_scaling_token">kernel_scaling_token</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>A counter that changes whenever :func:<code>set_kernel_scaling</code> is called.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="log_loss_moments (softpaws.transport.coefficients.log_loss_moments)" href="#softpaws.transport.coefficients.log_loss_moments">log_loss_moments</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The three log-loss moments of the kernel, from the tabulated spectrum.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="loss_spectrum_y_grid (softpaws.transport.coefficients.loss_spectrum_y_grid)" href="#softpaws.transport.coefficients.loss_spectrum_y_grid">loss_spectrum_y_grid</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Grid in <code>y</code> resolving both the soft pile-up and the <code>y -&gt; 1</code> edge.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="proposal_loss_spectrum (softpaws.transport.coefficients.proposal_loss_spectrum)" href="#softpaws.transport.coefficients.proposal_loss_spectrum">proposal_loss_spectrum</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>PROPOSAL's differential loss rate <code>dGamma/dy</code>, per channel.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="proposal_parametrizations (softpaws.transport.coefficients.proposal_parametrizations)" href="#softpaws.transport.coefficients.proposal_parametrizations">proposal_parametrizations</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The three radiative channels the shipped table is built from.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="scaled_kernel (softpaws.transport.coefficients.scaled_kernel)" href="#softpaws.transport.coefficients.scaled_kernel">scaled_kernel</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Install a :class:<code>KernelScaling</code> for a block and restore the old one after.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="set_kernel_scaling (softpaws.transport.coefficients.set_kernel_scaling)" href="#softpaws.transport.coefficients.set_kernel_scaling">set_kernel_scaling</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Install (or with <code>None</code> remove) a global :class:<code>KernelScaling</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="third_moment_coefficient (softpaws.transport.coefficients.third_moment_coefficient)" href="#softpaws.transport.coefficients.third_moment_coefficient">third_moment_coefficient</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon third loss moment <code>t_mu = &lt;y^3&gt;</code> at a given energy.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.transport.coefficients.KernelScaling" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">KernelScaling</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">KernelScaling(kappa_1: Callable[[ndarray], ndarray], kappa_2: Callable[[ndarray], ndarray])</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Energy-dependent factors that rescale the tabulated kernel moments.</p>
+<p>Used by :mod:<code>softpaws.transport.loss_ensemble</code> to push one alternative
+loss parametrization through every calculation without rebuilding the
+table: the ensemble is linear in the loss spectrum, so a swapped channel
+is a ratio of moments at each energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>kappa_1</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the first moments, <code>Phi'_var(0) / Phi'(0)</code> and
+<code>b_var / b</code>, as a function of the muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>kappa_2</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Ratio of the second moments, applied to <code>d_mu</code>, to <code>-Phi''(0)</code>
+and to the third log-loss moment.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.build_proposal_table" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">build_proposal_table</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">build_proposal_table(path: str | Path | None = None, log10_e_min: float = 2.0, log10_e_max: float = 16.0, points_per_decade: int = 8, medium: str = 'Water', lpm: bool = True) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Tabulate the first three <code>y</code>-moments with PROPOSAL and write them to disk.</p>
+<p>Sums the three radiative channels of :func:<code>proposal_parametrizations</code> with no
+energy cut, so every loss is continuous and PROPOSAL's <code>dEdx</code> and <code>dE2dx</code>
+are exactly the first two moments the drift-diffusion expansion needs.</p>
+<p>PROPOSAL exposes no third-moment accumulator, so <code>t_mu = &lt;y^3&gt;</code> is obtained
+by quadrature of :func:<code>proposal_loss_spectrum</code> on
+:func:<code>loss_spectrum_y_grid</code>. The same quadrature reproduces <code>dEdx</code> and
+<code>dE2dx</code> to better than 0.1%, which is what validates it; that closure is
+asserted here rather than assumed.</p>
+<p>Only needed to regenerate the shipped table, and with
+:func:<code>proposal_loss_spectrum</code> the only place the optional <code>proposal</code>
+dependency is used.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Destination CSV. Defaults to the shipped table for <code>medium</code>,
+:data:<code>PROPOSAL_TABLE_PATH</code> for water and
+:data:<code>PROPOSAL_ROCK_TABLE_PATH</code> for standard rock.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_min</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>2.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Range of the table in <code>log10(E / GeV)</code>. PROPOSAL's interpolation
+tables normally stop at <code>10^11</code> GeV; their ceiling is raised to the
+top of the table for the duration of the build, which regenerates them
+under PROPOSAL's table path on first use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_max</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>2.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Range of the table in <code>log10(E / GeV)</code>. PROPOSAL's interpolation
+tables normally stop at <code>10^11</code> GeV; their ceiling is raised to the
+top of the table for the duration of the build, which regenerates them
+under PROPOSAL's table path on first use.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>points_per_decade</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>8</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Sampling density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>medium</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;Water&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>A <code>proposal.medium</code> class name; see :func:<code>proposal_loss_spectrum</code>.
+Defaults to <code>"Water"</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lpm</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Switch on the LPM suppression; see :func:<code>proposal_parametrizations</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>table</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n">n</span>, 7))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Columns of energy [GeV], the <code>y</code>-moments <code>b_mu</code>, <code>d_mu</code>, <code>t_mu</code>,
+and the log-loss moments <code>Phi'(0)</code>, <code>-Phi''(0)</code>, <code>Phi'''(0)</code>, all
+[km^-1] at :data:<code>~softpaws.constants.RHO_WATER_G_CM3</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="RuntimeError">RuntimeError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the quadrature of <code>dGamma/dy</code> disagrees with PROPOSAL's own
+<code>dEdx</code> or <code>dE2dx</code> by more than 1%, which would mean the reconstructed
+spectrum feeding <code>t_mu</code> cannot be trusted.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def build_proposal_table(
+    path: str | pathlib.Path | None = None,
+    log10_e_min: float = 2.0,
+    log10_e_max: float = 16.0,
+    points_per_decade: int = 8,
+    medium: str = "Water",
+    lpm: bool = True,
+) -&gt; np.ndarray:
+    """Tabulate the first three ``y``-moments with PROPOSAL and write them to disk.
+
+    Sums the three radiative channels of :func:`proposal_parametrizations` with no
+    energy cut, so every loss is continuous and PROPOSAL's ``dEdx`` and ``dE2dx``
+    are exactly the first two moments the drift-diffusion expansion needs.
+
+    PROPOSAL exposes no third-moment accumulator, so ``t_mu = &lt;y^3&gt;`` is obtained
+    by quadrature of :func:`proposal_loss_spectrum` on
+    :func:`loss_spectrum_y_grid`. The same quadrature reproduces ``dEdx`` and
+    ``dE2dx`` to better than 0.1%, which is what validates it; that closure is
+    asserted here rather than assumed.
+
+    Only needed to regenerate the shipped table, and with
+    :func:`proposal_loss_spectrum` the only place the optional ``proposal``
+    dependency is used.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path, optional
+        Destination CSV. Defaults to the shipped table for ``medium``,
+        :data:`PROPOSAL_TABLE_PATH` for water and
+        :data:`PROPOSAL_ROCK_TABLE_PATH` for standard rock.
+    log10_e_min, log10_e_max : float, optional
+        Range of the table in ``log10(E / GeV)``. PROPOSAL's interpolation
+        tables normally stop at ``10^11`` GeV; their ceiling is raised to the
+        top of the table for the duration of the build, which regenerates them
+        under PROPOSAL's table path on first use.
+    points_per_decade : int, optional
+        Sampling density.
+    medium : str, optional
+        A ``proposal.medium`` class name; see :func:`proposal_loss_spectrum`.
+        Defaults to ``"Water"``.
+    lpm : bool, optional
+        Switch on the LPM suppression; see :func:`proposal_parametrizations`.
+
+    Returns
+    -------
+    table : np.ndarray, shape (n, 7)
+        Columns of energy [GeV], the ``y``-moments ``b_mu``, ``d_mu``, ``t_mu``,
+        and the log-loss moments ``Phi'(0)``, ``-Phi''(0)``, ``Phi'''(0)``, all
+        [km^-1] at :data:`~softpaws.constants.RHO_WATER_G_CM3`.
+
+    Raises
+    ------
+    RuntimeError
+        Raised if the quadrature of ``dGamma/dy`` disagrees with PROPOSAL's own
+        ``dEdx`` or ``dE2dx`` by more than 1%, which would mean the reconstructed
+        spectrum feeding ``t_mu`` cannot be trusted.
+    """
+    import proposal as pp
+
+    if path is None:
+        path = {name: table for name, table in _PROPOSAL_SOURCES.values()}[medium]
+    medium_name = medium
+    particle = pp.particle.MuMinusDef()
+    medium = getattr(pp.medium, medium_name)()
+    # v_cut = 1 puts every loss in the continuous part; the third flag switches
+    # on the second moment (dE2dx), which is zero without it.
+    cuts = pp.EnergyCutSettings(np.inf, 1, True)
+    # PROPOSAL interpolates dEdx and dE2dx on tables that stop at its
+    # ``upper_energy_lim`` (MeV); lift that to the top of this table while the
+    # cross sections are built, and put it back afterwards.
+    ceiling = pp.InterpolationSettings.upper_energy_lim
+    pp.InterpolationSettings.upper_energy_lim = max(ceiling, 10.0 ** (log10_e_max + 3.0))
+    try:
+        cross_sections = [
+            pp.crosssection.make_crosssection(p, particle, medium, cuts, True)
+            for p in proposal_parametrizations(medium_name, lpm).values()
+        ]
+    finally:
+        pp.InterpolationSettings.upper_energy_lim = ceiling
+
+    n_points = int(round((log10_e_max - log10_e_min) * points_per_decade)) + 1
+    energy_gev = np.logspace(log10_e_min, log10_e_max, n_points)
+    # PROPOSAL works in MeV, and ``calculate_dEdx`` and ``calculate_dE2dx`` are
+    # per unit column density (MeV cm^2 g^-1), not per cm, so no medium density
+    # enters: the table is stored per km of water-equivalent column whatever the
+    # medium, matching Table 1's convention. Dividing by the medium density here
+    # was invisible for water and wrong by 2.65 for standard rock.
+    scale = CM_PER_KM * RHO_WATER_G_CM3
+    b_mu = np.array(
+        [sum(c.calculate_dEdx(e * 1.0e3) for c in cross_sections) / (e * 1.0e3) for e in energy_gev]
+    ) * scale
+    d_mu = np.array(
+        [
+            sum(c.calculate_dE2dx(e * 1.0e3) for c in cross_sections) / (e * 1.0e3) ** 2
+            for e in energy_gev
+        ]
+    ) * scale
+
+    y = loss_spectrum_y_grid()
+    log_loss = -np.log1p(-y)
+    t_mu = np.empty_like(energy_gev)
+    phi_moments = np.empty((energy_gev.size, 3))
+    for i, energy in enumerate(energy_gev):
+        spectrum = proposal_loss_spectrum(energy, y, medium_name, lpm)["total"]
+        for order, reference in ((1, b_mu[i]), (2, d_mu[i])):
+            quadrature = np.trapezoid(y**order * spectrum, y)
+            # 0.1% with PROPOSAL's shipped interpolation tables; freshly generated
+            # ones (written to /tmp on first use) sit 2% from the quadrature in
+            # water and rock alike, so the guard admits that.
+            if abs(quadrature / reference - 1.0) &gt; 0.025:
+                raise RuntimeError(
+                    f"dGamma/dy quadrature disagrees with PROPOSAL's moment {order} "
+                    f"at E = {energy:.3g} GeV: {quadrature:.6g} vs {reference:.6g}."
+                )
+        t_mu[i] = np.trapezoid(y**3 * spectrum, y)
+        for order in (1, 2, 3):
+            phi_moments[i, order - 1] = np.trapezoid(log_loss**order * spectrum, y)
+
+    table = np.column_stack([energy_gev, b_mu, d_mu, t_mu, phi_moments])
+    path = pathlib.Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savetxt(
+        path,
+        table,
+        delimiter=",",
+        header=(
+            f"Muon transport coefficients from PROPOSAL in {medium_name} "
+            f"(rho = {medium.mass_density} g/cm^3), per km of water-equivalent "
+            f"column at rho = {RHO_WATER_G_CM3} g/cm^3.\n"
+            "Bremsstrahlung + e+e- pair production (Kelner-Kokoulin-Petrukhin"
+            f"{', with LPM suppression' if lpm else ''}) + "
+            "photonuclear (ALLM97, Butkevich-Mikheyev shadowing); no ionization.\n"
+            "b_mu = &lt;y&gt;, d_mu = &lt;y^2&gt;, t_mu = &lt;y^3&gt; per unit length.\n"
+            "The last three are the log-loss moments the first-passage range needs, "
+            "Phi^(n)(0) = &lt;(-ln(1-y))^n&gt;, which no family calibrated to the "
+            "y-moments reproduces: a two-moment fit is 8% low on the first and 56% "
+            "low on the second.\n"
+            "E [GeV], b_mu [km^-1], d_mu [km^-1], t_mu [km^-1], "
+            "phi1 [km^-1], phi2 [km^-1], phi3 [km^-1]"
+        ),
+    )
+    return table</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.critical_energy_gev" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">critical_energy_gev</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">critical_energy_gev(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon critical energy <code>E_c = a_mu / b_mu</code>.</p>
+<p>Above <code>E_c</code> radiative losses dominate and the drift limit of
+:mod:<code>softpaws.transport.soft_volume</code> applies; below it the muon slows at the
+near-constant ionization rate. In water <code>E_c ~ 570 GeV</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV], at which <code>b_mu</code> is evaluated. The critical energy
+inherits <code>b_mu</code>'s slow (logarithmic) energy dependence.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Cancels between
+<code>a_mu</code> and <code>b_mu</code>, so <code>E_c</code> is density independent.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient. Defaults to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate; see the module docstring. Defaults to
+:data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>e_crit</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Critical energy [GeV], broadcast to the shape of <code>energy_gev</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def critical_energy_gev(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Muon critical energy ``E_c = a_mu / b_mu``.
+
+    Above ``E_c`` radiative losses dominate and the drift limit of
+    :mod:`softpaws.transport.soft_volume` applies; below it the muon slows at the
+    near-constant ionization rate. In water ``E_c ~ 570 GeV``.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV], at which ``b_mu`` is evaluated. The critical energy
+        inherits ``b_mu``'s slow (logarithmic) energy dependence.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Cancels between
+        ``a_mu`` and ``b_mu``, so ``E_c`` is density independent.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient. Defaults to 1.
+    source : {"proposal", "table1"}, optional
+        Which tabulation to interpolate; see the module docstring. Defaults to
+        :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    e_crit : np.ndarray
+        Critical energy [GeV], broadcast to the shape of ``energy_gev``.
+    """
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3, source)
+    return ionization_coefficient(density_g_cm3) / b_mu</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.diffusion_coefficient" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">diffusion_coefficient</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">diffusion_coefficient(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon diffusion coefficient <code>d_mu</code> at a given energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Scales linearly
+with density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate; see the module docstring. Defaults to
+:data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>d_mu</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Interpolated as in :func:<code>drift_coefficient</code>. Not used in the drift limit;
+tabulated for the diffusion extension.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def diffusion_coefficient(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Muon diffusion coefficient ``d_mu`` at a given energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly
+        with density.
+    source : {"proposal", "table1"}, optional
+        Which tabulation to interpolate; see the module docstring. Defaults to
+        :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    d_mu : np.ndarray
+        Diffusion coefficient [km^-1].
+
+    Notes
+    -----
+    Interpolated as in :func:`drift_coefficient`. Not used in the drift limit;
+    tabulated for the diffusion extension.
+    """
+    d_water = _interpolate(energy_gev, source, 1)
+    return _scale(d_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.drift_coefficient" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">drift_coefficient</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">drift_coefficient(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon drift coefficient <code>b_mu</code> at a given energy.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. The coefficient
+scales linearly with density, since it is proportional to the target
+number density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate; see the module docstring. Defaults to
+:data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>b_mu</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Values are log-linearly interpolated in <code>log10(E / GeV)</code> and clipped to
+the endpoints of the selected source: for <code>"table1"</code> just the two
+reference energies (1 PeV and 100 PeV), for <code>"proposal"</code> the full table
+outside that range. The energy dependence of the QED coefficients is slow
+(logarithmic), so this is adequate in the drift limit.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def drift_coefficient(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Muon drift coefficient ``b_mu`` at a given energy.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. The coefficient
+        scales linearly with density, since it is proportional to the target
+        number density.
+    source : {"proposal", "table1"}, optional
+        Which tabulation to interpolate; see the module docstring. Defaults to
+        :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    b_mu : np.ndarray
+        Drift coefficient [km^-1].
+
+    Notes
+    -----
+    Values are log-linearly interpolated in ``log10(E / GeV)`` and clipped to
+    the endpoints of the selected source: for ``"table1"`` just the two
+    reference energies (1 PeV and 100 PeV), for ``"proposal"`` the full table
+    outside that range. The energy dependence of the QED coefficients is slow
+    (logarithmic), so this is adequate in the drift limit.
+    """
+    b_water = _interpolate(energy_gev, source, 0)
+    return _scale(b_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 1)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.ionization_coefficient" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">ionization_coefficient</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">ionization_coefficient(density_g_cm3: float = RHO_WATER_G_CM3) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon ionization loss coefficient <code>a_mu</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+density, as for the QED coefficients.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>a_mu</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Ionization loss [GeV km^-1], the constant term of
+<code>-dE/dx = a_mu + b_mu E</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def ionization_coefficient(density_g_cm3: float = RHO_WATER_G_CM3) -&gt; float:
+    """Muon ionization loss coefficient ``a_mu``.
+
+    Parameters
+    ----------
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+        density, as for the QED coefficients.
+
+    Returns
+    -------
+    a_mu : float
+        Ionization loss [GeV km^-1], the constant term of
+        ``-dE/dx = a_mu + b_mu E``.
+    """
+    return IONIZATION_A_GEV_CM2_G * density_g_cm3 * CM_PER_KM</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.kernel_scaling" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">kernel_scaling</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">kernel_scaling() -&gt; KernelScaling | None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The installed :class:<code>KernelScaling</code>, or <code>None</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def kernel_scaling() -&gt; KernelScaling | None:
+    """The installed :class:`KernelScaling`, or ``None``."""
+    return _KERNEL_SCALING</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.kernel_scaling_token" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">kernel_scaling_token</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">kernel_scaling_token() -&gt; int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>A counter that changes whenever :func:<code>set_kernel_scaling</code> is called.</p>
+<p>The coefficients are read through a global scaling, so anything that caches
+a curve built from them has to know when that scaling moved. Keying the
+cache on this token drops the stale entry without the caller having to
+reach into :mod:<code>softpaws.transport.coefficients</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>token</code></b>(                  <code><span title="int">int</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The current value, meaningful only by comparison with an earlier one.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def kernel_scaling_token() -&gt; int:
+    """A counter that changes whenever :func:`set_kernel_scaling` is called.
+
+    The coefficients are read through a global scaling, so anything that caches
+    a curve built from them has to know when that scaling moved. Keying the
+    cache on this token drops the stale entry without the caller having to
+    reach into :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    token : int
+        The current value, meaningful only by comparison with an earlier one.
+    """
+    return _kernel_scaling_token</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.log_loss_moments" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">log_loss_moments</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">log_loss_moments(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The three log-loss moments of the kernel, from the tabulated spectrum.</p>
+<p>Where <code>b_mu</code>, <code>d_mu</code> and <code>t_mu</code> are moments of the fractional loss
+<code>y</code>, these are moments of the <em>logarithmic</em> loss <code>-ln(1-y)</code>, which is
+what the first-passage range of
+:func:<code>softpaws.transport.muon_range.stochastic_muon_range_km</code> and its
+variance are built from:</p>
+<p>.. math:: \Phi'(0) = \langle -\ln(1-y)\rangle, \quad
+    -\Phi''(0) = \langle \ln^2(1-y)\rangle, \quad
+    \Phi'''(0) = \langle -\ln^3(1-y)\rangle .</p>
+<p>They are read from the shipped table rather than reconstructed from
+<code>b_mu</code>, <code>d_mu</code>, <code>t_mu</code>, because no family calibrated to the
+<code>y</code>-moments reproduces them. <code>-ln(1-y)</code> diverges as <code>y -&gt; 1</code> where
+<code>y</code> saturates, so these moments are dominated by the hard end of the
+kernel that a calibrated family gets wrong: against PROPOSAL's own spectrum
+the two-moment family of
+:func:<code>softpaws.transport.eigenvalue.two_moment_loss_spectrum</code> is 8% low on
+the first, 56% low on the second and 87% low on the third, and the
+three-moment family is 1% high, 15% high and 40% high.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+density, as for the <code>y</code>-moments.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>&#39;proposal&#39;</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate. Defaults to :data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>phi_prime, phi_second, phi_third : np.ndarray</code>
+              –
+              <div class="doc-md-description">
+                <p><code>Phi'(0)</code>, <code>-Phi''(0)</code> and <code>Phi'''(0)</code> [km^-1], all positive.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised for <code>source="table1"</code>, which tabulates no log-loss moments, or
+if the shipped PROPOSAL table predates these columns.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def log_loss_moments(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    r"""The three log-loss moments of the kernel, from the tabulated spectrum.
+
+    Where ``b_mu``, ``d_mu`` and ``t_mu`` are moments of the fractional loss
+    ``y``, these are moments of the *logarithmic* loss ``-ln(1-y)``, which is
+    what the first-passage range of
+    :func:`softpaws.transport.muon_range.stochastic_muon_range_km` and its
+    variance are built from:
+
+    .. math:: \\Phi'(0) = \\langle -\\ln(1-y)\\rangle, \\quad
+        -\\Phi''(0) = \\langle \\ln^2(1-y)\\rangle, \\quad
+        \\Phi'''(0) = \\langle -\\ln^3(1-y)\\rangle .
+
+    They are read from the shipped table rather than reconstructed from
+    ``b_mu``, ``d_mu``, ``t_mu``, because no family calibrated to the
+    ``y``-moments reproduces them. ``-ln(1-y)`` diverges as ``y -&gt; 1`` where
+    ``y`` saturates, so these moments are dominated by the hard end of the
+    kernel that a calibrated family gets wrong: against PROPOSAL's own spectrum
+    the two-moment family of
+    :func:`softpaws.transport.eigenvalue.two_moment_loss_spectrum` is 8% low on
+    the first, 56% low on the second and 87% low on the third, and the
+    three-moment family is 1% high, 15% high and 40% high.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+        density, as for the ``y``-moments.
+    source : {"proposal"}, optional
+        Which tabulation to interpolate. Defaults to :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    phi_prime, phi_second, phi_third : np.ndarray
+        ``Phi'(0)``, ``-Phi''(0)`` and ``Phi'''(0)`` [km^-1], all positive.
+
+    Raises
+    ------
+    ValueError
+        Raised for ``source="table1"``, which tabulates no log-loss moments, or
+        if the shipped PROPOSAL table predates these columns.
+    """
+    scale = density_g_cm3 / RHO_WATER_G_CM3
+    return tuple(
+        _scale(_interpolate(energy_gev, source, column) * scale, energy_gev, order)
+        for column, order in ((3, 1), (4, 2), (5, 2))
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.loss_spectrum_y_grid" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">loss_spectrum_y_grid</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">loss_spectrum_y_grid(n_soft: int = 3000, n_hard: int = 2000, log10_y_min: float = -12.0, log10_one_minus_y_min: float = -8.0) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Grid in <code>y</code> resolving both the soft pile-up and the <code>y -&gt; 1</code> edge.</p>
+<p>Log spaced in <code>y</code> below the midpoint and log spaced in <code>1 - y</code> above it.
+A single log grid in <code>y</code> leaves the hard edge coarse, which costs about a
+percent on the second moment; this grid closes the first three moments of
+PROPOSAL's spectrum to better than 0.1%.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>n_soft</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>3000</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of nodes below and above <code>y = 0.5</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_hard</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>3000</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of nodes below and above <code>y = 0.5</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_y_min</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>-12.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Smallest <code>log10(y)</code> on the soft branch.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_one_minus_y_min</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>-8.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Smallest <code>log10(1 - y)</code> on the hard branch.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>y</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Ascending, strictly increasing grid of fractional energy losses in
+<code>(0, 1)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def loss_spectrum_y_grid(
+    n_soft: int = 3000,
+    n_hard: int = 2000,
+    log10_y_min: float = -12.0,
+    log10_one_minus_y_min: float = -8.0,
+) -&gt; np.ndarray:
+    """Grid in ``y`` resolving both the soft pile-up and the ``y -&gt; 1`` edge.
+
+    Log spaced in ``y`` below the midpoint and log spaced in ``1 - y`` above it.
+    A single log grid in ``y`` leaves the hard edge coarse, which costs about a
+    percent on the second moment; this grid closes the first three moments of
+    PROPOSAL's spectrum to better than 0.1%.
+
+    Parameters
+    ----------
+    n_soft, n_hard : int, optional
+        Number of nodes below and above ``y = 0.5``.
+    log10_y_min : float, optional
+        Smallest ``log10(y)`` on the soft branch.
+    log10_one_minus_y_min : float, optional
+        Smallest ``log10(1 - y)`` on the hard branch.
+
+    Returns
+    -------
+    y : np.ndarray
+        Ascending, strictly increasing grid of fractional energy losses in
+        ``(0, 1)``.
+    """
+    soft = np.logspace(log10_y_min, np.log10(0.5), n_soft)
+    hard = 1.0 - np.logspace(log10_one_minus_y_min, np.log10(0.5), n_hard)[::-1]
+    return np.unique(np.concatenate([soft, hard]))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.proposal_loss_spectrum" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">proposal_loss_spectrum</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">proposal_loss_spectrum(energy_gev: float, y: ndarray, medium: str = 'Water', lpm: bool = True) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>PROPOSAL's differential loss rate <code>dGamma/dy</code>, per channel.</p>
+<p>PROPOSAL's <code>differential_crosssection</code> is per unit column density, per
+component, so the rate per unit length is the mass-fraction-weighted sum over
+components times the mass density. The result is rescaled to
+:data:<code>~softpaws.constants.RHO_WATER_G_CM3</code>, matching the convention of
+the shipped tables: a rate per km of water-equivalent column, whatever the
+medium, so that media compare at equal column depth.</p>
+<p>This is the spectrum whose moments :func:<code>build_proposal_table</code> tabulates and
+which the calibrated families of :mod:<code>softpaws.transport.eigenvalue</code>
+approximate. Requires the optional <code>proposal</code> dependency.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>y</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Fractional energy losses in <code>(0, 1)</code>; see :func:<code>loss_spectrum_y_grid</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>medium</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;Water&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>A <code>proposal.medium</code> class name, <code>"Water"</code> (the default), <code>"Ice"</code>
+or <code>"StandardRock"</code>. Ice and water coincide per unit column; standard
+rock sits 20 to 30% above them through its <code>Z^2/A</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lpm</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Switch on the LPM suppression; see :func:<code>proposal_parametrizations</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>spectrum</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Channel label to <code>dGamma/dy</code> [km^-1], plus the key <code>"total"</code>. Values
+outside a channel's kinematic limits are zero.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def proposal_loss_spectrum(
+    energy_gev: float, y: np.ndarray, medium: str = "Water", lpm: bool = True
+) -&gt; dict[str, np.ndarray]:
+    """PROPOSAL's differential loss rate ``dGamma/dy``, per channel.
+
+    PROPOSAL's ``differential_crosssection`` is per unit column density, per
+    component, so the rate per unit length is the mass-fraction-weighted sum over
+    components times the mass density. The result is rescaled to
+    :data:`~softpaws.constants.RHO_WATER_G_CM3`, matching the convention of
+    the shipped tables: a rate per km of water-equivalent column, whatever the
+    medium, so that media compare at equal column depth.
+
+    This is the spectrum whose moments :func:`build_proposal_table` tabulates and
+    which the calibrated families of :mod:`softpaws.transport.eigenvalue`
+    approximate. Requires the optional ``proposal`` dependency.
+
+    Parameters
+    ----------
+    energy_gev : float
+        Muon energy [GeV].
+    y : np.ndarray
+        Fractional energy losses in ``(0, 1)``; see :func:`loss_spectrum_y_grid`.
+    medium : str, optional
+        A ``proposal.medium`` class name, ``"Water"`` (the default), ``"Ice"``
+        or ``"StandardRock"``. Ice and water coincide per unit column; standard
+        rock sits 20 to 30% above them through its ``Z^2/A``.
+    lpm : bool, optional
+        Switch on the LPM suppression; see :func:`proposal_parametrizations`.
+
+    Returns
+    -------
+    spectrum : dict
+        Channel label to ``dGamma/dy`` [km^-1], plus the key ``"total"``. Values
+        outside a channel's kinematic limits are zero.
+    """
+    import proposal as pp
+
+    particle = pp.particle.MuMinusDef()
+    medium_name = medium
+    medium = getattr(pp.medium, medium_name)()
+    energy_mev = energy_gev * 1.0e3
+
+    # PROPOSAL's atomic_number is the atomic mass, so these are mass fractions.
+    molar_mass = sum(c.atoms_in_molecule * c.atomic_number for c in medium.components)
+    scale = CM_PER_KM * RHO_WATER_G_CM3 / medium.mass_density
+
+    spectrum: dict[str, np.ndarray] = {}
+    for label, param in proposal_parametrizations(medium_name, lpm).items():
+        rate = np.zeros_like(y)
+        for component in medium.components:
+            limits = param.kinematic_limits(particle, component, energy_mev)
+            inside = (y &gt; limits.v_min) &amp; (y &lt; limits.v_max)
+            per_gram = np.zeros_like(y)
+            per_gram[inside] = [
+                param.differential_crosssection(particle, component, energy_mev, value)
+                for value in y[inside]
+            ]
+            weight = component.atoms_in_molecule * component.atomic_number / molar_mass
+            rate += medium.mass_density * weight * per_gram
+        spectrum[label] = rate * scale
+    spectrum["total"] = sum(spectrum.values())
+    return spectrum</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.proposal_parametrizations" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">proposal_parametrizations</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">proposal_parametrizations(medium: str = 'Water', lpm: bool = True) -&gt; dict[str, object]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The three radiative channels the shipped table is built from.</p>
+<p>Bremsstrahlung and <code>e+e-</code> pair production (both Kelner-Kokoulin-Petrukhin)
+and photonuclear (ALLM97 with Butkevich-Mikheyev shadowing). Ionization is
+excluded, matching Table 1's convention; it enters separately through
+:func:<code>ionization_coefficient</code>.</p>
+<p>Requires the optional <code>proposal</code> dependency.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>medium</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;Water&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>A <code>proposal.medium</code> class name, which the LPM suppression needs
+since it depends on the density. Defaults to <code>"Water"</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lpm</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Switch on the Landau-Pomeranchuk-Migdal suppression of bremsstrahlung
+and pair production. Defaults to <code>True</code>; see the module docstring
+for where it matters.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>parametrizations</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Channel label to PROPOSAL parametrization object.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def proposal_parametrizations(medium: str = "Water", lpm: bool = True) -&gt; dict[str, object]:
+    """The three radiative channels the shipped table is built from.
+
+    Bremsstrahlung and ``e+e-`` pair production (both Kelner-Kokoulin-Petrukhin)
+    and photonuclear (ALLM97 with Butkevich-Mikheyev shadowing). Ionization is
+    excluded, matching Table 1's convention; it enters separately through
+    :func:`ionization_coefficient`.
+
+    Requires the optional ``proposal`` dependency.
+
+    Parameters
+    ----------
+    medium : str, optional
+        A ``proposal.medium`` class name, which the LPM suppression needs
+        since it depends on the density. Defaults to ``"Water"``.
+    lpm : bool, optional
+        Switch on the Landau-Pomeranchuk-Migdal suppression of bremsstrahlung
+        and pair production. Defaults to ``True``; see the module docstring
+        for where it matters.
+
+    Returns
+    -------
+    parametrizations : dict
+        Channel label to PROPOSAL parametrization object.
+    """
+    import proposal as pp
+
+    if lpm:
+        particle = pp.particle.MuMinusDef()
+        target = getattr(pp.medium, medium)()
+        bremsstrahlung = pp.parametrization.bremsstrahlung.KelnerKokoulinPetrukhin(
+            True, particle, target
+        )
+        pair_production = pp.parametrization.pairproduction.KelnerKokoulinPetrukhin(
+            True, particle, target
+        )
+    else:
+        bremsstrahlung = pp.parametrization.bremsstrahlung.KelnerKokoulinPetrukhin(False)
+        pair_production = pp.parametrization.pairproduction.KelnerKokoulinPetrukhin(False)
+    return {
+        "bremsstrahlung": bremsstrahlung,
+        "pair production": pair_production,
+        "photonuclear": pp.parametrization.photonuclear.AbramowiczLevinLevyMaor97(
+            pp.parametrization.photonuclear.ShadowButkevichMikheyev()
+        ),
+    }</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.scaled_kernel" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scaled_kernel</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">scaled_kernel(scaling: KernelScaling | None) -&gt; Iterator[None]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Install a :class:<code>KernelScaling</code> for a block and restore the old one after.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>scaling</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="KernelScaling
+
+
+  
+      dataclass
+   (softpaws.transport.coefficients.KernelScaling)" href="#softpaws.transport.coefficients.KernelScaling">KernelScaling</a> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>The factors to apply inside the block.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; with scaled_kernel(None):
+...     b = drift_coefficient(1.0e6)</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">@contextlib.contextmanager
+def scaled_kernel(scaling: KernelScaling | None) -&gt; Iterator[None]:
+    """Install a :class:`KernelScaling` for a block and restore the old one after.
+
+    Parameters
+    ----------
+    scaling : KernelScaling or None
+        The factors to apply inside the block.
+
+    Examples
+    --------
+    &gt;&gt;&gt; with scaled_kernel(None):
+    ...     b = drift_coefficient(1.0e6)
+    """
+    previous = _KERNEL_SCALING
+    set_kernel_scaling(scaling)
+    try:
+        yield
+    finally:
+        set_kernel_scaling(previous)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.set_kernel_scaling" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">set_kernel_scaling</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">set_kernel_scaling(scaling: KernelScaling | None) -&gt; None</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Install (or with <code>None</code> remove) a global :class:<code>KernelScaling</code>.</p>
+<p>While a scaling is installed, :func:<code>drift_coefficient</code>,
+:func:<code>diffusion_coefficient</code> and :func:<code>log_loss_moments</code> multiply their
+results by its factors at the requested energy, so everything built on
+them sees the alternative kernel.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>scaling</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="KernelScaling
+
+
+  
+      dataclass
+   (softpaws.transport.coefficients.KernelScaling)" href="#softpaws.transport.coefficients.KernelScaling">KernelScaling</a> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>The factors to apply, or <code>None</code> for the shipped table.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def set_kernel_scaling(scaling: KernelScaling | None) -&gt; None:
+    """Install (or with ``None`` remove) a global :class:`KernelScaling`.
+
+    While a scaling is installed, :func:`drift_coefficient`,
+    :func:`diffusion_coefficient` and :func:`log_loss_moments` multiply their
+    results by its factors at the requested energy, so everything built on
+    them sees the alternative kernel.
+
+    Parameters
+    ----------
+    scaling : KernelScaling or None
+        The factors to apply, or ``None`` for the shipped table.
+    """
+    global _KERNEL_SCALING, _kernel_scaling_token
+    _KERNEL_SCALING = scaling
+    _kernel_scaling_token += 1</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.coefficients.third_moment_coefficient" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">third_moment_coefficient</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">third_moment_coefficient(energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon third loss moment <code>t_mu = &lt;y^3&gt;</code> at a given energy.</p>
+<p>The extra input the three-moment loss family needs
+(:func:<code>softpaws.transport.eigenvalue.three_moment_loss_spectrum</code>). Where
+<code>b_mu</code> and <code>d_mu</code> fix the mean and variance of the energy loss, <code>t_mu</code>
+fixes its skewness, which is what pins the hard end of <code>dGamma/dy</code> and so
+the tail of the log-loss law.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+density, as for the lower moments.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>&#39;proposal&#39;</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Which tabulation to interpolate. Defaults to :data:<code>DEFAULT_SOURCE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>t_mu</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Third moment [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised for <code>source="table1"</code>, which tabulates only two moments, or if
+the shipped PROPOSAL table predates the third-moment column.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/coefficients.py</code></summary>
+              <pre class="highlight"><code class="language-python">def third_moment_coefficient(
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Muon third loss moment ``t_mu = &lt;y^3&gt;`` at a given energy.
+
+    The extra input the three-moment loss family needs
+    (:func:`softpaws.transport.eigenvalue.three_moment_loss_spectrum`). Where
+    ``b_mu`` and ``d_mu`` fix the mean and variance of the energy loss, ``t_mu``
+    fixes its skewness, which is what pins the hard end of ``dGamma/dy`` and so
+    the tail of the log-loss law.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water. Scales linearly with
+        density, as for the lower moments.
+    source : {"proposal"}, optional
+        Which tabulation to interpolate. Defaults to :data:`DEFAULT_SOURCE`.
+
+    Returns
+    -------
+    t_mu : np.ndarray
+        Third moment [km^-1].
+
+    Raises
+    ------
+    ValueError
+        Raised for ``source="table1"``, which tabulates only two moments, or if
+        the shipped PROPOSAL table predates the third-moment column.
+    """
+    t_water = _interpolate(energy_gev, source, 2)
+    return _scale(t_water * (density_g_cm3 / RHO_WATER_G_CM3), energy_gev, 2)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../attenuation/" class="btn btn-neutral float-left" title="attenuation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cross_section/" class="btn btn-neutral float-right" title="cross_section">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../attenuation/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cross_section/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

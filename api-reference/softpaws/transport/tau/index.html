@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/tau/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>tau - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "tau";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/tau.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/tau/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../source/">source</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">tau</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.tau.decay_length_km">decay_length_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.tau.decay_spectrum">decay_spectrum</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.tau.tau_loss_density">tau_loss_density</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.tau.tau_survival_before_decay">tau_survival_before_decay</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.tau.tau_to_muon_ratio">tau_to_muon_ratio</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.tau.z_moment">z_moment</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.tau.z_symbol">z_symbol</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">tau</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.tau" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.tau</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Tau-neutrino contribution to the through-going muon sample.</p>
+<p>A <code>nu_tau</code> charged-current interaction makes a tau instead of a muon. At the
+soft-volume regime's energies (&gt;~100 TeV) the tau's decay length grows past its
+radiative range, so -- unlike the muon -- it barely loses energy before it
+decays: <code>b_tau^{-1} ~ 35 km</code> versus a decay length <code>ell_tau ~ 5 km</code> at
+100 PeV. The tau therefore free-streams at (near-)fixed energy and then decays;
+roughly 17% of the time (:data:<code>BR_TAU_TO_MU</code>) that decay is leptonic to a
+muon, which then propagates through the ordinary soft-volume physics of
+:mod:<code>softpaws.transport.eigenvalue</code>.</p>
+<p>This is a second, independent way to make a through-going muon track, so it
+adds to (does not replace) the direct <code>nu_mu</code> prediction of
+:mod:<code>softpaws.response.soft_volume</code>. The chain is three scale-invariant
+operators composed:</p>
+<ol>
+<li><code>nu_tau</code> CC production of a tau (same weak vertex as :mod:<code>.source</code>,
+   drift-free survival to the decay point);</li>
+<li>leptonic decay to a muon carrying fraction <code>z = E_mu / E_tau</code> of the
+   tau's energy, with density <code>g(z)</code> (:func:<code>decay_spectrum</code>) -- a <em>second</em>
+   Mellin mode, since a power-law flux picks up the moment <code>&lt;z^A&gt;</code>
+   (:func:<code>z_moment</code>);</li>
+<li>ordinary muon soft-volume transport of that secondary muon, i.e. the same
+   eigenvalue <code>Phi(A)</code> used throughout :mod:<code>softpaws.transport.eigenvalue</code>.</li>
+</ol>
+<p>For a source spectral index <code>A</code> the ratio of tau-induced to direct-<code>nu_mu</code>
+muon tracks at observed energy <code>E_mu</code> works out to</p>
+<p>.. math:: \frac{N_{\tau\to\mu}}{N_{\nu_\mu}}(E_\mu) \approx
+    B_{\tau\to\mu}\,\langle z^A\rangle_g\,
+    \bigl[\,1 + \ell_\tau(q E_\mu)\,\Phi(A)\,\bigr],
+    \qquad q \equiv 1/\langle z\rangle_g,</p>
+<p>implemented here as :func:<code>tau_to_muon_ratio</code>. The bracket's "1" is the
+in-detector piece (a tau produced and decaying right at the observed energy);
+the <code>ell_tau Phi(A)</code> term is the tau analogue of the muon soft volume --
+upstream tau production reaching the detector via the decay-length scale
+instead of the muon range, with the same eigenvalue <code>Phi(A)</code> governing the
+subsequent muon leg. Because <code>ell_tau</code> grows linearly with energy while the
+muon range <code>1/Phi(A)</code> is roughly flat, this bracket -- and hence the whole
+tau contribution -- grows sharply with energy: of order 5% at 1 PeV, but of
+order 30-40% at 100 PeV, squarely in the KM3NeT regime.</p>
+<p>Beyond the population-averaged ratio above, :func:<code>tau_loss_density</code> gives the
+full single-event law needed for parent-energy reconstruction (the tau
+counterpart of :mod:<code>softpaws.transport.loss_distribution</code>): the observed
+muon's total log-loss <code>w = ln(E_tau / E_obs) = -ln(z) + w_mu</code> composes the
+decay fraction with the <em>ordinary</em> muon subordinator run over whatever column
+remains after the tau's own (random, exponentially distributed) flight length.
+Marginalizing that random remaining column against the tau's truncated
+decay-length distribution gives a closed-form Mellin-Laplace symbol,</p>
+<p>.. math:: \Psi(s; E_\tau, \ell) = \langle z^s \rangle\,
+    \frac{e^{-\ell / \ell_\tau(E_\tau)} - e^{-\ell\,\Phi(s)}}
+    {\ell_\tau(E_\tau)\,\Phi(s) - 1},</p>
+<p>with <code>ell</code> the assumed total column from the <code>nu_tau</code> interaction point to
+the detector. This is <em>defective</em>: <code>Psi(0) = 1 - e^{-ell/ell_tau(E_tau)}</code>,
+the probability the tau decays before reaching the detector at all (see
+:func:<code>tau_survival_before_decay</code>) -- a tau produced too energetically for its
+decay length to fit inside <code>ell</code> simply does not make an in-medium muon via
+this channel, and that missing probability mass must not be renormalized away
+when it feeds a posterior over <code>E_tau</code> (unlike the muon-only case, where the
+transport parameters do not depend on the hypothesis being tested, here
+<code>ell_tau(E_tau)</code> does, so this suppression is the point).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="decay_length_km (softpaws.transport.tau.decay_length_km)" href="#softpaws.transport.tau.decay_length_km">decay_length_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mean lab-frame tau decay length <code>ell_tau = (E / m_tau) c tau0</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="decay_spectrum (softpaws.transport.tau.decay_spectrum)" href="#softpaws.transport.tau.decay_spectrum">decay_spectrum</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Muon energy-fraction spectrum <code>g(z)</code> from polarized tau decay.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="tau_loss_density (softpaws.transport.tau.tau_loss_density)" href="#softpaws.transport.tau.tau_loss_density">tau_loss_density</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Defective density of <code>w = ln(E_tau / E_obs)</code> for the tau-origin chain.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="tau_survival_before_decay (softpaws.transport.tau.tau_survival_before_decay)" href="#softpaws.transport.tau.tau_survival_before_decay">tau_survival_before_decay</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Probability the tau decays before reaching the end of the column.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="tau_to_muon_ratio (softpaws.transport.tau.tau_to_muon_ratio)" href="#softpaws.transport.tau.tau_to_muon_ratio">tau_to_muon_ratio</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Ratio of tau-induced to direct-<code>nu_mu</code> muon tracks, <code>N_tau / N_numu</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="z_moment (softpaws.transport.tau.z_moment)" href="#softpaws.transport.tau.z_moment">z_moment</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mellin moment <code>&lt;z^A&gt;_g</code> of the tau decay spectrum, in closed form.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="z_symbol (softpaws.transport.tau.z_symbol)" href="#softpaws.transport.tau.z_symbol">z_symbol</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mellin symbol <code>&lt;z^s&gt;_g</code> of the tau decay spectrum, for any <code>s</code>.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.tau.decay_length_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">decay_length_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">decay_length_km(energy_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mean lab-frame tau decay length <code>ell_tau = (E / m_tau) c tau0</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tau energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>length</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Mean decay length [km]. <code>~5 km</code> at <code>E_tau = 100</code> PeV.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/tau.py</code></summary>
+              <pre class="highlight"><code class="language-python">def decay_length_km(energy_gev: float | np.ndarray) -&gt; np.ndarray:
+    """Mean lab-frame tau decay length ``ell_tau = (E / m_tau) c tau0``.
+
+    Parameters
+    ----------
+    energy_gev : float or np.ndarray
+        Tau energy [GeV].
+
+    Returns
+    -------
+    length : np.ndarray
+        Mean decay length [km]. ``~5 km`` at ``E_tau = 100`` PeV.
+    """
+    energy = np.asarray(energy_gev, dtype=float)
+    return (energy / M_TAU_GEV) * C_KM_PER_S * TAU_LIFETIME_S</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.tau.decay_spectrum" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">decay_spectrum</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">decay_spectrum(z: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Muon energy-fraction spectrum <code>g(z)</code> from polarized tau decay.</p>
+<p>For the leptonic decay <code>tau -&gt; mu nu_mu nu_tau</code>, the V-A matrix element
+in the tau rest frame is <code>dGamma/(dx dcos(theta)) ~ x^2 [(3-2x) -
+h(1-2x)cos(theta)]</code> with <code>x = 2 E_mu^* / m_tau</code> and <code>h</code> the tau
+helicity. A tau produced by <code>nu_tau</code> CC is (ultra-relativistically)
+fully left-handed, <code>h = -1</code>. Boosting to the lab with
+<code>z = x(1 + cos(theta)) / 2</code> and integrating out <code>cos(theta))</code> gives the
+closed form</p>
+<p>.. math:: g(z) = 2 (1 - z)^2 (1 + 2 z), \qquad z \in [0, 1],</p>
+<p>normalized to unit area with mean <code>&lt;z&gt; = 3/10</code> (:data:<code>MEAN_Z</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>z</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy fraction <code>z = E_mu / E_tau</code>, in <code>[0, 1]</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>g(z)</code>, same shape as <code>z</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/tau.py</code></summary>
+              <pre class="highlight"><code class="language-python">def decay_spectrum(z: float | np.ndarray) -&gt; np.ndarray:
+    r"""Muon energy-fraction spectrum ``g(z)`` from polarized tau decay.
+
+    For the leptonic decay ``tau -&gt; mu nu_mu nu_tau``, the V-A matrix element
+    in the tau rest frame is ``dGamma/(dx dcos(theta)) ~ x^2 [(3-2x) -
+    h(1-2x)cos(theta)]`` with ``x = 2 E_mu^* / m_tau`` and ``h`` the tau
+    helicity. A tau produced by ``nu_tau`` CC is (ultra-relativistically)
+    fully left-handed, ``h = -1``. Boosting to the lab with
+    ``z = x(1 + cos(theta)) / 2`` and integrating out ``cos(theta))`` gives the
+    closed form
+
+    .. math:: g(z) = 2 (1 - z)^2 (1 + 2 z), \\qquad z \\in [0, 1],
+
+    normalized to unit area with mean ``&lt;z&gt; = 3/10`` (:data:`MEAN_Z`).
+
+    Parameters
+    ----------
+    z : float or np.ndarray
+        Muon energy fraction ``z = E_mu / E_tau``, in ``[0, 1]``.
+
+    Returns
+    -------
+    density : np.ndarray
+        ``g(z)``, same shape as ``z``.
+    """
+    zz = np.asarray(z, dtype=float)
+    return 2.0 * (1.0 - zz) ** 2 * (1.0 + 2.0 * zz)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.tau.tau_loss_density" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tau_loss_density</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">tau_loss_density(w_grid: ndarray, ell_km: float, e_tau_gev: float | ndarray, b_mu: float, d_mu: float, n_k: int = 2 ** 14) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Defective density of <code>w = ln(E_tau / E_obs)</code> for the tau-origin chain.</p>
+<p>Inverts the closed-form symbol derived in the module docstring,</p>
+<p>.. math:: \Psi(s) = \langle z^s \rangle\,
+    \frac{e^{-\ell/\ell_\tau} - e^{-\ell\,\Phi(s)}}
+    {\ell_\tau\,\Phi(s) - 1},</p>
+<p>by the same characteristic-function inversion as
+:func:<code>softpaws.transport.loss_distribution.loss_density</code>, evaluating
+<code>Phi</code> and <code>&lt;z^s&gt;</code> at <code>s = -i k</code> via :func:<code>~.eigenvalue.phi_symbol</code>
+and :func:<code>z_symbol</code>. The removable singularity at <code>ell_tau Phi(s) = 1</code>
+is handled by its L'Hopital limit, <code>(ell/ell_tau) e^{-ell/ell_tau}</code>.</p>
+<p>Unlike :func:<code>~softpaws.transport.loss_distribution.loss_density</code>, the
+result is <strong>not</strong> renormalized to unit area: its integral over <code>w</code> is
+:func:<code>tau_survival_before_decay</code>, which is physically meaningful and must
+survive into any posterior built from this density (see the module
+docstring). <code>e_tau_gev</code> broadcasts against <code>w_grid</code>: pass a scalar
+for the density of one fixed tau-energy hypothesis (e.g. to check the
+total-mass identity), or an array matching <code>w_grid</code> -- typically
+<code>E_mu * exp(w_grid)</code> -- to read off, at each grid point, the likelihood
+of the <em>specific</em> tau-energy hypothesis that <code>w</code> corresponds to (the
+diagonal evaluation a parent-energy reconstruction needs, since
+<code>ell_tau</code> depends on the hypothesis being tested rather than being a
+fixed nuisance parameter).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>w_grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Uniformly spaced grid of log-loss values <code>w = ln(E_tau / E_obs)</code>
+(&gt;= 0) at which to evaluate the density.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total column depth from the <code>nu_tau</code> interaction point to the
+detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e_tau_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tau energy [GeV] at which to evaluate <code>ell_tau</code>; broadcasts against
+<code>w_grid</code> (see above).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total muon drift coefficient <code>b_mu</code> [km^-1], evaluated at the
+observed muon energy (as in
+:func:<code>~softpaws.transport.loss_distribution.loss_density</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total muon diffusion coefficient <code>d_mu</code> [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_k</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>2 ** 14</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of nodes on the <code>k</code> grid of the inversion.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Defective probability density <code>P(w)</code>, same shape as <code>w_grid</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p><code>w_grid</code> must be uniformly spaced; the <code>k</code> span is derived from its
+step, as in :func:<code>~softpaws.transport.loss_distribution.loss_density</code>.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/tau.py</code></summary>
+              <pre class="highlight"><code class="language-python">def tau_loss_density(
+    w_grid: np.ndarray,
+    ell_km: float,
+    e_tau_gev: float | np.ndarray,
+    b_mu: float,
+    d_mu: float,
+    n_k: int = 2**14,
+) -&gt; np.ndarray:
+    r"""Defective density of ``w = ln(E_tau / E_obs)`` for the tau-origin chain.
+
+    Inverts the closed-form symbol derived in the module docstring,
+
+    .. math:: \\Psi(s) = \\langle z^s \\rangle\\,
+        \\frac{e^{-\\ell/\\ell_\\tau} - e^{-\\ell\\,\\Phi(s)}}
+        {\\ell_\\tau\\,\\Phi(s) - 1},
+
+    by the same characteristic-function inversion as
+    :func:`softpaws.transport.loss_distribution.loss_density`, evaluating
+    ``Phi`` and ``&lt;z^s&gt;`` at ``s = -i k`` via :func:`~.eigenvalue.phi_symbol`
+    and :func:`z_symbol`. The removable singularity at ``ell_tau Phi(s) = 1``
+    is handled by its L'Hopital limit, ``(ell/ell_tau) e^{-ell/ell_tau}``.
+
+    Unlike :func:`~softpaws.transport.loss_distribution.loss_density`, the
+    result is **not** renormalized to unit area: its integral over ``w`` is
+    :func:`tau_survival_before_decay`, which is physically meaningful and must
+    survive into any posterior built from this density (see the module
+    docstring). ``e_tau_gev`` broadcasts against ``w_grid``: pass a scalar
+    for the density of one fixed tau-energy hypothesis (e.g. to check the
+    total-mass identity), or an array matching ``w_grid`` -- typically
+    ``E_mu * exp(w_grid)`` -- to read off, at each grid point, the likelihood
+    of the *specific* tau-energy hypothesis that ``w`` corresponds to (the
+    diagonal evaluation a parent-energy reconstruction needs, since
+    ``ell_tau`` depends on the hypothesis being tested rather than being a
+    fixed nuisance parameter).
+
+    Parameters
+    ----------
+    w_grid : np.ndarray
+        Uniformly spaced grid of log-loss values ``w = ln(E_tau / E_obs)``
+        (&gt;= 0) at which to evaluate the density.
+    ell_km : float
+        Total column depth from the ``nu_tau`` interaction point to the
+        detector [km].
+    e_tau_gev : float or np.ndarray
+        Tau energy [GeV] at which to evaluate ``ell_tau``; broadcasts against
+        ``w_grid`` (see above).
+    b_mu : float
+        Total muon drift coefficient ``b_mu`` [km^-1], evaluated at the
+        observed muon energy (as in
+        :func:`~softpaws.transport.loss_distribution.loss_density`).
+    d_mu : float
+        Total muon diffusion coefficient ``d_mu`` [km^-1].
+    n_k : int, optional
+        Number of nodes on the ``k`` grid of the inversion.
+
+    Returns
+    -------
+    density : np.ndarray
+        Defective probability density ``P(w)``, same shape as ``w_grid``.
+
+    Notes
+    -----
+    ``w_grid`` must be uniformly spaced; the ``k`` span is derived from its
+    step, as in :func:`~softpaws.transport.loss_distribution.loss_density`.
+    """
+    w = np.asarray(w_grid, dtype=float)
+    ell_tau = np.broadcast_to(decay_length_km(np.asarray(e_tau_gev, dtype=float)), w.shape)
+    kappa, p = two_moment_loss_spectrum(b_mu, d_mu)
+
+    dw = w[1] - w[0]
+    k_max = np.pi / dw
+    k = np.linspace(-k_max, k_max, n_k, endpoint=False)
+    dk = k[1] - k[0]
+    s = -1j * k
+
+    phi = phi_symbol(s, kappa, p)  # (n_k,), shared across all w
+    z_cf = z_symbol(s)  # (n_k,), shared across all w
+
+    density = np.empty(w.shape[0])
+    for i in range(0, w.shape[0], 200):
+        ell_tau_chunk = ell_tau[i : i + 200][:, None]
+        w_chunk = w[i : i + 200][:, None]
+
+        numer = np.exp(-ell_km / ell_tau_chunk) - np.exp(-ell_km * phi[None, :])
+        denom = ell_tau_chunk * phi[None, :] - 1.0
+        small = np.abs(denom) &lt; 1e-9
+        safe_denom = np.where(small, 1.0, denom)
+        limit_value = (ell_km / ell_tau_chunk) * np.exp(-ell_km / ell_tau_chunk)
+        decay_integral = np.where(small, limit_value, numer / safe_denom)
+
+        cf = z_cf[None, :] * decay_integral
+        density[i : i + 200] = (cf * np.exp(-1j * w_chunk * k[None, :])).sum(1).real
+
+    density *= dk / (2.0 * np.pi)
+    return np.clip(density, 0.0, None)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.tau.tau_survival_before_decay" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tau_survival_before_decay</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">tau_survival_before_decay(ell_km: float, e_tau_gev: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Probability the tau decays before reaching the end of the column.</p>
+<p><code>P(x_decay &lt; ell) = 1 - e^{-ell / ell_tau(E_tau)}</code>, for a tau flight
+length <code>x_decay</code> exponentially distributed with mean
+:func:<code>decay_length_km</code>. This is the total mass <code>Psi(0)</code> of
+:func:<code>tau_loss_density</code> (see its module-level derivation): a tau too
+energetic for its decay length to fit inside <code>ell</code> simply does not
+produce an in-medium muon via this channel.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>ell_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Total column depth from the <code>nu_tau</code> interaction point to the
+detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e_tau_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tau energy [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>probability</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>P(x_decay &lt; ell)</code>, in <code>[0, 1]</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/tau.py</code></summary>
+              <pre class="highlight"><code class="language-python">def tau_survival_before_decay(
+    ell_km: float,
+    e_tau_gev: float | np.ndarray,
+) -&gt; np.ndarray:
+    """Probability the tau decays before reaching the end of the column.
+
+    ``P(x_decay &lt; ell) = 1 - e^{-ell / ell_tau(E_tau)}``, for a tau flight
+    length ``x_decay`` exponentially distributed with mean
+    :func:`decay_length_km`. This is the total mass ``Psi(0)`` of
+    :func:`tau_loss_density` (see its module-level derivation): a tau too
+    energetic for its decay length to fit inside ``ell`` simply does not
+    produce an in-medium muon via this channel.
+
+    Parameters
+    ----------
+    ell_km : float
+        Total column depth from the ``nu_tau`` interaction point to the
+        detector [km].
+    e_tau_gev : float or np.ndarray
+        Tau energy [GeV].
+
+    Returns
+    -------
+    probability : np.ndarray
+        ``P(x_decay &lt; ell)``, in ``[0, 1]``.
+    """
+    ell_tau = decay_length_km(e_tau_gev)
+    return 1.0 - np.exp(-ell_km / ell_tau)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.tau.tau_to_muon_ratio" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tau_to_muon_ratio</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">tau_to_muon_ratio(spectral_index_value: float | ndarray, energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Ratio of tau-induced to direct-<code>nu_mu</code> muon tracks, <code>N_tau / N_numu</code>.</p>
+<p>Implements the module-level formula: the tau decay branching ratio and
+Mellin moment times the bracket <code>[1 + ell_tau(q E_mu) Phi(A)]</code>, with
+<code>Phi(A)</code> the exact muon eigenvalue (:func:<code>~.eigenvalue.phi_eigenvalue_at_energy</code>)
+evaluated at the <em>observed</em> muon energy (the same convention used
+throughout :mod:<code>softpaws.transport.soft_volume</code>), and <code>q E_mu</code> the
+typical parent tau energy for that observed muon.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A = gamma - lambda - 1</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>ratio</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>N_tau_to_mu / N_numu</code> at each energy, for a <code>nu_tau</code> flux with the
+same normalization and spectral index as the <code>nu_mu</code> flux.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/tau.py</code></summary>
+              <pre class="highlight"><code class="language-python">def tau_to_muon_ratio(
+    spectral_index_value: float | np.ndarray,
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+) -&gt; np.ndarray:
+    """Ratio of tau-induced to direct-``nu_mu`` muon tracks, ``N_tau / N_numu``.
+
+    Implements the module-level formula: the tau decay branching ratio and
+    Mellin moment times the bracket ``[1 + ell_tau(q E_mu) Phi(A)]``, with
+    ``Phi(A)`` the exact muon eigenvalue (:func:`~.eigenvalue.phi_eigenvalue_at_energy`)
+    evaluated at the *observed* muon energy (the same convention used
+    throughout :mod:`softpaws.transport.soft_volume`), and ``q E_mu`` the
+    typical parent tau energy for that observed muon.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A = gamma - lambda - 1``.
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+
+    Returns
+    -------
+    ratio : np.ndarray
+        ``N_tau_to_mu / N_numu`` at each energy, for a ``nu_tau`` flux with the
+        same normalization and spectral index as the ``nu_mu`` flux.
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    e_mu = np.asarray(energy_gev, dtype=float)
+    q = 1.0 / MEAN_Z
+    ell_tau = decay_length_km(q * e_mu)
+    phi = phi_eigenvalue_at_energy(a, e_mu, density_g_cm3)
+    return BR_TAU_TO_MU * z_moment(a) * (1.0 + ell_tau * phi)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.tau.z_moment" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">z_moment</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">z_moment(spectral_index_value: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mellin moment <code>&lt;z^A&gt;_g</code> of the tau decay spectrum, in closed form.</p>
+<p>Real-argument counterpart of :func:<code>z_symbol</code> (see there for the derivation).
+Reduces to 1 at <code>A = 0</code> (normalization) and to :data:<code>MEAN_Z</code> at <code>A = 1</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code> (see
+:func:<code>softpaws.transport.eigenvalue.spectral_index</code>).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>moment</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>&lt;z^A&gt;_g</code>, dimensionless.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/tau.py</code></summary>
+              <pre class="highlight"><code class="language-python">def z_moment(spectral_index_value: float | np.ndarray) -&gt; np.ndarray:
+    """Mellin moment ``&lt;z^A&gt;_g`` of the tau decay spectrum, in closed form.
+
+    Real-argument counterpart of :func:`z_symbol` (see there for the derivation).
+    Reduces to 1 at ``A = 0`` (normalization) and to :data:`MEAN_Z` at ``A = 1``.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A`` (see
+        :func:`softpaws.transport.eigenvalue.spectral_index`).
+
+    Returns
+    -------
+    moment : np.ndarray
+        ``&lt;z^A&gt;_g``, dimensionless.
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    return z_symbol(a)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.tau.z_symbol" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">z_symbol</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">z_symbol(s: complex | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mellin symbol <code>&lt;z^s&gt;_g</code> of the tau decay spectrum, for any <code>s</code>.</p>
+<p>Writing :func:<code>decay_spectrum</code> as <code>g(z) = 2(1-z)^2 + 4z(1-z)^2</code> and using
+<code>int_0^1 z^s (1-z)^2 dz = B(s+1, 3) = 2 / [(s+1)(s+2)(s+3)]</code>,</p>
+<p>.. math:: \langle z^s \rangle_g = \frac{4}{(s+1)(s+2)(s+3)}
+    + \frac{8}{(s+2)(s+3)(s+4)}.</p>
+<p>Unlike :func:<code>z_moment</code>, this keeps the argument's dtype, so it accepts
+<strong>complex</strong> <code>s</code>. That is what the characteristic function of <code>-ln(z)</code>
+needs (:func:<code>tau_loss_density</code>, evaluated at <code>s = -i k</code>); for the real
+spectral index <code>A</code> use :func:<code>z_moment</code> (mirrors the
+:func:<code>~.eigenvalue.phi_symbol</code> / :func:<code>~.eigenvalue.phi_eigenvalue</code> split).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>s</code></b>
+                  (<code><span title="complex">complex</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mellin variable. Real or complex; the dtype is preserved.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>moment</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>&lt;z^s&gt;_g</code>, matching the (broadcast) shape and dtype of <code>s</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/tau.py</code></summary>
+              <pre class="highlight"><code class="language-python">def z_symbol(s: complex | np.ndarray) -&gt; np.ndarray:
+    r"""Mellin symbol ``&lt;z^s&gt;_g`` of the tau decay spectrum, for any ``s``.
+
+    Writing :func:`decay_spectrum` as ``g(z) = 2(1-z)^2 + 4z(1-z)^2`` and using
+    ``int_0^1 z^s (1-z)^2 dz = B(s+1, 3) = 2 / [(s+1)(s+2)(s+3)]``,
+
+    .. math:: \\langle z^s \\rangle_g = \\frac{4}{(s+1)(s+2)(s+3)}
+        + \\frac{8}{(s+2)(s+3)(s+4)}.
+
+    Unlike :func:`z_moment`, this keeps the argument's dtype, so it accepts
+    **complex** ``s``. That is what the characteristic function of ``-ln(z)``
+    needs (:func:`tau_loss_density`, evaluated at ``s = -i k``); for the real
+    spectral index ``A`` use :func:`z_moment` (mirrors the
+    :func:`~.eigenvalue.phi_symbol` / :func:`~.eigenvalue.phi_eigenvalue` split).
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable. Real or complex; the dtype is preserved.
+
+    Returns
+    -------
+    moment : np.ndarray
+        ``&lt;z^s&gt;_g``, matching the (broadcast) shape and dtype of ``s``.
+    """
+    s = np.asarray(s)
+    term1 = 4.0 / ((s + 1.0) * (s + 2.0) * (s + 3.0))
+    term2 = 8.0 / ((s + 2.0) * (s + 3.0) * (s + 4.0))
+    return term1 + term2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../source/" class="btn btn-neutral float-left" title="source"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../source/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

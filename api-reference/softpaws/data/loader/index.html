@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/data/loader/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>loader - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "loader";
+        var mkdocs_page_input_path = "api-reference/softpaws/data/loader.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/data/loader/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >data</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">loader</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.compute_livetime_s">compute_livetime_s</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.load_cross_section_table">load_cross_section_table</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.load_dm_line_bounds">load_dm_line_bounds</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.load_irfs">load_irfs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.load_season">load_season</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.load_uptime">load_uptime</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.parse_aeff">parse_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.loader.parse_smearing">parse_smearing</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">data</li>
+      <li class="breadcrumb-item active">loader</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.data.loader" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.data.loader</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Load IceTracks-DR2 event and IRF files from the local data directory.</p>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>All data files are whitespace-delimited CSVs with a single <code>#</code>-prefixed
+header line. The standard layout expected here is::</p>
+<pre><code>&lt;data_dir&gt;/
+    events/   IC40_exp.csv, IC59_exp.csv, ...
+    irfs/     IC40_effectiveArea.csv, IC86_smearing.csv, ...
+    uptime/   IC40_exp.csv, ...
+</code></pre>
+<p>The canonical <code>data_dir</code> for this project is
+<code>src/softpaws/data/dataverse_files/</code>.</p>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="compute_livetime_s (softpaws.data.loader.compute_livetime_s)" href="#softpaws.data.loader.compute_livetime_s">compute_livetime_s</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Sum the duration of good-run intervals in seconds.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_cross_section_table (softpaws.data.loader.load_cross_section_table)" href="#softpaws.data.loader.load_cross_section_table">load_cross_section_table</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load a tabulated neutrino-nucleon cross section shipped with the package.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_dm_line_bounds (softpaws.data.loader.load_dm_line_bounds)" href="#softpaws.data.loader.load_dm_line_bounds">load_dm_line_bounds</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load a published dark-matter neutrino-line sensitivity curve.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_irfs (softpaws.data.loader.load_irfs)" href="#softpaws.data.loader.load_irfs">load_irfs</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load and parse IRFs for a given IceCube season.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_season (softpaws.data.loader.load_season)" href="#softpaws.data.loader.load_season">load_season</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load a single IceTracks-DR2 season CSV file.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="load_uptime (softpaws.data.loader.load_uptime)" href="#softpaws.data.loader.load_uptime">load_uptime</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Load a good-run (uptime) list CSV.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="parse_aeff (softpaws.data.loader.parse_aeff)" href="#softpaws.data.loader.parse_aeff">parse_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Build an :class:<code>EffectiveArea</code> from the raw 5-column CSV array.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="parse_smearing (softpaws.data.loader.parse_smearing)" href="#softpaws.data.loader.parse_smearing">parse_smearing</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Build a :class:<code>SmearingMatrix</code> from the raw 11-column CSV array.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.compute_livetime_s" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">compute_livetime_s</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">compute_livetime_s(uptime: ndarray) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Sum the duration of good-run intervals in seconds.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>uptime</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Shape <code>(N, 2)</code> with columns [MJD_start, MJD_stop].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="float">float</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Total livetime in seconds.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def compute_livetime_s(uptime: np.ndarray) -&gt; float:
+    """Sum the duration of good-run intervals in seconds.
+
+    Parameters
+    ----------
+    uptime : np.ndarray
+        Shape ``(N, 2)`` with columns [MJD_start, MJD_stop].
+
+    Returns
+    -------
+    float
+        Total livetime in seconds.
+    """
+    durations_mjd = uptime[:, 1] - uptime[:, 0]
+    return float(durations_mjd.sum()) * 86400.0</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.load_cross_section_table" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_cross_section_table</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_cross_section_table(model: str, channel: str, xsec_dir: str | Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load a tabulated neutrino-nucleon cross section shipped with the package.</p>
+<p>Unlike the DR2 release files, these tables are small and are versioned in
+the repository, under <code>src/softpaws/data/xsec/&lt;model&gt;/</code>. Each is a plain
+two-column CSV of energy and cross section with no header.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>model</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Table directory name, e.g. <code>"BGR18"</code> (Bertone, Gauld and Rojo 2018,
+arXiv:1808.02034), tabulated for <code>nu_mu</code> on a <strong>proton</strong> target.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>channel</code></b>
+                  (<code>(<span title="cc">cc</span>, <span title="nc">nc</span>)</code>, default:
+                      <code>&#34;cc&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Interaction channel: charged or neutral current.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>xsec_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the table directory. Defaults to :data:<code>XSEC_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>energy_gev</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n">n</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [GeV], strictly increasing.</p>
+              </div>
+            </li>
+            <li>
+<b><code>sigma_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n">n</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Cross section per target [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised for an unknown <code>channel</code>, or if the table is not sorted in
+energy.</p>
+              </div>
+            </li>
+            <li>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the table file is missing.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_cross_section_table(
+    model: str,
+    channel: str,
+    xsec_dir: str | pathlib.Path | None = None,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Load a tabulated neutrino-nucleon cross section shipped with the package.
+
+    Unlike the DR2 release files, these tables are small and are versioned in
+    the repository, under ``src/softpaws/data/xsec/&lt;model&gt;/``. Each is a plain
+    two-column CSV of energy and cross section with no header.
+
+    Parameters
+    ----------
+    model : str
+        Table directory name, e.g. ``"BGR18"`` (Bertone, Gauld and Rojo 2018,
+        arXiv:1808.02034), tabulated for ``nu_mu`` on a **proton** target.
+    channel : {"cc", "nc"}
+        Interaction channel: charged or neutral current.
+    xsec_dir : str or pathlib.Path, optional
+        Root of the table directory. Defaults to :data:`XSEC_DIR`.
+
+    Returns
+    -------
+    energy_gev : np.ndarray, shape (n,)
+        Neutrino energies [GeV], strictly increasing.
+    sigma_cm2 : np.ndarray, shape (n,)
+        Cross section per target [cm^2].
+
+    Raises
+    ------
+    ValueError
+        Raised for an unknown ``channel``, or if the table is not sorted in
+        energy.
+    FileNotFoundError
+        Raised if the table file is missing.
+    """
+    if channel not in _XSEC_FILES:
+        raise ValueError(f"channel must be one of {sorted(_XSEC_FILES)}, got {channel!r}.")
+
+    root = XSEC_DIR if xsec_dir is None else pathlib.Path(xsec_dir)
+    path = root / model / _XSEC_FILES[channel]
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    table = np.loadtxt(path, delimiter=",")
+    energy_gev, sigma_cm2 = table[:, 0], table[:, 1]
+    if np.any(np.diff(energy_gev) &lt;= 0.0):
+        raise ValueError(f"Cross-section table {path} is not strictly increasing in energy.")
+    return energy_gev, sigma_cm2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.load_dm_line_bounds" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_dm_line_bounds</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_dm_line_bounds(experiment: str = 'icecubegen2', bounds_dir: str | Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load a published dark-matter neutrino-line sensitivity curve.</p>
+<p>The curves are digitized from published figures, so the points are neither
+evenly spaced nor guaranteed to arrive in order; this function sorts them
+into increasing mass so they can be interpolated directly.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>experiment</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;icecubegen2&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Curve file stem, e.g. <code>"icecubegen2"</code> (the default) for the
+IceCube-Gen2 projected sensitivity to <code>chi chi -&gt; nu nubar</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bounds_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Root of the bounds directory. Defaults to :data:<code>BOUNDS_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>mass_gev</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n">n</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Dark-matter mass <code>m_chi</code> [GeV], strictly increasing.</p>
+              </div>
+            </li>
+            <li>
+<b><code>sigma_v_cm3_s</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n">n</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Upper limit on the velocity-averaged annihilation cross section
+<code>&lt;sigma v&gt;</code> [cm^3 s^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the curve file is missing.</p>
+              </div>
+            </li>
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the curve contains duplicate masses.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_dm_line_bounds(
+    experiment: str = "icecubegen2",
+    bounds_dir: str | pathlib.Path | None = None,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Load a published dark-matter neutrino-line sensitivity curve.
+
+    The curves are digitized from published figures, so the points are neither
+    evenly spaced nor guaranteed to arrive in order; this function sorts them
+    into increasing mass so they can be interpolated directly.
+
+    Parameters
+    ----------
+    experiment : str, optional
+        Curve file stem, e.g. ``"icecubegen2"`` (the default) for the
+        IceCube-Gen2 projected sensitivity to ``chi chi -&gt; nu nubar``.
+    bounds_dir : str or pathlib.Path, optional
+        Root of the bounds directory. Defaults to :data:`BOUNDS_DIR`.
+
+    Returns
+    -------
+    mass_gev : np.ndarray, shape (n,)
+        Dark-matter mass ``m_chi`` [GeV], strictly increasing.
+    sigma_v_cm3_s : np.ndarray, shape (n,)
+        Upper limit on the velocity-averaged annihilation cross section
+        ``&lt;sigma v&gt;`` [cm^3 s^-1].
+
+    Raises
+    ------
+    FileNotFoundError
+        Raised if the curve file is missing.
+    ValueError
+        Raised if the curve contains duplicate masses.
+    """
+    root = BOUNDS_DIR if bounds_dir is None else pathlib.Path(bounds_dir)
+    path = root / f"{experiment}_dm_lines.csv"
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    table = np.loadtxt(path, delimiter=",")
+    order = np.argsort(table[:, 0])
+    mass_gev, sigma_v_cm3_s = table[order, 0], table[order, 1]
+    if np.any(np.diff(mass_gev) &lt;= 0.0):
+        raise ValueError(f"Bounds curve {path} contains duplicate masses.")
+    return mass_gev, sigma_v_cm3_s</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.load_irfs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_irfs</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_irfs(irf_dir: str | Path, season: str, uptime_dir: str | Path | None = None) -&gt; dict</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load and parse IRFs for a given IceCube season.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>irf_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Path to the <code>irfs/</code> subdirectory.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>season</code></b>
+                  (<code><span title="str">str</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Season label, e.g. <code>"IC86_I"</code>.  IC86-II and later share the
+IC86 IRF files, so any <code>IC86_*</code> label maps to <code>IC86</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>uptime_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Path to the <code>uptime/</code> subdirectory.  When provided the livetime
+is computed and stored under the <code>"livetime_s"</code> key.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>irfs</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>"aeff"</code> → :class:<code>~softpaws.response.irfs.EffectiveArea</code>
+<code>"smearing"</code> → :class:<code>~softpaws.response.irfs.SmearingMatrix</code>
+<code>"livetime_s"</code> → float (seconds), only present when <em>uptime_dir</em> given.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if expected IRF files are not found.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Loading and parsing the smearing matrix (~570 MB, 3.36 M rows) takes
+roughly 30 s on a typical workstation.  The result is not cached; keep
+the returned dict alive for the duration of your analysis.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_irfs(
+    irf_dir: str | pathlib.Path,
+    season: str,
+    uptime_dir: str | pathlib.Path | None = None,
+) -&gt; dict:
+    """Load and parse IRFs for a given IceCube season.
+
+    Parameters
+    ----------
+    irf_dir : str or pathlib.Path
+        Path to the ``irfs/`` subdirectory.
+    season : str
+        Season label, e.g. ``"IC86_I"``.  IC86-II and later share the
+        IC86 IRF files, so any ``IC86_*`` label maps to ``IC86``.
+    uptime_dir : str or pathlib.Path, optional
+        Path to the ``uptime/`` subdirectory.  When provided the livetime
+        is computed and stored under the ``"livetime_s"`` key.
+
+    Returns
+    -------
+    irfs : dict
+        ``"aeff"`` → :class:`~softpaws.response.irfs.EffectiveArea`
+        ``"smearing"`` → :class:`~softpaws.response.irfs.SmearingMatrix`
+        ``"livetime_s"`` → float (seconds), only present when *uptime_dir* given.
+
+    Raises
+    ------
+    FileNotFoundError
+        Raised if expected IRF files are not found.
+
+    Notes
+    -----
+    Loading and parsing the smearing matrix (~570 MB, 3.36 M rows) takes
+    roughly 30 s on a typical workstation.  The result is not cached; keep
+    the returned dict alive for the duration of your analysis.
+    """
+    irf_dir = pathlib.Path(irf_dir)
+    irf_season = _canonical_irf_season(season)
+
+    aeff_path = irf_dir / f"{irf_season}_effectiveArea.csv"
+    smear_path = irf_dir / f"{irf_season}_smearing.csv"
+
+    for p in (aeff_path, smear_path):
+        if not p.exists():
+            raise FileNotFoundError(p)
+
+    raw_aeff = np.genfromtxt(aeff_path, comments="#")
+    raw_smear = np.loadtxt(smear_path, comments="#")
+
+    result: dict = {
+        "aeff": parse_aeff(raw_aeff),
+        "smearing": parse_smearing(raw_smear),
+    }
+
+    if uptime_dir is not None:
+        uptime_path = pathlib.Path(uptime_dir) / f"{season}_exp.csv"
+        if uptime_path.exists():
+            uptime = load_uptime(uptime_path)
+            result["livetime_s"] = compute_livetime_s(uptime)
+        else:
+            raise FileNotFoundError(uptime_path)
+
+    return result</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.load_season" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_season</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_season(path: str | Path) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load a single IceTracks-DR2 season CSV file.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Path to a season events CSV (e.g. <code>IC86_I_exp.csv</code>).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>events</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Structured array with dtype <code>EVENTS_DTYPE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>path</code> does not exist.</p>
+              </div>
+            </li>
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if required columns are absent from the file header.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_season(path: str | pathlib.Path) -&gt; np.ndarray:
+    """Load a single IceTracks-DR2 season CSV file.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Path to a season events CSV (e.g. ``IC86_I_exp.csv``).
+
+    Returns
+    -------
+    events : np.ndarray
+        Structured array with dtype ``EVENTS_DTYPE``.
+
+    Raises
+    ------
+    FileNotFoundError
+        Raised if ``path`` does not exist.
+    ValueError
+        Raised if required columns are absent from the file header.
+    """
+    path = pathlib.Path(path)
+    if not path.exists():
+        raise FileNotFoundError(path)
+
+    csv_cols = _read_header(path)
+    raw = np.genfromtxt(path, comments="#")
+
+    if raw.ndim == 1:
+        raw = raw[np.newaxis, :]
+
+    col_idx = {name: i for i, name in enumerate(csv_cols)}
+    missing = [c for c in CSV_TO_FIELD if c not in col_idx]
+    if missing:
+        raise ValueError(f"Missing columns in {path.name}: {missing}")
+
+    n = len(raw)
+    out = np.empty(n, dtype=EVENTS_DTYPE)
+    for csv_name, field_name in CSV_TO_FIELD.items():
+        out[field_name] = raw[:, col_idx[csv_name]]
+
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.load_uptime" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">load_uptime</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">load_uptime(path: str | Path) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Load a good-run (uptime) list CSV.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Path to an uptime CSV with columns <code>MJD_start</code> and <code>MJD_stop</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>uptime</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Shape <code>(N, 2)</code>, columns [MJD_start, MJD_stop].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def load_uptime(path: str | pathlib.Path) -&gt; np.ndarray:
+    """Load a good-run (uptime) list CSV.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Path to an uptime CSV with columns ``MJD_start`` and ``MJD_stop``.
+
+    Returns
+    -------
+    uptime : np.ndarray
+        Shape ``(N, 2)``, columns [MJD_start, MJD_stop].
+    """
+    return np.genfromtxt(path, comments="#")</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.parse_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">parse_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">parse_aeff(raw: ndarray) -&gt; EffectiveArea</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Build an :class:<code>EffectiveArea</code> from the raw 5-column CSV array.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>raw</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Shape <code>(N, 5)</code>.  Columns: log10(E_nu/GeV)_min/max,
+Dec_nu_min/max [deg], A_Eff [cm²].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><a class="autorefs autorefs-internal" title="EffectiveArea (softpaws.response.irfs.EffectiveArea)" href="../../response/irfs/#softpaws.response.irfs.EffectiveArea">EffectiveArea</a></code>
+              –
+              <div class="doc-md-description">
+                <p>Interpolator in (log10_E_nu, sin(dec)) space with values in cm².</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def parse_aeff(raw: np.ndarray) -&gt; EffectiveArea:
+    """Build an :class:`EffectiveArea` from the raw 5-column CSV array.
+
+    Parameters
+    ----------
+    raw : np.ndarray
+        Shape ``(N, 5)``.  Columns: log10(E_nu/GeV)_min/max,
+        Dec_nu_min/max [deg], A_Eff [cm²].
+
+    Returns
+    -------
+    EffectiveArea
+        Interpolator in (log10_E_nu, sin(dec)) space with values in cm².
+    """
+    # Unique bin edges from the min/max columns
+    log10_e_edges = np.unique(np.concatenate([raw[:, 0], raw[:, 1]]))
+    dec_edges_deg = np.unique(np.concatenate([raw[:, 2], raw[:, 3]]))
+    sin_dec_edges = np.sin(np.deg2rad(dec_edges_deg))
+
+    n_e = len(log10_e_edges) - 1
+    n_d = len(dec_edges_deg) - 1
+
+    # Map each row to (i_e, i_d) bin indices
+    i_e = np.searchsorted(log10_e_edges[:-1], raw[:, 0], side="left")
+    i_d = np.searchsorted(dec_edges_deg[:-1], raw[:, 2], side="left")
+
+    values = np.zeros((n_e, n_d))
+    for row, ie, id_ in zip(raw, i_e, i_d, strict=True):
+        values[ie, id_] = row[4]
+
+    return EffectiveArea(log10_e_edges, sin_dec_edges, values)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.loader.parse_smearing" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">parse_smearing</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">parse_smearing(raw: ndarray) -&gt; SmearingMatrix</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Build a :class:<code>SmearingMatrix</code> from the raw 11-column CSV array.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>raw</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Shape <code>(N, 11)</code>.  Columns: log10(E_nu)_min/max, dec_min/max [deg],
+log10(E_reco)_min/max, PSF_min/max [deg],
+AngErr_min/max [deg], Fractional_Counts.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><a class="autorefs autorefs-internal" title="SmearingMatrix (softpaws.response.irfs.SmearingMatrix)" href="../../response/irfs/#softpaws.response.irfs.SmearingMatrix">SmearingMatrix</a></code>
+              –
+              <div class="doc-md-description">
+                
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/loader.py</code></summary>
+              <pre class="highlight"><code class="language-python">def parse_smearing(raw: np.ndarray) -&gt; SmearingMatrix:
+    """Build a :class:`SmearingMatrix` from the raw 11-column CSV array.
+
+    Parameters
+    ----------
+    raw : np.ndarray
+        Shape ``(N, 11)``.  Columns: log10(E_nu)_min/max, dec_min/max [deg],
+        log10(E_reco)_min/max, PSF_min/max [deg],
+        AngErr_min/max [deg], Fractional_Counts.
+
+    Returns
+    -------
+    SmearingMatrix
+    """
+    return SmearingMatrix(raw)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../icecube/" class="btn btn-neutral float-left" title="icecube"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../paths/" class="btn btn-neutral float-right" title="paths">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../icecube/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../paths/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

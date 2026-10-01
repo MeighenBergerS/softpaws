@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/data/container/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>container - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "container";
+        var mkdocs_page_input_path = "api-reference/softpaws/data/container.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/data/container/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >data</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">data</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">container</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.container.EventSet">EventSet</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">data</li>
+      <li class="breadcrumb-item active">container</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.data.container" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.data.container</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Numpy-backed container for IceTracks-DR2 muon-track events.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="EventSet (softpaws.data.container.EventSet)" href="#softpaws.data.container.EventSet">EventSet</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Structured container for a set of IceCube muon-track events.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.data.container.EventSet" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">EventSet</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">EventSet(data: ndarray)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Structured container for a set of IceCube muon-track events.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Structured array with dtype <code>EVENTS_DTYPE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>The underlying structured array.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_events</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Number of events in the set.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; from softpaws.data.schema import EVENTS_DTYPE
+&gt;&gt;&gt; from softpaws.data.container import EventSet
+&gt;&gt;&gt; arr = np.zeros(3, dtype=EVENTS_DTYPE)
+&gt;&gt;&gt; evs = EventSet(arr)
+&gt;&gt;&gt; evs.n_events
+3</code></pre>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Structured array with dtype :data:<code>EVENTS_DTYPE</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the array does not carry that dtype.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="filter_dec (softpaws.data.container.EventSet.filter_dec)" href="#softpaws.data.container.EventSet.filter_dec">filter_dec</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return a new EventSet restricted to a declination band.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="filter_energy (softpaws.data.container.EventSet.filter_energy)" href="#softpaws.data.container.EventSet.filter_energy">filter_energy</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return a new EventSet restricted to an energy range.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="filter_time (softpaws.data.container.EventSet.filter_time)" href="#softpaws.data.container.EventSet.filter_time">filter_time</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Return a new EventSet restricted to a time window.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>src/softpaws/data/container.py</code></summary>
+                    <pre class="highlight"><code class="language-python">def __init__(self, data: np.ndarray) -&gt; None:
+    """Wrap a structured array of events.
+
+    Parameters
+    ----------
+    data : np.ndarray
+        Structured array with dtype :data:`EVENTS_DTYPE`.
+
+    Raises
+    ------
+    ValueError
+        Raised if the array does not carry that dtype.
+    """
+    if data.dtype != EVENTS_DTYPE:
+        raise ValueError(f"Expected dtype {EVENTS_DTYPE}, got {data.dtype}.")
+    self._data = data</code></pre>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.azimuth" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">azimuth</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">azimuth: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local azimuth of reconstructed direction [deg].</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.data" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">data</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">data: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>The underlying structured array.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.dec" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">dec</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">dec: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Declination [deg, J2000].</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.event" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">event</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">event: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Event ID within the season.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.log10_energy" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">log10_energy</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">log10_energy: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>log10 of reconstructed muon energy proxy [GeV].</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.n_events" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">n_events</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">n_events: int</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Number of events.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.ra" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ra</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">ra: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Right ascension [deg, J2000].</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.run" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">run</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">run: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>IceCube run number for each event.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.sigma" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">sigma</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">sigma: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Per-event angular uncertainty estimate [deg].</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.subevent" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">subevent</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">subevent: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Subevent ID (distinguishes coincident triggers).</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.time" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">time</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">time: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Arrival time of all events [MJD].</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="softpaws.data.container.EventSet.zenith" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">zenith</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">zenith: ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Local zenith of reconstructed direction [deg].</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.data.container.EventSet.filter_dec" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">filter_dec</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">filter_dec(dec_min: float, dec_max: float) -&gt; 'EventSet'</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Return a new EventSet restricted to a declination band.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>dec_min</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Minimum declination [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dec_max</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maximum declination [deg].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>subset</code></b>(                  <code><a class="autorefs autorefs-internal" title="EventSet (softpaws.data.container.EventSet)" href="#softpaws.data.container.EventSet">EventSet</a></code>
+)              –
+              <div class="doc-md-description">
+                <p>New EventSet containing only events within the band.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/container.py</code></summary>
+              <pre class="highlight"><code class="language-python">def filter_dec(self, dec_min: float, dec_max: float) -&gt; "EventSet":
+    """Return a new EventSet restricted to a declination band.
+
+    Parameters
+    ----------
+    dec_min : float
+        Minimum declination [deg].
+    dec_max : float
+        Maximum declination [deg].
+
+    Returns
+    -------
+    subset : EventSet
+        New EventSet containing only events within the band.
+    """
+    mask = (self._data["dec"] &gt;= dec_min) &amp; (self._data["dec"] &lt;= dec_max)
+    return EventSet(self._data[mask])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.data.container.EventSet.filter_energy" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">filter_energy</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">filter_energy(log10_emin: float, log10_emax: float) -&gt; 'EventSet'</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Return a new EventSet restricted to an energy range.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_emin</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Minimum log10(energy/GeV).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_emax</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Maximum log10(energy/GeV).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>subset</code></b>(                  <code><a class="autorefs autorefs-internal" title="EventSet (softpaws.data.container.EventSet)" href="#softpaws.data.container.EventSet">EventSet</a></code>
+)              –
+              <div class="doc-md-description">
+                <p>New EventSet containing only events in the energy range.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/container.py</code></summary>
+              <pre class="highlight"><code class="language-python">def filter_energy(self, log10_emin: float, log10_emax: float) -&gt; "EventSet":
+    """Return a new EventSet restricted to an energy range.
+
+    Parameters
+    ----------
+    log10_emin : float
+        Minimum log10(energy/GeV).
+    log10_emax : float
+        Maximum log10(energy/GeV).
+
+    Returns
+    -------
+    subset : EventSet
+        New EventSet containing only events in the energy range.
+    """
+    mask = (
+        (self._data["log10_energy"] &gt;= log10_emin)
+        &amp; (self._data["log10_energy"] &lt;= log10_emax)
+    )
+    return EventSet(self._data[mask])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.data.container.EventSet.filter_time" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">filter_time</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">filter_time(mjd_start: float, mjd_stop: float) -&gt; 'EventSet'</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Return a new EventSet restricted to a time window.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>mjd_start</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Start of the window [MJD].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>mjd_stop</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>End of the window [MJD].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>subset</code></b>(                  <code><a class="autorefs autorefs-internal" title="EventSet (softpaws.data.container.EventSet)" href="#softpaws.data.container.EventSet">EventSet</a></code>
+)              –
+              <div class="doc-md-description">
+                <p>New EventSet containing only events within the time window.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/container.py</code></summary>
+              <pre class="highlight"><code class="language-python">def filter_time(self, mjd_start: float, mjd_stop: float) -&gt; "EventSet":
+    """Return a new EventSet restricted to a time window.
+
+    Parameters
+    ----------
+    mjd_start : float
+        Start of the window [MJD].
+    mjd_stop : float
+        End of the window [MJD].
+
+    Returns
+    -------
+    subset : EventSet
+        New EventSet containing only events within the time window.
+    """
+    mask = (self._data["time"] &gt;= mjd_start) &amp; (self._data["time"] &lt;= mjd_stop)
+    return EventSet(self._data[mask])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="data"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../hese/" class="btn btn-neutral float-right" title="hese">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../hese/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

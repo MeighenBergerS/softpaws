@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/data/published/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>published - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "published";
+        var mkdocs_page_input_path = "api-reference/softpaws/data/published.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/data/published/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >data</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../paths/">paths</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">published</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.arca21_bright_track_aeff">arca21_bright_track_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.arca230_angle_dependent_aeff">arca230_angle_dependent_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.arca230_quoted_fit">arca230_quoted_fit</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.arca230_trigger_level_aeff">arca230_trigger_level_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.icecube_dr2_aeff">icecube_dr2_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.icecube_point_source_sensitivity">icecube_point_source_sensitivity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.interpolate_aeff">interpolate_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.pone_allsky_aeff">pone_allsky_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.pone_band_aeff">pone_band_aeff</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.trident_2025_map">trident_2025_map</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.data.published.trident_band_aeff">trident_band_aeff</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">data</li>
+      <li class="breadcrumb-item active">published</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.data.published" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.data.published</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Published effective-area curves the model is compared against.</p>
+<p>Every loader reads one table shipped under <code>src/softpaws/data/</code> (or the
+IceTracks-DR2 release for IceCube), returns it on the table's own energy
+grid as <code>log10(E_nu / GeV)</code> and <code>A_eff</code> [cm^2], and says in its docstring
+which paper and figure the table came from. Nothing is smoothed or
+interpolated here; :func:<code>interpolate_aeff</code> is the one shared step for
+putting a table on a model grid.</p>
+<p>The tables are of three kinds, and the difference matters when a model curve
+is held against them. A <em>trigger-level</em> area (ARCA230, P-ONE) carries no
+analysis cuts and is the largest area an instrument reports, so it is the
+right thing to hold a geometric ceiling against. A <em>selection-level</em> area
+(ARCA21 bright track, ARCA230 final track selection, TRIDENT with its angular
+cut, the DR2 table) sits below it by the selection efficiency. The two are
+not interchangeable in a likelihood.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="arca21_bright_track_aeff (softpaws.data.published.arca21_bright_track_aeff)" href="#softpaws.data.published.arca21_bright_track_aeff">arca21_bright_track_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Released ARCA21 bright-track, all-flavour, sky-averaged effective area.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="arca230_angle_dependent_aeff (softpaws.data.published.arca230_angle_dependent_aeff)" href="#softpaws.data.published.arca230_angle_dependent_aeff">arca230_angle_dependent_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Digitized ARCA230 effective area per <code>cos(theta)</code> band, final track selection.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="arca230_quoted_fit (softpaws.data.published.arca230_quoted_fit)" href="#softpaws.data.published.arca230_quoted_fit">arca230_quoted_fit</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Analytic parametrization of the ARCA230 trigger curve quoted in the literature.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="arca230_trigger_level_aeff (softpaws.data.published.arca230_trigger_level_aeff)" href="#softpaws.data.published.arca230_trigger_level_aeff">arca230_trigger_level_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Digitized full-ARCA <code>nu_mu</code> effective area at trigger level.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="icecube_dr2_aeff (softpaws.data.published.icecube_dr2_aeff)" href="#softpaws.data.published.icecube_dr2_aeff">icecube_dr2_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Livetime-weighted IceTracks-DR2 effective area over one hemisphere.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="icecube_point_source_sensitivity (softpaws.data.published.icecube_point_source_sensitivity)" href="#softpaws.data.published.icecube_point_source_sensitivity">icecube_point_source_sensitivity</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>IceCube's 14-year through-going-track point-source sensitivity.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="interpolate_aeff (softpaws.data.published.interpolate_aeff)" href="#softpaws.data.published.interpolate_aeff">interpolate_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Put a tabulated curve on a grid by log-log interpolation.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="pone_allsky_aeff (softpaws.data.published.pone_allsky_aeff)" href="#softpaws.data.published.pone_allsky_aeff">pone_allsky_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Digitized P-ONE all-sky <code>nu_mu</code> effective area at trigger level.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="pone_band_aeff (softpaws.data.published.pone_band_aeff)" href="#softpaws.data.published.pone_band_aeff">pone_band_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Digitized P-ONE <code>nu_mu</code> effective area in one zenith band, trigger level.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="trident_2025_map (softpaws.data.published.trident_2025_map)" href="#softpaws.data.published.trident_2025_map">trident_2025_map</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>TRIDENT's 2025 <code>nu_mu</code> effective-area map in <code>cos(theta_z)</code> and energy.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="trident_band_aeff (softpaws.data.published.trident_band_aeff)" href="#softpaws.data.published.trident_band_aeff">trident_band_aeff</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Digitized TRIDENT <code>nu_mu</code> effective area in one <code>cos(theta)</code> band.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.arca21_bright_track_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">arca21_bright_track_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">arca21_bright_track_aeff(path: Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Released ARCA21 bright-track, all-flavour, sky-averaged effective area.</p>
+<p>The selection that recorded KM3-230213A, from the event's own data
+release: KM3NeT Collaboration, Nature 638 (2025) 376, Zenodo record
+10.5281/zenodo.14860165 (<code>uhe-event-v1.0</code>), file
+<code>effective_area_brighttrackselection_allflavour_skyavg.json</code>. Its
+stated convention is <code>N = 4 pi T Integral A_eff(E) Phi_per-flavour(E) dE</code>.
+The table runs to <code>10^11</code> GeV and is zero below its threshold; only the
+positive rows are returned.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Table to read. Defaults to
+<code>arca21_aeff_brighttrack_allflavour_skyavg.csv</code> in :data:<code>KM3NET_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log10_e</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> of the tabulated points with positive area.</p>
+              </div>
+            </li>
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def arca21_bright_track_aeff(path: pathlib.Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Released ARCA21 bright-track, all-flavour, sky-averaged effective area.
+
+    The selection that recorded KM3-230213A, from the event's own data
+    release: KM3NeT Collaboration, Nature 638 (2025) 376, Zenodo record
+    10.5281/zenodo.14860165 (``uhe-event-v1.0``), file
+    ``effective_area_brighttrackselection_allflavour_skyavg.json``. Its
+    stated convention is ``N = 4 pi T Integral A_eff(E) Phi_per-flavour(E) dE``.
+    The table runs to ``10^11`` GeV and is zero below its threshold; only the
+    positive rows are returned.
+
+    Parameters
+    ----------
+    path : pathlib.Path or None, optional
+        Table to read. Defaults to
+        ``arca21_aeff_brighttrack_allflavour_skyavg.csv`` in :data:`KM3NET_DIR`.
+
+    Returns
+    -------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the tabulated points with positive area.
+    aeff_cm2 : np.ndarray
+        Effective area [cm^2].
+    """
+    e_gev, a_cm2 = _read_xy(path or KM3NET_DIR / "arca21_aeff_brighttrack_allflavour_skyavg.csv")
+    return np.log10(e_gev), a_cm2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.arca230_angle_dependent_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">arca230_angle_dependent_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">arca230_angle_dependent_aeff(path: Path | None = None) -&gt; list[tuple[float, float, np.ndarray, np.ndarray]]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Digitized ARCA230 effective area per <code>cos(theta)</code> band, final track selection.</p>
+<p>Fig. 7(b) of KM3NeT Collaboration, Eur. Phys. J. C 84 (2024) 885
+[arXiv:2402.08363]: the <code>nu_mu</code> charged-current effective area after
+the final track selection, in four bands of <code>cos(theta)</code>. The column
+headers of the table carry the band edges as <code>km3net_&lt;hi&gt;g&lt;lo&gt;</code>,
+largest <code>cos(theta)</code> first.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Table to read. Defaults to <code>km3net_angle_dependent.csv</code> in
+:data:<code>KM3NET_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>bands</code></b>(                  <code>list of tuple</code>
+)              –
+              <div class="doc-md-description">
+                <p>One entry <code>(cos_hi, cos_lo, log10_e, aeff_cm2)</code> per band, points
+sorted in energy. <code>cos_hi</code> is the largest <code>cos(theta)</code> of the
+band; <code>-1</code> is the nadir, so the last band is the deepest column.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def arca230_angle_dependent_aeff(
+    path: pathlib.Path | None = None,
+) -&gt; list[tuple[float, float, np.ndarray, np.ndarray]]:
+    """Digitized ARCA230 effective area per ``cos(theta)`` band, final track selection.
+
+    Fig. 7(b) of KM3NeT Collaboration, Eur. Phys. J. C 84 (2024) 885
+    [arXiv:2402.08363]: the ``nu_mu`` charged-current effective area after
+    the final track selection, in four bands of ``cos(theta)``. The column
+    headers of the table carry the band edges as ``km3net_&lt;hi&gt;g&lt;lo&gt;``,
+    largest ``cos(theta)`` first.
+
+    Parameters
+    ----------
+    path : pathlib.Path or None, optional
+        Table to read. Defaults to ``km3net_angle_dependent.csv`` in
+        :data:`KM3NET_DIR`.
+
+    Returns
+    -------
+    bands : list of tuple
+        One entry ``(cos_hi, cos_lo, log10_e, aeff_cm2)`` per band, points
+        sorted in energy. ``cos_hi`` is the largest ``cos(theta)`` of the
+        band; ``-1`` is the nadir, so the last band is the deepest column.
+    """
+    path = path or KM3NET_DIR / "km3net_angle_dependent.csv"
+    with open(path) as handle:
+        names = [n for n in handle.readline().strip().split(",") if n]
+    raw = np.genfromtxt(path, delimiter=",", skip_header=2)
+    bands = []
+    for k, name in enumerate(names):
+        hi, lo = name.removeprefix("km3net_").split("g")
+        x, y = raw[:, 2 * k], raw[:, 2 * k + 1]
+        good = np.isfinite(x) &amp; np.isfinite(y) &amp; (x &gt; 0.0) &amp; (y &gt; 0.0)
+        order = np.argsort(x[good])
+        bands.append((float(hi), float(lo), np.log10(x[good][order]), 1.0e4 * y[good][order]))
+    return bands</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.arca230_quoted_fit" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">arca230_quoted_fit</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">arca230_quoted_fit(log10_e: ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Analytic parametrization of the ARCA230 trigger curve quoted in the literature.</p>
+<p>Several phenomenology papers quote</p>
+<p>.. math:: A_\mathrm{eff} = 2\,[0.20\,(E/E_0)^{-0.51} + 0.46\,(E/E_0)^{-0.06}]^{-6.4}
+    \ \mathrm{m}^2, \quad E_0 = 10^4\ \mathrm{GeV},</p>
+<p>over <code>10^3</code> to <code>10^8</code> GeV, attributed to the same figure as
+:func:<code>arca230_trigger_level_aeff</code>. It runs a factor 1.95 above the
+digitized curve across five decades, which is flat enough to identify:
+the leading 2 doubles a curve that is already the two-block effective
+area. It is kept so that the discrepancy stays visible.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2], <code>NaN</code> outside the quoted validity.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def arca230_quoted_fit(log10_e: np.ndarray) -&gt; np.ndarray:
+    r"""Analytic parametrization of the ARCA230 trigger curve quoted in the literature.
+
+    Several phenomenology papers quote
+
+    .. math:: A_\\mathrm{eff} = 2\\,[0.20\\,(E/E_0)^{-0.51} + 0.46\\,(E/E_0)^{-0.06}]^{-6.4}
+        \\ \\mathrm{m}^2, \\quad E_0 = 10^4\\ \\mathrm{GeV},
+
+    over ``10^3`` to ``10^8`` GeV, attributed to the same figure as
+    :func:`arca230_trigger_level_aeff`. It runs a factor 1.95 above the
+    digitized curve across five decades, which is flat enough to identify:
+    the leading 2 doubles a curve that is already the two-block effective
+    area. It is kept so that the discrepancy stays visible.
+
+    Parameters
+    ----------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)``.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray
+        Effective area [cm^2], ``NaN`` outside the quoted validity.
+    """
+    x = 10.0 ** (np.asarray(log10_e, dtype=float) - 4.0)
+    aeff_m2 = 2.0 * (0.20 * x**-0.51 + 0.46 * x**-0.06) ** -6.4
+    return np.where((log10_e &gt;= 3.0) &amp; (log10_e &lt;= 8.0), aeff_m2 * 1.0e4, np.nan)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.arca230_trigger_level_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">arca230_trigger_level_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">arca230_trigger_level_aeff(path: Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Digitized full-ARCA <code>nu_mu</code> effective area at trigger level.</p>
+<p>Digitized from KM3NeT Collaboration, Eur. Phys. J. C 84 (2024) 885
+[arXiv:2402.08363] Fig. 7, for the two-building-block detector (230
+detection units), over <code>10^3</code> to <code>10^8</code> GeV.</p>
+<p>Trigger level asks only that the event produce enough coincident hits,
+with none of the quality and containment cuts an analysis adds on top, so
+this is the largest effective area the instrument reports and the hardest
+for a footprint-based bound to accommodate.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Table to read. Defaults to <code>arca_trigger_level_eff.csv</code> in
+:data:<code>KM3NET_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log10_e</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> of the digitized points, ascending.</p>
+              </div>
+            </li>
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def arca230_trigger_level_aeff(path: pathlib.Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Digitized full-ARCA ``nu_mu`` effective area at trigger level.
+
+    Digitized from KM3NeT Collaboration, Eur. Phys. J. C 84 (2024) 885
+    [arXiv:2402.08363] Fig. 7, for the two-building-block detector (230
+    detection units), over ``10^3`` to ``10^8`` GeV.
+
+    Trigger level asks only that the event produce enough coincident hits,
+    with none of the quality and containment cuts an analysis adds on top, so
+    this is the largest effective area the instrument reports and the hardest
+    for a footprint-based bound to accommodate.
+
+    Parameters
+    ----------
+    path : pathlib.Path or None, optional
+        Table to read. Defaults to ``arca_trigger_level_eff.csv`` in
+        :data:`KM3NET_DIR`.
+
+    Returns
+    -------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the digitized points, ascending.
+    aeff_cm2 : np.ndarray
+        Effective area [cm^2].
+    """
+    e_gev, a_m2 = _read_xy(path or KM3NET_DIR / "arca_trigger_level_eff.csv")
+    return np.log10(e_gev), 1.0e4 * a_m2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.icecube_dr2_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">icecube_dr2_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">icecube_dr2_aeff(data_dir: str | Path, log10_e: ndarray, hemisphere: str = 'upgoing') -&gt; tuple[np.ndarray, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Livetime-weighted IceTracks-DR2 effective area over one hemisphere.</p>
+<p>The <code>nu_mu</code> effective-area tables of the IceTracks-DR2 release
+(DOI 10.7910/DVN/MMIIZA), one per detector configuration, averaged over
+the declination bins of one hemisphere and over the 14 seasons weighted
+by each season's good-run livetime; see
+:func:<code>~softpaws.data.icecube.livetime_weighted_effective_area</code>. The
+table is analysis level: it carries the through-going track selection.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Root of the DR2 release, holding <code>irfs/</code> and <code>uptime/</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> to return the curve on.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>hemisphere</code></b>
+                  (<code>(&#39;upgoing&#39;, &#39;downgoing&#39;)</code>, default:
+                      <code>&#34;upgoing&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Hemisphere to average over.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area on <code>log10_e</code> [cm^2].</p>
+              </div>
+            </li>
+            <li>
+<b><code>livetime_s</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Total good-run livetime of the release [s].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def icecube_dr2_aeff(
+    data_dir: str | pathlib.Path, log10_e: np.ndarray, hemisphere: str = "upgoing"
+) -&gt; tuple[np.ndarray, float]:
+    """Livetime-weighted IceTracks-DR2 effective area over one hemisphere.
+
+    The ``nu_mu`` effective-area tables of the IceTracks-DR2 release
+    (DOI 10.7910/DVN/MMIIZA), one per detector configuration, averaged over
+    the declination bins of one hemisphere and over the 14 seasons weighted
+    by each season's good-run livetime; see
+    :func:`~softpaws.data.icecube.livetime_weighted_effective_area`. The
+    table is analysis level: it carries the through-going track selection.
+
+    Parameters
+    ----------
+    data_dir : str or pathlib.Path
+        Root of the DR2 release, holding ``irfs/`` and ``uptime/``.
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` to return the curve on.
+    hemisphere : {"upgoing", "downgoing"}, optional
+        Hemisphere to average over.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray
+        Effective area on ``log10_e`` [cm^2].
+    livetime_s : float
+        Total good-run livetime of the release [s].
+    """
+    return livetime_weighted_effective_area(data_dir, log10_e, hemisphere)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.icecube_point_source_sensitivity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">icecube_point_source_sensitivity</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">icecube_point_source_sensitivity(path: Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>IceCube's 14-year through-going-track point-source sensitivity.</p>
+<p>Digitized from the collaboration's published sensitivity against source
+declination, for an <code>E^-2</code> source over the whole energy range.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="pathlib.Path">Path</span></code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Two-column CSV of <code>sin(dec)</code> and <code>E^2 dN/dE</code> [TeV cm^-2 s^-1].
+<code>None</code> uses the table shipped in <code>softpaws/data/bounds</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>sin_dec</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Source <code>sin(dec)</code>, sorted ascending and clipped to the unit interval.</p>
+              </div>
+            </li>
+            <li>
+<b><code>e2_flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>E^2 dN/dE</code> per flavour [GeV cm^-2 s^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def icecube_point_source_sensitivity(
+    path: pathlib.Path | None = None,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """IceCube's 14-year through-going-track point-source sensitivity.
+
+    Digitized from the collaboration's published sensitivity against source
+    declination, for an ``E^-2`` source over the whole energy range.
+
+    Parameters
+    ----------
+    path : pathlib.Path, optional
+        Two-column CSV of ``sin(dec)`` and ``E^2 dN/dE`` [TeV cm^-2 s^-1].
+        ``None`` uses the table shipped in ``softpaws/data/bounds``.
+
+    Returns
+    -------
+    sin_dec : np.ndarray
+        Source ``sin(dec)``, sorted ascending and clipped to the unit interval.
+    e2_flux : np.ndarray
+        ``E^2 dN/dE`` per flavour [GeV cm^-2 s^-1].
+    """
+    if path is None:
+        path = _DATA_DIR / "bounds" / "icecube_14year_track_sensitivity_e2.csv"
+    raw = np.loadtxt(path, delimiter=",")
+    order = np.argsort(raw[:, 0])
+    # The digitization overshoots |sin(dec)| = 1 by a few parts in a thousand.
+    return np.clip(raw[order, 0], -1.0, 1.0), raw[order, 1] * 1.0e3</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.interpolate_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">interpolate_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">interpolate_aeff(log10_e: ndarray, table_log10_e: ndarray, table_aeff_cm2: ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Put a tabulated curve on a grid by log-log interpolation.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> to evaluate at.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>table_log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> of the table, ascending.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>table_aeff_cm2</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area of the table [cm^2], positive.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area on <code>log10_e</code> [cm^2], <code>NaN</code> outside the table.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def interpolate_aeff(
+    log10_e: np.ndarray, table_log10_e: np.ndarray, table_aeff_cm2: np.ndarray
+) -&gt; np.ndarray:
+    """Put a tabulated curve on a grid by log-log interpolation.
+
+    Parameters
+    ----------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` to evaluate at.
+    table_log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the table, ascending.
+    table_aeff_cm2 : np.ndarray
+        Effective area of the table [cm^2], positive.
+
+    Returns
+    -------
+    aeff_cm2 : np.ndarray
+        Effective area on ``log10_e`` [cm^2], ``NaN`` outside the table.
+    """
+    return 10.0 ** np.interp(
+        log10_e, table_log10_e, np.log10(table_aeff_cm2), left=np.nan, right=np.nan
+    )</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.pone_allsky_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pone_allsky_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">pone_allsky_aeff(data_dir: Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Digitized P-ONE all-sky <code>nu_mu</code> effective area at trigger level.</p>
+<p>From the P-ONE performance study presented at ICRC 2023: seven clusters
+of 120 m radius and 1 km height at 2.66 km in the Cascadia Basin,
+trigger level, <code>nu_mu</code> with neutrino and antineutrino averaged. The
+curve was digitized from a step-function plot, so the raw points carry
+the risers; the release is in m^2 and is converted here.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Directory holding <code>pone_allsky.csv</code>. Defaults to :data:<code>PONE_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log10_e</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> of the digitized points, ascending.</p>
+              </div>
+            </li>
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def pone_allsky_aeff(data_dir: pathlib.Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Digitized P-ONE all-sky ``nu_mu`` effective area at trigger level.
+
+    From the P-ONE performance study presented at ICRC 2023: seven clusters
+    of 120 m radius and 1 km height at 2.66 km in the Cascadia Basin,
+    trigger level, ``nu_mu`` with neutrino and antineutrino averaged. The
+    curve was digitized from a step-function plot, so the raw points carry
+    the risers; the release is in m^2 and is converted here.
+
+    Parameters
+    ----------
+    data_dir : pathlib.Path or None, optional
+        Directory holding ``pone_allsky.csv``. Defaults to :data:`PONE_DIR`.
+
+    Returns
+    -------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the digitized points, ascending.
+    aeff_cm2 : np.ndarray
+        Effective area [cm^2].
+    """
+    e_gev, a_m2 = _read_xy((data_dir or PONE_DIR) / "pone_allsky.csv")
+    return np.log10(e_gev), 1.0e4 * a_m2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.pone_band_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pone_band_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">pone_band_aeff(zenith_lo_deg: int, zenith_hi_deg: int, data_dir: Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Digitized P-ONE <code>nu_mu</code> effective area in one zenith band, trigger level.</p>
+<p>Same source as :func:<code>pone_allsky_aeff</code>, in the six 30-degree zenith
+bands of :data:<code>PONE_ZENITH_BANDS_DEG</code>, with 180 degrees the nadir.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>zenith_lo_deg</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Band edges [deg], one of the pairs in :data:<code>PONE_ZENITH_BANDS_DEG</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>zenith_hi_deg</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Band edges [deg], one of the pairs in :data:<code>PONE_ZENITH_BANDS_DEG</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Directory holding <code>pone_&lt;lo&gt;_&lt;hi&gt;.csv</code>. Defaults to :data:<code>PONE_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log10_e</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> of the digitized points, ascending.</p>
+              </div>
+            </li>
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def pone_band_aeff(
+    zenith_lo_deg: int, zenith_hi_deg: int, data_dir: pathlib.Path | None = None
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Digitized P-ONE ``nu_mu`` effective area in one zenith band, trigger level.
+
+    Same source as :func:`pone_allsky_aeff`, in the six 30-degree zenith
+    bands of :data:`PONE_ZENITH_BANDS_DEG`, with 180 degrees the nadir.
+
+    Parameters
+    ----------
+    zenith_lo_deg, zenith_hi_deg : int
+        Band edges [deg], one of the pairs in :data:`PONE_ZENITH_BANDS_DEG`.
+    data_dir : pathlib.Path or None, optional
+        Directory holding ``pone_&lt;lo&gt;_&lt;hi&gt;.csv``. Defaults to :data:`PONE_DIR`.
+
+    Returns
+    -------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the digitized points, ascending.
+    aeff_cm2 : np.ndarray
+        Effective area [cm^2].
+    """
+    e_gev, a_m2 = _read_xy((data_dir or PONE_DIR) / f"pone_{zenith_lo_deg}_{zenith_hi_deg}.csv")
+    return np.log10(e_gev), 1.0e4 * a_m2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.trident_2025_map" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">trident_2025_map</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">trident_2025_map(path: Path | None = None) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>TRIDENT's 2025 <code>nu_mu</code> effective-area map in <code>cos(theta_z)</code> and energy.</p>
+<p>Morton-Blake et al. (arXiv:2510.24395), Fig. 3a: the <code>nu_mu</code>
+charged-current track effective area of the reference TRIDENT layout
+(1000 strings at 100 m, 20 hDOMs at 30 m) on a 12 x 12 grid in
+<code>cos(theta_z)</code> and <code>log10 E</code>, after trigger, edge and track-extension
+cuts. The map was digitized from the embedded raster; the release is
+<code>log10</code> of m^2 and is converted here.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Table to read. Defaults to <code>trident_2025_fig3a_log10aeff_m2.csv</code> in
+:data:<code>TRIDENT_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>cos_theta</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(12))</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>cos(theta_z)</code> bin centres, downgoing first.</p>
+              </div>
+            </li>
+            <li>
+<b><code>log10_e</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(12))</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> bin centres, 0.25 dex from 3.125 to 5.875.</p>
+              </div>
+            </li>
+            <li>
+<b><code>log10_aeff_cm2</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(12, 12))</code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10</code> of the effective area [cm^2], one row per <code>cos_theta</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def trident_2025_map(path: pathlib.Path | None = None) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """TRIDENT's 2025 ``nu_mu`` effective-area map in ``cos(theta_z)`` and energy.
+
+    Morton-Blake et al. (arXiv:2510.24395), Fig. 3a: the ``nu_mu``
+    charged-current track effective area of the reference TRIDENT layout
+    (1000 strings at 100 m, 20 hDOMs at 30 m) on a 12 x 12 grid in
+    ``cos(theta_z)`` and ``log10 E``, after trigger, edge and track-extension
+    cuts. The map was digitized from the embedded raster; the release is
+    ``log10`` of m^2 and is converted here.
+
+    Parameters
+    ----------
+    path : pathlib.Path or None, optional
+        Table to read. Defaults to ``trident_2025_fig3a_log10aeff_m2.csv`` in
+        :data:`TRIDENT_DIR`.
+
+    Returns
+    -------
+    cos_theta : np.ndarray, shape (12,)
+        ``cos(theta_z)`` bin centres, downgoing first.
+    log10_e : np.ndarray, shape (12,)
+        ``log10(E_nu / GeV)`` bin centres, 0.25 dex from 3.125 to 5.875.
+    log10_aeff_cm2 : np.ndarray, shape (12, 12)
+        ``log10`` of the effective area [cm^2], one row per ``cos_theta``.
+    """
+    raw = np.loadtxt(path or TRIDENT_DIR / "trident_2025_fig3a_log10aeff_m2.csv", delimiter=",")
+    cos_theta, log10_a_m2 = raw[:, 0], raw[:, 1:]
+    log10_e = 3.0 + 0.25 * (np.arange(log10_a_m2.shape[1]) + 0.5)
+    return cos_theta, log10_e, log10_a_m2 + 4.0</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.data.published.trident_band_aeff" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">trident_band_aeff</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">trident_band_aeff(cos_lo: float, cos_hi: float, data_dir: Path | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Digitized TRIDENT <code>nu_mu</code> effective area in one <code>cos(theta)</code> band.</p>
+<p>Extended Data Fig. 8 of the TRIDENT Nature Astronomy paper (Ye et al.,
+2023): a 2 km-radius, 570 m-high array at 3.1 km in the South China Sea,
+<code>nu_mu</code> with neutrino and antineutrino averaged, after a 6-degree
+angular-error cut, in the three <code>cos(theta)</code> bands of
+:data:<code>TRIDENT_COS_BANDS</code> with -1 the nadir. The energy axis of the
+release is already <code>log10(E / GeV)</code>; the area is in m^2 and is
+converted here.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cos_lo</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Band edges, one of the pairs in :data:<code>TRIDENT_COS_BANDS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_hi</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Band edges, one of the pairs in :data:<code>TRIDENT_COS_BANDS</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>data_dir</code></b>
+                  (<code><span title="pathlib.Path">Path</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Directory holding <code>trident_&lt;lo&gt;_&lt;hi&gt;.csv</code>. Defaults to
+:data:<code>TRIDENT_DIR</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log10_e</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>log10(E_nu / GeV)</code> of the digitized points, ascending.</p>
+              </div>
+            </li>
+            <li>
+<b><code>aeff_cm2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>(cos_lo, cos_hi)</code> is not one of the tabulated bands.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/data/published.py</code></summary>
+              <pre class="highlight"><code class="language-python">def trident_band_aeff(
+    cos_lo: float, cos_hi: float, data_dir: pathlib.Path | None = None
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Digitized TRIDENT ``nu_mu`` effective area in one ``cos(theta)`` band.
+
+    Extended Data Fig. 8 of the TRIDENT Nature Astronomy paper (Ye et al.,
+    2023): a 2 km-radius, 570 m-high array at 3.1 km in the South China Sea,
+    ``nu_mu`` with neutrino and antineutrino averaged, after a 6-degree
+    angular-error cut, in the three ``cos(theta)`` bands of
+    :data:`TRIDENT_COS_BANDS` with -1 the nadir. The energy axis of the
+    release is already ``log10(E / GeV)``; the area is in m^2 and is
+    converted here.
+
+    Parameters
+    ----------
+    cos_lo, cos_hi : float
+        Band edges, one of the pairs in :data:`TRIDENT_COS_BANDS`.
+    data_dir : pathlib.Path or None, optional
+        Directory holding ``trident_&lt;lo&gt;_&lt;hi&gt;.csv``. Defaults to
+        :data:`TRIDENT_DIR`.
+
+    Returns
+    -------
+    log10_e : np.ndarray
+        ``log10(E_nu / GeV)`` of the digitized points, ascending.
+    aeff_cm2 : np.ndarray
+        Effective area [cm^2].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``(cos_lo, cos_hi)`` is not one of the tabulated bands.
+    """
+    stems = dict(zip(
+        TRIDENT_COS_BANDS, ("trident_-1_-0.2", "trident_-0.2_0.2", "trident_0.2_1.0"), strict=True
+    ))
+    try:
+        stem = stems[(float(cos_lo), float(cos_hi))]
+    except KeyError:
+        raise ValueError(
+            f"({cos_lo}, {cos_hi}) is not a TRIDENT band; the bands are {TRIDENT_COS_BANDS}."
+        ) from None
+    log10_e, a_m2 = _read_xy((data_dir or TRIDENT_DIR) / f"{stem}.csv")
+    return log10_e, 1.0e4 * a_m2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../paths/" class="btn btn-neutral float-left" title="paths"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../schema/" class="btn btn-neutral float-right" title="schema">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../paths/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../schema/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

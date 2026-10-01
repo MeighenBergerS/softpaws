@@ -1,0 +1,2625 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/eigenvalue/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>eigenvalue - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "eigenvalue";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/eigenvalue.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/eigenvalue/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">eigenvalue</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.n_moment_coefficients">n_moment_coefficients</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.n_moment_loss_spectrum">n_moment_loss_spectrum</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_drift">phi_drift</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_eigenvalue">phi_eigenvalue</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_eigenvalue_at_energy">phi_eigenvalue_at_energy</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_eigenvalue_derivative">phi_eigenvalue_derivative</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_eigenvalue_quadrature">phi_eigenvalue_quadrature</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_eigenvalue_three_moment">phi_eigenvalue_three_moment</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_fokker_planck">phi_fokker_planck</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_symbol">phi_symbol</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_symbol_n_moment">phi_symbol_n_moment</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.phi_symbol_three_moment">phi_symbol_three_moment</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.spectral_index">spectral_index</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.three_moment_loss_spectrum">three_moment_loss_spectrum</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.eigenvalue.two_moment_loss_spectrum">two_moment_loss_spectrum</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">eigenvalue</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.eigenvalue" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.eigenvalue</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>The transport exponent: eigenvalue of the QED collision operator.</p>
+<p>Where :mod:<code>softpaws.transport.coefficients</code> provides the drift <code>b_mu</code> and
+diffusion <code>d_mu</code> of the earlier Fokker-Planck expansion (Palmisano et al.,
+arXiv:2607.13143), this module provides the attenuation constant that
+supersedes them, with every loss moment kept.</p>
+<p>The QED energy-loss operator is scale-invariant, so power laws <code>phi ~ E^-1-s</code>
+are its eigenfunctions with eigenvalue (<code>docs/theory/exact_soft_volume.md</code>, and
+Sec. II of the method paper)</p>
+<p>.. math:: \Phi(s) = \int_0^1 dy\, \frac{d\Gamma}{dy}
+    \bigl[\,1 - (1 - y)^s\,\bigr].</p>
+<p>A single power-law source excites exactly one mode <code>s = A = gamma - lambda - 1</code>,
+so the whole transport problem collapses to multiplication by the one number
+<code>Phi(A)</code>. The bracket <code>[1 - (1-y)^s]</code> is IR- and UV-finite with no cutoffs:
+the drift-diffusion moments <code>b_mu</code>, <code>d_mu</code> are just the first two terms of its
+binomial expansion, <code>Phi(A) = A b_mu - A(A-1)/2 d_mu + ...</code> (Part 10.1), and the
+series terminates at integer <code>A</code>, giving the exactness identities
+<code>Phi(1) = b_mu</code> and <code>Phi(2) = 2 b_mu - d_mu</code> (Part 10.2).</p>
+<p>Table 1 of Palmisano et al. fixes only <code>b_mu</code> and <code>d_mu</code>, so the primary evaluation
+here calibrates a two-parameter loss spectrum to those two moments and evaluates
+<code>Phi(A)</code> in closed form. It is exact at <code>A = 1, 2</code> by construction and degrades
+for <code>A &gt;~ 3</code> (higher moments); the definitive version is a direct quadrature of
+<code>Phi(A)</code> against tabulated differential cross sections, provided by
+:func:<code>phi_eigenvalue_quadrature</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="n_moment_coefficients (softpaws.transport.eigenvalue.n_moment_coefficients)" href="#softpaws.transport.eigenvalue.n_moment_coefficients">n_moment_coefficients</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Calibrate the <code>N</code>-moment loss family to the first <code>N</code> moments.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="n_moment_loss_spectrum (softpaws.transport.eigenvalue.n_moment_loss_spectrum)" href="#softpaws.transport.eigenvalue.n_moment_loss_spectrum">n_moment_loss_spectrum</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Reconstructed <code>dGamma/dy</code> of the <code>N</code>-moment loss family.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_drift (softpaws.transport.eigenvalue.phi_drift)" href="#softpaws.transport.eigenvalue.phi_drift">phi_drift</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Leading (drift-only) eigenvalue <code>Phi ~ A b_mu</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_eigenvalue (softpaws.transport.eigenvalue.phi_eigenvalue)" href="#softpaws.transport.eigenvalue.phi_eigenvalue">phi_eigenvalue</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Exact collision eigenvalue <code>Phi(A)</code> from the two calibrated moments.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_eigenvalue_at_energy (softpaws.transport.eigenvalue.phi_eigenvalue_at_energy)" href="#softpaws.transport.eigenvalue.phi_eigenvalue_at_energy">phi_eigenvalue_at_energy</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Exact eigenvalue at a muon energy, from the tabulated coefficients.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_eigenvalue_derivative (softpaws.transport.eigenvalue.phi_eigenvalue_derivative)" href="#softpaws.transport.eigenvalue.phi_eigenvalue_derivative">phi_eigenvalue_derivative</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Derivative <code>d Phi / dA</code> of the exact eigenvalue, from the trigamma function.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_eigenvalue_quadrature (softpaws.transport.eigenvalue.phi_eigenvalue_quadrature)" href="#softpaws.transport.eigenvalue.phi_eigenvalue_quadrature">phi_eigenvalue_quadrature</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Exact eigenvalue by direct quadrature of <code>Phi(A)</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_eigenvalue_three_moment (softpaws.transport.eigenvalue.phi_eigenvalue_three_moment)" href="#softpaws.transport.eigenvalue.phi_eigenvalue_three_moment">phi_eigenvalue_three_moment</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Collision eigenvalue <code>Phi(A)</code> from three calibrated moments.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_fokker_planck (softpaws.transport.eigenvalue.phi_fokker_planck)" href="#softpaws.transport.eigenvalue.phi_fokker_planck">phi_fokker_planck</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Second-order (Fokker-Planck) eigenvalue <code>A b_mu - A(A-1)/2 d_mu</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_symbol (softpaws.transport.eigenvalue.phi_symbol)" href="#softpaws.transport.eigenvalue.phi_symbol">phi_symbol</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mellin symbol <code>Phi(s)</code> of the two-moment loss family, for any <code>s</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_symbol_n_moment (softpaws.transport.eigenvalue.phi_symbol_n_moment)" href="#softpaws.transport.eigenvalue.phi_symbol_n_moment">phi_symbol_n_moment</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mellin symbol <code>Phi(s)</code> of the <code>N</code>-moment loss family, for any <code>s</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="phi_symbol_three_moment (softpaws.transport.eigenvalue.phi_symbol_three_moment)" href="#softpaws.transport.eigenvalue.phi_symbol_three_moment">phi_symbol_three_moment</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mellin symbol <code>Phi(s)</code> of the three-moment loss family, for any <code>s</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="spectral_index (softpaws.transport.eigenvalue.spectral_index)" href="#softpaws.transport.eigenvalue.spectral_index">spectral_index</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Source spectral index <code>A = gamma - lambda - 1</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="three_moment_loss_spectrum (softpaws.transport.eigenvalue.three_moment_loss_spectrum)" href="#softpaws.transport.eigenvalue.three_moment_loss_spectrum">three_moment_loss_spectrum</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Calibrate the loss spectrum <code>dGamma/dy = kappa y^(q-1) (1-y)^p</code> to three moments.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="two_moment_loss_spectrum (softpaws.transport.eigenvalue.two_moment_loss_spectrum)" href="#softpaws.transport.eigenvalue.two_moment_loss_spectrum">two_moment_loss_spectrum</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Calibrate the two-parameter loss spectrum <code>dGamma/dy = kappa (1-y)^p / y</code>.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.n_moment_coefficients" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">n_moment_coefficients</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">n_moment_coefficients(mu: ndarray, q: float, p: float, dps: int = 80) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Calibrate the <code>N</code>-moment loss family to the first <code>N</code> moments.</p>
+<p>Generalization of :func:<code>two_moment_loss_spectrum</code> and
+:func:<code>three_moment_loss_spectrum</code> to arbitrary order. The family is
+<code>dGamma/dy = y^(q-1) (1-y)^p sum_j a_j y^j</code>, whose moments are Beta
+functions, <code>&lt;y^n&gt; = sum_j a_j B(n + q + j, p + 1)</code>, so matching
+<code>mu_1 ... mu_N</code> is a dense <code>N x N</code> linear system in the <code>a_j</code> and the
+exponent stays in closed form (:func:<code>phi_symbol_n_moment</code>). The base
+exponents <code>(q, p)</code> are held fixed, normally at their three-moment
+calibration.</p>
+<p>The matrix is a Beta-function Hankel matrix, and reconstructing a density
+from its moments on <code>(0, 1)</code> is the classical ill-posed Hausdorff problem:
+the condition number grows about three decades per added moment, from
+<code>1e4</code> at <code>N = 4</code> to <code>1e13</code> at <code>N = 10</code>. The solve is therefore done
+in extended precision with <code>mpmath</code> and only the result is returned in
+double precision. Note what is and is not well posed here: the <em>exponent</em>
+converges geometrically in <code>N</code> while the reconstructed <em>shape</em> does not
+converge at all, because both the moments and <code>Phi</code> are blind to the soft
+region that carries most of the collisions. See
+<code>examples/37_moment_convergence.py</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>mu</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Moments <code>mu_1 ... mu_N</code> [km^-1], setting <code>N = len(mu)</code>. The first two
+are the drift and diffusion coefficients <code>b_mu</code> and <code>d_mu</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>q</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Soft exponent of the base weight, so <code>dGamma/dy ~ y^(q-1)</code> as
+<code>y -&gt; 0</code>. Negative for real loss spectra.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>p</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Hard exponent of the base weight, the <code>(1 - y)^p</code> softening.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dps</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>80</code>
+)
+              –
+              <div class="doc-md-description">
+                <p><code>mpmath</code> working precision [decimal digits]. The default of <code>80</code>
+covers <code>N &lt;= 10</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>a</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Polynomial coefficients <code>a_0 ... a_{N-1}</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ImportError">ImportError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>mpmath</code> is not installed. Double precision is not enough
+for this solve, so there is no fallback.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def n_moment_coefficients(
+    mu: np.ndarray,
+    q: float,
+    p: float,
+    dps: int = 80,
+) -&gt; np.ndarray:
+    """Calibrate the ``N``-moment loss family to the first ``N`` moments.
+
+    Generalization of :func:`two_moment_loss_spectrum` and
+    :func:`three_moment_loss_spectrum` to arbitrary order. The family is
+    ``dGamma/dy = y^(q-1) (1-y)^p sum_j a_j y^j``, whose moments are Beta
+    functions, ``&lt;y^n&gt; = sum_j a_j B(n + q + j, p + 1)``, so matching
+    ``mu_1 ... mu_N`` is a dense ``N x N`` linear system in the ``a_j`` and the
+    exponent stays in closed form (:func:`phi_symbol_n_moment`). The base
+    exponents ``(q, p)`` are held fixed, normally at their three-moment
+    calibration.
+
+    The matrix is a Beta-function Hankel matrix, and reconstructing a density
+    from its moments on ``(0, 1)`` is the classical ill-posed Hausdorff problem:
+    the condition number grows about three decades per added moment, from
+    ``1e4`` at ``N = 4`` to ``1e13`` at ``N = 10``. The solve is therefore done
+    in extended precision with ``mpmath`` and only the result is returned in
+    double precision. Note what is and is not well posed here: the *exponent*
+    converges geometrically in ``N`` while the reconstructed *shape* does not
+    converge at all, because both the moments and ``Phi`` are blind to the soft
+    region that carries most of the collisions. See
+    ``examples/37_moment_convergence.py``.
+
+    Parameters
+    ----------
+    mu : np.ndarray
+        Moments ``mu_1 ... mu_N`` [km^-1], setting ``N = len(mu)``. The first two
+        are the drift and diffusion coefficients ``b_mu`` and ``d_mu``.
+    q : float
+        Soft exponent of the base weight, so ``dGamma/dy ~ y^(q-1)`` as
+        ``y -&gt; 0``. Negative for real loss spectra.
+    p : float
+        Hard exponent of the base weight, the ``(1 - y)^p`` softening.
+    dps : int, optional
+        ``mpmath`` working precision [decimal digits]. The default of ``80``
+        covers ``N &lt;= 10``.
+
+    Returns
+    -------
+    a : np.ndarray
+        Polynomial coefficients ``a_0 ... a_{N-1}`` [km^-1].
+
+    Raises
+    ------
+    ImportError
+        Raised if ``mpmath`` is not installed. Double precision is not enough
+        for this solve, so there is no fallback.
+    """
+    try:
+        import mpmath as mp
+    except ImportError as exc:  # pragma: no cover - depends on the environment
+        raise ImportError(
+            "n_moment_coefficients needs mpmath: the moment matrix is too "
+            "ill-conditioned to solve in double precision."
+        ) from exc
+    n = len(mu)
+    with mp.workdps(dps):
+        q_mp, p_mp = mp.mpf(float(q)), mp.mpf(float(p))
+        matrix = mp.matrix(n, n)
+        rhs = mp.matrix(n, 1)
+        for i in range(n):
+            for j in range(n):
+                matrix[i, j] = mp.beta(mp.mpf(i + 1) + q_mp + j, p_mp + 1)
+            rhs[i] = mp.mpf(float(mu[i]))
+        solution = mp.lu_solve(matrix, rhs)
+    return np.array([float(v) for v in solution])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.n_moment_loss_spectrum" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">n_moment_loss_spectrum</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">n_moment_loss_spectrum(a: ndarray, q: float, p: float, y: ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Reconstructed <code>dGamma/dy</code> of the <code>N</code>-moment loss family.</p>
+<p>Evaluates <code>y^(q-1) (1-y)^p sum_j a_j y^j</code> for the coefficients returned by
+:func:<code>n_moment_coefficients</code>.</p>
+<p>We caution that this reproduces the moments of the loss spectrum and not its
+shape. Against a tabulated spectrum the reconstruction is off by orders of
+magnitude below <code>y ~ 1e-4</code> for every <code>N</code>, and adding moments moves the
+error around instead of reducing it. Use it to audit the calibration, and
+the tabulated spectrum or the log-augmented family of <code>examples/38</code> when
+the shape itself is the target.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>a</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Polynomial coefficients <code>a_0 ... a_{N-1}</code> [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>q</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Soft exponent of the base weight.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>p</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Hard exponent of the base weight.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>y</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Grid of fractional energy losses in <code>(0, 1)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>dgamma_dy</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Differential loss rate [km^-1] on <code>y</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def n_moment_loss_spectrum(
+    a: np.ndarray,
+    q: float,
+    p: float,
+    y: np.ndarray,
+) -&gt; np.ndarray:
+    """Reconstructed ``dGamma/dy`` of the ``N``-moment loss family.
+
+    Evaluates ``y^(q-1) (1-y)^p sum_j a_j y^j`` for the coefficients returned by
+    :func:`n_moment_coefficients`.
+
+    We caution that this reproduces the moments of the loss spectrum and not its
+    shape. Against a tabulated spectrum the reconstruction is off by orders of
+    magnitude below ``y ~ 1e-4`` for every ``N``, and adding moments moves the
+    error around instead of reducing it. Use it to audit the calibration, and
+    the tabulated spectrum or the log-augmented family of ``examples/38`` when
+    the shape itself is the target.
+
+    Parameters
+    ----------
+    a : np.ndarray
+        Polynomial coefficients ``a_0 ... a_{N-1}`` [km^-1].
+    q : float
+        Soft exponent of the base weight.
+    p : float
+        Hard exponent of the base weight.
+    y : np.ndarray
+        Grid of fractional energy losses in ``(0, 1)``.
+
+    Returns
+    -------
+    dgamma_dy : np.ndarray
+        Differential loss rate [km^-1] on ``y``.
+    """
+    polynomial = np.zeros_like(np.asarray(y, dtype=float))
+    for j, a_j in enumerate(a):
+        polynomial = polynomial + a_j * y**j
+    return y ** (q - 1.0) * (1.0 - y) ** p * polynomial</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_drift" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_drift</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_drift(spectral_index_value: float | ndarray, b_mu: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Leading (drift-only) eigenvalue <code>Phi ~ A b_mu</code>.</p>
+<p>First term of the binomial expansion of <code>Phi(A)</code> (Part 10.1); this is the
+approximation used by the drift-limit soft volume in
+:func:<code>softpaws.transport.soft_volume.soft_volume_drift</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>A b_mu</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_drift(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+) -&gt; np.ndarray:
+    """Leading (drift-only) eigenvalue ``Phi ~ A b_mu``.
+
+    First term of the binomial expansion of ``Phi(A)`` (Part 10.1); this is the
+    approximation used by the drift-limit soft volume in
+    :func:`softpaws.transport.soft_volume.soft_volume_drift`.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A``.
+    b_mu : float or np.ndarray
+        Drift coefficient [km^-1].
+
+    Returns
+    -------
+    phi : np.ndarray
+        ``A b_mu`` [km^-1].
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    return a * np.asarray(b_mu, dtype=float)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_eigenvalue" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_eigenvalue</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_eigenvalue(spectral_index_value: float | ndarray, b_mu: float | ndarray, d_mu: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Exact collision eigenvalue <code>Phi(A)</code> from the two calibrated moments.</p>
+<p>Using the closed form of the two-moment family (Part 10.4),</p>
+<p>.. math:: \Phi(A) = \kappa\,\bigl[\psi(p + A + 1) - \psi(p + 1)\bigr],</p>
+<p>with <code>psi</code> the digamma function. This reproduces <code>Phi(1) = b_mu</code> and
+<code>Phi(2) = 2 b_mu - d_mu</code> exactly and grows monotonically in <code>A</code> (unlike the
+Fokker-Planck truncation, which turns over).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code> (see :func:<code>spectral_index</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient [km^-1]. If non-positive, the drift limit
+<code>Phi = A b_mu</code> is returned.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Eigenvalue <code>Phi(A)</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Exact only at <code>A = 1, 2</code>; other <code>A</code> inherit whatever the two-moment family
+gets wrong about third and higher moments. For a definitive value pass
+tabulated differential cross sections to :func:<code>phi_eigenvalue_quadrature</code>.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_eigenvalue(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+) -&gt; np.ndarray:
+    r"""Exact collision eigenvalue ``Phi(A)`` from the two calibrated moments.
+
+    Using the closed form of the two-moment family (Part 10.4),
+
+    .. math:: \\Phi(A) = \\kappa\\,\\bigl[\\psi(p + A + 1) - \\psi(p + 1)\\bigr],
+
+    with ``psi`` the digamma function. This reproduces ``Phi(1) = b_mu`` and
+    ``Phi(2) = 2 b_mu - d_mu`` exactly and grows monotonically in ``A`` (unlike the
+    Fokker-Planck truncation, which turns over).
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A`` (see :func:`spectral_index`).
+    b_mu : float or np.ndarray
+        Drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Diffusion coefficient [km^-1]. If non-positive, the drift limit
+        ``Phi = A b_mu`` is returned.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Eigenvalue ``Phi(A)`` [km^-1].
+
+    Notes
+    -----
+    Exact only at ``A = 1, 2``; other ``A`` inherit whatever the two-moment family
+    gets wrong about third and higher moments. For a definitive value pass
+    tabulated differential cross sections to :func:`phi_eigenvalue_quadrature`.
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        kappa, p = two_moment_loss_spectrum(b, d)
+        phi = phi_symbol(a, kappa, p)
+    return np.where(d &gt; 0.0, phi, a * b)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_eigenvalue_at_energy" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_eigenvalue_at_energy</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_eigenvalue_at_energy(spectral_index_value: float | ndarray, energy_gev: float | ndarray, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Exact eigenvalue at a muon energy, from the tabulated coefficients.</p>
+<p>Convenience wrapper that reads <code>b_mu(E)</code>, <code>d_mu(E)</code> from
+:mod:<code>softpaws.transport.coefficients</code> and feeds them to
+:func:<code>phi_eigenvalue</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Eigenvalue <code>Phi(A)</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_eigenvalue_at_energy(
+    spectral_index_value: float | np.ndarray,
+    energy_gev: float | np.ndarray,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Exact eigenvalue at a muon energy, from the tabulated coefficients.
+
+    Convenience wrapper that reads ``b_mu(E)``, ``d_mu(E)`` from
+    :mod:`softpaws.transport.coefficients` and feeds them to
+    :func:`phi_eigenvalue`.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A``.
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Eigenvalue ``Phi(A)`` [km^-1].
+    """
+    b_mu = drift_coefficient(energy_gev, density_g_cm3, source)
+    d_mu = diffusion_coefficient(energy_gev, density_g_cm3, source)
+    return phi_eigenvalue(spectral_index_value, b_mu, d_mu)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_eigenvalue_derivative" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_eigenvalue_derivative</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_eigenvalue_derivative(spectral_index_value: float | ndarray, b_mu: float | ndarray, d_mu: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Derivative <code>d Phi / dA</code> of the exact eigenvalue, from the trigamma function.</p>
+<p>Differentiating the closed form of :func:<code>phi_eigenvalue</code>,</p>
+<p>.. math:: \frac{d\Phi}{dA}(A) = \kappa\,\psi_1(p + A + 1),</p>
+<p>with <code>psi_1</code> the trigamma function. This is the ingredient the Bernstein-function
+property of App. A of the method paper (<code>Phi' &gt; 0</code>, <code>Phi'' &lt; 0</code>) refers
+to, and what :func:<code>softpaws.transport.soft_volume.
+scale_breaking_saturation_factor</code> needs for its running-index correction,
+which an earlier draft of the paper carried as its App. F.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient [km^-1]. If non-positive, the drift limit
+<code>d Phi/dA = b_mu</code> is returned (the derivative of <code>Phi = A b_mu</code>).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi_prime</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>d Phi / dA</code> [km^-1], always positive (Bernstein-function property).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_eigenvalue_derivative(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+) -&gt; np.ndarray:
+    r"""Derivative ``d Phi / dA`` of the exact eigenvalue, from the trigamma function.
+
+    Differentiating the closed form of :func:`phi_eigenvalue`,
+
+    .. math:: \\frac{d\\Phi}{dA}(A) = \\kappa\\,\\psi_1(p + A + 1),
+
+    with ``psi_1`` the trigamma function. This is the ingredient the Bernstein-function
+    property of App. A of the method paper (``Phi' &gt; 0``, ``Phi'' &lt; 0``) refers
+    to, and what :func:`softpaws.transport.soft_volume.
+    scale_breaking_saturation_factor` needs for its running-index correction,
+    which an earlier draft of the paper carried as its App. F.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A``.
+    b_mu : float or np.ndarray
+        Drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Diffusion coefficient [km^-1]. If non-positive, the drift limit
+        ``d Phi/dA = b_mu`` is returned (the derivative of ``Phi = A b_mu``).
+
+    Returns
+    -------
+    phi_prime : np.ndarray
+        ``d Phi / dA`` [km^-1], always positive (Bernstein-function property).
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        kappa, p = two_moment_loss_spectrum(b, d)
+        deriv = kappa * polygamma(1, a + p + 1.0)
+    return np.where(d &gt; 0.0, deriv, b)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_eigenvalue_quadrature" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_eigenvalue_quadrature</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_eigenvalue_quadrature(spectral_index_value: float | ndarray, dgamma_dy: Callable[[ndarray], ndarray], n_points: int = 8192) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Exact eigenvalue by direct quadrature of <code>Phi(A)</code>.</p>
+<p>Evaluates <code>Phi(A) = int_0^1 dy (dGamma/dy) [1 - (1-y)^A]</code> for an arbitrary
+differential loss rate. This is the definitive path (Part 10.4): pass a
+tabulated or modelled <code>dGamma/dy</code> (e.g. from PROPOSAL) and no expansion in
+<code>y</code> or energy cutoff is needed. The integrand is finite as <code>y -&gt; 0</code> even
+for a <code>1/y</code> bremsstrahlung tail, since <code>1 - (1-y)^A -&gt; A y</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code> (scalar or array).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dgamma_dy</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Differential loss rate <code>dGamma/dy</code> [km^-1] as a function of the
+fractional energy loss <code>y</code> in <code>(0, 1)</code>; must accept and return arrays.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_points</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>8192</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of quadrature nodes on <code>(0, 1)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Eigenvalue <code>Phi(A)</code> [km^-1], broadcast to the shape of
+<code>spectral_index_value</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_eigenvalue_quadrature(
+    spectral_index_value: float | np.ndarray,
+    dgamma_dy: Callable[[np.ndarray], np.ndarray],
+    n_points: int = 8192,
+) -&gt; np.ndarray:
+    """Exact eigenvalue by direct quadrature of ``Phi(A)``.
+
+    Evaluates ``Phi(A) = int_0^1 dy (dGamma/dy) [1 - (1-y)^A]`` for an arbitrary
+    differential loss rate. This is the definitive path (Part 10.4): pass a
+    tabulated or modelled ``dGamma/dy`` (e.g. from PROPOSAL) and no expansion in
+    ``y`` or energy cutoff is needed. The integrand is finite as ``y -&gt; 0`` even
+    for a ``1/y`` bremsstrahlung tail, since ``1 - (1-y)^A -&gt; A y``.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A`` (scalar or array).
+    dgamma_dy : callable
+        Differential loss rate ``dGamma/dy`` [km^-1] as a function of the
+        fractional energy loss ``y`` in ``(0, 1)``; must accept and return arrays.
+    n_points : int, optional
+        Number of quadrature nodes on ``(0, 1)``.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Eigenvalue ``Phi(A)`` [km^-1], broadcast to the shape of
+        ``spectral_index_value``.
+    """
+    a = np.atleast_1d(np.asarray(spectral_index_value, dtype=float))
+    # Nodes on the open interval; the endpoints contribute nothing (the y -&gt; 0
+    # divergence of dGamma/dy is cancelled by the bracket, y -&gt; 1 gives (1-y)^A -&gt; 0).
+    y = np.linspace(0.0, 1.0, n_points + 2)[1:-1]
+    g = np.asarray(dgamma_dy(y), dtype=float)
+    bracket = 1.0 - (1.0 - y)[None, :] ** a[:, None]
+    phi = np.trapezoid(g[None, :] * bracket, y, axis=1)
+    return phi.reshape(np.shape(spectral_index_value))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_eigenvalue_three_moment" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_eigenvalue_three_moment</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_eigenvalue_three_moment(spectral_index_value: float | ndarray, b_mu: float | ndarray, d_mu: float | ndarray, t_mu: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Collision eigenvalue <code>Phi(A)</code> from three calibrated moments.</p>
+<p>Three-moment counterpart of :func:<code>phi_eigenvalue</code>. Exact at <code>A = 1, 2, 3</code>
+by construction -- the binomial expansion of <code>1 - (1-y)^A</code> terminates there,
+giving <code>Phi(1) = b_mu</code>, <code>Phi(2) = 2 b_mu - d_mu</code> and
+<code>Phi(3) = 3 b_mu - 3 d_mu + t_mu</code> -- and benchmarked against PROPOSAL it
+stays within 0.5% out to <code>A = 8</code>, where the two-moment form is 16% low
+(<code>examples/27_proposal_cross_section_and_loss.py</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code> (see :func:<code>spectral_index</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>First three <code>y</code>-moments of the loss spectrum [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>First three <code>y</code>-moments of the loss spectrum [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>t_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>First three <code>y</code>-moments of the loss spectrum [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Eigenvalue <code>Phi(A)</code> [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_eigenvalue_three_moment(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+    t_mu: float | np.ndarray,
+) -&gt; np.ndarray:
+    """Collision eigenvalue ``Phi(A)`` from three calibrated moments.
+
+    Three-moment counterpart of :func:`phi_eigenvalue`. Exact at ``A = 1, 2, 3``
+    by construction -- the binomial expansion of ``1 - (1-y)^A`` terminates there,
+    giving ``Phi(1) = b_mu``, ``Phi(2) = 2 b_mu - d_mu`` and
+    ``Phi(3) = 3 b_mu - 3 d_mu + t_mu`` -- and benchmarked against PROPOSAL it
+    stays within 0.5% out to ``A = 8``, where the two-moment form is 16% low
+    (``examples/27_proposal_cross_section_and_loss.py``).
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A`` (see :func:`spectral_index`).
+    b_mu, d_mu, t_mu : float or np.ndarray
+        First three ``y``-moments of the loss spectrum [km^-1].
+
+    Returns
+    -------
+    phi : np.ndarray
+        Eigenvalue ``Phi(A)`` [km^-1].
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    kappa, q, p = three_moment_loss_spectrum(b_mu, d_mu, t_mu)
+    return phi_symbol_three_moment(a, float(kappa), float(q), float(p))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_fokker_planck" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_fokker_planck</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_fokker_planck(spectral_index_value: float | ndarray, b_mu: float | ndarray, d_mu: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Second-order (Fokker-Planck) eigenvalue <code>A b_mu - A(A-1)/2 d_mu</code>.</p>
+<p>The truncation of <code>Phi(A)</code> used by Palmisano et al., kept here for
+head-to-head comparison with :func:<code>phi_eigenvalue</code>. It agrees with the exact
+value to well under a percent near <code>A = 1</code> (where the IceCube spectrum sits)
+and diverges from it for <code>A &gt;~ 3</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>spectral_index_value</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Source spectral index <code>A</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Truncated eigenvalue [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_fokker_planck(
+    spectral_index_value: float | np.ndarray,
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+) -&gt; np.ndarray:
+    """Second-order (Fokker-Planck) eigenvalue ``A b_mu - A(A-1)/2 d_mu``.
+
+    The truncation of ``Phi(A)`` used by Palmisano et al., kept here for
+    head-to-head comparison with :func:`phi_eigenvalue`. It agrees with the exact
+    value to well under a percent near ``A = 1`` (where the IceCube spectrum sits)
+    and diverges from it for ``A &gt;~ 3``.
+
+    Parameters
+    ----------
+    spectral_index_value : float or np.ndarray
+        Source spectral index ``A``.
+    b_mu : float or np.ndarray
+        Drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Diffusion coefficient [km^-1].
+
+    Returns
+    -------
+    phi : np.ndarray
+        Truncated eigenvalue [km^-1].
+    """
+    a = np.asarray(spectral_index_value, dtype=float)
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    return a * b - 0.5 * a * (a - 1.0) * d</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_symbol" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_symbol</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_symbol(s: complex | ndarray, kappa: float | ndarray, p: float | ndarray) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mellin symbol <code>Phi(s)</code> of the two-moment loss family, for any <code>s</code>.</p>
+<p>Closed form of the family <code>dGamma/dy = kappa (1-y)^p / y</code> (Part 10.4),</p>
+<p>.. math:: \Phi(s) = \kappa\,\bigl[\psi(s + p + 1) - \psi(p + 1)\bigr],</p>
+<p>with <code>psi</code> the digamma function. Unlike :func:<code>phi_eigenvalue</code>, this keeps
+the argument's dtype, so it accepts <strong>complex</strong> <code>s</code>. That is what the
+characteristic function of the log-loss subordinator needs
+(:func:<code>softpaws.transport.loss_distribution.loss_density</code>, evaluated at
+<code>s = -i k</code>); for the real spectral index <code>A</code> use :func:<code>phi_eigenvalue</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>s</code></b>
+                  (<code><span title="complex">complex</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mellin variable. Real or complex; the dtype is preserved.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>kappa</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Loss-spectrum normalization <code>kappa</code> [km^-1] (see
+:func:<code>two_moment_loss_spectrum</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>p</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Shape exponent <code>p</code> of the <code>(1 - y)^p</code> softening.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Symbol <code>Phi(s)</code> [km^-1], matching the (broadcast) shape and dtype of
+<code>s</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_symbol(
+    s: complex | np.ndarray,
+    kappa: float | np.ndarray,
+    p: float | np.ndarray,
+) -&gt; np.ndarray:
+    r"""Mellin symbol ``Phi(s)`` of the two-moment loss family, for any ``s``.
+
+    Closed form of the family ``dGamma/dy = kappa (1-y)^p / y`` (Part 10.4),
+
+    .. math:: \\Phi(s) = \\kappa\\,\\bigl[\\psi(s + p + 1) - \\psi(p + 1)\\bigr],
+
+    with ``psi`` the digamma function. Unlike :func:`phi_eigenvalue`, this keeps
+    the argument's dtype, so it accepts **complex** ``s``. That is what the
+    characteristic function of the log-loss subordinator needs
+    (:func:`softpaws.transport.loss_distribution.loss_density`, evaluated at
+    ``s = -i k``); for the real spectral index ``A`` use :func:`phi_eigenvalue`.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable. Real or complex; the dtype is preserved.
+    kappa : float or np.ndarray
+        Loss-spectrum normalization ``kappa`` [km^-1] (see
+        :func:`two_moment_loss_spectrum`).
+    p : float or np.ndarray
+        Shape exponent ``p`` of the ``(1 - y)^p`` softening.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Symbol ``Phi(s)`` [km^-1], matching the (broadcast) shape and dtype of
+        ``s``.
+    """
+    s = np.asarray(s)
+    kappa = np.asarray(kappa, dtype=float)
+    p = np.asarray(p, dtype=float)
+    return kappa * (digamma(s + p + 1.0) - digamma(p + 1.0))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_symbol_n_moment" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_symbol_n_moment</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_symbol_n_moment(s: complex | ndarray, a: ndarray, q: float, p: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mellin symbol <code>Phi(s)</code> of the <code>N</code>-moment loss family, for any <code>s</code>.</p>
+<p>Term by term, <code>int_0^1 dy y^(q-1+j) (1-y)^p [1 - (1-y)^s]</code> is a difference
+of Beta functions, so the exponent stays closed form at every order,</p>
+<p>.. math:: \Phi(s) = \sum_j a_j
+    \bigl[\,B(q+j,\,p+1) - B(q+j,\,p+1+s)\,\bigr].</p>
+<p>The <code>j = 0</code> term diverges as <code>q -&gt; 0</code> while its difference stays finite,
+so the digamma limit of :func:<code>phi_symbol</code> is substituted there, as in
+:func:<code>phi_symbol_three_moment</code>. Like the two- and three-moment symbols this
+accepts <strong>complex</strong> <code>s</code>, which the log-loss inversion needs.</p>
+<p>Calibrated to PROPOSAL at <code>1</code> PeV in water, the error at <code>A = 8</code> against
+a direct quadrature of the tabulated spectrum falls from <code>15.7%</code> at
+<code>N = 2</code> to <code>0.52%</code> at <code>N = 3</code> and <code>0.032%</code> at <code>N = 4</code>, then gains
+roughly a factor of five per moment.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>s</code></b>
+                  (<code><span title="complex">complex</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mellin variable. Real or complex; the dtype is preserved.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>a</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Polynomial coefficients from :func:<code>n_moment_coefficients</code> [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>q</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Soft exponent of the base weight.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>p</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Hard exponent of the base weight.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Symbol <code>Phi(s)</code> [km^-1], matching the shape and dtype of <code>s</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_symbol_n_moment(
+    s: complex | np.ndarray,
+    a: np.ndarray,
+    q: float,
+    p: float,
+) -&gt; np.ndarray:
+    r"""Mellin symbol ``Phi(s)`` of the ``N``-moment loss family, for any ``s``.
+
+    Term by term, ``int_0^1 dy y^(q-1+j) (1-y)^p [1 - (1-y)^s]`` is a difference
+    of Beta functions, so the exponent stays closed form at every order,
+
+    .. math:: \\Phi(s) = \\sum_j a_j
+        \\bigl[\\,B(q+j,\\,p+1) - B(q+j,\\,p+1+s)\\,\\bigr].
+
+    The ``j = 0`` term diverges as ``q -&gt; 0`` while its difference stays finite,
+    so the digamma limit of :func:`phi_symbol` is substituted there, as in
+    :func:`phi_symbol_three_moment`. Like the two- and three-moment symbols this
+    accepts **complex** ``s``, which the log-loss inversion needs.
+
+    Calibrated to PROPOSAL at ``1`` PeV in water, the error at ``A = 8`` against
+    a direct quadrature of the tabulated spectrum falls from ``15.7%`` at
+    ``N = 2`` to ``0.52%`` at ``N = 3`` and ``0.032%`` at ``N = 4``, then gains
+    roughly a factor of five per moment.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable. Real or complex; the dtype is preserved.
+    a : np.ndarray
+        Polynomial coefficients from :func:`n_moment_coefficients` [km^-1].
+    q : float
+        Soft exponent of the base weight.
+    p : float
+        Hard exponent of the base weight.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Symbol ``Phi(s)`` [km^-1], matching the shape and dtype of ``s``.
+    """
+    s_array = np.asarray(s)
+    total = np.zeros(s_array.shape, dtype=complex)
+    for j, a_j in enumerate(a):
+        if abs(q + j) &lt; _Q_DIGAMMA_LIMIT:
+            term = digamma(p + 1.0 + s_array) - digamma(p + 1.0)
+        else:
+            term = _beta_complex(q + j, p + 1.0) - _beta_complex(q + j, p + 1.0 + s_array)
+        total = total + a_j * term
+    return total if np.iscomplexobj(s_array) else total.real</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.phi_symbol_three_moment" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">phi_symbol_three_moment</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">phi_symbol_three_moment(s: complex | ndarray, kappa: float, q: float, p: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mellin symbol <code>Phi(s)</code> of the three-moment loss family, for any <code>s</code>.</p>
+<p>Closed form of <code>dGamma/dy = kappa y^(q-1) (1-y)^p</code>,</p>
+<p>.. math:: \Phi(s) = \kappa\,\Gamma(q)\,\left[
+    \frac{\Gamma(p+1)}{\Gamma(q+p+1)}
+    - \frac{\Gamma(p+s+1)}{\Gamma(q+p+s+1)}\right],</p>
+<p>which reduces to :func:<code>phi_symbol</code> as <code>q -&gt; 0</code>. Both Beta functions
+diverge at <code>q = 0</code> while their difference stays finite, so the <code>q -&gt; 0</code>
+digamma limit is substituted below :data:<code>_Q_DIGAMMA_LIMIT</code>.</p>
+<p>Like :func:<code>phi_symbol</code> this accepts <strong>complex</strong> <code>s</code>, which is what the
+characteristic function of
+:func:<code>softpaws.transport.loss_distribution.loss_density_three_moment</code> needs.
+The Gamma ratios are formed through <code>loggamma</code>: <code>Gamma(p + s + 1)</code>
+overflows for large <code>|Im s|</code>, whereas the ratio grows only like <code>s^-q</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>s</code></b>
+                  (<code><span title="complex">complex</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Mellin variable. Real or complex; the dtype is preserved.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>kappa</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Loss-spectrum normalization [km^-1] (see
+:func:<code>three_moment_loss_spectrum</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>q</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Soft exponent, <code>&gt; -1</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>p</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Hard-end exponent, <code>&gt; -1</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>phi</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Symbol <code>Phi(s)</code> [km^-1], matching the shape and dtype of <code>s</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def phi_symbol_three_moment(
+    s: complex | np.ndarray,
+    kappa: float,
+    q: float,
+    p: float,
+) -&gt; np.ndarray:
+    r"""Mellin symbol ``Phi(s)`` of the three-moment loss family, for any ``s``.
+
+    Closed form of ``dGamma/dy = kappa y^(q-1) (1-y)^p``,
+
+    .. math:: \\Phi(s) = \\kappa\\,\\Gamma(q)\\,\\left[
+        \\frac{\\Gamma(p+1)}{\\Gamma(q+p+1)}
+        - \\frac{\\Gamma(p+s+1)}{\\Gamma(q+p+s+1)}\\right],
+
+    which reduces to :func:`phi_symbol` as ``q -&gt; 0``. Both Beta functions
+    diverge at ``q = 0`` while their difference stays finite, so the ``q -&gt; 0``
+    digamma limit is substituted below :data:`_Q_DIGAMMA_LIMIT`.
+
+    Like :func:`phi_symbol` this accepts **complex** ``s``, which is what the
+    characteristic function of
+    :func:`softpaws.transport.loss_distribution.loss_density_three_moment` needs.
+    The Gamma ratios are formed through ``loggamma``: ``Gamma(p + s + 1)``
+    overflows for large ``|Im s|``, whereas the ratio grows only like ``s^-q``.
+
+    Parameters
+    ----------
+    s : complex or np.ndarray
+        Mellin variable. Real or complex; the dtype is preserved.
+    kappa : float
+        Loss-spectrum normalization [km^-1] (see
+        :func:`three_moment_loss_spectrum`).
+    q : float
+        Soft exponent, ``&gt; -1``.
+    p : float
+        Hard-end exponent, ``&gt; -1``.
+
+    Returns
+    -------
+    phi : np.ndarray
+        Symbol ``Phi(s)`` [km^-1], matching the shape and dtype of ``s``.
+    """
+    s = np.asarray(s)
+    if abs(float(q)) &lt; _Q_DIGAMMA_LIMIT:
+        return phi_symbol(s, kappa, p)
+    # exp(loggamma(a) - loggamma(b)) rather than gamma(a) / gamma(b): the latter
+    # is inf / inf for the large imaginary arguments of the inversion. The
+    # arguments are cast to complex because q + p + 1 may be negative, where the
+    # real branch of loggamma is undefined but the complex one carries the sign.
+    complex_s = s.astype(complex)
+    reference = np.exp(loggamma(complex(p + 1.0)) - loggamma(complex(q + p + 1.0)))
+    shifted = np.exp(
+        loggamma(complex_s + (p + 1.0)) - loggamma(complex_s + (q + p + 1.0))
+    )
+    phi = kappa * gamma(q) * (reference - shifted)
+    return phi if np.iscomplexobj(s) else np.real(phi)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.spectral_index" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">spectral_index</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">spectral_index(gamma: float, lam: float = DEFAULT_LAMBDA) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Source spectral index <code>A = gamma - lambda - 1</code>.</p>
+<p>Unlike :func:<code>softpaws.transport.soft_volume.spectral_penalty</code>, this does not
+require <code>A &gt; 0</code>: the exact treatment stays finite for <code>A &lt;= 0</code> through the
+saturation factor, so the sign is left for the caller to interpret (<code>A &lt; 0</code>
+signals the cross-section pole, handled by
+:func:<code>softpaws.transport.soft_volume.saturation_factor</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope, <code>sigma_CC ~ E^lambda</code>. Defaults to
+:data:<code>softpaws.transport.source.DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>A</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Spectral index <code>gamma - lambda - 1</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def spectral_index(gamma: float, lam: float = DEFAULT_LAMBDA) -&gt; float:
+    """Source spectral index ``A = gamma - lambda - 1``.
+
+    Unlike :func:`softpaws.transport.soft_volume.spectral_penalty`, this does not
+    require ``A &gt; 0``: the exact treatment stays finite for ``A &lt;= 0`` through the
+    saturation factor, so the sign is left for the caller to interpret (``A &lt; 0``
+    signals the cross-section pole, handled by
+    :func:`softpaws.transport.soft_volume.saturation_factor`).
+
+    Parameters
+    ----------
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope, ``sigma_CC ~ E^lambda``. Defaults to
+        :data:`softpaws.transport.source.DEFAULT_LAMBDA`.
+
+    Returns
+    -------
+    A : float
+        Spectral index ``gamma - lambda - 1``.
+    """
+    return gamma - lam - 1.0</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.three_moment_loss_spectrum" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">three_moment_loss_spectrum</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">three_moment_loss_spectrum(b_mu: float | ndarray, d_mu: float | ndarray, t_mu: float | ndarray) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Calibrate the loss spectrum <code>dGamma/dy = kappa y^(q-1) (1-y)^p</code> to three moments.</p>
+<p>One-parameter generalization of :func:<code>two_moment_loss_spectrum</code>, which is the
+<code>q = 0</code> member of this family. Freeing the soft exponent <code>q</code> lets the third
+<code>y</code>-moment be matched as well, and the extra freedom lands almost entirely on
+the hard end: calibrated to PROPOSAL, <code>p</code> moves from about <code>+2.1</code> to about
+<code>-0.17</code>, so <code>dGamma/dy</code> no longer vanishes as <code>y -&gt; 1</code> and the rare
+catastrophic losses that dominate the fluctuations survive. See
+<code>examples/27_proposal_cross_section_and_loss.py</code>.</p>
+<p>The moments of the family are Beta functions, <code>&lt;y^n&gt; = kappa B(n + q, p + 1)</code>,
+so the two ratios</p>
+<p>.. math:: r_1 = \frac{d_\mu}{b_\mu} = \frac{1 + q}{2 + q + p}, \qquad
+    r_2 = \frac{t_\mu}{d_\mu} = \frac{2 + q}{3 + q + p}</p>
+<p>invert in closed form.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>First moment <code>&lt;y&gt;</code>, the drift coefficient [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Second moment <code>&lt;y^2&gt;</code>, the diffusion coefficient [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>t_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Third moment <code>&lt;y^3&gt;</code> [km^-1] (see
+:func:<code>softpaws.transport.coefficients.third_moment_coefficient</code>).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>kappa</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Overall normalization [km^-1].</p>
+              </div>
+            </li>
+            <li>
+<b><code>q</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Soft exponent, so that <code>dGamma/dy ~ y^(q-1)</code> as <code>y -&gt; 0</code>. Negative for
+real loss spectra, whose soft pile-up is steeper than <code>1/y</code>.</p>
+              </div>
+            </li>
+            <li>
+<b><code>p</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Shape exponent of the <code>(1 - y)^p</code> hard-end softening.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the moments are not those of a positive spectrum on <code>(0, 1)</code>,
+i.e. if the solution leaves <code>q &gt; -1</code>, <code>p &gt; -1</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Moment log-convexity guarantees <code>r_2 &gt;= r_1</code> for any positive spectrum, so
+the denominator <code>r_2 - r_1</code> is non-negative; it vanishes only in the
+degenerate single-jump-size limit.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def three_moment_loss_spectrum(
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+    t_mu: float | np.ndarray,
+) -&gt; tuple[np.ndarray, np.ndarray, np.ndarray]:
+    r"""Calibrate the loss spectrum ``dGamma/dy = kappa y^(q-1) (1-y)^p`` to three moments.
+
+    One-parameter generalization of :func:`two_moment_loss_spectrum`, which is the
+    ``q = 0`` member of this family. Freeing the soft exponent ``q`` lets the third
+    ``y``-moment be matched as well, and the extra freedom lands almost entirely on
+    the hard end: calibrated to PROPOSAL, ``p`` moves from about ``+2.1`` to about
+    ``-0.17``, so ``dGamma/dy`` no longer vanishes as ``y -&gt; 1`` and the rare
+    catastrophic losses that dominate the fluctuations survive. See
+    ``examples/27_proposal_cross_section_and_loss.py``.
+
+    The moments of the family are Beta functions, ``&lt;y^n&gt; = kappa B(n + q, p + 1)``,
+    so the two ratios
+
+    .. math:: r_1 = \\frac{d_\\mu}{b_\\mu} = \\frac{1 + q}{2 + q + p}, \\qquad
+        r_2 = \\frac{t_\\mu}{d_\\mu} = \\frac{2 + q}{3 + q + p}
+
+    invert in closed form.
+
+    Parameters
+    ----------
+    b_mu : float or np.ndarray
+        First moment ``&lt;y&gt;``, the drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Second moment ``&lt;y^2&gt;``, the diffusion coefficient [km^-1].
+    t_mu : float or np.ndarray
+        Third moment ``&lt;y^3&gt;`` [km^-1] (see
+        :func:`softpaws.transport.coefficients.third_moment_coefficient`).
+
+    Returns
+    -------
+    kappa : np.ndarray
+        Overall normalization [km^-1].
+    q : np.ndarray
+        Soft exponent, so that ``dGamma/dy ~ y^(q-1)`` as ``y -&gt; 0``. Negative for
+        real loss spectra, whose soft pile-up is steeper than ``1/y``.
+    p : np.ndarray
+        Shape exponent of the ``(1 - y)^p`` hard-end softening.
+
+    Raises
+    ------
+    ValueError
+        Raised if the moments are not those of a positive spectrum on ``(0, 1)``,
+        i.e. if the solution leaves ``q &gt; -1``, ``p &gt; -1``.
+
+    Notes
+    -----
+    Moment log-convexity guarantees ``r_2 &gt;= r_1`` for any positive spectrum, so
+    the denominator ``r_2 - r_1`` is non-negative; it vanishes only in the
+    degenerate single-jump-size limit.
+    """
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    t = np.asarray(t_mu, dtype=float)
+    r_1 = d / b
+    r_2 = t / d
+    q = (2.0 * r_1 - r_2 - r_1 * r_2) / (r_2 - r_1)
+    p = (1.0 + q) / r_1 - 2.0 - q
+    if np.any(q &lt;= -1.0) or np.any(p &lt;= -1.0):
+        raise ValueError(
+            "three-moment calibration left the convergent domain (need q &gt; -1 and "
+            f"p &gt; -1, got q = {q}, p = {p}); check that t_mu is the third moment "
+            "of the same spectrum as b_mu and d_mu."
+        )
+    kappa = b / _beta(1.0 + q, p + 1.0)
+    return kappa, q, p</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.eigenvalue.two_moment_loss_spectrum" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">two_moment_loss_spectrum</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">two_moment_loss_spectrum(b_mu: float | ndarray, d_mu: float | ndarray) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Calibrate the two-parameter loss spectrum <code>dGamma/dy = kappa (1-y)^p / y</code>.</p>
+<p>The family is fixed by matching its first two <code>y</code>-moments to the drift and
+diffusion coefficients (App. A.1 of the method paper):</p>
+<p>.. math:: b_\mu = \frac{\kappa}{p+1}, \qquad
+    d_\mu = \frac{\kappa}{(p+1)(p+2)}
+    \;\Longrightarrow\; \frac{d_\mu}{b_\mu} = \frac{1}{p+2}.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>b_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Drift coefficient [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_mu</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffusion coefficient [km^-1]. Must satisfy <code>0 &lt; d_mu &lt; b_mu</code> (i.e.
+<code>p &gt; -1</code>) for the shape parameter to be well defined.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>kappa</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Overall normalization [km^-1].</p>
+              </div>
+            </li>
+            <li>
+<b><code>p</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Shape exponent of the <code>(1 - y)^p</code> softening.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/eigenvalue.py</code></summary>
+              <pre class="highlight"><code class="language-python">def two_moment_loss_spectrum(
+    b_mu: float | np.ndarray,
+    d_mu: float | np.ndarray,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    r"""Calibrate the two-parameter loss spectrum ``dGamma/dy = kappa (1-y)^p / y``.
+
+    The family is fixed by matching its first two ``y``-moments to the drift and
+    diffusion coefficients (App. A.1 of the method paper):
+
+    .. math:: b_\\mu = \\frac{\\kappa}{p+1}, \\qquad
+        d_\\mu = \\frac{\\kappa}{(p+1)(p+2)}
+        \\;\\Longrightarrow\\; \\frac{d_\\mu}{b_\\mu} = \\frac{1}{p+2}.
+
+    Parameters
+    ----------
+    b_mu : float or np.ndarray
+        Drift coefficient [km^-1].
+    d_mu : float or np.ndarray
+        Diffusion coefficient [km^-1]. Must satisfy ``0 &lt; d_mu &lt; b_mu`` (i.e.
+        ``p &gt; -1``) for the shape parameter to be well defined.
+
+    Returns
+    -------
+    kappa : np.ndarray
+        Overall normalization [km^-1].
+    p : np.ndarray
+        Shape exponent of the ``(1 - y)^p`` softening.
+    """
+    b = np.asarray(b_mu, dtype=float)
+    d = np.asarray(d_mu, dtype=float)
+    p = b / d - 2.0
+    kappa = b * (p + 1.0)
+    return kappa, p</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../earth/" class="btn btn-neutral float-left" title="earth"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../loss_distribution/" class="btn btn-neutral float-right" title="loss_distribution">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../earth/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../loss_distribution/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

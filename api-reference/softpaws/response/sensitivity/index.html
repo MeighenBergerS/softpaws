@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/response/sensitivity/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>sensitivity - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "sensitivity";
+        var mkdocs_page_input_path = "api-reference/softpaws/response/sensitivity.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/response/sensitivity/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >response</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../published/">published</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">sensitivity</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.atmospheric_background_counts">atmospheric_background_counts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.atmospheric_background_density">atmospheric_background_density</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.feldman_cousins_upper_limit">feldman_cousins_upper_limit</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.line_sensitivity">line_sensitivity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.optimized_window_sensitivity">optimized_window_sensitivity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.point_source_bin_sr">point_source_bin_sr</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.power_law_sensitivity">power_law_sensitivity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.psf_bin_radius_deg">psf_bin_radius_deg</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.sensitivity_upper_limit">sensitivity_upper_limit</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.response.sensitivity.single_event_sensitivity">single_event_sensitivity</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">response</li>
+      <li class="breadcrumb-item active">sensitivity</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.response.sensitivity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.response.sensitivity</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>What a search would exclude, for three shapes of injected signal.</p>
+<p>An effective area answers one question: how many events a flux delivers. Turn
+that around and it answers the one an observer asks instead, which is how
+large a signal has to be before a telescope sees it. The count is linear in
+the flux normalization, so every sensitivity here is one quadrature and one
+division, and the three functions differ only in the shape injected.</p>
+<p>A single event is the weakest statement a telescope can make, and the flux it
+corresponds to is differential: one event per decade of neutrino energy,
+which is :func:<code>single_event_sensitivity</code>. A line is a flux that arrives at
+one energy, the shape a decaying or annihilating particle of fixed mass
+gives, and :func:<code>line_sensitivity</code> is its counterpart. A power law spreads
+the same normalization over the whole band, and
+:func:<code>power_law_sensitivity</code> integrates the response against it.</p>
+<p>Each takes the effective area of a point source or of the diffuse sky. Pass
+<code>solid_angle_sr</code> and the result is per steradian, which is the only
+difference between the two cases: a point source is a direction and a diffuse
+flux is that direction times the sky it covers.</p>
+<p>Each also takes <code>n_events</code>, the number of events a search can exclude, and
+that number is where a background enters. Left alone it is
+:data:<code>N_EVENTS_LIMIT</code>, the Feldman-Cousins limit on zero observed events over
+zero expected background, which is the right statement at the highest energies
+where a track selection expects no atmospheric event at all. Below a few
+hundred TeV it is optimistic, because the background is what the search has to
+climb out of. :func:<code>atmospheric_background_counts</code> folds an MCEq flux through
+the same response to say how many events that is, and
+:func:<code>sensitivity_upper_limit</code> turns the answer back into an <code>n_events</code> to
+pass in. At zero background that route returns :data:<code>N_EVENTS_LIMIT</code> again, so
+the background-free ceiling is the zero-background limit of the same formula
+rather than a separate one.</p>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The background here is the atmospheric neutrino floor alone. Atmospheric muons
+are the larger background wherever they reach the detector at all, which is the
+downgoing sky, so a limit computed here for a downgoing source is still a
+ceiling and not a forecast.</p>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="atmospheric_background_counts (softpaws.response.sensitivity.atmospheric_background_counts)" href="#softpaws.response.sensitivity.atmospheric_background_counts">atmospheric_background_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Atmospheric events in a point-source bin over a window.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="atmospheric_background_density (softpaws.response.sensitivity.atmospheric_background_density)" href="#softpaws.response.sensitivity.atmospheric_background_density">atmospheric_background_density</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Atmospheric events per decade in a point-source bin.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="feldman_cousins_upper_limit (softpaws.response.sensitivity.feldman_cousins_upper_limit)" href="#softpaws.response.sensitivity.feldman_cousins_upper_limit">feldman_cousins_upper_limit</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Upper limit on a Poisson signal over a known background.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="line_sensitivity (softpaws.response.sensitivity.line_sensitivity)" href="#softpaws.response.sensitivity.line_sensitivity">line_sensitivity</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Normalization of a monoenergetic flux a search would exclude.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="optimized_window_sensitivity (softpaws.response.sensitivity.optimized_window_sensitivity)" href="#softpaws.response.sensitivity.optimized_window_sensitivity">optimized_window_sensitivity</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Best power-law limit over the energy the search is allowed to start at.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="point_source_bin_sr (softpaws.response.sensitivity.point_source_bin_sr)" href="#softpaws.response.sensitivity.point_source_bin_sr">point_source_bin_sr</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Solid angle of the bin a point-source background is counted in [sr].</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="power_law_sensitivity (softpaws.response.sensitivity.power_law_sensitivity)" href="#softpaws.response.sensitivity.power_law_sensitivity">power_law_sensitivity</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Normalization of a power law a search would exclude.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="psf_bin_radius_deg (softpaws.response.sensitivity.psf_bin_radius_deg)" href="#softpaws.response.sensitivity.psf_bin_radius_deg">psf_bin_radius_deg</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Bin radius against energy and arrival direction, from a released point spread.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="sensitivity_upper_limit (softpaws.response.sensitivity.sensitivity_upper_limit)" href="#softpaws.response.sensitivity.sensitivity_upper_limit">sensitivity_upper_limit</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Events a search excludes on average, before it looks.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="single_event_sensitivity (softpaws.response.sensitivity.single_event_sensitivity)" href="#softpaws.response.sensitivity.single_event_sensitivity">single_event_sensitivity</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Flux delivering one event per decade of neutrino energy.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.atmospheric_background_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">atmospheric_background_counts</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">atmospheric_background_counts(flux: AtmosphericFlux, aeff_cm2: ndarray, cos_theta: ndarray, weights: ndarray, livetime_s: float, log10_e: ndarray, bin_radius_deg: float | ndarray = DEFAULT_BIN_RADIUS_DEG, emin_gev: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Atmospheric events in a point-source bin over a window.</p>
+<p>:func:<code>atmospheric_background_density</code> integrated over <code>log10 E</code>, which
+is the number that pairs with :func:<code>power_law_sensitivity</code>: one
+background for the whole band, against one normalization for the whole
+band. Use the same <code>emin_gev</code> in both.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>flux</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="AtmosphericFlux (softpaws.fluxes.atmospheric.AtmosphericFlux)" href="../../fluxes/atmospheric/#softpaws.fluxes.atmospheric.AtmosphericFlux">AtmosphericFlux</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Interpolated MCEq table.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, <span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area per arrival direction [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith of each direction.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>weights</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>) or (<span title="n_dec">n_dec</span>, <span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Time fraction each direction carries.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bin_radius_deg</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_BIN_RADIUS_DEG">DEFAULT_BIN_RADIUS_DEG</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Angular radius of the bin [deg].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>emin_gev</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Bottom of the analysis window [GeV]. <code>None</code>, the default, uses the
+whole grid.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected atmospheric events, a scalar or one per declination.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def atmospheric_background_counts(
+    flux: AtmosphericFlux,
+    aeff_cm2: np.ndarray,
+    cos_theta: np.ndarray,
+    weights: np.ndarray,
+    livetime_s: float,
+    log10_e: np.ndarray,
+    bin_radius_deg: float | np.ndarray = DEFAULT_BIN_RADIUS_DEG,
+    emin_gev: float | None = None,
+) -&gt; np.ndarray:
+    """Atmospheric events in a point-source bin over a window.
+
+    :func:`atmospheric_background_density` integrated over ``log10 E``, which
+    is the number that pairs with :func:`power_law_sensitivity`: one
+    background for the whole band, against one normalization for the whole
+    band. Use the same ``emin_gev`` in both.
+
+    Parameters
+    ----------
+    flux : AtmosphericFlux
+        Interpolated MCEq table.
+    aeff_cm2 : np.ndarray, shape (log10_e.size, n_dir)
+        Effective area per arrival direction [cm^2].
+    cos_theta : np.ndarray, shape (n_dir,)
+        Cosine of the arrival zenith of each direction.
+    weights : np.ndarray, shape (n_dir,) or (n_dec, n_dir)
+        Time fraction each direction carries.
+    livetime_s : float
+        Exposure [s].
+    log10_e : np.ndarray
+        Neutrino energies [log10 GeV].
+    bin_radius_deg : float or np.ndarray, optional
+        Angular radius of the bin [deg].
+    emin_gev : float or None, optional
+        Bottom of the analysis window [GeV]. ``None``, the default, uses the
+        whole grid.
+
+    Returns
+    -------
+    counts : np.ndarray
+        Expected atmospheric events, a scalar or one per declination.
+    """
+    density = atmospheric_background_density(
+        flux, aeff_cm2, cos_theta, weights, livetime_s, log10_e, bin_radius_deg
+    )
+    grid = np.asarray(log10_e, dtype=float)
+    window = np.ones_like(grid, dtype=bool) if emin_gev is None else 10.0**grid &gt;= emin_gev
+    return np.trapezoid(density[window], grid[window], axis=0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.atmospheric_background_density" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">atmospheric_background_density</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">atmospheric_background_density(flux: AtmosphericFlux, aeff_cm2: ndarray, cos_theta: ndarray, weights: ndarray, livetime_s: float, log10_e: ndarray, bin_radius_deg: float | ndarray = DEFAULT_BIN_RADIUS_DEG) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Atmospheric events per decade in a point-source bin.</p>
+<p>The background rides the same directions the signal does. A source at a
+fixed declination sweeps a fixed set of zeniths as the Earth turns, and
+both the atmospheric flux and the effective area vary along that sweep, so
+the two are multiplied direction by direction before the time average
+rather than after it. Doing it the other way rounds a flux that changes by
+an order of magnitude between the horizon and the vertical.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>flux</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="AtmosphericFlux (softpaws.fluxes.atmospheric.AtmosphericFlux)" href="../../fluxes/atmospheric/#softpaws.fluxes.atmospheric.AtmosphericFlux">AtmosphericFlux</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Interpolated MCEq table, summed over <code>nu_mu</code> and <code>nu_mu_bar</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, <span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area per arrival direction [cm^2].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith of each direction; <code>+1</code> is overhead.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>weights</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>) or (<span title="n_dec">n_dec</span>, <span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Time fraction each direction carries. One row per source declination
+gives one column of the result per declination.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bin_radius_deg</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_BIN_RADIUS_DEG">DEFAULT_BIN_RADIUS_DEG</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Angular radius of the bin [deg]: a scalar, one value per energy, or a
+grid shaped like <code>aeff_cm2</code>. A real bin is not a scalar, because a
+track is reconstructed better the more light it leaves, so the sky a
+search looks through closes as the energy rises and opens again wherever
+the Earth has taken the high-energy end away. See
+:meth:<code>~softpaws.response.irfs.SmearingMatrix.psf_containment_deg</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>density</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>) or (<span title="log10_e.size">size</span>, <span title="n_dec">n_dec</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Atmospheric events per decade of neutrino energy at each node.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The table is <code>nu_mu + nu_mu_bar</code> while the default response is built on
+the <code>nu</code> cross section, which is about half the <code>nu_bar</code> one at a TeV
+and equal to it above a PeV. Pass a response averaged over the two to
+remove the resulting overestimate at the bottom of the band.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def atmospheric_background_density(
+    flux: AtmosphericFlux,
+    aeff_cm2: np.ndarray,
+    cos_theta: np.ndarray,
+    weights: np.ndarray,
+    livetime_s: float,
+    log10_e: np.ndarray,
+    bin_radius_deg: float | np.ndarray = DEFAULT_BIN_RADIUS_DEG,
+) -&gt; np.ndarray:
+    """Atmospheric events per decade in a point-source bin.
+
+    The background rides the same directions the signal does. A source at a
+    fixed declination sweeps a fixed set of zeniths as the Earth turns, and
+    both the atmospheric flux and the effective area vary along that sweep, so
+    the two are multiplied direction by direction before the time average
+    rather than after it. Doing it the other way rounds a flux that changes by
+    an order of magnitude between the horizon and the vertical.
+
+    Parameters
+    ----------
+    flux : AtmosphericFlux
+        Interpolated MCEq table, summed over ``nu_mu`` and ``nu_mu_bar``.
+    aeff_cm2 : np.ndarray, shape (log10_e.size, n_dir)
+        Effective area per arrival direction [cm^2].
+    cos_theta : np.ndarray, shape (n_dir,)
+        Cosine of the arrival zenith of each direction; ``+1`` is overhead.
+    weights : np.ndarray, shape (n_dir,) or (n_dec, n_dir)
+        Time fraction each direction carries. One row per source declination
+        gives one column of the result per declination.
+    livetime_s : float
+        Exposure [s].
+    log10_e : np.ndarray
+        Neutrino energies [log10 GeV].
+    bin_radius_deg : float or np.ndarray, optional
+        Angular radius of the bin [deg]: a scalar, one value per energy, or a
+        grid shaped like ``aeff_cm2``. A real bin is not a scalar, because a
+        track is reconstructed better the more light it leaves, so the sky a
+        search looks through closes as the energy rises and opens again wherever
+        the Earth has taken the high-energy end away. See
+        :meth:`~softpaws.response.irfs.SmearingMatrix.psf_containment_deg`.
+
+    Returns
+    -------
+    density : np.ndarray, shape (log10_e.size,) or (log10_e.size, n_dec)
+        Atmospheric events per decade of neutrino energy at each node.
+
+    Notes
+    -----
+    The table is ``nu_mu + nu_mu_bar`` while the default response is built on
+    the ``nu`` cross section, which is about half the ``nu_bar`` one at a TeV
+    and equal to it above a PeV. Pass a response averaged over the two to
+    remove the resulting overestimate at the bottom of the band.
+    """
+    aeff = np.asarray(aeff_cm2, dtype=float)
+    weights = np.asarray(weights, dtype=float)
+    energy = 10.0 ** np.asarray(log10_e, dtype=float)
+    table_dec = table_declination_deg(cos_theta)
+    # (n_e, n_dir): the flux each direction of the sweep actually sees.
+    per_direction = flux(energy[:, None], table_dec[None, :]) * aeff
+    # The bin belongs inside the direction sum, not outside it. A measured
+    # point spread varies with arrival direction as much as the flux does, and
+    # a source that sweeps the sky sees both changing together.
+    solid_angle = _events_axis(np.asarray(point_source_bin_sr(bin_radius_deg)), 2)
+    density = (per_direction * solid_angle) @ weights.T
+    return density * LN10 * livetime_s * _energy_axis(log10_e, density.ndim)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.feldman_cousins_upper_limit" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">feldman_cousins_upper_limit</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">feldman_cousins_upper_limit(n_obs: int, background: float = 0.0, confidence_level: float = CONFIDENCE_LEVEL, mu_step: float = 0.005) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Upper limit on a Poisson signal over a known background.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>n_obs</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Events observed.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>background</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Expected background events. Zero, by default.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>confidence_level</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.CONFIDENCE_LEVEL">CONFIDENCE_LEVEL</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Coverage of the construction. See :data:<code>CONFIDENCE_LEVEL</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>mu_step</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.005</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Spacing of the signal grid [events], which sets the resolution of the
+answer.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>upper_limit</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Largest signal the observation is consistent with, in events.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Zero observed on zero expected is the number every background-free limit
+in this module is quoted at.</p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; round(feldman_cousins_upper_limit(0), 2)
+2.44</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def feldman_cousins_upper_limit(
+    n_obs: int,
+    background: float = 0.0,
+    confidence_level: float = CONFIDENCE_LEVEL,
+    mu_step: float = 0.005,
+) -&gt; float:
+    """Upper limit on a Poisson signal over a known background.
+
+    Parameters
+    ----------
+    n_obs : int
+        Events observed.
+    background : float, optional
+        Expected background events. Zero, by default.
+    confidence_level : float, optional
+        Coverage of the construction. See :data:`CONFIDENCE_LEVEL`.
+    mu_step : float, optional
+        Spacing of the signal grid [events], which sets the resolution of the
+        answer.
+
+    Returns
+    -------
+    upper_limit : float
+        Largest signal the observation is consistent with, in events.
+
+    Examples
+    --------
+    Zero observed on zero expected is the number every background-free limit
+    in this module is quoted at.
+
+    &gt;&gt;&gt; round(feldman_cousins_upper_limit(0), 2)
+    2.44
+    """
+    mu, accepted = _acceptance(float(background), confidence_level, mu_step)
+    column = accepted[:, int(n_obs)]
+    if not column.any():
+        return 0.0
+    return float(mu[len(column) - 1 - int(np.argmax(column[::-1]))])</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.line_sensitivity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">line_sensitivity</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">line_sensitivity(aeff_cm2: ndarray, livetime_s: float, n_events: float | ndarray = N_EVENTS_LIMIT, solid_angle_sr: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Normalization of a monoenergetic flux a search would exclude.</p>
+<p>For <code>phi(E) = Phi delta(E - E_0)</code> the count is <code>T Phi A_eff(E_0)</code> with
+no quadrature left to do, so the limit is the effective area inverted at
+each energy in turn. Multiply the result by <code>E_0</code> to put it on the axis a
+continuum <code>E^2 phi</code> is drawn on.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] at each line energy.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_events</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.N_EVENTS_LIMIT">N_EVENTS_LIMIT</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Events the search excludes; see :data:<code>N_EVENTS_LIMIT</code>. An array of
+one dimension is read as the energy axis.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle of a diffuse signal [sr]. <code>None</code>, the default, gives a
+point-source flux.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Line normalization [cm^-2 s^-1], per steradian when
+<code>solid_angle_sr</code> is given.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def line_sensitivity(
+    aeff_cm2: np.ndarray,
+    livetime_s: float,
+    n_events: float | np.ndarray = N_EVENTS_LIMIT,
+    solid_angle_sr: float | None = None,
+) -&gt; np.ndarray:
+    """Normalization of a monoenergetic flux a search would exclude.
+
+    For ``phi(E) = Phi delta(E - E_0)`` the count is ``T Phi A_eff(E_0)`` with
+    no quadrature left to do, so the limit is the effective area inverted at
+    each energy in turn. Multiply the result by ``E_0`` to put it on the axis a
+    continuum ``E^2 phi`` is drawn on.
+
+    Parameters
+    ----------
+    aeff_cm2 : np.ndarray
+        Effective area [cm^2] at each line energy.
+    livetime_s : float
+        Exposure [s].
+    n_events : float or np.ndarray, optional
+        Events the search excludes; see :data:`N_EVENTS_LIMIT`. An array of
+        one dimension is read as the energy axis.
+    solid_angle_sr : float or None, optional
+        Solid angle of a diffuse signal [sr]. ``None``, the default, gives a
+        point-source flux.
+
+    Returns
+    -------
+    flux : np.ndarray
+        Line normalization [cm^-2 s^-1], per steradian when
+        ``solid_angle_sr`` is given.
+    """
+    aeff = np.asarray(aeff_cm2, dtype=float)
+    events = _events_axis(n_events, aeff.ndim)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return events / (_exposure(livetime_s, solid_angle_sr) * aeff)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.optimized_window_sensitivity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">optimized_window_sensitivity</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">optimized_window_sensitivity(aeff_cm2: ndarray, background_density: ndarray, livetime_s: float, gamma: float, log10_e: ndarray, pivot_gev: float = PIVOT_ENERGY_GEV, confidence_level: float = CONFIDENCE_LEVEL, solid_angle_sr: float | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Best power-law limit over the energy the search is allowed to start at.</p>
+<p>Counting every event in the band is the wrong statistic, and the shape of a
+published sensitivity is what says so. An atmospheric spectrum falls like
+<code>E^-3.7</code> and an astrophysical one like <code>E^-2</code>, so the events near the
+threshold are almost all background and carry almost no signal. A search
+that counts them anyway pays a penalty largest where its effective area is
+largest, which is the horizon, and the declination dependence it should
+have comes out flattened away.</p>
+<p>Choosing where to start recovers it. Where the response reaches high
+energy the window can be cut above the background entirely and the limit
+returns to the background-free ceiling; where the Earth has absorbed that
+end there is nothing to cut to, and the background is paid in full. Both
+are properties of the response, so the shape is predicted rather than
+tuned. A real unbinned search weights each event instead of cutting, so it
+does better again, and this stays a bound on it.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, ...))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on the energy grid, energy first.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>background_density</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Atmospheric events per decade, from
+:func:<code>atmospheric_background_density</code>, shaped like <code>aeff_cm2</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index of the injected flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.PIVOT_ENERGY_GEV">PIVOT_ENERGY_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Pivot energy of the quoted flux [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>confidence_level</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.CONFIDENCE_LEVEL">CONFIDENCE_LEVEL</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Coverage of the construction. See :data:<code>CONFIDENCE_LEVEL</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle of a diffuse signal [sr]. <code>None</code>, the default, gives a
+point-source flux.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>e2_flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>E^2 phi</code> at <code>pivot_gev</code> [GeV cm^-2 s^-1] at the best window.</p>
+              </div>
+            </li>
+            <li>
+<b><code>emin_gev</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Energy that window starts at [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def optimized_window_sensitivity(
+    aeff_cm2: np.ndarray,
+    background_density: np.ndarray,
+    livetime_s: float,
+    gamma: float,
+    log10_e: np.ndarray,
+    pivot_gev: float = PIVOT_ENERGY_GEV,
+    confidence_level: float = CONFIDENCE_LEVEL,
+    solid_angle_sr: float | None = None,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Best power-law limit over the energy the search is allowed to start at.
+
+    Counting every event in the band is the wrong statistic, and the shape of a
+    published sensitivity is what says so. An atmospheric spectrum falls like
+    ``E^-3.7`` and an astrophysical one like ``E^-2``, so the events near the
+    threshold are almost all background and carry almost no signal. A search
+    that counts them anyway pays a penalty largest where its effective area is
+    largest, which is the horizon, and the declination dependence it should
+    have comes out flattened away.
+
+    Choosing where to start recovers it. Where the response reaches high
+    energy the window can be cut above the background entirely and the limit
+    returns to the background-free ceiling; where the Earth has absorbed that
+    end there is nothing to cut to, and the background is paid in full. Both
+    are properties of the response, so the shape is predicted rather than
+    tuned. A real unbinned search weights each event instead of cutting, so it
+    does better again, and this stays a bound on it.
+
+    Parameters
+    ----------
+    aeff_cm2 : np.ndarray, shape (log10_e.size, ...)
+        Effective area [cm^2] on the energy grid, energy first.
+    background_density : np.ndarray
+        Atmospheric events per decade, from
+        :func:`atmospheric_background_density`, shaped like ``aeff_cm2``.
+    livetime_s : float
+        Exposure [s].
+    gamma : float
+        Spectral index of the injected flux.
+    log10_e : np.ndarray
+        Neutrino energies [log10 GeV].
+    pivot_gev : float, optional
+        Pivot energy of the quoted flux [GeV].
+    confidence_level : float, optional
+        Coverage of the construction. See :data:`CONFIDENCE_LEVEL`.
+    solid_angle_sr : float or None, optional
+        Solid angle of a diffuse signal [sr]. ``None``, the default, gives a
+        point-source flux.
+
+    Returns
+    -------
+    e2_flux : np.ndarray
+        ``E^2 phi`` at ``pivot_gev`` [GeV cm^-2 s^-1] at the best window.
+    emin_gev : np.ndarray
+        Energy that window starts at [GeV].
+    """
+    aeff = np.asarray(aeff_cm2, dtype=float)
+    density = np.asarray(background_density, dtype=float)
+    grid = np.asarray(log10_e, dtype=float)
+    starts = np.arange(grid.size - 1)
+
+    # The background above every candidate start, for every column at once, so
+    # the Feldman-Cousins construction is run once over the whole scan.
+    counts = np.stack([np.trapezoid(density[k:], grid[k:], axis=0) for k in starts])
+    n_events = sensitivity_upper_limit(counts, confidence_level=confidence_level)
+    limits = np.stack(
+        [
+            power_law_sensitivity(
+                aeff[k:], livetime_s, gamma, grid[k:], pivot_gev=pivot_gev,
+                n_events=n_events[k], solid_angle_sr=solid_angle_sr,
+            )
+            for k in starts
+        ]
+    )
+    best = np.argmin(limits, axis=0)
+    return np.take_along_axis(limits, best[None], axis=0)[0], 10.0 ** grid[best]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.point_source_bin_sr" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">point_source_bin_sr</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">point_source_bin_sr(radius_deg: float | ndarray = DEFAULT_BIN_RADIUS_DEG) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Solid angle of the bin a point-source background is counted in [sr].</p>
+<p>A point source is a direction and the background is a flux per steradian,
+so turning one into the other needs the sky the search has to look
+through. That is set by how well a track is reconstructed rather than by
+anything about the source, which is why the radius is an instrument
+number and not a physical one.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_deg</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_BIN_RADIUS_DEG">DEFAULT_BIN_RADIUS_DEG</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Angular radius of the bin [deg]. See :data:<code>DEFAULT_BIN_RADIUS_DEG</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>solid_angle_sr</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>2 pi (1 - cos r)</code> [sr].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; round(float(point_source_bin_sr(1.0)), 6)
+0.000957</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def point_source_bin_sr(radius_deg: float | np.ndarray = DEFAULT_BIN_RADIUS_DEG) -&gt; np.ndarray:
+    """Solid angle of the bin a point-source background is counted in [sr].
+
+    A point source is a direction and the background is a flux per steradian,
+    so turning one into the other needs the sky the search has to look
+    through. That is set by how well a track is reconstructed rather than by
+    anything about the source, which is why the radius is an instrument
+    number and not a physical one.
+
+    Parameters
+    ----------
+    radius_deg : float or np.ndarray, optional
+        Angular radius of the bin [deg]. See :data:`DEFAULT_BIN_RADIUS_DEG`.
+
+    Returns
+    -------
+    solid_angle_sr : np.ndarray
+        ``2 pi (1 - cos r)`` [sr].
+
+    Examples
+    --------
+    &gt;&gt;&gt; round(float(point_source_bin_sr(1.0)), 6)
+    0.000957
+    """
+    radius = np.deg2rad(np.asarray(radius_deg, dtype=float))
+    return 2.0 * np.pi * (1.0 - np.cos(radius))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.power_law_sensitivity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">power_law_sensitivity</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">power_law_sensitivity(aeff_cm2: ndarray, livetime_s: float, gamma: float, log10_e: ndarray, emin_gev: float | None = None, pivot_gev: float = PIVOT_ENERGY_GEV, n_events: float | ndarray = N_EVENTS_LIMIT, solid_angle_sr: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Normalization of a power law a search would exclude.</p>
+<p>For <code>phi(E) = phi_0 (E / E_piv)^-gamma</code> the expected count is linear in
+<code>phi_0</code>, so the limit is one quadrature,</p>
+<p>.. math:: \phi_0^{\rm lim} = \frac{N_{\rm lim}}
+    {T\, \Delta\Omega \int_{E_{\min}} \dd E\, A_{\rm eff}(E)
+    (E/E_{\rm piv})^{-\gamma}}.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, ...))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on the energy grid, energy first.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spectral index of the injected flux.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>emin_gev</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Bottom of the analysis window [GeV]. <code>None</code>, the default, uses the
+whole grid.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.PIVOT_ENERGY_GEV">PIVOT_ENERGY_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Pivot energy of the quoted flux [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_events</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.constants.N_EVENTS_LIMIT">N_EVENTS_LIMIT</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Events the search excludes; see :data:<code>N_EVENTS_LIMIT</code>. The whole
+band is one number here, so an array is read as one entry per column
+of <code>aeff_cm2</code> and not as an energy axis.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle of a diffuse signal [sr]. <code>None</code>, the default, gives a
+point-source flux.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>e2_flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>E^2 phi</code> at <code>pivot_gev</code> [GeV cm^-2 s^-1], per steradian when
+<code>solid_angle_sr</code> is given.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def power_law_sensitivity(
+    aeff_cm2: np.ndarray,
+    livetime_s: float,
+    gamma: float,
+    log10_e: np.ndarray,
+    emin_gev: float | None = None,
+    pivot_gev: float = PIVOT_ENERGY_GEV,
+    n_events: float | np.ndarray = N_EVENTS_LIMIT,
+    solid_angle_sr: float | None = None,
+) -&gt; np.ndarray:
+    r"""Normalization of a power law a search would exclude.
+
+    For ``phi(E) = phi_0 (E / E_piv)^-gamma`` the expected count is linear in
+    ``phi_0``, so the limit is one quadrature,
+
+    .. math:: \\phi_0^{\\rm lim} = \\frac{N_{\\rm lim}}
+        {T\\, \\Delta\\Omega \\int_{E_{\\min}} \\dd E\\, A_{\\rm eff}(E)
+        (E/E_{\\rm piv})^{-\\gamma}}.
+
+    Parameters
+    ----------
+    aeff_cm2 : np.ndarray, shape (log10_e.size, ...)
+        Effective area [cm^2] on the energy grid, energy first.
+    livetime_s : float
+        Exposure [s].
+    gamma : float
+        Spectral index of the injected flux.
+    log10_e : np.ndarray
+        Neutrino energies [log10 GeV].
+    emin_gev : float or None, optional
+        Bottom of the analysis window [GeV]. ``None``, the default, uses the
+        whole grid.
+    pivot_gev : float, optional
+        Pivot energy of the quoted flux [GeV].
+    n_events : float or np.ndarray, optional
+        Events the search excludes; see :data:`N_EVENTS_LIMIT`. The whole
+        band is one number here, so an array is read as one entry per column
+        of ``aeff_cm2`` and not as an energy axis.
+    solid_angle_sr : float or None, optional
+        Solid angle of a diffuse signal [sr]. ``None``, the default, gives a
+        point-source flux.
+
+    Returns
+    -------
+    e2_flux : np.ndarray
+        ``E^2 phi`` at ``pivot_gev`` [GeV cm^-2 s^-1], per steradian when
+        ``solid_angle_sr`` is given.
+    """
+    aeff = np.asarray(aeff_cm2, dtype=float)
+    energy = 10.0 ** np.asarray(log10_e, dtype=float)
+    window = np.ones_like(energy, dtype=bool) if emin_gev is None else energy &gt;= emin_gev
+    weight = (energy / pivot_gev) ** (-gamma)
+    shape = (-1,) + (1,) * (aeff.ndim - 1)
+    integral = np.trapezoid((aeff * weight.reshape(shape))[window], energy[window], axis=0)
+    phi_0 = n_events / (_exposure(livetime_s, solid_angle_sr) * integral)
+    return pivot_gev**2 * phi_0</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.psf_bin_radius_deg" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">psf_bin_radius_deg</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">psf_bin_radius_deg(psf_table: dict | None, cos_theta: ndarray, log10_e: ndarray, fallback_deg: float = DEFAULT_BIN_RADIUS_DEG) -&gt; np.ndarray | float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Bin radius against energy and arrival direction, from a released point spread.</p>
+<p>A fixed bin is the wrong shape twice over. A track is reconstructed better
+the more light it leaves, so the bin closes as the energy rises, and the
+Earth takes the high-energy end away where the column is deepest, so it
+opens again there. Both are in the table and both run the way a published
+point-source sensitivity needs.</p>
+<p>Only IceCube has released one, and it is tabulated against declination at
+a site where a declination is one arrival zenith all day, which makes it a
+function of arrival direction. That is the form every other site can read
+it in. It stays IceCube's optics, IceCube's spacing and IceCube's
+selection, so for the others it is a stand-in and not a measurement, and
+the downgoing end of it is a selection rather than a resolution.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>psf_table</code></b>
+                  (<code><span title="dict">dict</span> or None</code>)
+              –
+              <div class="doc-md-description">
+                <p>Cached table from :func:<code>softpaws.data.load_psf_table</code>. <code>None</code>
+returns <code>fallback_deg</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_dir">n_dir</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith of each direction; <code>+1</code> is overhead.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies the grid is wanted on [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>fallback_deg</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.DEFAULT_BIN_RADIUS_DEG">DEFAULT_BIN_RADIUS_DEG</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Radius used when there is no table [deg].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>radius</code></b>(                  <code>np.ndarray, shape (log10_e.size, n_dir), or float</code>
+)              –
+              <div class="doc-md-description">
+                <p>Bin radius at each energy and direction [deg].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def psf_bin_radius_deg(
+    psf_table: dict | None,
+    cos_theta: np.ndarray,
+    log10_e: np.ndarray,
+    fallback_deg: float = DEFAULT_BIN_RADIUS_DEG,
+) -&gt; np.ndarray | float:
+    """Bin radius against energy and arrival direction, from a released point spread.
+
+    A fixed bin is the wrong shape twice over. A track is reconstructed better
+    the more light it leaves, so the bin closes as the energy rises, and the
+    Earth takes the high-energy end away where the column is deepest, so it
+    opens again there. Both are in the table and both run the way a published
+    point-source sensitivity needs.
+
+    Only IceCube has released one, and it is tabulated against declination at
+    a site where a declination is one arrival zenith all day, which makes it a
+    function of arrival direction. That is the form every other site can read
+    it in. It stays IceCube's optics, IceCube's spacing and IceCube's
+    selection, so for the others it is a stand-in and not a measurement, and
+    the downgoing end of it is a selection rather than a resolution.
+
+    Parameters
+    ----------
+    psf_table : dict or None
+        Cached table from :func:`softpaws.data.load_psf_table`. ``None``
+        returns ``fallback_deg``.
+    cos_theta : np.ndarray, shape (n_dir,)
+        Cosine of the arrival zenith of each direction; ``+1`` is overhead.
+    log10_e : np.ndarray
+        Neutrino energies the grid is wanted on [log10 GeV].
+    fallback_deg : float, optional
+        Radius used when there is no table [deg].
+
+    Returns
+    -------
+    radius : np.ndarray, shape (log10_e.size, n_dir), or float
+        Bin radius at each energy and direction [deg].
+    """
+    if psf_table is None:
+        return fallback_deg
+    grid = np.asarray(psf_table["containment_deg"], dtype=float)
+    # Seen from the Pole a source at declination dec arrives at
+    # cos_theta = -sin(dec), so the table's declination axis is an arrival
+    # direction and every site can be evaluated on it.
+    table_cos = -np.sin(np.deg2rad(np.asarray(psf_table["dec_deg"], dtype=float)))
+    order = np.argsort(table_cos)
+    cos_theta = np.atleast_1d(np.asarray(cos_theta, dtype=float))
+    on_direction = np.array([np.interp(cos_theta, table_cos[order], row[order])
+                             for row in grid])
+    return np.array([np.interp(log10_e, psf_table["log10_e"], on_direction[:, j])
+                     for j in range(cos_theta.size)]).T</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.sensitivity_upper_limit" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">sensitivity_upper_limit</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">sensitivity_upper_limit(background: float | ndarray, confidence_level: float = CONFIDENCE_LEVEL, mu_step: float = 0.005) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Events a search excludes on average, before it looks.</p>
+<p>A limit is a statement about one observation, and a sensitivity is what a
+search expects to be able to say before it has made one. Feldman and
+Cousins define that as the upper limit averaged over background-only
+outcomes, which is the number this returns, and it reduces to
+:data:<code>N_EVENTS_LIMIT</code> when there is no background to average over.</p>
+<p>Pass the result as <code>n_events</code> to any of the three converters and the
+ceiling they return stops being background free.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>background</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Expected background events, from
+:func:<code>atmospheric_background_counts</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>confidence_level</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.CONFIDENCE_LEVEL">CONFIDENCE_LEVEL</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Coverage of the construction. See :data:<code>CONFIDENCE_LEVEL</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>mu_step</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.005</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Spacing of the signal grid [events].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>n_events</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Events the search excludes, with the shape of <code>background</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Above :data:<code>EXACT_BACKGROUND_MAX</code> the answer continues along the straight
+line in <code>sqrt(b)</code> that the exact construction is already following, since
+holding every count a Poisson of that mean can deliver stops fitting in
+memory. The two branches meet, and the second is good to about a per cent.</p>
+<p>IceCube quotes a point-source sensitivity on a slightly different
+criterion, the flux at which 90% of signal trials beat the median
+background test statistic. The two agree exactly with no background, where
+both are :data:<code>N_EVENTS_LIMIT</code>, and differ by a few per cent with one.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; round(float(sensitivity_upper_limit(0.0)), 2)
+2.44</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def sensitivity_upper_limit(
+    background: float | np.ndarray,
+    confidence_level: float = CONFIDENCE_LEVEL,
+    mu_step: float = 0.005,
+) -&gt; np.ndarray:
+    """Events a search excludes on average, before it looks.
+
+    A limit is a statement about one observation, and a sensitivity is what a
+    search expects to be able to say before it has made one. Feldman and
+    Cousins define that as the upper limit averaged over background-only
+    outcomes, which is the number this returns, and it reduces to
+    :data:`N_EVENTS_LIMIT` when there is no background to average over.
+
+    Pass the result as ``n_events`` to any of the three converters and the
+    ceiling they return stops being background free.
+
+    Parameters
+    ----------
+    background : float or np.ndarray
+        Expected background events, from
+        :func:`atmospheric_background_counts`.
+    confidence_level : float, optional
+        Coverage of the construction. See :data:`CONFIDENCE_LEVEL`.
+    mu_step : float, optional
+        Spacing of the signal grid [events].
+
+    Returns
+    -------
+    n_events : np.ndarray
+        Events the search excludes, with the shape of ``background``.
+
+    Notes
+    -----
+    Above :data:`EXACT_BACKGROUND_MAX` the answer continues along the straight
+    line in ``sqrt(b)`` that the exact construction is already following, since
+    holding every count a Poisson of that mean can deliver stops fitting in
+    memory. The two branches meet, and the second is good to about a per cent.
+
+    IceCube quotes a point-source sensitivity on a slightly different
+    criterion, the flux at which 90% of signal trials beat the median
+    background test statistic. The two agree exactly with no background, where
+    both are :data:`N_EVENTS_LIMIT`, and differ by a few per cent with one.
+
+    Examples
+    --------
+    &gt;&gt;&gt; round(float(sensitivity_upper_limit(0.0)), 2)
+    2.44
+    """
+    values = np.asarray(background, dtype=float)
+    out = np.empty(values.size)
+    slope, intercept = _large_count_line(confidence_level, mu_step)
+    for i, b in enumerate(values.ravel()):
+        out[i] = (
+            slope * np.sqrt(b) + intercept
+            if b &gt; EXACT_BACKGROUND_MAX
+            else _exact_sensitivity(_cache_key(b), confidence_level, mu_step)
+        )
+    return out.reshape(values.shape) if values.ndim else out[0]</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.response.sensitivity.single_event_sensitivity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">single_event_sensitivity</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">single_event_sensitivity(aeff_cm2: ndarray, livetime_s: float, log10_e: ndarray, n_events: float | ndarray = 1.0, solid_angle_sr: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Flux delivering one event per decade of neutrino energy.</p>
+<p>A decade of a flux <code>phi</code> delivers <code>T A_eff E ln(10) phi</code> events, so the
+flux that delivers <code>n_events</code> of them is</p>
+<p>.. math:: E^2 \phi = \frac{n\, E}{\ln(10)\, T\, \Delta\Omega\,
+    A_{\rm eff}(E)}.</p>
+<p>This is the differential sensitivity a telescope is usually quoted by, and
+the weakest signal it can report: one event, at the energy where it landed,
+with no assumption about the spectrum it came from.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>aeff_cm2</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="log10_e.size">size</span>, ...))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Effective area [cm^2] on the energy grid, energy first.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino energies [log10 GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_events</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Events the flux delivers per decade. One, by default. An array of one
+dimension is read as the energy axis, which is how a background that
+varies across the band enters; see :func:<code>sensitivity_upper_limit</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle of a diffuse signal [sr]. <code>None</code>, the default, gives a
+point-source flux.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>e2_flux</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>E^2 phi</code> at each energy [GeV cm^-2 s^-1], per steradian when
+<code>solid_angle_sr</code> is given.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; log10_e = np.array([5.0, 6.0])
+&gt;&gt;&gt; aeff = np.array([1.0e4, 1.0e5])
+&gt;&gt;&gt; single_event_sensitivity(aeff, 1.0e8, log10_e)
+array([4.34294482e-08, 4.34294482e-08])</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/response/sensitivity.py</code></summary>
+              <pre class="highlight"><code class="language-python">def single_event_sensitivity(
+    aeff_cm2: np.ndarray,
+    livetime_s: float,
+    log10_e: np.ndarray,
+    n_events: float | np.ndarray = 1.0,
+    solid_angle_sr: float | None = None,
+) -&gt; np.ndarray:
+    r"""Flux delivering one event per decade of neutrino energy.
+
+    A decade of a flux ``phi`` delivers ``T A_eff E ln(10) phi`` events, so the
+    flux that delivers ``n_events`` of them is
+
+    .. math:: E^2 \\phi = \\frac{n\\, E}{\\ln(10)\\, T\\, \\Delta\\Omega\\,
+        A_{\\rm eff}(E)}.
+
+    This is the differential sensitivity a telescope is usually quoted by, and
+    the weakest signal it can report: one event, at the energy where it landed,
+    with no assumption about the spectrum it came from.
+
+    Parameters
+    ----------
+    aeff_cm2 : np.ndarray, shape (log10_e.size, ...)
+        Effective area [cm^2] on the energy grid, energy first.
+    livetime_s : float
+        Exposure [s].
+    log10_e : np.ndarray
+        Neutrino energies [log10 GeV].
+    n_events : float or np.ndarray, optional
+        Events the flux delivers per decade. One, by default. An array of one
+        dimension is read as the energy axis, which is how a background that
+        varies across the band enters; see :func:`sensitivity_upper_limit`.
+    solid_angle_sr : float or None, optional
+        Solid angle of a diffuse signal [sr]. ``None``, the default, gives a
+        point-source flux.
+
+    Returns
+    -------
+    e2_flux : np.ndarray
+        ``E^2 phi`` at each energy [GeV cm^-2 s^-1], per steradian when
+        ``solid_angle_sr`` is given.
+
+    Examples
+    --------
+    &gt;&gt;&gt; import numpy as np
+    &gt;&gt;&gt; log10_e = np.array([5.0, 6.0])
+    &gt;&gt;&gt; aeff = np.array([1.0e4, 1.0e5])
+    &gt;&gt;&gt; single_event_sensitivity(aeff, 1.0e8, log10_e)
+    array([4.34294482e-08, 4.34294482e-08])
+    """
+    aeff = np.asarray(aeff_cm2, dtype=float)
+    energy = _energy_axis(log10_e, aeff.ndim)
+    events = _events_axis(n_events, aeff.ndim)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return events * energy / (LN10 * _exposure(livetime_s, solid_angle_sr) * aeff)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../published/" class="btn btn-neutral float-left" title="published"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../soft_volume/" class="btn btn-neutral float-right" title="soft_volume">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../published/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../soft_volume/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

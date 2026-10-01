@@ -1,0 +1,3692 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/transport/soft_volume/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>soft_volume - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "soft_volume";
+        var mkdocs_page_input_path = "api-reference/softpaws/transport/soft_volume.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/transport/soft_volume/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >transport</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">soft_volume</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.dm_line_target_volume_km3">dm_line_target_volume_km3</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.dynamic_projected_area_km2">dynamic_projected_area_km2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.dynamic_projected_radius_km">dynamic_projected_radius_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.eroded_prism_target_km2">eroded_prism_target_km2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.light_reach_radius_km">light_reach_radius_km</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.prism_projected_area_km2">prism_projected_area_km2</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.range_target_volume_km3">range_target_volume_km3</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.saturation_factor">saturation_factor</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.scale_breaking_saturation_factor">scale_breaking_saturation_factor</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.soft_volume_attenuated_exact">soft_volume_attenuated_exact</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.soft_volume_diffusion">soft_volume_diffusion</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.soft_volume_drift">soft_volume_drift</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.soft_volume_exact">soft_volume_exact</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.spectral_penalty">spectral_penalty</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.sphere_radius_from_volume">sphere_radius_from_volume</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.transport.soft_volume.volume_ratio_drift">volume_ratio_drift</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">transport</li>
+      <li class="breadcrumb-item active">soft_volume</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.transport.soft_volume" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.transport.soft_volume</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Soft volume in the drift limit.</p>
+<p>The soft volume is the effective target region for through-going muon tracks: a
+muon produced outside the instrumented volume can still drift into it, so the
+target is larger than the detector itself. The drift-limit form below is the
+earlier treatment of Palmisano et al. (arXiv:2607.13143, Section 2.3), kept as
+a limit and a cross-check of the transport exponent.</p>
+<p>In the drift limit (<code>d_mu -&gt; 0</code>, deterministic continuous slowing down) and
+with their simplifying assumptions -- a spherical perfectly
+absorbing detector, a power-law neutrino flux <code>phi ~ E^-gamma</code>, a power-law CC
+cross section <code>sigma ~ E^lambda</code>, and a constant near-detector medium -- the
+soft volume has the closed form (their Eq. 2.23)</p>
+<p>.. math:: V_\mathrm{soft}(E) = \frac{\pi R_\mathrm{det}^2}{b_\mu(E)\,A},
+    \qquad A \equiv \gamma - \lambda - 1 &gt; 0.</p>
+<p>The muon range <code>1/b_mu</code> is further weighted by the spectral penalty <code>1/A</code>
+for producing a higher-energy parent neutrino. This module implements that
+formula and the associated figure of merit (their Eq. 2.24).</p>
+<p>It also provides the <em>exact</em> soft volume (:func:<code>soft_volume_exact</code>,
+<code>docs/theory/exact_soft_volume.md</code>), which replaces the drift range <code>1/(b_mu A)</code>
+by <code>I(A) (1 - e^{-Phi(A) x}) / Phi(A)</code> with the exact eigenvalue <code>Phi(A)</code> and a
+finite upstream column depth <code>x</code>. The saturation factor keeps the result finite
+where the drift form diverges (<code>A -&gt; 0</code>) or goes negative (<code>A &lt; 0</code>, the
+cross-section pole).</p>
+<p>:func:<code>soft_volume_attenuated_exact</code> (Eq. 11 and App. C of the method
+paper) is the further generalization that folds parent-
+neutrino Earth attenuation directly into that same depth integral, rather than
+applying a decoupled multiplicative survival probability
+(:mod:<code>softpaws.transport.attenuation</code>) on top of it -- see
+:meth:<code>softpaws.response.soft_volume.SoftVolumeResponse.expected_counts_coupled_attenuation</code>.</p>
+<p>:func:<code>scale_breaking_saturation_factor</code> implements the leading-order
+scale-breaking correction of an earlier draft of the method paper (its App. F,
+Eq. F4): a nonzero <code>beta</code> (<code>dGamma/dy ~ E^beta</code>,
+e.g. the slow photonuclear rise) makes the effective spectral index run with
+propagated depth rather than staying fixed at <code>A</code>. Off by default (<code>beta
+= 0</code>), since <code>coefficients.py</code> finds the corresponding LPM suppression
+negligible for muons in the covered range and this package ships no
+calibrated nonzero <code>beta</code>.</p>
+<p>Finally it provides the <em>range</em> target volume (:func:<code>range_target_volume_km3</code>),
+which is a different quantity from all of the above and exists to match the
+convention of the published IceCube effective area. The soft volume is
+differential in the observed muon energy and already spectrally weighted: its
+finite length <code>1/(b_mu A)</code> is a spectral attenuation length, set by how much
+rarer the higher-energy parent neutrino is. The published <code>A_eff(E_nu)</code> instead
+fixes the neutrino energy and integrates over every muon energy that survives the
+event selection, so its length is the full muon range down to the analysis
+threshold, which grows logarithmically with energy. Comparing the two directly
+is an apples-to-oranges comparison. The ranges themselves live in
+:mod:<code>softpaws.transport.muon_range</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="dm_line_target_volume_km3 (softpaws.transport.soft_volume.dm_line_target_volume_km3)" href="#softpaws.transport.soft_volume.dm_line_target_volume_km3">dm_line_target_volume_km3</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Target volume for a monochromatic (dark matter line) source.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="dynamic_projected_area_km2 (softpaws.transport.soft_volume.dynamic_projected_area_km2)" href="#softpaws.transport.soft_volume.dynamic_projected_area_km2">dynamic_projected_area_km2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Energy-growing projected area <code>pi R_eff(E)^2</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="dynamic_projected_radius_km (softpaws.transport.soft_volume.dynamic_projected_radius_km)" href="#softpaws.transport.soft_volume.dynamic_projected_radius_km">dynamic_projected_radius_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Energy-growing lateral trigger radius from stochastic light yield.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="eroded_prism_target_km2 (softpaws.transport.soft_volume.eroded_prism_target_km2)" href="#softpaws.transport.soft_volume.eroded_prism_target_km2">eroded_prism_target_km2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Target area and volume of a prism that a track must cross for <code>min_chord_km</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="light_reach_radius_km (softpaws.transport.soft_volume.light_reach_radius_km)" href="#softpaws.transport.soft_volume.light_reach_radius_km">light_reach_radius_km</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Instrumented radius plus a signed, logarithmically growing light reach.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="prism_projected_area_km2 (softpaws.transport.soft_volume.prism_projected_area_km2)" href="#softpaws.transport.soft_volume.prism_projected_area_km2">prism_projected_area_km2</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Projected area of an upright convex prism, averaged over azimuth.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="range_target_volume_km3 (softpaws.transport.soft_volume.range_target_volume_km3)" href="#softpaws.transport.soft_volume.range_target_volume_km3">range_target_volume_km3</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Target volume for through-going tracks, in the muon-range convention.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="saturation_factor (softpaws.transport.soft_volume.saturation_factor)" href="#softpaws.transport.soft_volume.saturation_factor">saturation_factor</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Effective attenuated range over a finite column (Eq. 9, or Eq. 11 coupled).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="scale_breaking_saturation_factor (softpaws.transport.soft_volume.scale_breaking_saturation_factor)" href="#softpaws.transport.soft_volume.scale_breaking_saturation_factor">scale_breaking_saturation_factor</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Saturation factor with a running-spectral-index correction.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="soft_volume_attenuated_exact (softpaws.transport.soft_volume.soft_volume_attenuated_exact)" href="#softpaws.transport.soft_volume.soft_volume_attenuated_exact">soft_volume_attenuated_exact</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Coupled inside/soft volume terms with parent-neutrino attenuation (Eq. 11).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="soft_volume_diffusion (softpaws.transport.soft_volume.soft_volume_diffusion)" href="#softpaws.transport.soft_volume.soft_volume_diffusion">soft_volume_diffusion</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Diffusion-corrected soft volume (Palmisano et al., Eq. 2.25).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="soft_volume_drift (softpaws.transport.soft_volume.soft_volume_drift)" href="#softpaws.transport.soft_volume.soft_volume_drift">soft_volume_drift</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Drift-limit soft volume as a function of muon energy (Eq. 2.23).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="soft_volume_exact (softpaws.transport.soft_volume.soft_volume_exact)" href="#softpaws.transport.soft_volume.soft_volume_exact">soft_volume_exact</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Exact soft volume with the eigenvalue <code>Phi(A)</code> and a finite column.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="spectral_penalty (softpaws.transport.soft_volume.spectral_penalty)" href="#softpaws.transport.soft_volume.spectral_penalty">spectral_penalty</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Spectral penalty exponent <code>A = gamma - lambda - 1</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="sphere_radius_from_volume (softpaws.transport.soft_volume.sphere_radius_from_volume)" href="#softpaws.transport.soft_volume.sphere_radius_from_volume">sphere_radius_from_volume</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Radius of a sphere with the given volume.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="volume_ratio_drift (softpaws.transport.soft_volume.volume_ratio_drift)" href="#softpaws.transport.soft_volume.volume_ratio_drift">volume_ratio_drift</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Total-to-detector volume ratio in the drift limit (Palmisano et al., Eq. 2.24).</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.dm_line_target_volume_km3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">dm_line_target_volume_km3</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">dm_line_target_volume_km3(radius_km: float, column_depth_km: float) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Target volume for a monochromatic (dark matter line) source.</p>
+<p>An earlier draft of the method paper carried this as its App. I. A
+delta-function line at <code>E_nu = m_chi</code> has no continuum spectral index
+to average over, so it excites the <code>s = 0</code> mode of the same eigenvalue
+formalism the rest of the package uses (<code>docs/theory/paper_to_code.md</code>
+S:2.4). At <code>s = 0</code>, <code>Phi(0) = 0</code> identically
+(:func:<code>softpaws.transport.eigenvalue.phi_eigenvalue</code>) and
+<code>I(0) = 1</code> (:func:<code>softpaws.transport.source.inelasticity_factor</code>), so
+:func:<code>soft_volume_exact</code>'s <code>I(A) A_proj (1 - e^{-Phi(A) x}) / Phi(A)</code>
+collapses to the plain geometric column <code>A_proj x</code> -- no exponential
+range-shortening at all, since there is no spectral index left to shorten
+the range against. This is the literal <code>s -&gt; 0</code> instance of the same
+soft-volume machinery used for the power-law case, offered here for
+side-by-side comparison against the muon-range convention
+(:func:<code>range_target_volume_km3</code>), not as a replacement for it -- see
+<code>examples/34_dm_line_sensitivity.py</code>, which uses the muon-range
+convention for exactly that reason.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Available upstream column depth <code>x</code> [km] (see
+:mod:<code>softpaws.transport.attenuation</code>; a couple km of ice for a
+downgoing line source at the South Pole).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>volume</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Target volume [km^3], <code>A_proj x + V_det</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Unlike :func:<code>range_target_volume_km3</code>, this carries no muon-energy
+dependence and so no threshold cutoff: because <code>Phi(0) = 0</code> removes the
+energy/range weighting entirely, the <code>s = 0</code> treatment has no way to
+encode "the muon fell below the analysis threshold before reaching the
+detector." It grows <em>linearly</em> in the available column <code>x</code> rather than
+logarithmically, unlike the muon range -- expect the two conventions to
+diverge visibly at large <code>x</code>.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def dm_line_target_volume_km3(radius_km: float, column_depth_km: float) -&gt; float:
+    """Target volume for a monochromatic (dark matter line) source.
+
+    An earlier draft of the method paper carried this as its App. I. A
+    delta-function line at ``E_nu = m_chi`` has no continuum spectral index
+    to average over, so it excites the ``s = 0`` mode of the same eigenvalue
+    formalism the rest of the package uses (``docs/theory/paper_to_code.md``
+    S:2.4). At ``s = 0``, ``Phi(0) = 0`` identically
+    (:func:`softpaws.transport.eigenvalue.phi_eigenvalue`) and
+    ``I(0) = 1`` (:func:`softpaws.transport.source.inelasticity_factor`), so
+    :func:`soft_volume_exact`'s ``I(A) A_proj (1 - e^{-Phi(A) x}) / Phi(A)``
+    collapses to the plain geometric column ``A_proj x`` -- no exponential
+    range-shortening at all, since there is no spectral index left to shorten
+    the range against. This is the literal ``s -&gt; 0`` instance of the same
+    soft-volume machinery used for the power-law case, offered here for
+    side-by-side comparison against the muon-range convention
+    (:func:`range_target_volume_km3`), not as a replacement for it -- see
+    ``examples/34_dm_line_sensitivity.py``, which uses the muon-range
+    convention for exactly that reason.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    column_depth_km : float
+        Available upstream column depth ``x`` [km] (see
+        :mod:`softpaws.transport.attenuation`; a couple km of ice for a
+        downgoing line source at the South Pole).
+
+    Returns
+    -------
+    volume : float
+        Target volume [km^3], ``A_proj x + V_det``.
+
+    Notes
+    -----
+    Unlike :func:`range_target_volume_km3`, this carries no muon-energy
+    dependence and so no threshold cutoff: because ``Phi(0) = 0`` removes the
+    energy/range weighting entirely, the ``s = 0`` treatment has no way to
+    encode "the muon fell below the analysis threshold before reaching the
+    detector." It grows *linearly* in the available column ``x`` rather than
+    logarithmically, unlike the muon range -- expect the two conventions to
+    diverge visibly at large ``x``.
+    """
+    proj_area = np.pi * radius_km**2
+    v_det = 4.0 / 3.0 * np.pi * radius_km**3
+    return proj_area * float(column_depth_km) + v_det</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.dynamic_projected_area_km2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">dynamic_projected_area_km2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">dynamic_projected_area_km2(radius_km: float, energy_gev: float | ndarray, light_yield_length_km: float, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Energy-growing projected area <code>pi R_eff(E)^2</code>.</p>
+<p>See :func:<code>dynamic_projected_radius_km</code> for the growth law and its
+physical motivation.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Static detector radius <code>R_det</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>light_yield_length_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Growth length <code>L</code> [km] per e-fold of energy above <code>E_c</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient feeding <code>E_c</code>.
+Defaults to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation feeding <code>E_c</code>; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>area</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective projected area [km^2], broadcast to the shape of
+<code>energy_gev</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def dynamic_projected_area_km2(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    light_yield_length_km: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Energy-growing projected area ``pi R_eff(E)^2``.
+
+    See :func:`dynamic_projected_radius_km` for the growth law and its
+    physical motivation.
+
+    Parameters
+    ----------
+    radius_km : float
+        Static detector radius ``R_det`` [km].
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    light_yield_length_km : float
+        Growth length ``L`` [km] per e-fold of energy above ``E_c``.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient feeding ``E_c``.
+        Defaults to 1.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation feeding ``E_c``; see
+        :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    area : np.ndarray
+        Effective projected area [km^2], broadcast to the shape of
+        ``energy_gev``.
+    """
+    r_eff = dynamic_projected_radius_km(
+        radius_km, energy_gev, light_yield_length_km, density_g_cm3, b_scale, source,
+    )
+    return np.pi * r_eff**2</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.dynamic_projected_radius_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">dynamic_projected_radius_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">dynamic_projected_radius_km(radius_km: float, energy_gev: float | ndarray, light_yield_length_km: float, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Energy-growing lateral trigger radius from stochastic light yield.</p>
+<p>Not part of Palmisano et al. (arXiv:2607.13143), whose soft volume uses a
+fixed projected area <code>pi R_det^2</code>. That is only right if a muon's ability to
+trigger the detector from a given lateral distance doesn't depend on its
+energy. Above the critical energy <code>E_c</code> (:func:<code>critical_energy_gev</code>)
+radiative losses -- bremsstrahlung, pair production, photonuclear --
+start dominating the loss rate, and the resulting stochastic light
+output lets a track trigger strings from beyond <code>R_det</code>. This
+parametrizes that reach as growing logarithmically with energy above
+<code>E_c</code>,</p>
+<p>.. math:: R_\mathrm{eff}(E) = R_\mathrm{det} + L\,
+    \max\!\bigl[0,\ \ln(E / E_c(E))\bigr],</p>
+<p>clipped to <code>R_det</code> at and below <code>E_c</code> so the term is inactive for
+TeV-scale (ionization-dominated) muons. <code>E_c</code> is reused rather than
+refit, so the only new phenomenological parameter is the slope <code>L</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Static detector radius <code>R_det</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>light_yield_length_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Growth length <code>L</code> [km] per e-fold of energy above <code>E_c</code> -- a
+phenomenological nuisance parameter, not a derived quantity (see
+<code>examples/26_dynamic_response_effective_area.py</code>, which fits it
+against the published IceCube effective area rather than asserting a
+value).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient feeding <code>E_c</code>.
+Defaults to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation feeding <code>E_c</code>; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>r_eff</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective projected radius [km], broadcast to the shape of
+<code>energy_gev</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def dynamic_projected_radius_km(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    light_yield_length_km: float,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    r"""Energy-growing lateral trigger radius from stochastic light yield.
+
+    Not part of Palmisano et al. (arXiv:2607.13143), whose soft volume uses a
+    fixed projected area ``pi R_det^2``. That is only right if a muon's ability to
+    trigger the detector from a given lateral distance doesn't depend on its
+    energy. Above the critical energy ``E_c`` (:func:`critical_energy_gev`)
+    radiative losses -- bremsstrahlung, pair production, photonuclear --
+    start dominating the loss rate, and the resulting stochastic light
+    output lets a track trigger strings from beyond ``R_det``. This
+    parametrizes that reach as growing logarithmically with energy above
+    ``E_c``,
+
+    .. math:: R_\\mathrm{eff}(E) = R_\\mathrm{det} + L\\,
+        \\max\\!\\bigl[0,\\ \\ln(E / E_c(E))\\bigr],
+
+    clipped to ``R_det`` at and below ``E_c`` so the term is inactive for
+    TeV-scale (ionization-dominated) muons. ``E_c`` is reused rather than
+    refit, so the only new phenomenological parameter is the slope ``L``.
+
+    Parameters
+    ----------
+    radius_km : float
+        Static detector radius ``R_det`` [km].
+    energy_gev : float or np.ndarray
+        Muon energy [GeV].
+    light_yield_length_km : float
+        Growth length ``L`` [km] per e-fold of energy above ``E_c`` -- a
+        phenomenological nuisance parameter, not a derived quantity (see
+        ``examples/26_dynamic_response_effective_area.py``, which fits it
+        against the published IceCube effective area rather than asserting a
+        value).
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient feeding ``E_c``.
+        Defaults to 1.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation feeding ``E_c``; see
+        :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    r_eff : np.ndarray
+        Effective projected radius [km], broadcast to the shape of
+        ``energy_gev``.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    e_crit = critical_energy_gev(energy, density_g_cm3, b_scale, source)
+    growth = np.clip(np.log(energy / e_crit), 0.0, None)
+    return radius_km + light_yield_length_km * growth</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.eroded_prism_target_km2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">eroded_prism_target_km2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">eroded_prism_target_km2(cos_theta: float | ndarray, radius_km: float | ndarray, height_km: float | ndarray, min_chord_km: float = 0.0, n_sides: int | None = 6, n_blocks: int = 1) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Target area and volume of a prism that a track must cross for <code>min_chord_km</code>.</p>
+<p>:func:<code>prism_projected_area_km2</code> counts every line that touches the body,
+including the ones that clip a corner and leave again. A reconstructed track
+is not made that way: it needs a lever arm inside the instrumented volume,
+and a selection that demands one throws the clipping tracks away. Imposing a
+minimum in-detector path <code>l</code> is therefore a <em>selection</em> statement with a
+geometric consequence, and the consequence is the whole of what it does here.</p>
+<p>The lines whose chord through a convex body <code>K</code> exceeds <code>l</code> are exactly
+the lines meeting the erosion <code>K n (K - l n)</code>, so both the area and the
+volume follow from that one body. For an upright prism the erosion factorizes:
+the cross-section becomes the lens of two copies offset by <code>l sin(theta)</code>,
+and the height falls to <code>h - l cos(theta)</code>. Hence</p>
+<p>.. math:: A(\theta) = A_{\rm lens}\,|\cos\theta|
+    + w_{\rm lens}\,(h - l|\cos\theta|)\,\sin\theta,
+    \qquad V(\theta) = A_{\rm lens}\,(h - l|\cos\theta|),</p>
+<p>with <code>A_lens</code> and <code>w_lens</code> the area and the perpendicular width of the
+lens. <code>V</code> is the volume in which a vertex still leaves <code>l</code> of track
+before the muon exits, which is the right instrumented term to pair with
+<code>A</code>: entering tracks need a chord, starting ones need a remaining path.</p>
+<p>The erosion is strongest at oblique incidence, which is where the intact
+prism's cap and side terms add. That is the whole reason it matters: it
+removes the oblique enhancement that a published declination dependence does
+not carry, and takes the direction-averaged area down towards the
+equal-volume sphere's.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith angle; only its magnitude is used.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Area-equivalent radius of the cross-section [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>height_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented height of one prism [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>min_chord_km</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Minimum path inside the instrumented volume [km]. Defaults to 0, which
+returns :func:<code>prism_projected_area_km2</code> and the intact volume exactly.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sides</code></b>
+                  (<code><span title="int">int</span> or None</code>, default:
+                      <code>6</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Sides of the regular cross-section; <code>None</code> for a circle. The lens is
+computed for the circle of equal area and the perimeter enters only
+through the side term, which is the same Cauchy-level treatment of the
+cross-section shape that :func:<code>prism_projected_area_km2</code> makes.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_blocks</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>1</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of identical prisms. Defaults to 1.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>area_km2</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Projected area of the eroded body [km^2].</p>
+              </div>
+            </li>
+            <li>
+<b><code>volume_km3</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Volume of the eroded body [km^3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>n_sides</code> is given and is less than 3, or if
+<code>min_chord_km</code> is negative.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <pre class="highlight"><code class="language-pycon">&gt;&gt;&gt; a, v = eroded_prism_target_km2(0.5, 0.5642, 1.0, 0.0)
+&gt;&gt;&gt; bool(np.isclose(a, prism_projected_area_km2(0.5, 0.5642, 1.0)))
+True</code></pre>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def eroded_prism_target_km2(
+    cos_theta: float | np.ndarray,
+    radius_km: float | np.ndarray,
+    height_km: float | np.ndarray,
+    min_chord_km: float = 0.0,
+    n_sides: int | None = 6,
+    n_blocks: int = 1,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    r"""Target area and volume of a prism that a track must cross for ``min_chord_km``.
+
+    :func:`prism_projected_area_km2` counts every line that touches the body,
+    including the ones that clip a corner and leave again. A reconstructed track
+    is not made that way: it needs a lever arm inside the instrumented volume,
+    and a selection that demands one throws the clipping tracks away. Imposing a
+    minimum in-detector path ``l`` is therefore a *selection* statement with a
+    geometric consequence, and the consequence is the whole of what it does here.
+
+    The lines whose chord through a convex body ``K`` exceeds ``l`` are exactly
+    the lines meeting the erosion ``K n (K - l n)``, so both the area and the
+    volume follow from that one body. For an upright prism the erosion factorizes:
+    the cross-section becomes the lens of two copies offset by ``l sin(theta)``,
+    and the height falls to ``h - l cos(theta)``. Hence
+
+    .. math:: A(\\theta) = A_{\\rm lens}\\,|\\cos\\theta|
+        + w_{\\rm lens}\\,(h - l|\\cos\\theta|)\\,\\sin\\theta,
+        \\qquad V(\\theta) = A_{\\rm lens}\\,(h - l|\\cos\\theta|),
+
+    with ``A_lens`` and ``w_lens`` the area and the perpendicular width of the
+    lens. ``V`` is the volume in which a vertex still leaves ``l`` of track
+    before the muon exits, which is the right instrumented term to pair with
+    ``A``: entering tracks need a chord, starting ones need a remaining path.
+
+    The erosion is strongest at oblique incidence, which is where the intact
+    prism's cap and side terms add. That is the whole reason it matters: it
+    removes the oblique enhancement that a published declination dependence does
+    not carry, and takes the direction-averaged area down towards the
+    equal-volume sphere's.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith angle; only its magnitude is used.
+    radius_km : float or np.ndarray
+        Area-equivalent radius of the cross-section [km].
+    height_km : float or np.ndarray
+        Instrumented height of one prism [km].
+    min_chord_km : float, optional
+        Minimum path inside the instrumented volume [km]. Defaults to 0, which
+        returns :func:`prism_projected_area_km2` and the intact volume exactly.
+    n_sides : int or None, optional
+        Sides of the regular cross-section; ``None`` for a circle. The lens is
+        computed for the circle of equal area and the perimeter enters only
+        through the side term, which is the same Cauchy-level treatment of the
+        cross-section shape that :func:`prism_projected_area_km2` makes.
+    n_blocks : int, optional
+        Number of identical prisms. Defaults to 1.
+
+    Returns
+    -------
+    area_km2 : np.ndarray
+        Projected area of the eroded body [km^2].
+    volume_km3 : np.ndarray
+        Volume of the eroded body [km^3].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``n_sides`` is given and is less than 3, or if
+        ``min_chord_km`` is negative.
+
+    Examples
+    --------
+    &gt;&gt;&gt; a, v = eroded_prism_target_km2(0.5, 0.5642, 1.0, 0.0)
+    &gt;&gt;&gt; bool(np.isclose(a, prism_projected_area_km2(0.5, 0.5642, 1.0)))
+    True
+    """
+    if n_sides is not None and n_sides &lt; 3:
+        raise ValueError(f"n_sides must be at least 3 or None for a circle, got {n_sides}.")
+    if min_chord_km &lt; 0.0:
+        raise ValueError(f"min_chord_km must be non-negative, got {min_chord_km}.")
+    cos_abs = np.abs(np.asarray(cos_theta, dtype=float))
+    sin_theta = np.sqrt(np.clip(1.0 - cos_abs**2, 0.0, 1.0))
+    radius = np.asarray(radius_km, dtype=float)
+    height = np.asarray(height_km, dtype=float)
+    ell = float(min_chord_km)
+
+    if n_sides is None:
+        perimeter = 2.0 * np.pi * radius
+    else:
+        perimeter = 2.0 * radius * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
+    # Cauchy's mean width, carried as a correction on the circle's 2R so that
+    # the l -&gt; 0 limit reproduces prism_projected_area_km2 for any cross-section.
+    with np.errstate(divide="ignore", invalid="ignore"):
+        width_factor = np.where(
+            radius &gt; 0.0, perimeter / (2.0 * np.pi * np.maximum(radius, 1e-12)), 1.0)
+
+    offset = np.clip(ell * sin_theta, 0.0, 2.0 * radius)
+    half = np.clip(0.5 * offset / np.maximum(radius, 1e-12), 0.0, 1.0)
+    lens = (2.0 * radius**2 * np.arccos(half)
+            - 0.5 * offset * np.sqrt(np.clip(4.0 * radius**2 - offset**2, 0.0, None)))
+    width = 2.0 * np.sqrt(np.clip(radius**2 - 0.25 * offset**2, 0.0, None)) * width_factor
+    eroded_height = np.clip(height - ell * cos_abs, 0.0, None)
+
+    area = n_blocks * (lens * cos_abs + width * eroded_height * sin_theta)
+    volume = n_blocks * lens * eroded_height
+    return area, volume</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.light_reach_radius_km" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">light_reach_radius_km</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">light_reach_radius_km(radius_km: float, energy_gev: float | ndarray, reach_km: float, pivot_gev: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Instrumented radius plus a signed, logarithmically growing light reach.</p>
+<p>:func:<code>dynamic_projected_radius_km</code> clips its growth at <code>R_det</code>, so it can
+only ever describe a detector responding to <em>more</em> than its footprint. That
+forbids the opposite regime, which is just as real: while the trigger is
+still turning on, a dim track lights too few modules to use the whole array
+and the detector responds to <em>less</em> than its footprint. Dropping the clip
+and letting the reach change sign covers both with one mechanism,</p>
+<p>.. math:: R_\mathrm{eff}(E) = \max\!\left[0,\;
+    R_\mathrm{det} + \Lambda \ln(E / E_\mathrm{piv})\right],</p>
+<p>with <code>Lambda</code> the growth per e-fold and <code>E_piv</code> the energy at which the
+detector responds to exactly its own footprint. Above <code>E_piv</code> the reach is
+a physical halo. Below it the negative branch is a stand-in for partial
+occupancy rather than a literal distance, and should be read as a
+phenomenological turn-on.</p>
+<p>Both parameters describe the medium and the muon rather than the array, so
+one pair applies to every configuration at a site with only <code>R_det</code>
+changing. That is what makes the law transferable between a full detector
+and a partially built one, and therefore testable.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented footprint radius <code>R_det</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy [GeV] setting the light output.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>reach_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Growth of the reach per e-fold of energy <code>Lambda</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pivot_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Energy <code>E_piv</code> at which the effective radius equals <code>R_det</code> [GeV].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>radius</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Effective radius [km], clipped at zero.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The reach is a statement about the muon's light output <em>where it is seen</em>,
+so the energy passed should be the muon energy at the detector. Callers
+working at fixed neutrino energy, where the arrival energy varies along the
+depth integral, necessarily approximate this by the production energy;
+that overestimates the reach for muons born far upstream. In the
+muon-energy-differential convention the observed energy is the natural
+argument and no approximation is involved.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def light_reach_radius_km(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    reach_km: float,
+    pivot_gev: float,
+) -&gt; np.ndarray:
+    r"""Instrumented radius plus a signed, logarithmically growing light reach.
+
+    :func:`dynamic_projected_radius_km` clips its growth at ``R_det``, so it can
+    only ever describe a detector responding to *more* than its footprint. That
+    forbids the opposite regime, which is just as real: while the trigger is
+    still turning on, a dim track lights too few modules to use the whole array
+    and the detector responds to *less* than its footprint. Dropping the clip
+    and letting the reach change sign covers both with one mechanism,
+
+    .. math:: R_\\mathrm{eff}(E) = \\max\\!\\left[0,\\;
+        R_\\mathrm{det} + \\Lambda \\ln(E / E_\\mathrm{piv})\\right],
+
+    with ``Lambda`` the growth per e-fold and ``E_piv`` the energy at which the
+    detector responds to exactly its own footprint. Above ``E_piv`` the reach is
+    a physical halo. Below it the negative branch is a stand-in for partial
+    occupancy rather than a literal distance, and should be read as a
+    phenomenological turn-on.
+
+    Both parameters describe the medium and the muon rather than the array, so
+    one pair applies to every configuration at a site with only ``R_det``
+    changing. That is what makes the law transferable between a full detector
+    and a partially built one, and therefore testable.
+
+    Parameters
+    ----------
+    radius_km : float
+        Instrumented footprint radius ``R_det`` [km].
+    energy_gev : float or np.ndarray
+        Muon energy [GeV] setting the light output.
+    reach_km : float
+        Growth of the reach per e-fold of energy ``Lambda`` [km].
+    pivot_gev : float
+        Energy ``E_piv`` at which the effective radius equals ``R_det`` [GeV].
+
+    Returns
+    -------
+    radius : np.ndarray
+        Effective radius [km], clipped at zero.
+
+    Notes
+    -----
+    The reach is a statement about the muon's light output *where it is seen*,
+    so the energy passed should be the muon energy at the detector. Callers
+    working at fixed neutrino energy, where the arrival energy varies along the
+    depth integral, necessarily approximate this by the production energy;
+    that overestimates the reach for muons born far upstream. In the
+    muon-energy-differential convention the observed energy is the natural
+    argument and no approximation is involved.
+    """
+    energy = np.atleast_1d(np.asarray(energy_gev, dtype=float))
+    radius = np.clip(radius_km + reach_km * np.log(energy / pivot_gev), 0.0, None)
+    return radius.reshape(np.shape(energy_gev)) if np.ndim(energy_gev) else radius</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.prism_projected_area_km2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">prism_projected_area_km2</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">prism_projected_area_km2(cos_theta: float | ndarray, radius_km: float | ndarray, height_km: float | ndarray, n_sides: int | None = 6, n_blocks: int = 1) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Projected area of an upright convex prism, averaged over azimuth.</p>
+<p>A sphere presents <code>pi R^2</code> from every direction, which is convenient and
+wrong for an array that is as wide as it is tall. This is the projection of
+an upright prism of regular <code>n_sides</code> cross-section,</p>
+<p>.. math:: A_\mathrm{proj}(\theta_z) = \pi R^2 |\cos\theta_z|
+    + \frac{P}{\pi} h \sin\theta_z,</p>
+<p>with <code>R</code> the area-equivalent radius of the cross-section, so that the
+footprint is <code>pi R^2</code> and the instrumented volume <code>pi R^2 h</code> whatever
+<code>n_sides</code> is, and <code>P = 2 R sqrt(pi n tan(pi/n))</code> its perimeter. The
+<code>P / pi</code> in the side term is the azimuthal average of the silhouette width
+of a convex cross-section, which for a circle (<code>n_sides=None</code>) returns the
+<code>2 R h sin theta</code> of the cylinder form used for the ARCA blocks.</p>
+<p>Two consequences are worth stating because they are easy to guess wrongly.
+The two terms <em>add</em> at oblique incidence, so the maximum is neither face-on
+value: a 1 km^2 by 1 km hexagonal prism presents 1.00 km^2 vertically and
+1.19 km^2 horizontally but 1.55 km^2 at <code>theta_z = 50</code>. And its
+direction-averaged area is <code>S/4 = 1.43</code> km^2 by Cauchy's formula, above
+the 1.21 km^2 of the equal-volume sphere, because the sphere minimises
+surface area at fixed volume and therefore also minimises mean projected
+area. Replacing a sphere by any equal-volume prism raises the ceiling.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>cos_theta</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cosine of the arrival zenith angle. Only its magnitude is used, so
+upgoing and downgoing arrivals of the same obliquity agree.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Area-equivalent radius of the cross-section [km], broadcast against
+<code>cos_theta</code>. An energy-dependent radius is how the reach law of
+:func:<code>light_reach_radius_km</code> enters.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>height_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Instrumented height of one prism [km], broadcast against <code>cos_theta</code>
+and <code>radius_km</code>. An energy-dependent height is how a light reach that
+extends the boundary vertically as well as radially enters.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_sides</code></b>
+                  (<code><span title="int">int</span> or None</code>, default:
+                      <code>6</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Sides of the regular cross-section; 6 (the default) for an IceCube-like
+hexagonal footprint, <code>None</code> for a circular one. A hexagon has a 5%
+longer perimeter than the circle of equal area, which is the whole of
+its effect on this expression.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_blocks</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>1</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of identical prisms. Defaults to 1.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>area</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Projected area [km^2], broadcast over <code>cos_theta</code> and <code>radius_km</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>n_sides</code> is given and is less than 3.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def prism_projected_area_km2(
+    cos_theta: float | np.ndarray,
+    radius_km: float | np.ndarray,
+    height_km: float | np.ndarray,
+    n_sides: int | None = 6,
+    n_blocks: int = 1,
+) -&gt; np.ndarray:
+    r"""Projected area of an upright convex prism, averaged over azimuth.
+
+    A sphere presents ``pi R^2`` from every direction, which is convenient and
+    wrong for an array that is as wide as it is tall. This is the projection of
+    an upright prism of regular ``n_sides`` cross-section,
+
+    .. math:: A_\\mathrm{proj}(\\theta_z) = \\pi R^2 |\\cos\\theta_z|
+        + \\frac{P}{\\pi} h \\sin\\theta_z,
+
+    with ``R`` the area-equivalent radius of the cross-section, so that the
+    footprint is ``pi R^2`` and the instrumented volume ``pi R^2 h`` whatever
+    ``n_sides`` is, and ``P = 2 R sqrt(pi n tan(pi/n))`` its perimeter. The
+    ``P / pi`` in the side term is the azimuthal average of the silhouette width
+    of a convex cross-section, which for a circle (``n_sides=None``) returns the
+    ``2 R h sin theta`` of the cylinder form used for the ARCA blocks.
+
+    Two consequences are worth stating because they are easy to guess wrongly.
+    The two terms *add* at oblique incidence, so the maximum is neither face-on
+    value: a 1 km^2 by 1 km hexagonal prism presents 1.00 km^2 vertically and
+    1.19 km^2 horizontally but 1.55 km^2 at ``theta_z = 50``. And its
+    direction-averaged area is ``S/4 = 1.43`` km^2 by Cauchy's formula, above
+    the 1.21 km^2 of the equal-volume sphere, because the sphere minimises
+    surface area at fixed volume and therefore also minimises mean projected
+    area. Replacing a sphere by any equal-volume prism raises the ceiling.
+
+    Parameters
+    ----------
+    cos_theta : float or np.ndarray
+        Cosine of the arrival zenith angle. Only its magnitude is used, so
+        upgoing and downgoing arrivals of the same obliquity agree.
+    radius_km : float or np.ndarray
+        Area-equivalent radius of the cross-section [km], broadcast against
+        ``cos_theta``. An energy-dependent radius is how the reach law of
+        :func:`light_reach_radius_km` enters.
+    height_km : float or np.ndarray
+        Instrumented height of one prism [km], broadcast against ``cos_theta``
+        and ``radius_km``. An energy-dependent height is how a light reach that
+        extends the boundary vertically as well as radially enters.
+    n_sides : int or None, optional
+        Sides of the regular cross-section; 6 (the default) for an IceCube-like
+        hexagonal footprint, ``None`` for a circular one. A hexagon has a 5%
+        longer perimeter than the circle of equal area, which is the whole of
+        its effect on this expression.
+    n_blocks : int, optional
+        Number of identical prisms. Defaults to 1.
+
+    Returns
+    -------
+    area : np.ndarray
+        Projected area [km^2], broadcast over ``cos_theta`` and ``radius_km``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``n_sides`` is given and is less than 3.
+    """
+    if n_sides is not None and n_sides &lt; 3:
+        raise ValueError(f"n_sides must be at least 3 or None for a circle, got {n_sides}.")
+    cos_abs = np.abs(np.asarray(cos_theta, dtype=float))
+    sin_theta = np.sqrt(np.clip(1.0 - cos_abs**2, 0.0, 1.0))
+    radius = np.asarray(radius_km, dtype=float)
+    if n_sides is None:
+        perimeter = 2.0 * np.pi * radius
+    else:
+        perimeter = 2.0 * radius * np.sqrt(np.pi * n_sides * np.tan(np.pi / n_sides))
+    cap = np.pi * radius**2 * cos_abs
+    side = perimeter / np.pi * np.asarray(height_km, dtype=float) * sin_theta
+    return n_blocks * (cap + side)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.range_target_volume_km3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">range_target_volume_km3</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">range_target_volume_km3(radius_km: float, energy_gev: float | ndarray, threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE, light_yield_length_km: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Target volume for through-going tracks, in the muon-range convention.</p>
+<p>A muon of energy <code>E</code> produced anywhere in the upstream column
+<code>pi R_det^2 R(E -&gt; E_thr)</code> reaches the detector above threshold, and the
+instrumented sphere itself contributes its own mean chord. Since
+<code>pi R_det^2 (4 R_det / 3) = V_det</code> exactly, the two add to</p>
+<p>.. math:: V_\mathrm{range}(E) = \pi R_\mathrm{det}^2\,
+    R(E \to E_\mathrm{thr}) + V_\mathrm{det},</p>
+<p>the same <code>V_det + V_soft</code> decomposition as the drift form, with the
+spectral length <code>1/(b_mu A)</code> replaced by the threshold range. This is the
+quantity that matches the convention of the published IceCube effective area,
+which is tabulated at fixed neutrino energy and integrated over all selected
+muon energies.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon energy at production [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>threshold_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.muon_range.DEFAULT_MUON_THRESHOLD_GEV">DEFAULT_MUON_THRESHOLD_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Muon selection threshold [GeV]. Defaults to
+:data:<code>DEFAULT_MUON_THRESHOLD_GEV</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient. Defaults to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>light_yield_length_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>If set, replaces the static projected area with the energy-growing
+:func:<code>dynamic_projected_area_km2</code> (see
+:func:<code>dynamic_projected_radius_km</code>'s docstring for the motivation:
+stochastic light yield above the critical energy letting a track
+trigger from beyond <code>R_det</code>, not part of Palmisano et al.). Only the
+lateral projected area grows; the instrumented sphere <code>V_det</code>
+below is left untouched. <code>None</code> (the default) preserves the
+static-radius behaviour.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>volume</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Target volume [km^3], broadcast to the shape of <code>energy_gev</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>Detection efficiency is not included: this is the geometric ceiling that a
+perfect through-going selection with threshold <code>E_thr</code> would reach. The
+ratio of the published <code>A_eff</code> to this volume is therefore an estimate of
+the selection efficiency (see <code>examples/20_effective_area_soft_vs_irf.py</code>).</p>
+<p>A muon born below threshold is never selected, so the volume drops to zero
+rather than to <code>V_det</code> for <code>E &lt;= E_thr</code>.</p>
+</details>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def range_target_volume_km3(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    threshold_gev: float = DEFAULT_MUON_THRESHOLD_GEV,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+    light_yield_length_km: float | None = None,
+) -&gt; np.ndarray:
+    r"""Target volume for through-going tracks, in the muon-range convention.
+
+    A muon of energy ``E`` produced anywhere in the upstream column
+    ``pi R_det^2 R(E -&gt; E_thr)`` reaches the detector above threshold, and the
+    instrumented sphere itself contributes its own mean chord. Since
+    ``pi R_det^2 (4 R_det / 3) = V_det`` exactly, the two add to
+
+    .. math:: V_\\mathrm{range}(E) = \\pi R_\\mathrm{det}^2\\,
+        R(E \\to E_\\mathrm{thr}) + V_\\mathrm{det},
+
+    the same ``V_det + V_soft`` decomposition as the drift form, with the
+    spectral length ``1/(b_mu A)`` replaced by the threshold range. This is the
+    quantity that matches the convention of the published IceCube effective area,
+    which is tabulated at fixed neutrino energy and integrated over all selected
+    muon energies.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Muon energy at production [GeV].
+    threshold_gev : float, optional
+        Muon selection threshold [GeV]. Defaults to
+        :data:`DEFAULT_MUON_THRESHOLD_GEV`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient. Defaults to 1.
+    light_yield_length_km : float or None, optional
+        If set, replaces the static projected area with the energy-growing
+        :func:`dynamic_projected_area_km2` (see
+        :func:`dynamic_projected_radius_km`'s docstring for the motivation:
+        stochastic light yield above the critical energy letting a track
+        trigger from beyond ``R_det``, not part of Palmisano et al.). Only the
+        lateral projected area grows; the instrumented sphere ``V_det``
+        below is left untouched. ``None`` (the default) preserves the
+        static-radius behaviour.
+
+    Returns
+    -------
+    volume : np.ndarray
+        Target volume [km^3], broadcast to the shape of ``energy_gev``.
+
+    Notes
+    -----
+    Detection efficiency is not included: this is the geometric ceiling that a
+    perfect through-going selection with threshold ``E_thr`` would reach. The
+    ratio of the published ``A_eff`` to this volume is therefore an estimate of
+    the selection efficiency (see ``examples/20_effective_area_soft_vs_irf.py``).
+
+    A muon born below threshold is never selected, so the volume drops to zero
+    rather than to ``V_det`` for ``E &lt;= E_thr``.
+    """
+    if light_yield_length_km is None:
+        proj_area = np.pi * radius_km**2
+    else:
+        proj_area = dynamic_projected_area_km2(
+            radius_km, energy_gev, light_yield_length_km, density_g_cm3, b_scale, source,
+        )
+    v_det = 4.0 / 3.0 * np.pi * radius_km**3
+    range_km = muon_range_km(energy_gev, threshold_gev, density_g_cm3, b_scale, source)
+    return np.where(range_km &gt; 0.0, proj_area * range_km + v_det, 0.0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.saturation_factor" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">saturation_factor</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">saturation_factor(phi_per_km: float | ndarray, column_depth_km: float, inv_lambda_per_km: float | ndarray = 0.0) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Effective attenuated range over a finite column (Eq. 9, or Eq. 11 coupled).</p>
+<p>With <code>inv_lambda_per_km = 0</code> (the default) this is the plain transparent-
+Earth factor <code>(1 - e^{-Phi x}) / Phi</code> that turns the infinite-column range
+<code>1/Phi</code> into the value delivered by an upstream column of depth <code>x</code>
+(<code>docs/theory/exact_soft_volume.md</code> Part 7). It is finite for every sign of
+<code>Phi</code>: as <code>Phi -&gt; 0</code> it tends to <code>x</code> (no losses, the whole column
+accumulates), and for <code>Phi &lt; 0</code> it continues to
+<code>(e^{|Phi| x} - 1) / |Phi|</code>, curing the drift-form divergence at and beyond
+the cross-section pole.</p>
+<p>With a nonzero <code>inv_lambda_per_km = 1/Lambda_nu</code>, this is instead the
+method paper's coupled <code>R_nu(x, A)</code> (Sec. III A and App. A),</p>
+<p>.. math:: R_\nu(x, A) = \frac{e^{-x/\Lambda_\nu} - e^{-x\Phi(A)}}
+    {\Phi(A) - 1/\Lambda_\nu},</p>
+<p>which folds the parent neutrino's own Earth attenuation into the same
+depth integral that produces the soft volume, rather than applying it as a
+separate multiplicative flux factor. Setting <code>inv_lambda_per_km = 0</code>
+recovers the plain factor above identically, and the removable singularity
+at <code>Phi(A) == 1/Lambda_nu</code> is handled by its L'Hopital limit
+<code>x e^{-x/Lambda_nu}</code> (the same pattern as
+:func:<code>softpaws.transport.tau.tau_loss_density</code>'s composite-symbol pole).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>phi_per_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Collision eigenvalue <code>Phi(A)</code> [km^-1] (see
+:func:<code>softpaws.transport.eigenvalue.phi_eigenvalue</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Available upstream column depth <code>x</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>inv_lambda_per_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Parent-neutrino attenuation rate <code>1/Lambda_nu</code> [km^-1] (see
+:func:<code>softpaws.transport.attenuation.neutrino_interaction_length_km</code>).
+Defaults to <code>0</code> (no neutrino attenuation, today's behaviour).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>eff_range</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>R_nu(x, A)</code> [km], or the plain saturation factor when
+<code>inv_lambda_per_km = 0</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def saturation_factor(
+    phi_per_km: float | np.ndarray,
+    column_depth_km: float,
+    inv_lambda_per_km: float | np.ndarray = 0.0,
+) -&gt; np.ndarray:
+    r"""Effective attenuated range over a finite column (Eq. 9, or Eq. 11 coupled).
+
+    With ``inv_lambda_per_km = 0`` (the default) this is the plain transparent-
+    Earth factor ``(1 - e^{-Phi x}) / Phi`` that turns the infinite-column range
+    ``1/Phi`` into the value delivered by an upstream column of depth ``x``
+    (``docs/theory/exact_soft_volume.md`` Part 7). It is finite for every sign of
+    ``Phi``: as ``Phi -&gt; 0`` it tends to ``x`` (no losses, the whole column
+    accumulates), and for ``Phi &lt; 0`` it continues to
+    ``(e^{|Phi| x} - 1) / |Phi|``, curing the drift-form divergence at and beyond
+    the cross-section pole.
+
+    With a nonzero ``inv_lambda_per_km = 1/Lambda_nu``, this is instead the
+    method paper's coupled ``R_nu(x, A)`` (Sec. III A and App. A),
+
+    .. math:: R_\\nu(x, A) = \\frac{e^{-x/\\Lambda_\\nu} - e^{-x\\Phi(A)}}
+        {\\Phi(A) - 1/\\Lambda_\\nu},
+
+    which folds the parent neutrino's own Earth attenuation into the same
+    depth integral that produces the soft volume, rather than applying it as a
+    separate multiplicative flux factor. Setting ``inv_lambda_per_km = 0``
+    recovers the plain factor above identically, and the removable singularity
+    at ``Phi(A) == 1/Lambda_nu`` is handled by its L'Hopital limit
+    ``x e^{-x/Lambda_nu}`` (the same pattern as
+    :func:`softpaws.transport.tau.tau_loss_density`'s composite-symbol pole).
+
+    Parameters
+    ----------
+    phi_per_km : float or np.ndarray
+        Collision eigenvalue ``Phi(A)`` [km^-1] (see
+        :func:`softpaws.transport.eigenvalue.phi_eigenvalue`).
+    column_depth_km : float
+        Available upstream column depth ``x`` [km].
+    inv_lambda_per_km : float or np.ndarray, optional
+        Parent-neutrino attenuation rate ``1/Lambda_nu`` [km^-1] (see
+        :func:`softpaws.transport.attenuation.neutrino_interaction_length_km`).
+        Defaults to ``0`` (no neutrino attenuation, today's behaviour).
+
+    Returns
+    -------
+    eff_range : np.ndarray
+        ``R_nu(x, A)`` [km], or the plain saturation factor when
+        ``inv_lambda_per_km = 0``.
+    """
+    phi = np.asarray(phi_per_km, dtype=float)
+    inv_lambda = np.asarray(inv_lambda_per_km, dtype=float)
+    x = float(column_depth_km)
+    denom = phi - inv_lambda
+    small = np.abs(denom) &lt; 1e-12
+    safe_denom = np.where(small, 1.0, denom)
+    numer = np.exp(-inv_lambda * x) - np.exp(-phi * x)
+    coupled = numer / safe_denom
+    # L'Hopital limit at Phi(A) == 1/Lambda_nu: d/dPhi[e^{-x/Lambda}-e^{-x Phi}]
+    # over d/dPhi[Phi - 1/Lambda] at fixed inv_lambda is x e^{-x Phi}.
+    limit_value = x * np.exp(-phi * x)
+    return np.where(small, limit_value, coupled)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.scale_breaking_saturation_factor" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">scale_breaking_saturation_factor</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">scale_breaking_saturation_factor(phi_per_km: float | ndarray, phi_prime_per_km: float | ndarray, beta: float, column_depth_km: float, n_steps: int = 256) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Saturation factor with a running-spectral-index correction.</p>
+<p>App. F of an earlier draft of the method paper treats a scale-breaking
+loss rate <code>dGamma/dy = E^beta kappa(y)</code>
+as a shift operator on the Mellin index, whose leading-order (first
+order in <code>beta</code>) consequence (its Eq. F4)
+is that the <em>effective</em> spectral index runs with propagated distance
+<code>ell</code>,</p>
+<p>.. math:: s(\ell) \approx A + \beta\,\ell\,\Phi(A).</p>
+<p>Substituting this into the propagator and Taylor-expanding <code>Phi(s(ell))</code>
+to the same order gives a Gaussian-modified exponent replacing the plain
+<code>Phi(A) ell</code> of Eq. 9,</p>
+<p>.. math:: \int_0^x d\ell\,\exp\!\left[-\ell\,\Phi(A)
+    - \frac{\beta}{2}\,\ell^2\,\Phi(A)\,\Phi'(A)\right],</p>
+<p>evaluated here by quadrature (the antiderivative is an error function, but
+the quadrature is simpler and just as robust for a finite, smooth,
+monotonically decaying integrand). Reduces to :func:<code>saturation_factor</code>
+exactly at <code>beta = 0</code>.</p>
+<p><strong>Scope note.</strong> This implements Eq. F4's leading-order truncation, not
+the full Eq. F3 series: for a source that is genuinely a single power-law
+mode (the case this package treats throughout), Eq. F3's source term
+<code>S_hat(xi, s + k beta)</code> is only well defined at <code>k = 0</code> -- that
+draft does not spell out how a single-mode source's higher
+shifted terms are meant to be regularized (compare App. H, which handles
+exactly this kind of non-single-mode bookkeeping explicitly for a cutoff
+source but not for this shift operator). Eq. F4 sidesteps that ambiguity
+entirely by working with the running index directly, at the cost of being
+a first-order (small-<code>beta</code>) approximation rather than an exact
+resummation.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>phi_per_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Collision eigenvalue <code>Phi(A)</code> [km^-1].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi_prime_per_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Derivative <code>d Phi / dA</code> [km^-1] (see
+:func:<code>softpaws.transport.eigenvalue.phi_eigenvalue_derivative</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>beta</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Scale-breaking exponent (<code>dGamma/dy ~ E^beta</code>); <code>0</code> recovers the
+plain treatment.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Available upstream column depth <code>x</code> [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_steps</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>256</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Number of quadrature points. Defaults to 256.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>eff_range</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The running-index-corrected effective range [km], broadcast to the
+shape of <code>phi_per_km</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def scale_breaking_saturation_factor(
+    phi_per_km: float | np.ndarray,
+    phi_prime_per_km: float | np.ndarray,
+    beta: float,
+    column_depth_km: float,
+    n_steps: int = 256,
+) -&gt; np.ndarray:
+    r"""Saturation factor with a running-spectral-index correction.
+
+    App. F of an earlier draft of the method paper treats a scale-breaking
+    loss rate ``dGamma/dy = E^beta kappa(y)``
+    as a shift operator on the Mellin index, whose leading-order (first
+    order in ``beta``) consequence (its Eq. F4)
+    is that the *effective* spectral index runs with propagated distance
+    ``ell``,
+
+    .. math:: s(\\ell) \\approx A + \\beta\\,\\ell\\,\\Phi(A).
+
+    Substituting this into the propagator and Taylor-expanding ``Phi(s(ell))``
+    to the same order gives a Gaussian-modified exponent replacing the plain
+    ``Phi(A) ell`` of Eq. 9,
+
+    .. math:: \\int_0^x d\\ell\\,\\exp\\!\\left[-\\ell\\,\\Phi(A)
+        - \\frac{\\beta}{2}\\,\\ell^2\\,\\Phi(A)\\,\\Phi'(A)\\right],
+
+    evaluated here by quadrature (the antiderivative is an error function, but
+    the quadrature is simpler and just as robust for a finite, smooth,
+    monotonically decaying integrand). Reduces to :func:`saturation_factor`
+    exactly at ``beta = 0``.
+
+    **Scope note.** This implements Eq. F4's leading-order truncation, not
+    the full Eq. F3 series: for a source that is genuinely a single power-law
+    mode (the case this package treats throughout), Eq. F3's source term
+    ``S_hat(xi, s + k beta)`` is only well defined at ``k = 0`` -- that
+    draft does not spell out how a single-mode source's higher
+    shifted terms are meant to be regularized (compare App. H, which handles
+    exactly this kind of non-single-mode bookkeeping explicitly for a cutoff
+    source but not for this shift operator). Eq. F4 sidesteps that ambiguity
+    entirely by working with the running index directly, at the cost of being
+    a first-order (small-``beta``) approximation rather than an exact
+    resummation.
+
+    Parameters
+    ----------
+    phi_per_km : float or np.ndarray
+        Collision eigenvalue ``Phi(A)`` [km^-1].
+    phi_prime_per_km : float or np.ndarray
+        Derivative ``d Phi / dA`` [km^-1] (see
+        :func:`softpaws.transport.eigenvalue.phi_eigenvalue_derivative`).
+    beta : float
+        Scale-breaking exponent (``dGamma/dy ~ E^beta``); ``0`` recovers the
+        plain treatment.
+    column_depth_km : float
+        Available upstream column depth ``x`` [km].
+    n_steps : int, optional
+        Number of quadrature points. Defaults to 256.
+
+    Returns
+    -------
+    eff_range : np.ndarray
+        The running-index-corrected effective range [km], broadcast to the
+        shape of ``phi_per_km``.
+    """
+    if beta == 0.0:
+        return saturation_factor(phi_per_km, column_depth_km)
+    phi = np.asarray(phi_per_km, dtype=float)
+    phi_prime = np.asarray(phi_prime_per_km, dtype=float)
+    x = float(column_depth_km)
+    ell = np.linspace(0.0, x, n_steps)
+    exponent = ell * phi[..., None] + 0.5 * beta * ell**2 * (phi * phi_prime)[..., None]
+    return np.trapezoid(np.exp(-exponent), ell, axis=-1)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.soft_volume_attenuated_exact" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">soft_volume_attenuated_exact</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">soft_volume_attenuated_exact(radius_km: float, energy_gev: float | ndarray, gamma: float, column_depth_km: float, inv_lambda_nu_per_km: float | ndarray, lam: float = DEFAULT_LAMBDA, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, d_scale: float = 1.0, source: str = DEFAULT_SOURCE) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Coupled inside/soft volume terms with parent-neutrino attenuation (Eq. 11).</p>
+<p>Generalizes :func:<code>soft_volume_exact</code> by folding the parent neutrino's own
+Earth attenuation into the same depth integral that produces the soft
+volume (App. A of the method paper), instead of applying
+a decoupled multiplicative survival probability
+(:mod:<code>softpaws.transport.attenuation</code>) on top of it.</p>
+<p>That soft-volume integral only covers muons produced <em>upstream</em>
+(production depth <code>xi</code> from 0 to <code>x</code>), each weighted by the parent
+neutrino's survival <code>e^{-xi/Lambda_nu}</code> to that production point:</p>
+<p>.. math:: V_\mathrm{soft}(x, A) = A_\mathrm{proj}\,\mathcal{I}(A)\,
+    R_\nu(x, A), \qquad R_\nu(x, A) = \frac{e^{-x/\Lambda_\nu}
+    - e^{-x\Phi(A)}}{\Phi(A) - 1/\Lambda_\nu}.</p>
+<p>Muons produced <em>inside</em> the detector are produced at <code>xi = x</code> exactly,
+so they instead pick up a single flat survival factor <code>e^{-x/Lambda_nu}</code>
+-- the parent neutrino's own survival probability to the detector, not the
+integrated <code>R_nu</code>:</p>
+<p>.. math:: V_\mathrm{det}^\mathrm{eff}(x, A) = \mathcal{I}(A)\,
+    e^{-x/\Lambda_\nu}\,V_\mathrm{det}.</p>
+<p>Together these replace :meth:<code>softpaws.response.soft_volume.
+SoftVolumeResponse.target_volume_cm3</code>'s decoupled <code>D_nu(E) * [V_det +
+V_soft]</code> with the exact <code>e^{-x/Lambda_nu} V_det + V_soft(x, A)</code>, using
+the <strong>unattenuated</strong> flux (see
+:meth:<code>~softpaws.response.soft_volume.SoftVolumeResponse.
+expected_counts_coupled_attenuation</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Column depth <code>x</code> [km] from the surface of the Earth to the detector
+along the relevant direction (small, a couple km of ice, for
+downgoing; up to the full Earth chord for upgoing -- see
+:mod:<code>softpaws.transport.attenuation</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>inv_lambda_nu_per_km</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Parent-neutrino attenuation rate <code>1/Lambda_nu</code> [km^-1] at
+<code>energy_gev</code> (see
+:func:<code>softpaws.transport.attenuation.neutrino_interaction_length_km</code>),
+expressed at the same reference <code>density_g_cm3</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion
+coefficients (Section 3). Default to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion
+coefficients (Section 3). Default to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>v_det_eff_cm3</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Attenuated inside-detector term <code>I(A) e^{-x/Lambda_nu} V_det</code> [km^3].</p>
+              </div>
+            </li>
+            <li>
+<b><code>v_soft_cm3</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Coupled soft-volume term <code>A_proj I(A) R_nu(x, A)</code> [km^3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def soft_volume_attenuated_exact(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    column_depth_km: float,
+    inv_lambda_nu_per_km: float | np.ndarray,
+    lam: float = DEFAULT_LAMBDA,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    d_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    r"""Coupled inside/soft volume terms with parent-neutrino attenuation (Eq. 11).
+
+    Generalizes :func:`soft_volume_exact` by folding the parent neutrino's own
+    Earth attenuation into the same depth integral that produces the soft
+    volume (App. A of the method paper), instead of applying
+    a decoupled multiplicative survival probability
+    (:mod:`softpaws.transport.attenuation`) on top of it.
+
+    That soft-volume integral only covers muons produced *upstream*
+    (production depth ``xi`` from 0 to ``x``), each weighted by the parent
+    neutrino's survival ``e^{-xi/Lambda_nu}`` to that production point:
+
+    .. math:: V_\\mathrm{soft}(x, A) = A_\\mathrm{proj}\\,\\mathcal{I}(A)\\,
+        R_\\nu(x, A), \\qquad R_\\nu(x, A) = \\frac{e^{-x/\\Lambda_\\nu}
+        - e^{-x\\Phi(A)}}{\\Phi(A) - 1/\\Lambda_\\nu}.
+
+    Muons produced *inside* the detector are produced at ``xi = x`` exactly,
+    so they instead pick up a single flat survival factor ``e^{-x/Lambda_nu}``
+    -- the parent neutrino's own survival probability to the detector, not the
+    integrated ``R_nu``:
+
+    .. math:: V_\\mathrm{det}^\\mathrm{eff}(x, A) = \\mathcal{I}(A)\\,
+        e^{-x/\\Lambda_\\nu}\\,V_\\mathrm{det}.
+
+    Together these replace :meth:`softpaws.response.soft_volume.
+    SoftVolumeResponse.target_volume_cm3`'s decoupled ``D_nu(E) * [V_det +
+    V_soft]`` with the exact ``e^{-x/Lambda_nu} V_det + V_soft(x, A)``, using
+    the **unattenuated** flux (see
+    :meth:`~softpaws.response.soft_volume.SoftVolumeResponse.
+    expected_counts_coupled_attenuation`).
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    column_depth_km : float
+        Column depth ``x`` [km] from the surface of the Earth to the detector
+        along the relevant direction (small, a couple km of ice, for
+        downgoing; up to the full Earth chord for upgoing -- see
+        :mod:`softpaws.transport.attenuation`).
+    inv_lambda_nu_per_km : float or np.ndarray
+        Parent-neutrino attenuation rate ``1/Lambda_nu`` [km^-1] at
+        ``energy_gev`` (see
+        :func:`softpaws.transport.attenuation.neutrino_interaction_length_km`),
+        expressed at the same reference ``density_g_cm3``.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale, d_scale : float, optional
+        Multiplicative rescalings of the Table 1 drift and diffusion
+        coefficients (Section 3). Default to 1.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+
+    Returns
+    -------
+    v_det_eff_cm3 : np.ndarray
+        Attenuated inside-detector term ``I(A) e^{-x/Lambda_nu} V_det`` [km^3].
+    v_soft_cm3 : np.ndarray
+        Coupled soft-volume term ``A_proj I(A) R_nu(x, A)`` [km^3].
+    """
+    a = spectral_index(gamma, lam)
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3, source)
+    d_mu = d_scale * diffusion_coefficient(energy_gev, density_g_cm3, source)
+    phi = phi_eigenvalue(a, b_mu, d_mu)
+    proj_area = np.pi * radius_km**2
+    v_det = 4.0 / 3.0 * np.pi * radius_km**3
+
+    inv_lambda = np.asarray(inv_lambda_nu_per_km, dtype=float)
+    factor = inelasticity_factor(a)
+    r_nu = saturation_factor(phi, column_depth_km, inv_lambda)
+
+    v_soft = proj_area * factor * r_nu
+    # Broadcast rather than fill: v_det_eff otherwise depends on neither the
+    # (possibly array-valued) energy nor phi, so it wouldn't inherit their shape.
+    v_det_survival = factor * np.exp(-inv_lambda * float(column_depth_km))
+    v_det_eff = np.zeros_like(v_soft) + v_det_survival * v_det
+    return v_det_eff, v_soft</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.soft_volume_diffusion" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">soft_volume_diffusion</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">soft_volume_diffusion(radius_km: float, energy_gev: float | ndarray, gamma: float, lam: float = DEFAULT_LAMBDA, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, d_scale: float = 1.0, source: str = DEFAULT_SOURCE, light_yield_length_km: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Diffusion-corrected soft volume (Palmisano et al., Eq. 2.25).</p>
+<p>Their drift-diffusion model multiplies the drift soft volume by the
+leading diffusion correction <code>1 - d_mu / (2 b_mu)</code>,</p>
+<p>.. math:: V_\mathrm{soft}^\mathrm{diff}(E) = V_\mathrm{soft}^\mathrm{drift}(E)
+    \left(1 - \frac{d_\mu}{2 b_\mu}\right),</p>
+<p>an <code>O(d_mu/2 b_mu) ~ 10%</code> reduction. This is the <code>method="diffusion"</code>
+forward model used to reproduce the diffusion contours of their Fig. 6.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+used as transport nuisance parameters (Section 3). Default to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+used as transport nuisance parameters (Section 3). Default to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>light_yield_length_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>If set, replaces the static projected area with the energy-growing
+:func:<code>dynamic_projected_area_km2</code> (see :func:<code>soft_volume_drift</code>).
+<code>None</code> (the default) preserves the static-radius behaviour.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>v_soft</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Soft volume [km^3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def soft_volume_diffusion(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    d_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+    light_yield_length_km: float | None = None,
+) -&gt; np.ndarray:
+    r"""Diffusion-corrected soft volume (Palmisano et al., Eq. 2.25).
+
+    Their drift-diffusion model multiplies the drift soft volume by the
+    leading diffusion correction ``1 - d_mu / (2 b_mu)``,
+
+    .. math:: V_\\mathrm{soft}^\\mathrm{diff}(E) = V_\\mathrm{soft}^\\mathrm{drift}(E)
+        \\left(1 - \\frac{d_\\mu}{2 b_\\mu}\\right),
+
+    an ``O(d_mu/2 b_mu) ~ 10%`` reduction. This is the ``method="diffusion"``
+    forward model used to reproduce the diffusion contours of their Fig. 6.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    b_scale, d_scale : float, optional
+        Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+        used as transport nuisance parameters (Section 3). Default to 1.
+    light_yield_length_km : float or None, optional
+        If set, replaces the static projected area with the energy-growing
+        :func:`dynamic_projected_area_km2` (see :func:`soft_volume_drift`).
+        ``None`` (the default) preserves the static-radius behaviour.
+
+    Returns
+    -------
+    v_soft : np.ndarray
+        Soft volume [km^3].
+    """
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3, source)
+    d_mu = d_scale * diffusion_coefficient(energy_gev, density_g_cm3, source)
+    v_drift = soft_volume_drift(
+        radius_km, energy_gev, gamma, lam, density_g_cm3, b_scale, source,
+        light_yield_length_km=light_yield_length_km,
+    )
+    return v_drift * (1.0 - d_mu / (2.0 * b_mu))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.soft_volume_drift" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">soft_volume_drift</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">soft_volume_drift(radius_km: float, energy_gev: float | ndarray, gamma: float, lam: float = DEFAULT_LAMBDA, density_g_cm3: float = RHO_WATER_G_CM3, b_scale: float = 1.0, source: str = DEFAULT_SOURCE, light_yield_length_km: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Drift-limit soft volume as a function of muon energy (Eq. 2.23).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>source</code></b>
+                  (<code>(&#39;proposal&#39;, &#39;table1&#39;)</code>, default:
+                      <code>&#34;proposal&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Transport-coefficient tabulation; see
+:mod:<code>softpaws.transport.coefficients</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescaling of the drift coefficient <code>b_mu</code>, used
+as a transport nuisance parameter in the data fits (Section 3). Defaults
+to 1 (the theoretical value).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>light_yield_length_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>If set, replaces the static projected area <code>pi R_det^2</code> with the
+energy-growing :func:<code>dynamic_projected_area_km2</code> (not part of the
+paper; see that function's docstring). <code>None</code> (the default)
+preserves the static-radius behaviour.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>v_soft</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Soft volume [km^3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def soft_volume_drift(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    b_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+    light_yield_length_km: float | None = None,
+) -&gt; np.ndarray:
+    """Drift-limit soft volume as a function of muon energy (Eq. 2.23).
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    source : {"proposal", "table1"}, optional
+        Transport-coefficient tabulation; see
+        :mod:`softpaws.transport.coefficients`.
+    b_scale : float, optional
+        Multiplicative rescaling of the drift coefficient ``b_mu``, used
+        as a transport nuisance parameter in the data fits (Section 3). Defaults
+        to 1 (the theoretical value).
+    light_yield_length_km : float or None, optional
+        If set, replaces the static projected area ``pi R_det^2`` with the
+        energy-growing :func:`dynamic_projected_area_km2` (not part of the
+        paper; see that function's docstring). ``None`` (the default)
+        preserves the static-radius behaviour.
+
+    Returns
+    -------
+    v_soft : np.ndarray
+        Soft volume [km^3].
+    """
+    a = spectral_penalty(gamma, lam)
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3, source)
+    if light_yield_length_km is None:
+        proj_area = np.pi * radius_km**2
+    else:
+        proj_area = dynamic_projected_area_km2(
+            radius_km, energy_gev, light_yield_length_km, density_g_cm3, b_scale, source,
+        )
+    return proj_area / (b_mu * a)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.soft_volume_exact" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">soft_volume_exact</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">soft_volume_exact(radius_km: float, energy_gev: float | ndarray, gamma: float, lam: float = DEFAULT_LAMBDA, column_depth_km: float | None = None, density_g_cm3: float = RHO_WATER_G_CM3, include_inelasticity: bool = True, b_scale: float = 1.0, d_scale: float = 1.0, source: str = DEFAULT_SOURCE, beta: float = 0.0, light_yield_length_km: float | None = None) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Exact soft volume with the eigenvalue <code>Phi(A)</code> and a finite column.</p>
+<p>Implements <code>docs/theory/exact_soft_volume.md</code> Part 7:</p>
+<p>.. math:: V_\mathrm{soft}(E) = \pi R_\mathrm{det}^2\,
+    \mathcal{I}(A)\,\frac{1 - e^{-\Phi(A) x}}{\Phi(A)},</p>
+<p>with <code>Phi(A)</code> the exact eigenvalue (:func:<code>phi_eigenvalue</code>) and
+<code>I(A) ~ 0.8</code> the inelasticity factor. Compared with
+:func:<code>soft_volume_drift</code>, this replaces the leading eigenvalue <code>b_mu A</code> by
+the full <code>Phi(A)</code>, keeps the <code>I(A)</code> normalization, and applies the
+finite-column saturation factor.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Available upstream column depth <code>x</code> [km]. If <code>None</code> (the default) the
+infinite-column limit <code>1/Phi(A)</code> is used, which requires <code>Phi(A) &gt; 0</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>include_inelasticity</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Whether to fold in <code>I(A)</code>. Set <code>False</code> for a geometry-only volume that
+is directly comparable with :func:<code>soft_volume_drift</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+used as transport nuisance parameters (Section 3). Default to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+used as transport nuisance parameters (Section 3). Default to 1.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>beta</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Scale-breaking exponent (<code>dGamma/dy ~ E^beta</code>), applying
+the running-spectral-index correction
+(:func:<code>scale_breaking_saturation_factor</code>) instead of the plain
+saturation factor. Defaults to <code>0</code> (off, today's behaviour); requires
+a finite <code>column_depth_km</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>light_yield_length_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>If set, replaces the static projected area with the energy-growing
+:func:<code>dynamic_projected_area_km2</code> (see :func:<code>soft_volume_drift</code>).
+<code>None</code> (the default) preserves the static-radius behaviour.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>v_soft</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Soft volume [km^3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>column_depth_km is None</code> while <code>Phi(A) &lt;= 0</code> (the
+infinite-column limit diverges) or while <code>beta != 0</code> (the
+running index has no infinite-column limit); pass a finite
+<code>column_depth_km</code> instead.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def soft_volume_exact(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    column_depth_km: float | None = None,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    include_inelasticity: bool = True,
+    b_scale: float = 1.0,
+    d_scale: float = 1.0,
+    source: str = DEFAULT_SOURCE,
+    beta: float = 0.0,
+    light_yield_length_km: float | None = None,
+) -&gt; np.ndarray:
+    r"""Exact soft volume with the eigenvalue ``Phi(A)`` and a finite column.
+
+    Implements ``docs/theory/exact_soft_volume.md`` Part 7:
+
+    .. math:: V_\\mathrm{soft}(E) = \\pi R_\\mathrm{det}^2\\,
+        \\mathcal{I}(A)\\,\\frac{1 - e^{-\\Phi(A) x}}{\\Phi(A)},
+
+    with ``Phi(A)`` the exact eigenvalue (:func:`phi_eigenvalue`) and
+    ``I(A) ~ 0.8`` the inelasticity factor. Compared with
+    :func:`soft_volume_drift`, this replaces the leading eigenvalue ``b_mu A`` by
+    the full ``Phi(A)``, keeps the ``I(A)`` normalization, and applies the
+    finite-column saturation factor.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    column_depth_km : float or None, optional
+        Available upstream column depth ``x`` [km]. If ``None`` (the default) the
+        infinite-column limit ``1/Phi(A)`` is used, which requires ``Phi(A) &gt; 0``.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+    include_inelasticity : bool, optional
+        Whether to fold in ``I(A)``. Set ``False`` for a geometry-only volume that
+        is directly comparable with :func:`soft_volume_drift`.
+    b_scale, d_scale : float, optional
+        Multiplicative rescalings of the Table 1 drift and diffusion coefficients,
+        used as transport nuisance parameters (Section 3). Default to 1.
+    beta : float, optional
+        Scale-breaking exponent (``dGamma/dy ~ E^beta``), applying
+        the running-spectral-index correction
+        (:func:`scale_breaking_saturation_factor`) instead of the plain
+        saturation factor. Defaults to ``0`` (off, today's behaviour); requires
+        a finite ``column_depth_km``.
+    light_yield_length_km : float or None, optional
+        If set, replaces the static projected area with the energy-growing
+        :func:`dynamic_projected_area_km2` (see :func:`soft_volume_drift`).
+        ``None`` (the default) preserves the static-radius behaviour.
+
+    Returns
+    -------
+    v_soft : np.ndarray
+        Soft volume [km^3].
+
+    Raises
+    ------
+    ValueError
+        Raised if ``column_depth_km is None`` while ``Phi(A) &lt;= 0`` (the
+        infinite-column limit diverges) or while ``beta != 0`` (the
+        running index has no infinite-column limit); pass a finite
+        ``column_depth_km`` instead.
+    """
+    a = spectral_index(gamma, lam)
+    b_mu = b_scale * drift_coefficient(energy_gev, density_g_cm3, source)
+    d_mu = d_scale * diffusion_coefficient(energy_gev, density_g_cm3, source)
+    phi = phi_eigenvalue(a, b_mu, d_mu)
+    if light_yield_length_km is None:
+        proj_area = np.pi * radius_km**2
+    else:
+        proj_area = dynamic_projected_area_km2(
+            radius_km, energy_gev, light_yield_length_km, density_g_cm3, b_scale, source,
+        )
+
+    if column_depth_km is None:
+        if beta != 0.0:
+            raise ValueError(
+                "beta != 0 requires a finite column_depth_km (the running-index "
+                "correction has no infinite-column limit)."
+            )
+        if np.any(phi &lt;= 0.0):
+            raise ValueError(
+                f"Phi(A) &lt;= 0 for A = {a:.3f}: the infinite-column soft volume "
+                "diverges. Pass a finite column_depth_km to use the saturation factor."
+            )
+        eff_range = 1.0 / phi
+    elif beta == 0.0:
+        eff_range = saturation_factor(phi, column_depth_km)
+    else:
+        phi_prime = phi_eigenvalue_derivative(a, b_mu, d_mu)
+        eff_range = scale_breaking_saturation_factor(phi, phi_prime, beta, column_depth_km)
+
+    factor = inelasticity_factor(a) if include_inelasticity else 1.0
+    return proj_area * factor * eff_range</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.spectral_penalty" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">spectral_penalty</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">spectral_penalty(gamma: float, lam: float | ndarray = DEFAULT_LAMBDA) -&gt; float | np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Spectral penalty exponent <code>A = gamma - lambda - 1</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope, <code>sigma_CC ~ E^lambda</code>. Defaults to
+:data:<code>DEFAULT_LAMBDA</code>. An array is the local slope of a tabulated
+cross section (:meth:<code>~softpaws.transport.cross_section.CrossSection.
+local_slope</code>), one value per energy.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>A</code></b>(                  <code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Penalty exponent <code>gamma - lambda - 1</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>A &lt;= 0</code> anywhere, where the soft-volume integral
+(Eq. 2.22) diverges and the drift closed form does not apply.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def spectral_penalty(
+    gamma: float,
+    lam: float | np.ndarray = DEFAULT_LAMBDA,
+) -&gt; float | np.ndarray:
+    """Spectral penalty exponent ``A = gamma - lambda - 1``.
+
+    Parameters
+    ----------
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float or np.ndarray, optional
+        CC cross-section slope, ``sigma_CC ~ E^lambda``. Defaults to
+        :data:`DEFAULT_LAMBDA`. An array is the local slope of a tabulated
+        cross section (:meth:`~softpaws.transport.cross_section.CrossSection.
+        local_slope`), one value per energy.
+
+    Returns
+    -------
+    A : float or np.ndarray
+        Penalty exponent ``gamma - lambda - 1``.
+
+    Raises
+    ------
+    ValueError
+        Raised if ``A &lt;= 0`` anywhere, where the soft-volume integral
+        (Eq. 2.22) diverges and the drift closed form does not apply.
+    """
+    a = gamma - lam - 1.0
+    if np.any(a &lt;= 0.0):
+        raise ValueError(
+            f"Spectral penalty A = gamma - lambda - 1 = {np.min(a):.3f} must be positive; "
+            f"the soft-volume integral diverges for gamma &lt;= lambda + 1."
+        )
+    return a</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.sphere_radius_from_volume" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">sphere_radius_from_volume</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">sphere_radius_from_volume(volume_km3: float) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Radius of a sphere with the given volume.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>volume_km3</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Sphere volume [km^3].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>radius</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Sphere radius [km].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def sphere_radius_from_volume(volume_km3: float) -&gt; float:
+    """Radius of a sphere with the given volume.
+
+    Parameters
+    ----------
+    volume_km3 : float
+        Sphere volume [km^3].
+
+    Returns
+    -------
+    radius : float
+        Sphere radius [km].
+    """
+    return (3.0 * volume_km3 / (4.0 * np.pi)) ** (1.0 / 3.0)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.transport.soft_volume.volume_ratio_drift" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">volume_ratio_drift</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">volume_ratio_drift(radius_km: float, energy_gev: float | ndarray, gamma: float, lam: float = DEFAULT_LAMBDA, density_g_cm3: float = RHO_WATER_G_CM3, source: str = DEFAULT_SOURCE) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Total-to-detector volume ratio in the drift limit (Palmisano et al., Eq. 2.24).</p>
+<p>The total target volume is the instrumented sphere plus its soft volume,
+<code>V_tot / V_det = 1 + 3 / (4 R_det b_mu A)</code>. For the IceCube diffuse flux
+(<code>A ~ 1</code>) this recovers their figure of merit
+<code>1 + 3 / (4 R_det b_mu)</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Radius of the spherical detector [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>energy_gev</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed muon energy [GeV].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Neutrino flux spectral index, <code>phi_nu ~ E^-gamma</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope. Defaults to :data:<code>DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.RHO_WATER_G_CM3">RHO_WATER_G_CM3</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3]. Defaults to water.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>ratio</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Dimensionless <code>V_tot / V_det</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/transport/soft_volume.py</code></summary>
+              <pre class="highlight"><code class="language-python">def volume_ratio_drift(
+    radius_km: float,
+    energy_gev: float | np.ndarray,
+    gamma: float,
+    lam: float = DEFAULT_LAMBDA,
+    density_g_cm3: float = RHO_WATER_G_CM3,
+    source: str = DEFAULT_SOURCE,
+) -&gt; np.ndarray:
+    """Total-to-detector volume ratio in the drift limit (Palmisano et al., Eq. 2.24).
+
+    The total target volume is the instrumented sphere plus its soft volume,
+    ``V_tot / V_det = 1 + 3 / (4 R_det b_mu A)``. For the IceCube diffuse flux
+    (``A ~ 1``) this recovers their figure of merit
+    ``1 + 3 / (4 R_det b_mu)``.
+
+    Parameters
+    ----------
+    radius_km : float
+        Radius of the spherical detector [km].
+    energy_gev : float or np.ndarray
+        Observed muon energy [GeV].
+    gamma : float
+        Neutrino flux spectral index, ``phi_nu ~ E^-gamma``.
+    lam : float, optional
+        CC cross-section slope. Defaults to :data:`DEFAULT_LAMBDA`.
+    density_g_cm3 : float, optional
+        Target-medium density [g cm^-3]. Defaults to water.
+
+    Returns
+    -------
+    ratio : np.ndarray
+        Dimensionless ``V_tot / V_det``.
+    """
+    a = spectral_penalty(gamma, lam)
+    b_mu = drift_coefficient(energy_gev, density_g_cm3, source)
+    return 1.0 + 3.0 / (4.0 * radius_km * b_mu * a)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../muon_range/" class="btn btn-neutral float-left" title="muon_range"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../source/" class="btn btn-neutral float-right" title="source">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../muon_range/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../source/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/theory/soft_volume/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Prior work: the soft volume - softpaws</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Prior work: the soft volume";
+        var mkdocs_page_input_path = "theory/soft_volume.md";
+        var mkdocs_page_url = "/softpaws/theory/soft_volume/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../..">
+    <img src="../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Theory notes</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Prior work: the soft volume</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#1-the-one-sentence-idea">1. The one-sentence idea</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-governing-equations">2. Governing equations</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#21-stationary-boltzmann-transport-eq-21-29">2.1 Stationary Boltzmann transport (Eq. 2.1, 2.9)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#22-transport-coefficients-eq-28">2.2 Transport coefficients (Eq. 2.8)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#23-greens-function-propagation-kernel-eq-216-a16">2.3 Green's function / propagation kernel (Eq. 2.16, A.16)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-the-weak-source-term-muon-production">3. The weak source term (muon production)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-the-master-formula-eq-213-220">4. The master formula (Eq. 2.13, 2.20)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-analytic-soft-volume-estimates-section-23-sanity-checks">5. Analytic soft-volume estimates (Section 2.3) — sanity checks</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-calibrating-the-coefficients-section-31">6. Calibrating the coefficients (Section 3.1)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-approximations-caveats-read-before-trusting-a-number">7. Approximations &amp; caveats (read before trusting a number)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#8-numerical-recipe-mapping-to-softpaws">8. Numerical recipe → mapping to softpaws</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >softpaws</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/">softpaws</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >comparison</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/comparison/reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../api-reference/softpaws/standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api-reference/softpaws/transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Documentation</li>
+          <li class="breadcrumb-item">Theory notes</li>
+      <li class="breadcrumb-item active">Prior work: the soft volume</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/MeighenBergerS/softpaws/edit/master/docs/theory/soft_volume.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="prior-work-the-driftdiffusion-soft-volume">Prior work: the drift–diffusion soft volume</h1>
+<blockquote>
+<p><strong>This page is about earlier work, not about softpaws' own method.</strong> It
+distills the <strong>Fokker–Planck (drift–diffusion) expansion of Palmisano et
+al.</strong>, which softpaws implemented first, as a check, and now keeps as a
+limit and a cross-check. The method softpaws is built on is the transport
+exponent of <a href="../exact_soft_volume/">The transport exponent</a>, which <em>contains</em>
+this expansion as its first two terms (<code>Φ(1)=b_μ</code>, <code>Φ(2)=2b_μ−d_μ</code>) and
+drops the <code>y_min</code>/<code>y_cut</code> cutoffs, the log-normal Green's-function
+convolution, and the <code>1/A</code> pole. Read this page for the context of the
+earlier calculation, its transport coefficients, and the cross-checks
+against it.</p>
+<p>Throughout this page, "the paper" means Palmisano et al., never softpaws'
+own method paper.</p>
+</blockquote>
+<p>Source: Palmisano, Redigolo, Tammaro, Tesi, <em>The soft volume of ultra-high
+energy neutrinos experiments</em>
+(<a href="https://arxiv.org/abs/2607.13143">arXiv:2607.13143</a>), with its companion
+<em>Exploring ultra-high energy neutrino experiments through the lens of the
+transport equation</em> (<a href="https://arxiv.org/abs/2507.10665">arXiv:2507.10665</a>,
+JHEP 03 (2026) 223). Equation numbers below refer to
+<a href="https://arxiv.org/abs/2607.13143">arXiv:2607.13143</a>.</p>
+<hr />
+<h2 id="1-the-one-sentence-idea">1. The one-sentence idea</h2>
+<p>A muon-neutrino CC interaction makes a muon that can travel ~km before dying.
+So for <strong>track events</strong> the effective target is not the instrumented volume
+<code>V_det</code> but a larger <strong>soft volume</strong> <code>V_soft</code> set by the muon's energy-loss
+range. The paper builds a fast, semi-analytic map</p>
+<pre><code>neutrino flux  ϕ_ν(E_ν, Ω)   →   muon track rate  dN/dE dΩ
+</code></pre>
+<p>by solving a Boltzmann transport equation for the muon distribution, reduced to
+a <strong>drift–diffusion (Fokker–Planck) equation in energy</strong> via a soft expansion of
+the QED collision operator.</p>
+<p>Two contributions to every track bin (Eq. 1.1, 2.12):</p>
+<pre><code>⟨N⟩ ∝ V_det              (muon born inside detector)
+     + A_proj · (muon QED range)    (muon born outside, drifts in)  ← soft volume
+</code></pre>
+<p>with <code>A_proj = π R_det²</code> the projected area of a spherical detector.</p>
+<hr />
+<h2 id="2-governing-equations">2. Governing equations</h2>
+<h3 id="21-stationary-boltzmann-transport-eq-21-29">2.1 Stationary Boltzmann transport (Eq. 2.1, 2.9)</h3>
+<p>Steady state (<code>∂_t f = 0</code>, source/detector vary slower than R⊕/c ≈ 0.01 s),
+ultra-relativistic (<code>v ≈ c = 1</code>), collinear (muon direction = parent-ν
+direction, since <code>Δθ ∝ m_μ/E ≪ 1</code>). The muon flux per unit energy
+<code>ϕ_μ(E, x)</code> along a fixed line of sight (x = column depth) obeys:</p>
+<pre><code>∂ϕ_μ/∂x  −  ∂/∂E[ b_μ(E) E ϕ_μ ]  −  ½ ∂²/∂E²[ d_μ(E) E² ϕ_μ ]  =  (E²/(2π)³) C_weak     (2.9)
+</code></pre>
+<ul>
+<li><strong>Drift term</strong> <code>b_μ(E)</code> — mean fractional energy loss per unit length. Muon range ≈ <code>1/b_μ</code>.</li>
+<li><strong>Diffusion term</strong> <code>d_μ(E)</code> — stochastic spread of energy loss (variance).</li>
+<li><strong>Source</strong> <code>C_weak</code> — neutrino CC production of muons (§3, below).</li>
+<li><code>x</code> has units of length (column depth); coefficients are per-length (km⁻¹).</li>
+</ul>
+<h3 id="22-transport-coefficients-eq-28">2.2 Transport coefficients (Eq. 2.8)</h3>
+<p>First two moments of the QED energy-loss spectrum <code>dΓ/dy = n_T dσ/dy</code>,
+<code>y ≡ ΔE/E</code> the fractional energy loss:</p>
+<pre><code>b_μ(E) = ∫ dy · y   · dΓ(E,y)/dy          (drift  = 1st moment)
+d_μ(E) = ∫ dy · y²  · dΓ(E,y)/dy          (diffusion = 2nd moment)
+</code></pre>
+<p>Three radiative processes contribute (Section 3, Fig. 3–4):
+- <strong>e⁺e⁻ pair production (PP)</strong> — softest (<code>dσ/dy ~ (1−y)/y</code>), dominates <code>b_μ</code>, expansion-friendly. <code>y_min = 4 m_e/E</code>.
+- <strong>Bremsstrahlung (B)</strong> — <code>dσ/dy ~ 1/y</code>, hard tail, IR-divergent (needs <code>y_min</code> cutoff).
+- <strong>Photonuclear (PN)</strong> — <code>dσ/dy ~ 1/y</code>, hard tail, dominant theory uncertainty (~30%). <code>y_min ≈ m_π/E</code>.</p>
+<p>Reference values in <strong>water</strong> (ρ = 1.02 g/cm³), Table 1:</p>
+<table>
+<thead>
+<tr>
+<th>E_μ</th>
+<th>b_μ [km⁻¹]</th>
+<th>d_μ [km⁻¹]</th>
+<th>d_μ/b_μ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 PeV</td>
+<td>0.35</td>
+<td>0.077</td>
+<td>~0.22</td>
+</tr>
+<tr>
+<td>100 PeV</td>
+<td>0.40</td>
+<td>0.098</td>
+<td>~0.25</td>
+</tr>
+</tbody>
+</table>
+<p>Per-process at 1 PeV: PP (0.17, 0.004), B (0.091, 0.043), PN (0.088, 0.030).
+Compounds add incoherently weighted by atoms: <code>b_water = 2 b_H + b_O</code>.
+Coefficients depend only <em>logarithmically</em> on E — treated as constant in the
+baseline solution, energy-dependent version in Appendix A.1.</p>
+<h3 id="23-greens-function-propagation-kernel-eq-216-a16">2.3 Green's function / propagation kernel (Eq. 2.16, A.16)</h3>
+<p>Solving 2.9 for an impulse source <code>δ(x−ξ)δ(E−ε)</code> with constant coefficients.
+In log-energy <code>u = log E</code>, <code>ψ_μ = E ϕ_μ</code>, it's plain drift-diffusion (Eq. A.14):</p>
+<pre><code>∂_x ψ = M_μ ∂_u ψ + (d_μ/2) ∂²_u ψ ,     M_μ ≡ b_μ + d_μ/2
+</code></pre>
+<p>Gaussian kernel (a <strong>log-normal in E</strong>), for propagation length ℓ = x − ξ &gt; 0:</p>
+<pre><code>G(E,x; ε,ξ) = θ(x−ξ) θ(ε−E) · 1/(E √(2π d_μ ℓ))
+              · exp[ −( log(ε/E) − (b_μ + d_μ/2) ℓ )² / (2 d_μ ℓ) ]         (2.16)
+</code></pre>
+<p>Interpretation: probability that a muon born at ξ with energy ε arrives at x
+with energy E. <code>θ(ε−E)</code> enforces energy is only lost.</p>
+<p><strong>Drift limit</strong> <code>d_μ → 0</code> (Eq. 2.17): kernel collapses to a delta on the
+deterministic continuous-slowing-down trajectory <code>E(x) = E exp[b_μ(x−ξ)]</code>:</p>
+<pre><code>G → (ε/E) δ(ε − E e^{b_μ(x−ξ)}) θ(x−ξ)
+</code></pre>
+<p>Good below ~300 GeV (ionization/Bethe–Bloch regime) and as a leading-order
+approximation everywhere.</p>
+<hr />
+<h2 id="3-the-weak-source-term-muon-production">3. The weak source term (muon production)</h2>
+<p>Muon born from <code>ν_μ</code> CC DIS with <code>ε = (1−y_w) E_ν</code>, <code>y_w</code> = DIS inelasticity
+(<code>⟨y_w⟩ ≈ 0.2</code>, so near-elastic; using the mean vs full <code>P(y_w)</code> is a ~1% effect).
+Rewritten (Eq. 2.19):</p>
+<pre><code>(ε²/(2π)³) C_weak = n_N(ξ) ∫₀¹ dy_w [ P(y_w)/(1−y_w) ] D_ν(ε_{y_w}, ξ, Ω) σ_CC(ε_{y_w}) ϕ_ν^⊕(ε_{y_w})
+</code></pre>
+<p>with <code>ε_{y_w} = ε/(1−y_w)</code>, <code>P(y_w) = σ⁻¹ dσ/dy_w</code> the inelasticity distribution.</p>
+<p><strong>Neutrino CC cross section</strong> (Eq. 2.5) — power law above 10 PeV:</p>
+<pre><code>σ_CC(E_ν) = σ₀ (E_ν/E₀)^λ ,   σ₀ = 1.48e-33 cm² at E₀ = 10 PeV,   λ ≈ 0.4
+</code></pre>
+<p>(from small-x PDF behavior; below 10 PeV use MadGraph/tabulated).</p>
+<p><strong>Attenuation</strong> <code>D_ν</code> (Eq. 2.4) — Earth absorption of neutrinos before the
+interaction point:</p>
+<pre><code>D_ν ≈ exp[ −n_N σ_νN(E_ν) L(x; Ω) ]
+</code></pre>
+<p><code>L</code> = column depth along the line of sight, from PREM Earth model (concentric
+constant-density shells; depends only on incoming polar/zenith angle).</p>
+<hr />
+<h2 id="4-the-master-formula-eq-213-220">4. The master formula (Eq. 2.13, 2.20)</h2>
+<p>Full differential track rate = inside term (∝ V_det) + outside/soft term (∝ A_proj):</p>
+<pre><code>dN/(dt dE dΩ) = V_det · n_N · ∫ dE_ν ϕ_ν(E_ν,Ω)|det · dσ_CC/dE           (inside)
+              + A_proj · ∫₀ˣ dξ ∫_E^∞ dε · G(E,x; ε,ξ) · (ε²/(2π)³) C_weak(ξ,ε)   (soft)
+</code></pre>
+<ul>
+<li>Green's function evaluated at detector surface <code>x = L(Ω_ν) − R_det</code>.</li>
+<li>Integration limits: Earth surface <code>ξ = 0</code> → detector surface <code>ξ = x</code>.</li>
+<li>Not analytic in general → <strong>numerical</strong>, but cheap (seconds for many bins).</li>
+<li>Efficiency/acceptance folded in as <code>V_det → ε_i V_det</code>, <code>A_proj → ε_i A_proj</code>
+  (or an energy/direction-dependent response <code>ε(E_μ, Ω)</code>).</li>
+</ul>
+<p><strong>Soft volume definition</strong> (Eq. 2.14):</p>
+<pre><code>V_soft(E) · [n_N σ_νN(E) ϕ_ν^⊕(E)] = A_proj ϕ_μ(E,Ω)|det
+</code></pre>
+<hr />
+<h2 id="5-analytic-soft-volume-estimates-section-23-sanity-checks">5. Analytic soft-volume estimates (Section 2.3) — sanity checks</h2>
+<p>With simplifying assumptions (spherical perfectly-absorbing detector; <code>σ_CC ∝ E^λ</code>,
+λ≈0.4; single power-law flux <code>ϕ_ν ∝ E^{-γ}</code>; step-function attenuation — up-going
+absorbed, down-going free; constant near-detector density <code>n_N</code>), the source
+reduces to <code>C_weak = n_N σ_νN ϕ_ν (ε/E)^{λ−γ}</code> (Eq. 2.21) and:</p>
+<p><strong>Drift limit</strong> (Eq. 2.23), with <code>A ≡ γ − λ − 1 &gt; 0</code>:</p>
+<pre><code>V_soft|drift = A_proj / (b_μ A) = π R_det² / (b_μ (γ − λ − 1))
+</code></pre>
+<p>Range <code>1/b_μ</code> enhanced further by the spectral penalty <code>1/A</code>.</p>
+<p><strong>Figure of merit</strong> (Eq. 2.24), for IceCube's flux (A ≈ 1):</p>
+<pre><code>V_tot / V_det ≈ 1 + (3/4) / (R_det b_μ)
+</code></pre>
+<p>IceCube (R_det ≈ 0.62 km, b_μ ≈ 0.35/km @ 1 PeV) → <strong>V_soft ≈ 4× V_det</strong>.
+KM3NeT (smaller) → ~7.5×.</p>
+<p><strong>Diffusion correction</strong> (Eq. 2.25): negative, <code>V_soft|diff ≈ V_soft|drift (1 − d_μ/2b_μ)</code>,
+~10% shift. Small — diffusion barely moves event counts even with O(1) <code>d_μ</code> error.</p>
+<p>Energy-dependent coefficients (Appendix A.1): replace <code>1/b_μ</code> by a
+spectrum-weighted average of <code>1/b_μ(u)</code>; interpretation unchanged.</p>
+<hr />
+<h2 id="6-calibrating-the-coefficients-section-31">6. Calibrating the coefficients (Section 3.1)</h2>
+<p><code>b_μ, d_μ</code> are given priors from a <strong>once-and-for-all</strong> MC of muon propagation
+(step by exponential MFP, sample <code>y</code> from <code>dΓ/dy</code>, stop at <code>E ≤ 0.1 E₀</code>,
+<code>E₀ = 10 PeV</code>). Two fit models:</p>
+<ul>
+<li><strong>Drift model:</strong> range–energy relation <code>⟨R⟩ = −(1/b_μ) log(E_f/E₀)</code> (Eq. 3.2).
+  Result <code>b_μ^MC/b_μ = 1.03 (+0.50/−0.22)</code>.</li>
+<li><strong>Drift-diffusion:</strong> log-normal in <code>z = log(E/ε)</code>, <code>G(z|x) ∝ exp[−(z + M_μ x)²/(2 d_μ x)]</code>
+  (Eq. 3.5). Fit via first two moments of the range <code>R</code> (Eq. 3.8–3.9):
+  <code>⟨R⟩ = z/M_μ + d/M_μ²
+  ⟨R²⟩ − ⟨R⟩² = z d/M_μ³ + 2 d²/M_μ⁴</code>
+  Result <code>b_μ^MC/b_μ = 0.94 ± 0.15</code>, <code>d_μ^MC/d_μ = 1.5 (+1.6/−0.8)</code>.</li>
+</ul>
+<p><code>d_μ</code> is poorly constrained (probes the hard tail) but that's OK — it only enters
+the soft volume as <code>d_μ/2b_μ</code>.</p>
+<p>For our purposes we can start by adopting the <strong>Table 1 central values</strong> and treat
+the fit spread as a systematic band; the full MC calibration is optional.</p>
+<hr />
+<h2 id="7-approximations-caveats-read-before-trusting-a-number">7. Approximations &amp; caveats (read before trusting a number)</h2>
+<ol>
+<li><strong>Idealized detector.</strong> Perfectly absorbing sphere, unit efficiency, every
+   crossing muon counted. No event selection, angular acceptance, reconstruction,
+   or energy cuts. Prediction = <em>geometric through-going rate</em>, not detector-level.
+   Empirically for IceCube through-going: <code>ε_IC-TG ≈ 0.45</code> (≈ the θ_zenith&gt;85° cut).</li>
+<li><strong>Soft expansion is only marginally convergent.</strong> Global <code>d_μ/b_μ ~ 0.2</code>;
+   truncating Kramers–Moyal at 2nd order (Pawula's theorem) is not guaranteed
+   positivity-preserving. Hard B/PN tails (<code>dσ/dy ~ 1/y</code>, <code>y ~ 1</code>) can break it.
+   Expect ~tens-of-% error, dominated by diffusion. Hard scatters can be added
+   perturbatively (Appendix B), giving ~25% floor — comparable to QED theory error.</li>
+<li><strong>Collinear / no angular deflection.</strong> Muon inherits ν direction. Fine at UHE.</li>
+<li><strong>Constant, homogeneous medium</strong> near detector (ice/water). Earth profile via
+   PREM only affects neutrino attenuation, not muon propagation.</li>
+<li><strong>Coefficients ~constant in E</strong> (log-slow). Fails for PN at very high E → use A.1.</li>
+<li><strong><code>θ(ε−E)</code> support</strong> is imposed by hand; small Gaussian tail at ε&lt;E is an
+   artifact of 2nd-order FP.</li>
+<li><strong>Taus negligible</strong> (~5% of track sample; Section 2.4) — ignore for now.</li>
+<li><strong>Fully-differential vs inclusive:</strong> retaining the E_ν↔E_μ,production↔E_μ,det
+   mapping matters little for steep power laws (parents with E_ν ≫ E_μ suppressed),
+   but is the whole point for peaked/exotic (e.g. DM) fluxes.</li>
+</ol>
+<p>Benchmark fit result to aim at reproducing (IceCube 9.5 yr, diffusion model, Eq. 1.3):
+<code>γ = 2.38 (+0.11/−0.09)</code>, <code>ϕ₀ = 0.63 (+0.14/−0.13) ×10⁻¹⁸ GeV⁻¹ s⁻¹ cm⁻² sr⁻¹</code>.</p>
+<hr />
+<h2 id="8-numerical-recipe-mapping-to-softpaws">8. Numerical recipe → mapping to <code>softpaws</code></h2>
+<p>Data flows <code>data/ → transport/ → response/ → comparison/</code>. Where each piece lives:</p>
+<p><strong><code>utils/</code></strong>: constants (m_e, m_μ, m_π, N_A) and unit conversions (GeV↔cm↔km,
+densities) in <code>softpaws.utils.constants</code>. The PREM shells and the <code>L(zenith)</code>
+column-depth helper (Eq. footnote p.11) are in <code>softpaws.transport.earth</code>
+(<code>prem_density</code>, <code>prem_column</code>, <code>neutrino_column_g_cm2</code>).</p>
+<p><strong><code>transport/</code></strong>: the physics core.
+- <code>softpaws.transport.coefficients</code>: <code>b_μ(E)</code>, <code>d_μ(E)</code> as <code>drift_coefficient</code> and
+  <code>diffusion_coefficient</code>, read from the PROPOSAL tables (Table 1 gives the water
+  reference values).
+- The log-normal kernel <code>G(E, x; ε, ξ)</code> (Eq. 2.16) has no module of its own. Its
+  Gaussian log-loss law is <code>softpaws.transport.loss_distribution.loss_density_gaussian</code>,
+  kept as the reference that the exact density <code>loss_density</code> supersedes. The
+  drift-limit delta (2.17) is the continuous-slowing-down range of
+  <code>softpaws.transport.muon_range.muon_range_km</code>.
+- <code>softpaws.transport.source</code>: <code>C_weak</code> (Eq. 2.19), with <code>σ_CC(E_ν)</code> (Eq. 2.5) as
+  <code>cc_cross_section</code> and ⟨y_w⟩ as <code>inelasticity_factor</code>. The <code>D_ν</code> attenuation
+  (Eq. 2.4) is in <code>softpaws.transport.attenuation</code>.
+- <code>softpaws.transport.soft_volume</code>: <code>V_soft(E)</code> (Eq. 2.14/2.22). The analytic
+  drift/diffusion forms (2.23/2.25) are <code>soft_volume_drift</code>, <code>soft_volume_diffusion</code>,
+  <code>spectral_penalty</code>, <code>volume_ratio_drift</code> and <code>saturation_factor</code>, with
+  <code>soft_volume_exact</code>, the projected areas and <code>range_target_volume_km3</code> beside them.</p>
+<p><strong><code>response/</code></strong>: <code>softpaws.response.soft_volume.SoftVolumeResponse</code> carries the
+<code>flux → dN/dE dΩ</code> map (master formula Eq. 2.20), including the convolution of the
+source into <code>ϕ_μ(E, Ω)|det</code> (Eq. 2.15), alongside the IRF path in
+<code>softpaws.response.irfs</code>. Both expose the same interface, and this
+interchangeability is what enables the head-to-head.</p>
+<p><strong><code>comparison/</code></strong>: <code>softpaws.comparison.rates</code> and <code>softpaws.comparison.likelihood</code>
+put the two predictions and the DR2 events side by side, reproduce the power-law fit
+(Eq. 4.1–4.2, Poisson likelihood over ≥10 TeV bins), and extract <code>ε_IC-TG</code>
+(<code>implied_efficiency</code>).</p>
+<p><strong>Build order followed:</strong> utils constants → drift-limit V_soft (closed form,
+Eq. 2.23, validated against the "4×" figure of merit) → full Green's-function
+convolution (Eq. 2.20) → <code>response/</code> predictor → comparison fit. The MC coefficient
+calibration (Section 3.1) and the hard-scatter correction (Appendix B) were not
+needed once the transport exponent of <a href="../exact_soft_volume/">The transport exponent</a>
+replaced the expansion.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../paper_to_code/" class="btn btn-neutral float-left" title="Paper to code"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../citation/" class="btn btn-neutral float-right" title="Citation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../paper_to_code/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../citation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/popper.min.js"></script>
+      <script src="../../js/tippy-bundle.umd.js"></script>
+      <script src="../../js/clipboard.js"></script>
+      <script src="../../js/extra.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

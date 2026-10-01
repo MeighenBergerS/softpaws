@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/comparison/likelihood/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>likelihood - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "likelihood";
+        var mkdocs_page_input_path = "api-reference/softpaws/comparison/likelihood.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/comparison/likelihood/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >comparison</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">likelihood</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.FitConfig">FitConfig</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.asimov_dataset">asimov_dataset</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.atmospheric_template">atmospheric_template</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.cross_section_enhancement">cross_section_enhancement</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.free_param_names">free_param_names</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.initial_walkers">initial_walkers</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.log_posterior">log_posterior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.log_prior">log_prior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.poisson_log_likelihood">poisson_log_likelihood</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.required_lambda">required_lambda</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.run_mcmc">run_mcmc</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.likelihood.signal_counts">signal_counts</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">comparison</li>
+      <li class="breadcrumb-item active">likelihood</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.comparison.likelihood" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.comparison.likelihood</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Bayesian inference layer for the diffuse-flux and cross-section fits.</p>
+<p>Builds the binned Poisson likelihood of Palmisano et al. (arXiv:2607.13143)
+Eq. (4.2) on top of the soft-volume forward model
+(:class:<code>softpaws.response.soft_volume.SoftVolumeResponse</code>) and drives it with
+an <code>emcee</code> sampler. This is what reproduces the Section 4 figures of that
+earlier work, which softpaws keeps as a cross-check:</p>
+<ul>
+<li><strong>Fig. 6 / 7</strong> — posteriors of the diffuse-flux parameters <code>(phi0, gamma)</code> and
+  the transport nuisances <code>(b_mu, d_mu)</code>, for the <code>drift</code>, <code>diffusion</code>, and
+  the new <code>exact</code> forward models.</li>
+<li><strong>Fig. 8</strong> — the cross-section slope <code>lambda</code> required for one muon event at
+  <code>100 PeV</code> (Eq. 4.6), via :func:<code>required_lambda</code>. Here the FP drift form
+  diverges at the pole <code>lambda = gamma - 1</code> while the eigenvalue form stays
+  finite (see <code>docs/theory/exact_soft_volume.md</code>).</li>
+</ul>
+<p>Data caveats (this is a DR2-based <em>proxy</em>, not the Ref. [28] dataset of
+Palmisano et al.):</p>
+<ul>
+<li>The IceCube counts come from the in-repo IceTracks-DR2 downgoing events.</li>
+<li>The atmospheric background is a floated power-law template
+  (:func:<code>atmospheric_template</code>), not their fixed per-bin background.</li>
+</ul>
+<p>The transport-nuisance priors follow the MC calibration of their Section 3
+(Eq. 3.10):
+<code>b_mu</code> rescaled by <code>b_scale ~ N(0.94, 0.15)</code> and <code>d_mu</code> by a log-normal
+<code>d_scale</code> matching <code>1.5 (+1.6 / -0.8)</code>.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="FitConfig
+
+
+  
+      dataclass
+   (softpaws.comparison.likelihood.FitConfig)" href="#softpaws.comparison.likelihood.FitConfig">FitConfig</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Static configuration of a binned soft-volume fit.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="asimov_dataset (softpaws.comparison.likelihood.asimov_dataset)" href="#softpaws.comparison.likelihood.asimov_dataset">asimov_dataset</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected (Asimov) counts from an injected truth flux, plus optional background.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="atmospheric_template (softpaws.comparison.likelihood.atmospheric_template)" href="#softpaws.comparison.likelihood.atmospheric_template">atmospheric_template</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Unit-sum background shape <code>propto integral E^-slope dE</code> per bin.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cross_section_enhancement (softpaws.comparison.likelihood.cross_section_enhancement)" href="#softpaws.comparison.likelihood.cross_section_enhancement">cross_section_enhancement</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Cross-section enhancement <code>R = sigma(lambda) / sigma(lambda_SM)</code> at <code>E*</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="free_param_names (softpaws.comparison.likelihood.free_param_names)" href="#softpaws.comparison.likelihood.free_param_names">free_param_names</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Ordered names of the free parameters for a given forward model.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="initial_walkers (softpaws.comparison.likelihood.initial_walkers)" href="#softpaws.comparison.likelihood.initial_walkers">initial_walkers</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Starting positions for the ensemble, scattered around a sensible guess.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="log_posterior (softpaws.comparison.likelihood.log_posterior)" href="#softpaws.comparison.likelihood.log_posterior">log_posterior</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Log-posterior = log-prior + Poisson log-likelihood.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="log_prior (softpaws.comparison.likelihood.log_prior)" href="#softpaws.comparison.likelihood.log_prior">log_prior</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Log-prior for the flux and transport-nuisance parameters.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="poisson_log_likelihood (softpaws.comparison.likelihood.poisson_log_likelihood)" href="#softpaws.comparison.likelihood.poisson_log_likelihood">poisson_log_likelihood</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Binned Poisson log-likelihood <code>sum_i (k_i ln N_i - N_i)</code> (Eq. 4.2).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="required_lambda (softpaws.comparison.likelihood.required_lambda)" href="#softpaws.comparison.likelihood.required_lambda">required_lambda</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Cross-section slope giving one muon event at <code>E*</code> (Eq. 4.6).</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="run_mcmc (softpaws.comparison.likelihood.run_mcmc)" href="#softpaws.comparison.likelihood.run_mcmc">run_mcmc</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Sample the posterior and return flat chains keyed by parameter name.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="signal_counts (softpaws.comparison.likelihood.signal_counts)" href="#softpaws.comparison.likelihood.signal_counts">signal_counts</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Expected astrophysical counts per bin for the configured forward model.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="softpaws.comparison.likelihood.FitConfig" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">FitConfig</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">FitConfig(radius_km: float, log10_e_edges: ndarray, livetime_s: float, solid_angle_sr: float, method: str = 'diffusion', column_depth_km: float | None = None, lam: float = DEFAULT_LAMBDA, density_g_cm3: float = 1.02, n_subdivisions: int = 16, origin: str = 'numu', background: ndarray | None = None)</code></pre>
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Static configuration of a binned soft-volume fit.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>radius_km</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Spherical-detector radius [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log10_e_edges</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>livetime_s</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Exposure time [s].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>solid_angle_sr</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Solid angle of the analysis region [sr].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>method</code></b>
+                  (<code>(&#39;drift&#39;, &#39;diffusion&#39;, &#39;exact&#39;)</code>, default:
+                      <code>&#34;drift&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Soft-volume forward model. Defaults to <code>"diffusion"</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>column_depth_km</code></b>
+                  (<code><span title="float">float</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Upstream column depth for the exact method [km].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.DEFAULT_LAMBDA">DEFAULT_LAMBDA</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>CC cross-section slope held fixed in the <em>flux</em> fit. Defaults to
+:data:<code>softpaws.transport.source.DEFAULT_LAMBDA</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>density_g_cm3</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.02</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Target-medium density [g cm^-3].</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_subdivisions</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>16</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Log-spaced sample points per bin for the signal integral. Kept modest for
+MCMC speed.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>origin</code></b>
+                  (<code>(&#39;numu&#39;, &#39;generic&#39;)</code>, default:
+                      <code>&#34;numu&#34;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Assumed flavor origin of the signal. <code>"numu"</code> (the default) is the
+direct <code>nu_mu</code> CC prediction alone. <code>"generic"</code> adds the tau-induced
+contribution (:func:<code>softpaws.response.soft_volume.tau_induced_expected_counts</code>)
+from a <code>nu_tau</code> flux with the <em>same</em> <code>(phi0, gamma)</code>, i.e. the event
+sample is agnostic to whether a given track came from direct <code>nu_mu</code>
+production or <code>nu_tau -&gt; tau -&gt; mu</code>. Only defined for <code>method="exact"</code>,
+since the tau ratio is built from the exact eigenvalue <code>Phi(A)</code>
+(:mod:<code>softpaws.transport.tau</code>).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="uses_diffusion (softpaws.comparison.likelihood.FitConfig.uses_diffusion)" href="#softpaws.comparison.likelihood.FitConfig.uses_diffusion">uses_diffusion</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Whether the model has a free diffusion nuisance <code>d_scale</code>.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="softpaws.comparison.likelihood.FitConfig.uses_diffusion" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">uses_diffusion</span>
+
+
+</h3>
+<pre class="highlight"><code class="language-python doc-signature">uses_diffusion() -&gt; bool</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Whether the model has a free diffusion nuisance <code>d_scale</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def uses_diffusion(self) -&gt; bool:
+    """Whether the model has a free diffusion nuisance ``d_scale``."""
+    return self.method in ("diffusion", "exact")</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.asimov_dataset" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">asimov_dataset</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">asimov_dataset(config: 'FitConfig', phi0: float = PHI0_TRUTH, gamma: float = GAMMA_TRUTH, b_scale: float = 1.0, d_scale: float = 1.0, bkg_total: float = 0.0, bkg_slope: float = 3.7) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected (Asimov) counts from an injected truth flux, plus optional background.</p>
+<p>The Asimov dataset is the noise-free expectation at a chosen truth; fitting it
+recovers that truth, so it is the standard way to show a pipeline reproduces
+the expected posteriors. Here the IceCube figures inject the best-fit flux of
+Palmisano et al. through the forward model rather than fitting the atmospheric-muon-swamped
+DR2 downgoing sample (which lies outside the neutrino soft-volume model's
+validity).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>config</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="FitConfig
+
+
+  
+      dataclass
+   (softpaws.comparison.likelihood.FitConfig)" href="#softpaws.comparison.likelihood.FitConfig">FitConfig</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Fit configuration whose forward model generates the signal.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.PHI0_TRUTH">PHI0_TRUTH</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Injected diffuse-flux truth. Default to the diffusion best fit of
+Palmisano et al.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.constants.PHI0_TRUTH">PHI0_TRUTH</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Injected diffuse-flux truth. Default to the diffusion best fit of
+Palmisano et al.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>b_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Injected transport-coefficient truth. Default to the theoretical values.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>d_scale</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Injected transport-coefficient truth. Default to the theoretical values.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bkg_total</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Total background events to add, distributed by :func:<code>atmospheric_template</code>.
+Defaults to none.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bkg_slope</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>3.7</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Atmospheric template slope for the injected background.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>counts</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Expected counts per bin (signal + background).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def asimov_dataset(config: "FitConfig", phi0: float = PHI0_TRUTH, gamma: float = GAMMA_TRUTH,
+                   b_scale: float = 1.0, d_scale: float = 1.0,
+                   bkg_total: float = 0.0, bkg_slope: float = 3.7) -&gt; np.ndarray:
+    """Expected (Asimov) counts from an injected truth flux, plus optional background.
+
+    The Asimov dataset is the noise-free expectation at a chosen truth; fitting it
+    recovers that truth, so it is the standard way to show a pipeline reproduces
+    the expected posteriors. Here the IceCube figures inject the best-fit flux of
+    Palmisano et al. through the forward model rather than fitting the atmospheric-muon-swamped
+    DR2 downgoing sample (which lies outside the neutrino soft-volume model's
+    validity).
+
+    Parameters
+    ----------
+    config : FitConfig
+        Fit configuration whose forward model generates the signal.
+    phi0, gamma : float, optional
+        Injected diffuse-flux truth. Default to the diffusion best fit of
+        Palmisano et al.
+    b_scale, d_scale : float, optional
+        Injected transport-coefficient truth. Default to the theoretical values.
+    bkg_total : float, optional
+        Total background events to add, distributed by :func:`atmospheric_template`.
+        Defaults to none.
+    bkg_slope : float, optional
+        Atmospheric template slope for the injected background.
+
+    Returns
+    -------
+    counts : np.ndarray
+        Expected counts per bin (signal + background).
+    """
+    counts = signal_counts(config, phi0, gamma, b_scale, d_scale)
+    if bkg_total &gt; 0.0 and np.asarray(config.log10_e_edges).size &gt; 2:
+        counts = counts + bkg_total * atmospheric_template(config.log10_e_edges, bkg_slope)
+    return counts</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.atmospheric_template" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">atmospheric_template</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">atmospheric_template(log10_e_edges: ndarray, slope: float = 3.7) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Unit-sum background shape <code>propto integral E^-slope dE</code> per bin.</p>
+<p>A pragmatic stand-in for the fixed per-bin atmospheric background of
+Palmisano et al.
+(which is not available for the DR2 release). Scaled by a free <code>bkg_norm</code>
+nuisance in the fit, so <code>bkg_norm</code> is the total expected background count.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log10_e_edges</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span> + 1))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Muon-energy bin edges in <code>log10(E / GeV)</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>slope</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>3.7</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Falling power-law index of the atmospheric muon spectrum. Defaults to
+3.7, typical of the conventional atmospheric flux.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>shape</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_bins">n_bins</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Per-bin fractions summing to 1.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def atmospheric_template(log10_e_edges: np.ndarray, slope: float = 3.7) -&gt; np.ndarray:
+    """Unit-sum background shape ``propto integral E^-slope dE`` per bin.
+
+    A pragmatic stand-in for the fixed per-bin atmospheric background of
+    Palmisano et al.
+    (which is not available for the DR2 release). Scaled by a free ``bkg_norm``
+    nuisance in the fit, so ``bkg_norm`` is the total expected background count.
+
+    Parameters
+    ----------
+    log10_e_edges : np.ndarray, shape (n_bins + 1,)
+        Muon-energy bin edges in ``log10(E / GeV)``.
+    slope : float, optional
+        Falling power-law index of the atmospheric muon spectrum. Defaults to
+        3.7, typical of the conventional atmospheric flux.
+
+    Returns
+    -------
+    shape : np.ndarray, shape (n_bins,)
+        Per-bin fractions summing to 1.
+    """
+    edges = 10.0 ** np.asarray(log10_e_edges, dtype=float)
+    if np.isclose(slope, 1.0):
+        integral = np.diff(np.log(edges))
+    else:
+        integral = (edges[1:] ** (1.0 - slope) - edges[:-1] ** (1.0 - slope)) / (1.0 - slope)
+    return integral / integral.sum()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.cross_section_enhancement" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cross_section_enhancement</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">cross_section_enhancement(lam: float, e_star_gev: float, e0_gev: float = E0_CROSS_GEV) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Cross-section enhancement <code>R = sigma(lambda) / sigma(lambda_SM)</code> at <code>E*</code>.</p>
+<p>Since <code>sigma propto (E / E0)^lambda</code>, at fixed <code>E*</code> this is
+<code>(E* / E0)^(lambda - lambda_SM)</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>lam</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Fitted effective cross-section slope.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e_star_gev</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Reference energy [GeV] (100 PeV for Fig. 8).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e0_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code><span title="softpaws.transport.source.E0_CROSS_GEV">E0_CROSS_GEV</span></code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Cross-section pivot energy [GeV]. Defaults to
+:data:<code>softpaws.transport.source.E0_CROSS_GEV</code> (10 PeV).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>R</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Enhancement relative to the SM reference <code>lambda = 0.4</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cross_section_enhancement(lam: float, e_star_gev: float,
+                              e0_gev: float = E0_CROSS_GEV) -&gt; float:
+    """Cross-section enhancement ``R = sigma(lambda) / sigma(lambda_SM)`` at ``E*``.
+
+    Since ``sigma propto (E / E0)^lambda``, at fixed ``E*`` this is
+    ``(E* / E0)^(lambda - lambda_SM)``.
+
+    Parameters
+    ----------
+    lam : float
+        Fitted effective cross-section slope.
+    e_star_gev : float
+        Reference energy [GeV] (100 PeV for Fig. 8).
+    e0_gev : float, optional
+        Cross-section pivot energy [GeV]. Defaults to
+        :data:`softpaws.transport.source.E0_CROSS_GEV` (10 PeV).
+
+    Returns
+    -------
+    R : float
+        Enhancement relative to the SM reference ``lambda = 0.4``.
+    """
+    return float((e_star_gev / e0_gev) ** (lam - LAMBDA_SM))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.free_param_names" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">free_param_names</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">free_param_names(method: str) -&gt; list[str]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Ordered names of the free parameters for a given forward model.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def free_param_names(method: str) -&gt; list[str]:
+    """Ordered names of the free parameters for a given forward model."""
+    names = ["phi0", "gamma", "b_scale"]
+    if method in ("diffusion", "exact"):
+        names.append("d_scale")
+    names.append("bkg_norm")
+    return names</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.initial_walkers" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">initial_walkers</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">initial_walkers(method: str, n_walkers: int, rng: Generator) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Starting positions for the ensemble, scattered around a sensible guess.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def initial_walkers(method: str, n_walkers: int, rng: np.random.Generator) -&gt; np.ndarray:
+    """Starting positions for the ensemble, scattered around a sensible guess."""
+    guess = {"phi0": 0.7, "gamma": 2.38, "b_scale": 0.94, "d_scale": 1.5, "bkg_norm": 1.0}
+    names = free_param_names(method)
+    center = np.array([guess[name] for name in names])
+    scatter = 0.05 * np.abs(center) + 1e-3
+    return center + scatter * rng.standard_normal((n_walkers, len(names)))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.log_posterior" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">log_posterior</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">log_posterior(theta: Sequence[float], config: FitConfig, observed: ndarray) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Log-posterior = log-prior + Poisson log-likelihood.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def log_posterior(theta: Sequence[float], config: FitConfig, observed: np.ndarray) -&gt; float:
+    """Log-posterior = log-prior + Poisson log-likelihood."""
+    lp = log_prior(theta, config.method)
+    if not np.isfinite(lp):
+        return -np.inf
+    p = _theta_to_dict(theta, config.method)
+    d_scale = p.get("d_scale", 1.0)
+    # The eigenvalue family and saturation factor can legitimately over/underflow
+    # where a walker wanders into an unphysical region; those samples are rejected
+    # by the finiteness check below, so the transient warnings are not informative.
+    with np.errstate(all="ignore"):
+        signal = signal_counts(config, p["phi0"], p["gamma"], p["b_scale"], d_scale)
+    background = p["bkg_norm"] * config.background if config.background is not None else 0.0
+    predicted = signal + background
+    # Reject unphysical regions (e.g. d_mu &gt;= b_mu, where the two-moment
+    # eigenvalue family is undefined and the soft volume is non-finite).
+    if not np.all(np.isfinite(predicted)):
+        return -np.inf
+    return lp + poisson_log_likelihood(observed, predicted)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.log_prior" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">log_prior</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">log_prior(theta: Sequence[float], method: str) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Log-prior for the flux and transport-nuisance parameters.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def log_prior(theta: Sequence[float], method: str) -&gt; float:
+    """Log-prior for the flux and transport-nuisance parameters."""
+    p = _theta_to_dict(theta, method)
+    if not (PHI0_RANGE[0] &lt; p["phi0"] &lt; PHI0_RANGE[1]):
+        return -np.inf
+    if not (GAMMA_RANGE[0] &lt; p["gamma"] &lt; GAMMA_RANGE[1]):
+        return -np.inf
+    if p["b_scale"] &lt;= 0.0 or p["bkg_norm"] &lt; 0.0:
+        return -np.inf
+
+    # b_scale: truncated Gaussian about the MC-calibrated value.
+    lp = -0.5 * ((p["b_scale"] - B_SCALE_MEAN) / B_SCALE_STD) ** 2
+
+    # d_scale: right-skewed log-normal, positive.
+    if method in ("diffusion", "exact"):
+        d = p["d_scale"]
+        if d &lt;= 0.0:
+            return -np.inf
+        lp += -np.log(d) - 0.5 * ((np.log(d) - np.log(D_SCALE_MEDIAN)) / D_SCALE_LOGSTD) ** 2
+
+    return float(lp)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.poisson_log_likelihood" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">poisson_log_likelihood</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">poisson_log_likelihood(observed: ndarray, predicted: ndarray) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Binned Poisson log-likelihood <code>sum_i (k_i ln N_i - N_i)</code> (Eq. 4.2).</p>
+<p>The <code>ln k_i!</code> term is dropped, as it is constant in the model parameters.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>observed</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts <code>k_i</code> per bin.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>predicted</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Expected counts <code>N_i</code> per bin (signal + background). Must be positive
+wherever it is evaluated.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log_l</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Poisson log-likelihood (up to the parameter-independent constant).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def poisson_log_likelihood(observed: np.ndarray, predicted: np.ndarray) -&gt; float:
+    """Binned Poisson log-likelihood ``sum_i (k_i ln N_i - N_i)`` (Eq. 4.2).
+
+    The ``ln k_i!`` term is dropped, as it is constant in the model parameters.
+
+    Parameters
+    ----------
+    observed : np.ndarray
+        Observed counts ``k_i`` per bin.
+    predicted : np.ndarray
+        Expected counts ``N_i`` per bin (signal + background). Must be positive
+        wherever it is evaluated.
+
+    Returns
+    -------
+    log_l : float
+        Poisson log-likelihood (up to the parameter-independent constant).
+    """
+    k = np.asarray(observed, dtype=float)
+    n = np.asarray(predicted, dtype=float)
+    if np.any(n &lt;= 0.0):
+        return -np.inf
+    return float(np.sum(k * np.log(n) - n))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.required_lambda" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">required_lambda</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">required_lambda(config: FitConfig, phi0: float, gamma: float, e_star_gev: float = 100000000.0, lam_bounds: tuple[float, float] | None = None) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Cross-section slope giving one muon event at <code>E*</code> (Eq. 4.6).</p>
+<p>Solves <code>N_mu(E*; lambda) = 1</code> for <code>lambda</code> by bracketing root-find. For
+the FP (drift/diffusion) models the soft volume diverges at
+<code>lambda = gamma - 1</code> (the <code>A = 0</code> pole), so the search is confined below
+it; the exact model with a finite column stays finite, so a wider bracket is
+used and the returned value can exceed the pole.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>config</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="FitConfig
+
+
+  
+      dataclass
+   (softpaws.comparison.likelihood.FitConfig)" href="#softpaws.comparison.likelihood.FitConfig">FitConfig</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Fit configuration (its <code>method</code> selects FP vs exact, <code>livetime_s</code> and
+<code>solid_angle_sr</code> set the exposure).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>phi0</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffuse-flux parameters, typically drawn from a posterior.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>gamma</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Diffuse-flux parameters, typically drawn from a posterior.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>e_star_gev</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>100000000.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Reference muon energy [GeV]. Defaults to 100 PeV.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>lam_bounds</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Search bracket for <code>lambda</code>. Defaults to <code>(-0.9, gamma - 1 - 1e-4)</code>
+for the FP models and <code>(-0.9, 3.0)</code> for the exact model.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>lam</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Required cross-section slope, or <code>nan</code> if no root lies in the bracket.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def required_lambda(config: FitConfig, phi0: float, gamma: float,
+                    e_star_gev: float = 1.0e8,
+                    lam_bounds: tuple[float, float] | None = None) -&gt; float:
+    """Cross-section slope giving one muon event at ``E*`` (Eq. 4.6).
+
+    Solves ``N_mu(E*; lambda) = 1`` for ``lambda`` by bracketing root-find. For
+    the FP (drift/diffusion) models the soft volume diverges at
+    ``lambda = gamma - 1`` (the ``A = 0`` pole), so the search is confined below
+    it; the exact model with a finite column stays finite, so a wider bracket is
+    used and the returned value can exceed the pole.
+
+    Parameters
+    ----------
+    config : FitConfig
+        Fit configuration (its ``method`` selects FP vs exact, ``livetime_s`` and
+        ``solid_angle_sr`` set the exposure).
+    phi0, gamma : float
+        Diffuse-flux parameters, typically drawn from a posterior.
+    e_star_gev : float, optional
+        Reference muon energy [GeV]. Defaults to 100 PeV.
+    lam_bounds : tuple of float, optional
+        Search bracket for ``lambda``. Defaults to ``(-0.9, gamma - 1 - 1e-4)``
+        for the FP models and ``(-0.9, 3.0)`` for the exact model.
+
+    Returns
+    -------
+    lam : float
+        Required cross-section slope, or ``nan`` if no root lies in the bracket.
+    """
+    if lam_bounds is None:
+        if config.method == "exact":
+            lam_bounds = (-0.9, 3.0)
+        else:
+            lam_bounds = (-0.9, gamma - 1.0 - 1e-4)
+
+    def log_n(lam: float) -&gt; float:
+        n = _events_at_energy(config, phi0, gamma, lam, e_star_gev)
+        return np.log(n) if n &gt; 0 else -np.inf
+
+    lo, hi = lam_bounds
+    f_lo, f_hi = log_n(lo), log_n(hi)
+    if not (np.isfinite(f_lo) and np.isfinite(f_hi)) or f_lo * f_hi &gt; 0.0:
+        return float("nan")
+    return float(brentq(log_n, lo, hi, xtol=1e-4))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.run_mcmc" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">run_mcmc</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">run_mcmc(config: FitConfig, observed: ndarray, background: ndarray | None = None, n_walkers: int = 32, n_steps: int = 3000, n_burn: int = 1000, seed: int = 0) -&gt; dict[str, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Sample the posterior and return flat chains keyed by parameter name.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>config</code></b>
+                  (<code><a class="autorefs autorefs-internal" title="FitConfig
+
+
+  
+      dataclass
+   (softpaws.comparison.likelihood.FitConfig)" href="#softpaws.comparison.likelihood.FitConfig">FitConfig</a></code>)
+              –
+              <div class="doc-md-description">
+                <p>Fit configuration; its <code>background</code> field is set from <code>background</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>observed</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed counts per bin.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>background</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Per-bin background <em>shape</em> (summing to 1); <code>None</code> for no background
+(e.g. the KM3NeT single-event fit).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_walkers</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>32</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ensemble size, chain length, and burn-in to discard.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_steps</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>32</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ensemble size, chain length, and burn-in to discard.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_burn</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>32</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ensemble size, chain length, and burn-in to discard.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seed</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>RNG seed for reproducibility.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>samples</code></b>(                  <code>dict of str -&gt; np.ndarray</code>
+)              –
+              <div class="doc-md-description">
+                <p>Flattened post-burn-in chains, one array per free parameter, plus
+<code>"b_mu"</code> and (if applicable) <code>"d_mu"</code> in physical units [km^-1].</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def run_mcmc(config: FitConfig, observed: np.ndarray, background: np.ndarray | None = None,
+             n_walkers: int = 32, n_steps: int = 3000, n_burn: int = 1000,
+             seed: int = 0) -&gt; dict[str, np.ndarray]:
+    """Sample the posterior and return flat chains keyed by parameter name.
+
+    Parameters
+    ----------
+    config : FitConfig
+        Fit configuration; its ``background`` field is set from ``background``.
+    observed : np.ndarray
+        Observed counts per bin.
+    background : np.ndarray or None, optional
+        Per-bin background *shape* (summing to 1); ``None`` for no background
+        (e.g. the KM3NeT single-event fit).
+    n_walkers, n_steps, n_burn : int, optional
+        Ensemble size, chain length, and burn-in to discard.
+    seed : int, optional
+        RNG seed for reproducibility.
+
+    Returns
+    -------
+    samples : dict of str -&gt; np.ndarray
+        Flattened post-burn-in chains, one array per free parameter, plus
+        ``"b_mu"`` and (if applicable) ``"d_mu"`` in physical units [km^-1].
+    """
+    config.background = background
+    rng = np.random.default_rng(seed)
+    names = free_param_names(config.method)
+    ndim = len(names)
+    p0 = initial_walkers(config.method, n_walkers, rng)
+
+    sampler = emcee.EnsembleSampler(n_walkers, ndim, log_posterior, args=(config, observed))
+    sampler.run_mcmc(p0, n_steps, progress=False)
+    flat = sampler.get_chain(discard=n_burn, flat=True)
+
+    samples = {name: flat[:, i] for i, name in enumerate(names)}
+
+    # Physical transport coefficients at 10 PeV, for the corner plot axes.
+    from ..transport.coefficients import diffusion_coefficient, drift_coefficient
+
+    b0 = float(drift_coefficient(1.0e7, config.density_g_cm3)[0])
+    samples["b_mu"] = samples["b_scale"] * b0
+    if config.uses_diffusion():
+        d0 = float(diffusion_coefficient(1.0e7, config.density_g_cm3)[0])
+        samples["d_mu"] = samples["d_scale"] * d0
+    return samples</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.likelihood.signal_counts" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">signal_counts</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">signal_counts(config: FitConfig, phi0: float, gamma: float, b_scale: float, d_scale: float) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Expected astrophysical counts per bin for the configured forward model.</p>
+<p>With <code>config.origin == "generic"</code> this adds the tau-induced contribution
+from a same-normalization <code>nu_tau</code> flux to the direct <code>nu_mu</code> prediction
+(see :attr:<code>FitConfig.origin</code>).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if <code>config.origin == "generic"</code> while <code>config.method !=
+"exact"</code>, since the tau ratio needs the exact eigenvalue <code>Phi(A)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/likelihood.py</code></summary>
+              <pre class="highlight"><code class="language-python">def signal_counts(config: FitConfig, phi0: float, gamma: float,
+                  b_scale: float, d_scale: float) -&gt; np.ndarray:
+    """Expected astrophysical counts per bin for the configured forward model.
+
+    With ``config.origin == "generic"`` this adds the tau-induced contribution
+    from a same-normalization ``nu_tau`` flux to the direct ``nu_mu`` prediction
+    (see :attr:`FitConfig.origin`).
+
+    Raises
+    ------
+    ValueError
+        Raised if ``config.origin == "generic"`` while ``config.method !=
+        "exact"``, since the tau ratio needs the exact eigenvalue ``Phi(A)``.
+    """
+    response = SoftVolumeResponse(
+        config.radius_km,
+        config.density_g_cm3,
+        method=config.method,
+        column_depth_km=config.column_depth_km,
+        b_scale=b_scale,
+        d_scale=d_scale,
+    )
+    counts = response.expected_counts(
+        config.log10_e_edges,
+        phi0,
+        gamma,
+        config.livetime_s,
+        config.solid_angle_sr,
+        lam=config.lam,
+        n_subdivisions=config.n_subdivisions,
+    )
+    if config.origin == "generic":
+        if config.method != "exact":
+            raise ValueError(
+                "FitConfig.origin='generic' (tau-inclusive) requires method='exact', "
+                f"got {config.method!r}."
+            )
+        counts = counts + tau_induced_expected_counts(
+            response,
+            config.log10_e_edges,
+            phi0,
+            gamma,
+            config.livetime_s,
+            config.solid_angle_sr,
+            lam=config.lam,
+            n_subdivisions=config.n_subdivisions,
+        )
+    return counts</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../feldman_cousins/" class="btn btn-neutral float-left" title="feldman_cousins"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../posterior/" class="btn btn-neutral float-right" title="posterior">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../feldman_cousins/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../posterior/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/comparison/posterior/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>posterior - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "posterior";
+        var mkdocs_page_input_path = "api-reference/softpaws/comparison/posterior.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/comparison/posterior/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >comparison</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../events/">events</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../feldman_cousins/">feldman_cousins</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">posterior</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.credible_interval">credible_interval</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.global_compatibility">global_compatibility</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.inside_box">inside_box</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.intersection">intersection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.leave_one_out_compatibility">leave_one_out_compatibility</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.log_gaussian_in_log">log_gaussian_in_log</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.marginal_summary">marginal_summary</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.pairwise_compatibility">pairwise_compatibility</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.product_posterior">product_posterior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.posterior.sample_posterior">sample_posterior</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">comparison</li>
+      <li class="breadcrumb-item active">posterior</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.comparison.posterior" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.comparison.posterior</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Posterior sampling and the statistics read off a set of chains.</p>
+<p>The fits of the paper sample a handful of parameters per detector with an
+affine-invariant ensemble sampler and then ask three questions of the
+chains: what each marginal says (and whether it is the prior box talking),
+what the product of independent posteriors says on a shared subspace, and
+whether two or more posteriors agree there. The functions here answer them
+for any chains; the forward models and the priors stay with the fits.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="credible_interval (softpaws.comparison.posterior.credible_interval)" href="#softpaws.comparison.posterior.credible_interval">credible_interval</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Central credible interval of one-dimensional samples.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="global_compatibility (softpaws.comparison.posterior.global_compatibility)" href="#softpaws.comparison.posterior.global_compatibility">global_compatibility</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>All posteriors about their common precision-weighted mean.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="inside_box (softpaws.comparison.posterior.inside_box)" href="#softpaws.comparison.posterior.inside_box">inside_box</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Whether every parameter lies strictly inside its prior box.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="intersection (softpaws.comparison.posterior.intersection)" href="#softpaws.comparison.posterior.intersection">intersection</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Overlap of several intervals.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="leave_one_out_compatibility (softpaws.comparison.posterior.leave_one_out_compatibility)" href="#softpaws.comparison.posterior.leave_one_out_compatibility">leave_one_out_compatibility</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Each posterior against the precision-weighted mean of the others.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="log_gaussian_in_log (softpaws.comparison.posterior.log_gaussian_in_log)" href="#softpaws.comparison.posterior.log_gaussian_in_log">log_gaussian_in_log</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Log likelihood that is Gaussian in <code>ln(observed / predicted)</code>.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="marginal_summary (softpaws.comparison.posterior.marginal_summary)" href="#softpaws.comparison.posterior.marginal_summary">marginal_summary</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Median, credible intervals and prior-rail flags of every marginal.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="pairwise_compatibility (softpaws.comparison.posterior.pairwise_compatibility)" href="#softpaws.comparison.posterior.pairwise_compatibility">pairwise_compatibility</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Mahalanobis distance between two posterior means, as a chi-square.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="product_posterior (softpaws.comparison.posterior.product_posterior)" href="#softpaws.comparison.posterior.product_posterior">product_posterior</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Product of independent posteriors on a shared subspace.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="sample_posterior (softpaws.comparison.posterior.sample_posterior)" href="#softpaws.comparison.posterior.sample_posterior">sample_posterior</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Sample a posterior with an affine-invariant ensemble and flatten the chain.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.credible_interval" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">credible_interval</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">credible_interval(samples: ndarray, level: float) -&gt; tuple[float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Central credible interval of one-dimensional samples.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>samples</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Samples of one parameter.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>level</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Probability content, for example <code>0.68</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>low, high : float</code>
+              –
+              <div class="doc-md-description">
+                <p>The interval edges.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def credible_interval(samples: np.ndarray, level: float) -&gt; tuple[float, float]:
+    """Central credible interval of one-dimensional samples.
+
+    Parameters
+    ----------
+    samples : np.ndarray
+        Samples of one parameter.
+    level : float
+        Probability content, for example ``0.68``.
+
+    Returns
+    -------
+    low, high : float
+        The interval edges.
+    """
+    half = 100.0 * (1.0 - level) / 2.0
+    lo, hi = np.percentile(samples, [half, 100.0 - half])
+    return float(lo), float(hi)</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.global_compatibility" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">global_compatibility</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">global_compatibility(chains: list[ndarray], names: tuple[str, ...]) -&gt; dict</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>All posteriors about their common precision-weighted mean.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>chains</code></b>
+                  (<code>list of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>(n_samples, len(names))</code> chains on the same parameters.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>names</code></b>
+                  (<code>tuple of str</code>)
+              –
+              <div class="doc-md-description">
+                <p>Parameter names, for the combined-mean entries.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>result</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>{"chi2", "dof", "p_value", "sigma", "combined_mean",
+"combined_sigma"}</code> with <code>2 (n - 1)</code> degrees of freedom for two
+parameters, and in general <code>len(names) (n - 1)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def global_compatibility(chains: list[np.ndarray], names: tuple[str, ...]) -&gt; dict:
+    """All posteriors about their common precision-weighted mean.
+
+    Parameters
+    ----------
+    chains : list of np.ndarray
+        ``(n_samples, len(names))`` chains on the same parameters.
+    names : tuple of str
+        Parameter names, for the combined-mean entries.
+
+    Returns
+    -------
+    result : dict
+        ``{"chi2", "dof", "p_value", "sigma", "combined_mean",
+        "combined_sigma"}`` with ``2 (n - 1)`` degrees of freedom for two
+        parameters, and in general ``len(names) (n - 1)``.
+    """
+    means = [c.mean(axis=0) for c in chains]
+    precisions = [np.linalg.inv(np.cov(c.T)) for c in chains]
+    n = len(chains)
+    mean, covariance = _precision_combine(means, precisions, range(n))
+    chi_square = float(
+        sum((means[i] - mean) @ precisions[i] @ (means[i] - mean) for i in range(n))
+    )
+    dof = len(names) * (n - 1)
+    p_value = float(chi2.sf(chi_square, dof))
+    return {
+        "chi2": chi_square,
+        "dof": dof,
+        "p_value": p_value,
+        "sigma": _sigma(p_value),
+        "combined_mean": {name: float(mean[k]) for k, name in enumerate(names)},
+        "combined_sigma": {name: float(np.sqrt(covariance[k, k])) for k, name in enumerate(names)},
+    }</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.inside_box" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">inside_box</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">inside_box(theta: ndarray, bounds: Sequence[tuple[float, float]]) -&gt; bool</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Whether every parameter lies strictly inside its prior box.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>theta</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Parameter values.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bounds</code></b>
+                  (<code>sequence of tuple of float</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>(low, high)</code> per parameter, in the same order.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>inside</code></b>(                  <code><span title="bool">bool</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>True if <code>low &lt; value &lt; high</code> for every parameter.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def inside_box(theta: np.ndarray, bounds: Sequence[tuple[float, float]]) -&gt; bool:
+    """Whether every parameter lies strictly inside its prior box.
+
+    Parameters
+    ----------
+    theta : np.ndarray
+        Parameter values.
+    bounds : sequence of tuple of float
+        ``(low, high)`` per parameter, in the same order.
+
+    Returns
+    -------
+    inside : bool
+        True if ``low &lt; value &lt; high`` for every parameter.
+    """
+    return all(low &lt; value &lt; high for value, (low, high) in zip(theta, bounds, strict=True))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.intersection" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">intersection</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">intersection(intervals: Sequence[tuple[float, float]]) -&gt; dict</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Overlap of several intervals.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>intervals</code></b>
+                  (<code>sequence of tuple of float</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>(low, high)</code> per posterior.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>overlap</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>{"low", "high", "empty"}</code>; <code>empty</code> is True when the intervals
+do not meet.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def intersection(intervals: Sequence[tuple[float, float]]) -&gt; dict:
+    """Overlap of several intervals.
+
+    Parameters
+    ----------
+    intervals : sequence of tuple of float
+        ``(low, high)`` per posterior.
+
+    Returns
+    -------
+    overlap : dict
+        ``{"low", "high", "empty"}``; ``empty`` is True when the intervals
+        do not meet.
+    """
+    lo = max(interval[0] for interval in intervals)
+    hi = min(interval[1] for interval in intervals)
+    return {"low": float(lo), "high": float(hi), "empty": bool(hi &lt;= lo)}</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.leave_one_out_compatibility" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">leave_one_out_compatibility</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">leave_one_out_compatibility(chains: list[ndarray]) -&gt; list[dict]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Each posterior against the precision-weighted mean of the others.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>chains</code></b>
+                  (<code>list of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p><code>(n_samples, n_parameters)</code> chains on the same parameters.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>results</code></b>(                  <code>list of dict</code>
+)              –
+              <div class="doc-md-description">
+                <p>Per chain, <code>{"chi2", "p_value", "sigma"}</code> of its mean against the
+combination of the others.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def leave_one_out_compatibility(chains: list[np.ndarray]) -&gt; list[dict]:
+    """Each posterior against the precision-weighted mean of the others.
+
+    Parameters
+    ----------
+    chains : list of np.ndarray
+        ``(n_samples, n_parameters)`` chains on the same parameters.
+
+    Returns
+    -------
+    results : list of dict
+        Per chain, ``{"chi2", "p_value", "sigma"}`` of its mean against the
+        combination of the others.
+    """
+    means = [c.mean(axis=0) for c in chains]
+    precisions = [np.linalg.inv(np.cov(c.T)) for c in chains]
+    n = len(chains)
+    out = []
+    for i in range(n):
+        mean, covariance = _precision_combine(means, precisions, [j for j in range(n) if j != i])
+        delta = means[i] - mean
+        chi_square = float(
+            delta @ np.linalg.solve(covariance + np.linalg.inv(precisions[i]), delta)
+        )
+        p_value = float(chi2.sf(chi_square, delta.size))
+        out.append({"chi2": chi_square, "p_value": p_value, "sigma": _sigma(p_value)})
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.log_gaussian_in_log" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">log_gaussian_in_log</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">log_gaussian_in_log(observed: ndarray, predicted: ndarray, sigma_ln: float) -&gt; float</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Log likelihood that is Gaussian in <code>ln(observed / predicted)</code>.</p>
+<p>A prediction that is not finite or not positive is outside the model,
+not merely unlikely, and returns <code>-inf</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>observed</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Observed values, positive.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>predicted</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Predicted values on the same points.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sigma_ln</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Assumed fractional error, as a width in the logarithm.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>log_likelihood</code></b>(                  <code><span title="float">float</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>-0.5 sum (ln(observed / predicted) / sigma_ln)^2</code>, or <code>-inf</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def log_gaussian_in_log(observed: np.ndarray, predicted: np.ndarray, sigma_ln: float) -&gt; float:
+    """Log likelihood that is Gaussian in ``ln(observed / predicted)``.
+
+    A prediction that is not finite or not positive is outside the model,
+    not merely unlikely, and returns ``-inf``.
+
+    Parameters
+    ----------
+    observed : np.ndarray
+        Observed values, positive.
+    predicted : np.ndarray
+        Predicted values on the same points.
+    sigma_ln : float
+        Assumed fractional error, as a width in the logarithm.
+
+    Returns
+    -------
+    log_likelihood : float
+        ``-0.5 sum (ln(observed / predicted) / sigma_ln)^2``, or ``-inf``.
+    """
+    predicted = np.asarray(predicted, dtype=float)
+    if not np.all(np.isfinite(predicted)) or np.any(predicted &lt;= 0.0):
+        return -np.inf
+    residual = np.log(np.asarray(observed, dtype=float) / predicted)
+    return -0.5 * float(np.sum((residual / sigma_ln) ** 2))</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.marginal_summary" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">marginal_summary</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">marginal_summary(chain: ndarray, names: tuple[str, ...], priors: dict[str, tuple[float, float]], best: ndarray | None = None, rail_fraction: float = 0.02) -&gt; dict[str, dict]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Median, credible intervals and prior-rail flags of every marginal.</p>
+<p>A 68% edge sitting on a prior edge means the prior box is doing the
+constraining and not the data: the interval is then a bound, not a
+measurement, and must not be quoted as one.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>chain</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_samples">n_samples</span>, <span title="n_parameters">n_parameters</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>The flattened chain.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>names</code></b>
+                  (<code>tuple of str</code>)
+              –
+              <div class="doc-md-description">
+                <p>Parameter names, one per column.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>priors</code></b>
+                  (<code><span title="dict">dict</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Name -&gt; <code>(low, high)</code> prior box.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>best</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Best-fit point; <code>None</code> omits the <code>"best_fit"</code> entry.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rail_fraction</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.02</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fraction of the prior width within which a 68% edge counts as
+railed against the prior.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>summary</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Name -&gt; <code>{"median", "best_fit", "ci68", "ci95", "prior",
+"rails_prior"}</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def marginal_summary(
+    chain: np.ndarray,
+    names: tuple[str, ...],
+    priors: dict[str, tuple[float, float]],
+    best: np.ndarray | None = None,
+    rail_fraction: float = 0.02,
+) -&gt; dict[str, dict]:
+    """Median, credible intervals and prior-rail flags of every marginal.
+
+    A 68% edge sitting on a prior edge means the prior box is doing the
+    constraining and not the data: the interval is then a bound, not a
+    measurement, and must not be quoted as one.
+
+    Parameters
+    ----------
+    chain : np.ndarray, shape (n_samples, n_parameters)
+        The flattened chain.
+    names : tuple of str
+        Parameter names, one per column.
+    priors : dict
+        Name -&gt; ``(low, high)`` prior box.
+    best : np.ndarray or None, optional
+        Best-fit point; ``None`` omits the ``"best_fit"`` entry.
+    rail_fraction : float, optional
+        Fraction of the prior width within which a 68% edge counts as
+        railed against the prior.
+
+    Returns
+    -------
+    summary : dict
+        Name -&gt; ``{"median", "best_fit", "ci68", "ci95", "prior",
+        "rails_prior"}``.
+    """
+    out = {}
+    for i, name in enumerate(names):
+        lo68, hi68 = credible_interval(chain[:, i], 0.68)
+        lo95, hi95 = credible_interval(chain[:, i], 0.95)
+        low, high = priors[name]
+        span = high - low
+        entry = {
+            "median": float(np.median(chain[:, i])),
+            "ci68": [lo68, hi68],
+            "ci95": [lo95, hi95],
+            "prior": [float(low), float(high)],
+            "rails_prior": {
+                "low": bool(lo68 - low &lt; rail_fraction * span),
+                "high": bool(high - hi68 &lt; rail_fraction * span),
+            },
+        }
+        if best is not None:
+            entry["best_fit"] = float(best[i])
+        out[name] = entry
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.pairwise_compatibility" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">pairwise_compatibility</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">pairwise_compatibility(chain_a: ndarray, chain_b: ndarray) -&gt; dict</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Mahalanobis distance between two posterior means, as a chi-square.</p>
+<p>The two posteriors are summarized by their means and covariances; the
+distance between the means against the summed covariances is a
+chi-square with as many degrees of freedom as parameters.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>chain_a</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>(n_samples, n_parameters)</code> chains on the same parameters.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>chain_b</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>(n_samples, n_parameters)</code> chains on the same parameters.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>result</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>{"dof", "chi2", "p_value", "sigma", "delta"}</code>, where <code>delta</code> is
+the difference of the means.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def pairwise_compatibility(chain_a: np.ndarray, chain_b: np.ndarray) -&gt; dict:
+    """Mahalanobis distance between two posterior means, as a chi-square.
+
+    The two posteriors are summarized by their means and covariances; the
+    distance between the means against the summed covariances is a
+    chi-square with as many degrees of freedom as parameters.
+
+    Parameters
+    ----------
+    chain_a, chain_b : np.ndarray
+        ``(n_samples, n_parameters)`` chains on the same parameters.
+
+    Returns
+    -------
+    result : dict
+        ``{"dof", "chi2", "p_value", "sigma", "delta"}``, where ``delta`` is
+        the difference of the means.
+    """
+    means = [chain_a.mean(axis=0), chain_b.mean(axis=0)]
+    covariances = [np.cov(chain_a.T), np.cov(chain_b.T)]
+    delta = means[0] - means[1]
+    chi_square = float(delta @ np.linalg.solve(covariances[0] + covariances[1], delta))
+    dof = delta.size
+    p_value = float(chi2.sf(chi_square, dof))
+    return {
+        "dof": dof,
+        "chi2": chi_square,
+        "p_value": p_value,
+        "sigma": _sigma(p_value),
+        "delta": delta,
+    }</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.product_posterior" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">product_posterior</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">product_posterior(chains: list[ndarray], names: tuple[str, ...], n_grid: int = 160, bound_percentiles: tuple[float, float] = (0.5, 99.5)) -&gt; dict</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Product of independent posteriors on a shared subspace.</p>
+<p>Each chain is turned into a kernel density estimate on a common grid
+spanning the union of the chains' central ranges, the densities are
+multiplied, and the marginals of the product are summarized.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>chains</code></b>
+                  (<code>list of np.ndarray</code>)
+              –
+              <div class="doc-md-description">
+                <p>One <code>(n_samples, len(names))</code> array per posterior, columns in the
+order of <code>names</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>names</code></b>
+                  (<code>tuple of str</code>)
+              –
+              <div class="doc-md-description">
+                <p>Names of the shared parameters.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_grid</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>160</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Grid points per axis.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>bound_percentiles</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>(0.5, 99.5)</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Percentiles of each chain that bound the grid.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>product</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p><code>"params"</code>, then per name <code>{"median", "ci68"}</code>, and <code>"mode"</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def product_posterior(
+    chains: list[np.ndarray],
+    names: tuple[str, ...],
+    n_grid: int = 160,
+    bound_percentiles: tuple[float, float] = (0.5, 99.5),
+) -&gt; dict:
+    """Product of independent posteriors on a shared subspace.
+
+    Each chain is turned into a kernel density estimate on a common grid
+    spanning the union of the chains' central ranges, the densities are
+    multiplied, and the marginals of the product are summarized.
+
+    Parameters
+    ----------
+    chains : list of np.ndarray
+        One ``(n_samples, len(names))`` array per posterior, columns in the
+        order of ``names``.
+    names : tuple of str
+        Names of the shared parameters.
+    n_grid : int, optional
+        Grid points per axis.
+    bound_percentiles : tuple of float, optional
+        Percentiles of each chain that bound the grid.
+
+    Returns
+    -------
+    product : dict
+        ``"params"``, then per name ``{"median", "ci68"}``, and ``"mode"``.
+    """
+    bounds = []
+    for k in range(len(names)):
+        lo = min(np.percentile(c[:, k], bound_percentiles[0]) for c in chains)
+        hi = max(np.percentile(c[:, k], bound_percentiles[1]) for c in chains)
+        bounds.append((float(lo), float(hi)))
+    axes = [np.linspace(lo, hi, n_grid) for lo, hi in bounds]
+    mesh = np.meshgrid(*axes, indexing="ij")
+    points = np.vstack([m.ravel() for m in mesh])
+    density = np.ones(points.shape[1])
+    for c in chains:
+        density *= gaussian_kde(c.T)(points)
+    density = density.reshape(mesh[0].shape)
+    total = density.sum()
+    out: dict = {"params": list(names)}
+    for axis, (name, grid) in enumerate(zip(names, axes, strict=True)):
+        others = tuple(a for a in range(density.ndim) if a != axis)
+        marginal = density.sum(axis=others) / total
+        cumulative = np.cumsum(marginal)
+        median, lo68, hi68 = np.interp([0.5, 0.16, 0.84], cumulative, grid)
+        out[name] = {"median": float(median), "ci68": [float(lo68), float(hi68)]}
+    peak = np.unravel_index(np.argmax(density), density.shape)
+    out["mode"] = {
+        name: float(grid[peak[axis]])
+        for axis, (name, grid) in enumerate(zip(names, axes, strict=True))
+    }
+    return out</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.posterior.sample_posterior" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">sample_posterior</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">sample_posterior(log_probability: Callable[..., float], start: ndarray, scatter: ndarray, walkers: int, steps: int, seed: int, args: tuple = (), discard_fraction: float = 1.0 / 3.0, processes: int | None = None) -&gt; tuple[np.ndarray, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Sample a posterior with an affine-invariant ensemble and flatten the chain.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>log_probability</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>log_probability(theta, *args)</code>, the log posterior.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>start</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Central starting point of the walkers.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>scatter</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Per-parameter Gaussian scatter of the initial walkers about <code>start</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>walkers</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Number of walkers.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>steps</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Steps per walker.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seed</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Seed of the initial scatter.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>args</code></b>
+                  (<code><span title="tuple">tuple</span></code>, default:
+                      <code>()</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Extra positional arguments of <code>log_probability</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>discard_fraction</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>1.0 / 3.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Fraction of the steps discarded as burn-in.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>processes</code></b>
+                  (<code><span title="int">int</span> or None</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Worker processes to evaluate the ensemble with. <code>None</code>, the default,
+runs in this process. The walkers of one step are independent, so
+splitting them across cores is close to linear in the number of them
+and leaves the chain unchanged: the proposal draws come from the
+sampler's own generator and the results are gathered back in walker
+order. Only worth it where one evaluation costs more than the round
+trip, which for the forward models here means milliseconds and up.
+<code>log_probability</code> and everything in <code>args</code> have to be picklable,
+so both must be reachable by import and not defined in a script that
+another one loads by path.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>chain</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_samples">n_samples</span>, <span title="n_parameters">n_parameters</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>The flattened chain after burn-in.</p>
+              </div>
+            </li>
+            <li>
+<b><code>best</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_parameters">n_parameters</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>The sample of highest log probability.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/posterior.py</code></summary>
+              <pre class="highlight"><code class="language-python">def sample_posterior(
+    log_probability: Callable[..., float],
+    start: np.ndarray,
+    scatter: np.ndarray,
+    walkers: int,
+    steps: int,
+    seed: int,
+    args: tuple = (),
+    discard_fraction: float = 1.0 / 3.0,
+    processes: int | None = None,
+) -&gt; tuple[np.ndarray, np.ndarray]:
+    """Sample a posterior with an affine-invariant ensemble and flatten the chain.
+
+    Parameters
+    ----------
+    log_probability : callable
+        ``log_probability(theta, *args)``, the log posterior.
+    start : np.ndarray
+        Central starting point of the walkers.
+    scatter : np.ndarray
+        Per-parameter Gaussian scatter of the initial walkers about ``start``.
+    walkers : int
+        Number of walkers.
+    steps : int
+        Steps per walker.
+    seed : int
+        Seed of the initial scatter.
+    args : tuple, optional
+        Extra positional arguments of ``log_probability``.
+    discard_fraction : float, optional
+        Fraction of the steps discarded as burn-in.
+    processes : int or None, optional
+        Worker processes to evaluate the ensemble with. ``None``, the default,
+        runs in this process. The walkers of one step are independent, so
+        splitting them across cores is close to linear in the number of them
+        and leaves the chain unchanged: the proposal draws come from the
+        sampler's own generator and the results are gathered back in walker
+        order. Only worth it where one evaluation costs more than the round
+        trip, which for the forward models here means milliseconds and up.
+        ``log_probability`` and everything in ``args`` have to be picklable,
+        so both must be reachable by import and not defined in a script that
+        another one loads by path.
+
+    Returns
+    -------
+    chain : np.ndarray, shape (n_samples, n_parameters)
+        The flattened chain after burn-in.
+    best : np.ndarray, shape (n_parameters,)
+        The sample of highest log probability.
+    """
+    import contextlib
+    import multiprocessing
+
+    import emcee
+
+    start = np.asarray(start, dtype=float)
+    rng = np.random.default_rng(seed)
+    initial = start + np.asarray(scatter, dtype=float) * rng.standard_normal(
+        (walkers, start.size)
+    )
+    opened = (
+        multiprocessing.Pool(processes)
+        if processes is not None and processes &gt; 1
+        else contextlib.nullcontext()
+    )
+    with opened as pool:
+        sampler = emcee.EnsembleSampler(
+            walkers, start.size, log_probability, args=args, pool=pool
+        )
+        sampler.run_mcmc(initial, steps, progress=False)
+    discard = int(steps * discard_fraction)
+    chain = sampler.get_chain(discard=discard, flat=True)
+    best = chain[np.argmax(sampler.get_log_prob(discard=discard, flat=True))]
+    return chain, best</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../likelihood/" class="btn btn-neutral float-left" title="likelihood"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../rates/" class="btn btn-neutral float-right" title="rates">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../likelihood/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../rates/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

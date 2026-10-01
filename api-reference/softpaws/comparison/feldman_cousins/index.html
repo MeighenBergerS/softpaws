@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Stephan Meighen-Berger" /><link rel="canonical" href="https://meighenbergers.github.io/softpaws/api-reference/softpaws/comparison/feldman_cousins/" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>feldman_cousins - softpaws</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../../../css/custom_rules.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "feldman_cousins";
+        var mkdocs_page_input_path = "api-reference/softpaws/comparison/feldman_cousins.md";
+        var mkdocs_page_url = "/softpaws/api-reference/softpaws/comparison/feldman_cousins/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+  <a href="../../../..">
+    <img src="../../../../img/logo.jpg" class="logo" alt="Logo"/>
+    <span class="site-name">softpaws</span>
+  </a>
+<div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../..">Getting started</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../quickstart/">Quickstart</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../own_detector/">Your own detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../data/">Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../examples/">Examples</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../reproduce/">Reproducing the paper</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Theory notes</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/exact_soft_volume/">The transport exponent</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/first_passage_range/">The range to threshold</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/paper_to_code/">Paper to code</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../../theory/soft_volume/">Prior work: the soft volume</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../citation/">Citation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >softpaws</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../">softpaws</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >comparison</a>
+    <ul class="current">
+                <li class="toctree-l3"><a class="reference internal" href="../">comparison</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../event_energy/">event_energy</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../events/">events</a>
+                </li>
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">feldman_cousins</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.feldman_cousins.cached_toys">cached_toys</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.feldman_cousins.calibrated_thresholds">calibrated_thresholds</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.feldman_cousins.profile_interval">profile_interval</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#softpaws.comparison.feldman_cousins.toy_statistics">toy_statistics</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../likelihood/">likelihood</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../posterior/">posterior</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../rates/">rates</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../reco_likelihood/">reco_likelihood</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../constants/">constants</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >data</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/">data</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/container/">container</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/hese/">hese</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/icecube/">icecube</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/loader/">loader</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/paths/">paths</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../data/schema/">schema</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >detectors</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/">detectors</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/optics/">optics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../detectors/sites/">sites</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >fluxes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/">fluxes</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/astrophysical/">astrophysical</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../fluxes/atmospheric/">atmospheric</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >response</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/">response</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/declination/">declination</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/effective_area/">effective_area</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/first_principles/">first_principles</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/irfs/">irfs</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/light_reach/">light_reach</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/published/">published</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/sensitivity/">sensitivity</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../response/soft_volume/">soft_volume</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../standards/">standards</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >transport</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/">transport</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/attenuation/">attenuation</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/coefficients/">coefficients</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cross_section/">cross_section</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/cutoff_source/">cutoff_source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/earth/">earth</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/eigenvalue/">eigenvalue</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_distribution/">loss_distribution</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/loss_ensemble/">loss_ensemble</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/muon_range/">muon_range</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/soft_volume/">soft_volume</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/source/">source</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../transport/tau/">tau</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">softpaws</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+          <li class="breadcrumb-item">softpaws</li>
+          <li class="breadcrumb-item">comparison</li>
+      <li class="breadcrumb-item active">feldman_cousins</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<h1 id="softpaws.comparison.feldman_cousins" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">softpaws.comparison.feldman_cousins</span>
+
+
+</h1>
+
+    <div class="doc doc-contents first">
+
+        <p>Feldman-Cousins calibration of a profile-likelihood interval.</p>
+<p>A profile statistic <code>q(r) = -2 ln L(r) + 2 ln L_min</code> scanned over a
+parameter <code>r</code> gives a Wilks interval where it crosses <code>1.0</code> (68%) or
+<code>3.84</code> (95%). Near a physical boundary Wilks fails, and the threshold at
+each true <code>r</code> is calibrated instead from pseudo-experiments: the
+distribution of the same statistic under toys drawn at that truth. The
+functions here run the toys for any model that can produce an expectation
+and evaluate the statistic, cache the result, and read intervals off the
+calibrated thresholds.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="cached_toys (softpaws.comparison.feldman_cousins.cached_toys)" href="#softpaws.comparison.feldman_cousins.cached_toys">cached_toys</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Toy distributions from a cache file, rebuilt when the metadata differs.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="calibrated_thresholds (softpaws.comparison.feldman_cousins.calibrated_thresholds)" href="#softpaws.comparison.feldman_cousins.calibrated_thresholds">calibrated_thresholds</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Per-grid-point thresholds from the toy distributions at each truth.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="profile_interval (softpaws.comparison.feldman_cousins.profile_interval)" href="#softpaws.comparison.feldman_cousins.profile_interval">profile_interval</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Crossing points of a profile statistic at one threshold.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="toy_statistics (softpaws.comparison.feldman_cousins.toy_statistics)" href="#softpaws.comparison.feldman_cousins.toy_statistics">toy_statistics</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Distributions of a profile statistic under Poisson pseudo-experiments.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.feldman_cousins.cached_toys" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">cached_toys</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">cached_toys(path: str | Path, metadata: dict, build: Callable[[], ndarray], rebuild: bool = False) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Toy distributions from a cache file, rebuilt when the metadata differs.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>path</code></b>
+                  (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Cache file (<code>.npz</code>).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>metadata</code></b>
+                  (<code><span title="dict">dict</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Values the cache must match to be valid (truth points, number of
+toys, seed, priors, a version number, ...). Arrays are compared
+element-wise, everything else by equality.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>build</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>build()</code> -&gt; <code>q</code>, called when the cache is missing or stale.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rebuild</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>False</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Ignore the cache.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>q</code></b>(                  <code><span title="numpy.ndarray">ndarray</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>The toy distributions.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/feldman_cousins.py</code></summary>
+              <pre class="highlight"><code class="language-python">def cached_toys(
+    path: str | pathlib.Path,
+    metadata: dict,
+    build: Callable[[], np.ndarray],
+    rebuild: bool = False,
+) -&gt; np.ndarray:
+    """Toy distributions from a cache file, rebuilt when the metadata differs.
+
+    Parameters
+    ----------
+    path : str or pathlib.Path
+        Cache file (``.npz``).
+    metadata : dict
+        Values the cache must match to be valid (truth points, number of
+        toys, seed, priors, a version number, ...). Arrays are compared
+        element-wise, everything else by equality.
+    build : callable
+        ``build()`` -&gt; ``q``, called when the cache is missing or stale.
+    rebuild : bool, optional
+        Ignore the cache.
+
+    Returns
+    -------
+    q : np.ndarray
+        The toy distributions.
+    """
+    path = pathlib.Path(path)
+    if path.exists() and not rebuild:
+        with np.load(path) as saved:
+            valid = all(
+                key in saved and np.array_equal(np.asarray(saved[key]), np.asarray(value))
+                for key, value in metadata.items()
+            )
+            if valid:
+                logger.info("Cached toy distributions from %s", path)
+                return np.asarray(saved["q"])
+    q = build()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez(path, q=q, **metadata)
+    return q</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.feldman_cousins.calibrated_thresholds" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">calibrated_thresholds</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">calibrated_thresholds(q: ndarray, truths: ndarray, grid: ndarray, percentiles: tuple[float, ...] = (68.27, 95.0)) -&gt; dict[float, np.ndarray]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Per-grid-point thresholds from the toy distributions at each truth.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>q</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_truths">n_truths</span>, <span title="n_toys">n_toys</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Statistic distributions, one row per truth point.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>truths</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_truths">n_truths</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>The truth points.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Parameter grid to interpolate the thresholds onto.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>percentiles</code></b>
+                  (<code>tuple of float</code>, default:
+                      <code>(68.27, 95.0)</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Percentiles of the toy distribution that define the thresholds.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>thresholds</code></b>(                  <code><span title="dict">dict</span></code>
+)              –
+              <div class="doc-md-description">
+                <p>Percentile -&gt; threshold on <code>grid</code>, linearly interpolated between
+the truth points.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/feldman_cousins.py</code></summary>
+              <pre class="highlight"><code class="language-python">def calibrated_thresholds(
+    q: np.ndarray,
+    truths: np.ndarray,
+    grid: np.ndarray,
+    percentiles: tuple[float, ...] = (68.27, 95.0),
+) -&gt; dict[float, np.ndarray]:
+    """Per-grid-point thresholds from the toy distributions at each truth.
+
+    Parameters
+    ----------
+    q : np.ndarray, shape (n_truths, n_toys)
+        Statistic distributions, one row per truth point.
+    truths : np.ndarray, shape (n_truths,)
+        The truth points.
+    grid : np.ndarray
+        Parameter grid to interpolate the thresholds onto.
+    percentiles : tuple of float, optional
+        Percentiles of the toy distribution that define the thresholds.
+
+    Returns
+    -------
+    thresholds : dict
+        Percentile -&gt; threshold on ``grid``, linearly interpolated between
+        the truth points.
+    """
+    return {
+        p: np.interp(grid, truths, np.percentile(q, p, axis=1)) for p in percentiles
+    }</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.feldman_cousins.profile_interval" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">profile_interval</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">profile_interval(grid: ndarray, curve: ndarray, level: float | ndarray) -&gt; tuple[float, float]</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Crossing points of a profile statistic at one threshold.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>grid</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Parameter values the statistic is tabulated on.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>curve</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Profile statistic on <code>grid</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>level</code></b>
+                  (<code><span title="float">float</span> or <span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Threshold, either one Wilks level or a calibrated threshold per grid
+point.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>low, high : float</code>
+              –
+              <div class="doc-md-description">
+                <p>Lowest and highest grid values where the statistic is at or below
+the threshold.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Raised if the statistic is above the threshold everywhere.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/feldman_cousins.py</code></summary>
+              <pre class="highlight"><code class="language-python">def profile_interval(
+    grid: np.ndarray, curve: np.ndarray, level: float | np.ndarray
+) -&gt; tuple[float, float]:
+    """Crossing points of a profile statistic at one threshold.
+
+    Parameters
+    ----------
+    grid : np.ndarray
+        Parameter values the statistic is tabulated on.
+    curve : np.ndarray
+        Profile statistic on ``grid``.
+    level : float or np.ndarray
+        Threshold, either one Wilks level or a calibrated threshold per grid
+        point.
+
+    Returns
+    -------
+    low, high : float
+        Lowest and highest grid values where the statistic is at or below
+        the threshold.
+
+    Raises
+    ------
+    ValueError
+        Raised if the statistic is above the threshold everywhere.
+    """
+    grid = np.asarray(grid, dtype=float)
+    below = np.asarray(curve) &lt;= level
+    if not np.any(below):
+        raise ValueError("The profile statistic exceeds the threshold on the whole grid.")
+    return float(grid[below].min()), float(grid[below].max())</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="softpaws.comparison.feldman_cousins.toy_statistics" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">toy_statistics</span>
+
+
+</h2>
+<pre class="highlight"><code class="language-python doc-signature">toy_statistics(truths: ndarray, expectation: Callable[[float], ndarray], statistic: Callable[[float, ndarray], float], n_toys: int, rng: Generator) -&gt; np.ndarray</code></pre>
+
+    <div class="doc doc-contents ">
+
+        <p>Distributions of a profile statistic under Poisson pseudo-experiments.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>truths</code></b>
+                  (<code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_truths">n_truths</span>))</code>)
+              –
+              <div class="doc-md-description">
+                <p>Truth points.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>expectation</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>expectation(truth)</code> -&gt; expected counts (array) at that truth; the
+toys are Poisson draws of it.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>statistic</code></b>
+                  (<code><span title="callable">callable</span></code>)
+              –
+              <div class="doc-md-description">
+                <p><code>statistic(truth, toy)</code> -&gt; the profile statistic of one toy at the
+truth it was drawn from: the fixed fit minus the toy's global
+minimum.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>n_toys</code></b>
+                  (<code><span title="int">int</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Pseudo-experiments per truth point.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rng</code></b>
+                  (<code><span title="numpy.random.Generator">Generator</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Random generator of the Poisson draws.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+<b><code>q</code></b>(                  <code>(<span title="numpy.ndarray">ndarray</span>, <span title="shape">shape</span>(<span title="n_truths">n_truths</span>, <span title="n_toys">n_toys</span>))</code>
+)              –
+              <div class="doc-md-description">
+                <p>Statistic distributions, one row per truth point.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/softpaws/comparison/feldman_cousins.py</code></summary>
+              <pre class="highlight"><code class="language-python">def toy_statistics(
+    truths: np.ndarray,
+    expectation: Callable[[float], np.ndarray],
+    statistic: Callable[[float, np.ndarray], float],
+    n_toys: int,
+    rng: np.random.Generator,
+) -&gt; np.ndarray:
+    """Distributions of a profile statistic under Poisson pseudo-experiments.
+
+    Parameters
+    ----------
+    truths : np.ndarray, shape (n_truths,)
+        Truth points.
+    expectation : callable
+        ``expectation(truth)`` -&gt; expected counts (array) at that truth; the
+        toys are Poisson draws of it.
+    statistic : callable
+        ``statistic(truth, toy)`` -&gt; the profile statistic of one toy at the
+        truth it was drawn from: the fixed fit minus the toy's global
+        minimum.
+    n_toys : int
+        Pseudo-experiments per truth point.
+    rng : np.random.Generator
+        Random generator of the Poisson draws.
+
+    Returns
+    -------
+    q : np.ndarray, shape (n_truths, n_toys)
+        Statistic distributions, one row per truth point.
+    """
+    truths = np.asarray(truths, dtype=float)
+    q = np.empty((truths.size, n_toys))
+    for i, truth in enumerate(truths):
+        mu = expectation(truth)
+        for t in range(n_toys):
+            q[i, t] = statistic(truth, rng.poisson(mu).astype(float))
+        c68, c95 = np.percentile(q[i], 68.27), np.percentile(q[i], 95.0)
+        logger.info("truth %.2f: c68 %.2f, c95 %.2f", truth, c68, c95)
+    return q</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../events/" class="btn btn-neutral float-left" title="events"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../likelihood/" class="btn btn-neutral float-right" title="likelihood">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© softpaws</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/MeighenBergerS/softpaws" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../events/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../likelihood/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../js/popper.min.js"></script>
+      <script src="../../../../js/tippy-bundle.umd.js"></script>
+      <script src="../../../../js/clipboard.js"></script>
+      <script src="../../../../js/extra.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
